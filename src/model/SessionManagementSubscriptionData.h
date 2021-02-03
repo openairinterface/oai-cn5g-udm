@@ -28,6 +28,8 @@
 #include <string>
 #include <vector>
 
+using namespace org::openapitools::server::model;
+
 namespace oai {
 namespace udm {
 namespace model {

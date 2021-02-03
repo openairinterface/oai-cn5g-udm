@@ -23,7 +23,7 @@
 #include "PlmnId.h"
 #include <nlohmann/json.hpp>
 #include <vector>
-
+using namespace org::openapitools::server::model;
 namespace oai {
 namespace udm {
 namespace model {

@@ -19,12 +19,12 @@
 
 using namespace config;
 extern udm_config udm_cfg;
-
+using namespace org::openapitools::server::model;
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
+//using namespace oai::udm::model;
 
 GenerateAuthDataApiImpl::GenerateAuthDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)

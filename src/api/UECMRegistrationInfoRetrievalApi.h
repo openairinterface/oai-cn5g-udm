@@ -28,7 +28,7 @@
 #include "ProblemDetails.h"
 #include "RegistrationDataSetName.h"
 #include "RegistrationDataSets.h"
-#include "Set.h"
+//#include "Set.h"
 #include "Snssai.h"
 #include <string>
 
@@ -66,7 +66,7 @@ private:
     /// <param name="supportedFeatures"> (optional, default to &quot;&quot;)</param>
     /// <param name="singleNssai"> (optional, default to Snssai())</param>
     /// <param name="dnn"> (optional, default to &quot;&quot;)</param>
-    virtual void get_registrations(const std::string &ueId, const Pistache::Optional<Set<RegistrationDataSetName>> &registrationDatasetNames, const Pistache::Optional<std::string> &supportedFeatures, const Pistache::Optional<Snssai> &singleNssai, const Pistache::Optional<std::string> &dnn, Pistache::Http::ResponseWriter &response) = 0;
+    //virtual void get_registrations(const std::string &ueId, const Pistache::Optional<Set<RegistrationDataSetName>> &registrationDatasetNames, const Pistache::Optional<std::string> &supportedFeatures, const Pistache::Optional<Snssai> &singleNssai, const Pistache::Optional<std::string> &dnn, Pistache::Http::ResponseWriter &response) = 0;
 
 };
 

@@ -23,7 +23,7 @@ AMFRegistrationFor3GPPAccessApiImpl::AMFRegistrationFor3GPPAccessApiImpl(std::sh
     : AMFRegistrationFor3GPPAccessApi(rtr)
     { }
 
-void AMFRegistrationFor3GPPAccessApiImpl::3_gpp_registration(const std::string &ueId, const Amf3GppAccessRegistration &amf3GppAccessRegistration, Pistache::Http::ResponseWriter &response) {
+void AMFRegistrationFor3GPPAccessApiImpl::_3_gpp_registration(const std::string &ueId, const Amf3GppAccessRegistration &amf3GppAccessRegistration, Pistache::Http::ResponseWriter &response) {
     response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 

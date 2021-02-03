@@ -45,7 +45,7 @@ public:
     SMSFRegistrationFor3GPPAccessApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~SMSFRegistrationFor3GPPAccessApiImpl() {}
 
-    void 3_gpp_smsf_registration(const std::string &ueId, const SmsfRegistration &smsfRegistration, Pistache::Http::ResponseWriter &response);
+    void _3_gpp_smsf_registration(const std::string &ueId, const SmsfRegistration &smsfRegistration, Pistache::Http::ResponseWriter &response);
 
 };
 

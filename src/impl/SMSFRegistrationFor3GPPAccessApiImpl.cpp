@@ -23,7 +23,7 @@ SMSFRegistrationFor3GPPAccessApiImpl::SMSFRegistrationFor3GPPAccessApiImpl(std::
     : SMSFRegistrationFor3GPPAccessApi(rtr)
     { }
 
-void SMSFRegistrationFor3GPPAccessApiImpl::3_gpp_smsf_registration(const std::string &ueId, const SmsfRegistration &smsfRegistration, Pistache::Http::ResponseWriter &response) {
+void SMSFRegistrationFor3GPPAccessApiImpl::_3_gpp_smsf_registration(const std::string &ueId, const SmsfRegistration &smsfRegistration, Pistache::Http::ResponseWriter &response) {
     response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 

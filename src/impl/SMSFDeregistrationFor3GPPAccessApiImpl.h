@@ -44,7 +44,7 @@ public:
     SMSFDeregistrationFor3GPPAccessApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~SMSFDeregistrationFor3GPPAccessApiImpl() {}
 
-    void 3_gpp_smsf_deregistration(const std::string &ueId, const Pistache::Optional<std::string> &smsfSetId, Pistache::Http::ResponseWriter &response);
+    void _3_gpp_smsf_deregistration(const std::string &ueId, const Pistache::Optional<std::string> &smsfSetId, Pistache::Http::ResponseWriter &response);
 
 };
 

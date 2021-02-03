@@ -46,7 +46,7 @@ public:
 private:
     void setupRoutes();
 
-    void 3_gpp_smsf_deregistration_handler(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response);
+    void _3_gpp_smsf_deregistration_handler(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response);
     void smsf_deregistration_for3_gpp_access_api_default_handler(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response);
 
     std::shared_ptr<Pistache::Rest::Router> router;
@@ -59,7 +59,7 @@ private:
     /// </remarks>
     /// <param name="ueId">Identifier of the UE</param>
     /// <param name="smsfSetId"> (optional, default to &quot;&quot;)</param>
-    virtual void 3_gpp_smsf_deregistration(const std::string &ueId, const Pistache::Optional<std::string> &smsfSetId, Pistache::Http::ResponseWriter &response) = 0;
+    virtual void _3_gpp_smsf_deregistration(const std::string &ueId, const Pistache::Optional<std::string> &smsfSetId, Pistache::Http::ResponseWriter &response) = 0;
 
 };
 

@@ -48,9 +48,9 @@ void SMFSmfRegistrationApi::get_smf_registration_handler(const Pistache::Rest::R
     Pistache::Optional<Snssai> singleNssai;
     if(!singleNssaiQuery.isEmpty()){
         Snssai valueQuery_instance;
-        if(fromStringValue(singleNssaiQuery.get(), valueQuery_instance)){
-            singleNssai = Pistache::Some(valueQuery_instance);
-        }
+        //if(fromStringValue(singleNssaiQuery.get(), valueQuery_instance)){
+        //    singleNssai = Pistache::Some(valueQuery_instance);
+        //}
     }
     auto dnnQuery = request.query().get("dnn");
     Pistache::Optional<std::string> dnn;

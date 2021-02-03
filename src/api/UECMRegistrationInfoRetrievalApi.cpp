@@ -55,17 +55,17 @@ void UECMRegistrationInfoRetrievalApi::get_registrations_handler(const Pistache:
     Pistache::Optional<std::vector<RegistrationDataSetName>> registrationDatasetNames;
     if(!registrationDatasetNamesQuery.isEmpty()){
         std::vector<RegistrationDataSetName> valueQuery_instance;
-        if(fromStringValue(registrationDatasetNamesQuery.get(), valueQuery_instance)){
-            registrationDatasetNames = Pistache::Some(valueQuery_instance);
-        }
+        //if(fromStringValue(registrationDatasetNamesQuery.get(), valueQuery_instance)){
+        //    registrationDatasetNames = Pistache::Some(valueQuery_instance);
+        //}
     }
     auto singleNssaiQuery = request.query().get("single-nssai");
     Pistache::Optional<Snssai> singleNssai;
     if(!singleNssaiQuery.isEmpty()){
         Snssai valueQuery_instance;
-        if(fromStringValue(singleNssaiQuery.get(), valueQuery_instance)){
-            singleNssai = Pistache::Some(valueQuery_instance);
-        }
+        //if(fromStringValue(singleNssaiQuery.get(), valueQuery_instance)){
+        //    singleNssai = Pistache::Some(valueQuery_instance);
+        //}
     }
     auto dnnQuery = request.query().get("dnn");
     Pistache::Optional<std::string> dnn;
@@ -77,7 +77,7 @@ void UECMRegistrationInfoRetrievalApi::get_registrations_handler(const Pistache:
     }
     
     try {
-      this->get_registrations(ueId, registrationDatasetNames, supportedFeatures, singleNssai, dnn, response);
+      //this->get_registrations(ueId, registrationDatasetNames, supportedFeatures, singleNssai, dnn, response);
     } catch (nlohmann::detail::exception &e) {
         //send a 400 error
         response.send(Pistache::Http::Code::Bad_Request, e.what());

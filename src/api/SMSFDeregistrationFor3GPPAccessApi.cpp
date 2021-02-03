@@ -32,13 +32,13 @@ void SMSFDeregistrationFor3GPPAccessApi::init() {
 void SMSFDeregistrationFor3GPPAccessApi::setupRoutes() {
     using namespace Pistache::Rest;
 
-    Routes::Delete(*router, base + "/:ueId/registrations/smsf-3gpp-access", Routes::bind(&SMSFDeregistrationFor3GPPAccessApi::3_gpp_smsf_deregistration_handler, this));
+    Routes::Delete(*router, base + "/:ueId/registrations/smsf-3gpp-access", Routes::bind(&SMSFDeregistrationFor3GPPAccessApi::_3_gpp_smsf_deregistration_handler, this));
 
     // Default handler, called when a route is not found
     router->addCustomHandler(Routes::bind(&SMSFDeregistrationFor3GPPAccessApi::smsf_deregistration_for3_gpp_access_api_default_handler, this));
 }
 
-void SMSFDeregistrationFor3GPPAccessApi::3_gpp_smsf_deregistration_handler(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response) {
+void SMSFDeregistrationFor3GPPAccessApi::_3_gpp_smsf_deregistration_handler(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response) {
     // Getting the path params
     auto ueId = request.param(":ueId").as<std::string>();
     
@@ -53,7 +53,7 @@ void SMSFDeregistrationFor3GPPAccessApi::3_gpp_smsf_deregistration_handler(const
     }
     
     try {
-      this->3_gpp_smsf_deregistration(ueId, smsfSetId, response);
+      this->_3_gpp_smsf_deregistration(ueId, smsfSetId, response);
     } catch (nlohmann::detail::exception &e) {
         //send a 400 error
         response.send(Pistache::Http::Code::Bad_Request, e.what());

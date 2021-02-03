@@ -19,7 +19,7 @@ namespace udm {
 namespace api {
 
 using namespace org::openapitools::server::helpers;
-using namespace oai::udm::model;
+//using namespace oai::udm::model;
 
 SubscriptionDeletionApi::SubscriptionDeletionApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {

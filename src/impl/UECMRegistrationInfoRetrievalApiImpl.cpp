@@ -23,9 +23,9 @@ UECMRegistrationInfoRetrievalApiImpl::UECMRegistrationInfoRetrievalApiImpl(std::
     : UECMRegistrationInfoRetrievalApi(rtr)
     { }
 
-void UECMRegistrationInfoRetrievalApiImpl::get_registrations(const std::string &ueId, const Pistache::Optional<Set<RegistrationDataSetName>> &registrationDatasetNames, const Pistache::Optional<std::string> &supportedFeatures, const Pistache::Optional<Snssai> &singleNssai, const Pistache::Optional<std::string> &dnn, Pistache::Http::ResponseWriter &response) {
-    response.send(Pistache::Http::Code::Ok, "Do some magic\n");
-}
+//void UECMRegistrationInfoRetrievalApiImpl::get_registrations(const std::string &ueId, const Pistache::Optional<Set<RegistrationDataSetName>> &registrationDatasetNames, const Pistache::Optional<std::string> &supportedFeatures, const Pistache::Optional<Snssai> &singleNssai, const Pistache::Optional<std::string> &dnn, Pistache::Http::ResponseWriter &response) {
+//    response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+//}
 
 }
 }

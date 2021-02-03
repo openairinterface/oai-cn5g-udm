@@ -31,7 +31,7 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
+//using namespace oai::udm::model;
 
 class SubscriptionDeletionForSharedDataApi {
 public:

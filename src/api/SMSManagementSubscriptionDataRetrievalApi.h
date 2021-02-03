@@ -34,6 +34,7 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace org::openapitools::server::model;
 
 class SMSManagementSubscriptionDataRetrievalApi {
 public:

@@ -32,13 +32,13 @@ void AMFRegistrationFor3GPPAccessApi::init() {
 void AMFRegistrationFor3GPPAccessApi::setupRoutes() {
     using namespace Pistache::Rest;
 
-    Routes::Put(*router, base + "/:ueId/registrations/amf-3gpp-access", Routes::bind(&AMFRegistrationFor3GPPAccessApi::3_gpp_registration_handler, this));
+    Routes::Put(*router, base + "/:ueId/registrations/amf-3gpp-access", Routes::bind(&AMFRegistrationFor3GPPAccessApi::xg_3gpp_registration_handler, this));
 
     // Default handler, called when a route is not found
     router->addCustomHandler(Routes::bind(&AMFRegistrationFor3GPPAccessApi::amf_registration_for3_gpp_access_api_default_handler, this));
 }
 
-void AMFRegistrationFor3GPPAccessApi::3_gpp_registration_handler(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response) {
+void AMFRegistrationFor3GPPAccessApi::xg_3gpp_registration_handler(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response) {
     // Getting the path params
     auto ueId = request.param(":ueId").as<std::string>();
     
@@ -48,7 +48,7 @@ void AMFRegistrationFor3GPPAccessApi::3_gpp_registration_handler(const Pistache:
     
     try {
       nlohmann::json::parse(request.body()).get_to(amf3GppAccessRegistration);
-      this->3_gpp_registration(ueId, amf3GppAccessRegistration, response);
+      this->xg_3gpp_registration(ueId, amf3GppAccessRegistration, response);
     } catch (nlohmann::detail::exception &e) {
         //send a 400 error
         response.send(Pistache::Http::Code::Bad_Request, e.what());

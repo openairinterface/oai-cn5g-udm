@@ -29,6 +29,8 @@
 #include "SmfSelectionSubscriptionData.h"
 #include <string>
 
+using namespace org::openapitools::server::model;
+
 namespace oai {
 namespace udm {
 namespace api {

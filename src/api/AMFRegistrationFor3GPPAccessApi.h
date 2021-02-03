@@ -47,7 +47,7 @@ public:
 private:
     void setupRoutes();
 
-    void 3_gpp_registration_handler(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response);
+    void xg_3gpp_registration_handler(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response);
     void amf_registration_for3_gpp_access_api_default_handler(const Pistache::Rest::Request &request, Pistache::Http::ResponseWriter response);
 
     std::shared_ptr<Pistache::Rest::Router> router;
@@ -60,7 +60,7 @@ private:
     /// </remarks>
     /// <param name="ueId">Identifier of the UE</param>
     /// <param name="amf3GppAccessRegistration"></param>
-    virtual void 3_gpp_registration(const std::string &ueId, const Amf3GppAccessRegistration &amf3GppAccessRegistration, Pistache::Http::ResponseWriter &response) = 0;
+    virtual void xg_3gpp_registration(const std::string &ueId, const Amf3GppAccessRegistration &amf3GppAccessRegistration, Pistache::Http::ResponseWriter &response) = 0;
 
 };
 

@@ -26,7 +26,7 @@
 #include "ResynchronizationInfo.h"
 #include <nlohmann/json.hpp>
 #include <string>
-
+using namespace org::openapitools::server::model;
 namespace oai {
 namespace udm {
 namespace model {
