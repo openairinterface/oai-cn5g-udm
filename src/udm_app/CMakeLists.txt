@@ -13,6 +13,7 @@ set(EXTERNAL_INSTALL_LOCATION ${CMAKE_OPENXGUDM_DIR}/build/ext)
 link_directories(${EXTERNAL_INSTALL_LOCATION}/pistache/lib)
 
 include_directories(${EXTERNAL_INSTALL_LOCATION}/pistache/include)
+include_directories(${EXTERNAL_INSTALL_LOCATION}/pistache/include/pistache)
 include_directories(${EXTERNAL_INSTALL_LOCATION}/json/include)
 include_directories(${SRC_DIR}/model)
 include_directories(${SRC_DIR}/api)
