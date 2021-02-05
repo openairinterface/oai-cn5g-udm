@@ -38,7 +38,7 @@ std::size_t callback(const char *in, std::size_t size, std::size_t num,
   return totalBytes;
 }
 
-void Curl::curl_http_client(std::string remoteUri, std::string Method,
+long Curl::curl_http_client(std::string remoteUri, std::string Method,
                             std::string msgBody, std::string &Response) {
 
   Logger::udm_ueau().info("Send HTTP message with body %s", msgBody.c_str());
@@ -50,6 +50,7 @@ void Curl::curl_http_client(std::string remoteUri, std::string Method,
 
   curl_global_init(CURL_GLOBAL_ALL);
   CURL *curl = curl_easy_init();
+  long httpCode = {0};
 
   if (curl) {
     CURLcode res = {};
@@ -78,7 +79,6 @@ void Curl::curl_http_client(std::string remoteUri, std::string Method,
                             udm_cfg.nudr.if_name);
 
     // Response information.
-    long httpCode = {0};
     std::unique_ptr<std::string> httpData(new std::string());
     std::unique_ptr<std::string> httpHeaderData(new std::string());
 
@@ -107,7 +107,7 @@ void Curl::curl_http_client(std::string remoteUri, std::string Method,
       // free curl before returning
       curl_slist_free_all(headers);
       curl_easy_cleanup(curl);
-      return;
+      return httpCode;
     }
 
     nlohmann::json response_data = {};
@@ -117,11 +117,11 @@ void Curl::curl_http_client(std::string remoteUri, std::string Method,
       if (response.size() < 1) {
         Logger::udm_ueau().info("There's no content in the response");
         // TODO: send context response error
-        return;
+        return httpCode;
       }
       Logger::udm_ueau().info("Wrong response code");
 
-      return;
+      return httpCode;
     }
 
     else { // httpCode = 200 || httpCode = 201 || httpCode = 204
@@ -184,4 +184,6 @@ void Curl::curl_http_client(std::string remoteUri, std::string Method,
     body_data = NULL;
   }
   fflush(stdout);
+
+  return httpCode;
 }

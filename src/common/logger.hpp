@@ -95,6 +95,8 @@ public:
   // static _Logger &amf_server() { return *singleton().m_amf_server; }
   // static _Logger &task_amf_n2() { return *singleton().m_task_amf_n2; }
   static _Logger &udm_ueau() { return *singleton().m_udm_ueau; }
+  static _Logger &udm_uecm() { return *singleton().m_udm_uecm; }
+  static _Logger &udm_sdm() { return *singleton().m_udm_sdm; }
 
 private:
   static Logger *m_singleton;
@@ -127,6 +129,8 @@ private:
   // _Logger *m_amf_server;
   // _Logger *m_task_amf_n2;
   _Logger *m_udm_ueau;
+  _Logger *m_udm_uecm;
+  _Logger *m_udm_sdm;
 };
 
 #endif

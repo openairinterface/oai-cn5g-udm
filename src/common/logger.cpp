@@ -79,6 +79,8 @@ void Logger::_init(const char *app, const bool log_stdout,
   // m_amf_server = new _Logger("amf_server", m_sinks, ss.str().c_str());
   // m_task_amf_n2 = new _Logger("task_amf_n2", m_sinks, ss.str().c_str());
   m_udm_ueau = new _Logger("udm_ueau", m_sinks, ss.str().c_str());
+  m_udm_uecm = new _Logger("udm_uecm", m_sinks, ss.str().c_str());
+  m_udm_sdm = new _Logger("udm_sdm", m_sinks, ss.str().c_str());
 }
 
 //------------------------------------------------------------------------------

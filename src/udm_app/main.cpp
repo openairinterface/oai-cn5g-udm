@@ -50,6 +50,9 @@
 #include "DeleteAuthApiImpl.h"
 #include "GenerateAuthDataApiImpl.h"
 
+#include "SMFSmfRegistrationApiImpl.h"
+#include "AMFRegistrationFor3GPPAccessApiImpl.h"
+
 #include "options.hpp"
 #include "udm_config.hpp"
 
@@ -92,6 +95,7 @@ static void setUpUnixSignals(std::vector<int> quitSignals) {
 
 using namespace oai::udm::api;
 using namespace config;
+using namespace org::openapitools::server::api;
 
 udm_config udm_cfg;
 
@@ -189,6 +193,12 @@ int main(int argc, char **argv) {
   GenerateAuthDataApiImpl GenerateAuthDataApiserver(router);
   GenerateAuthDataApiserver.init();
 
+  SMFSmfRegistrationApiImpl SMFSmfRegistrationApiserver(router);
+  SMFSmfRegistrationApiserver.init();
+
+  AMFRegistrationFor3GPPAccessApiImpl AMFRegistrationFor3GPPAccessApiserver(router);
+  AMFRegistrationFor3GPPAccessApiserver.init();
+    
   httpEndpoint->setHandler(router->handler());
   httpEndpoint->serve();
 

@@ -45,7 +45,7 @@ public:
     AMFRegistrationFor3GPPAccessApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~AMFRegistrationFor3GPPAccessApiImpl() {}
 
-    void _3_gpp_registration(const std::string &ueId, const Amf3GppAccessRegistration &amf3GppAccessRegistration, Pistache::Http::ResponseWriter &response);
+    void xg_3gpp_registration(const std::string &ueId, const Amf3GppAccessRegistration &amf3GppAccessRegistration, Pistache::Http::ResponseWriter &response);
 
 };
 
