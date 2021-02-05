@@ -41,7 +41,7 @@ void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(const std::string
   nlohmann::json j_ProblemDetails;
   ProblemDetails m_ProblemDetails;
 
-  // UDR GET interface ----- get authentication related info--------------------
+  // UDR GET interface ----- get 3gpp_registration related info--------------------
   remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" + ueId + "/context-data/amf-3gpp-access";
   Logger::udm_uecm().debug("PUT Request:" + remoteUri);
   Method = "PUT";

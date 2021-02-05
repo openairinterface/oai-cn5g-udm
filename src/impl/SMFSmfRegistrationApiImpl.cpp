@@ -12,6 +12,13 @@
 
 #include "SMFSmfRegistrationApiImpl.h"
 
+#include "udm_config.hpp"
+#include "logger.hpp"
+#include "curl.hpp"
+
+using namespace config;
+extern config::udm_config udm_cfg;
+
 namespace org {
 namespace openapitools {
 namespace server {
@@ -27,7 +34,48 @@ void SMFSmfRegistrationApiImpl::get_smf_registration(const std::string &ueId, co
     response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 void SMFSmfRegistrationApiImpl::registration(const std::string &ueId, const int32_t &pduSessionId, const SmfRegistration &smfRegistration, Pistache::Http::ResponseWriter &response) {
-    response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+
+
+  std::string udr_ip =
+      std::string(inet_ntoa(*((struct in_addr *)&udm_cfg.nudr.addr4)));
+  std::string udr_port = std::to_string(udm_cfg.nudr.port);
+  std::string remoteUri;
+  std::string Method;
+  std::string msgBody;
+  std::string Response;
+  nlohmann::json j_ProblemDetails;
+  ProblemDetails m_ProblemDetails;
+
+  // UDR GET interface ----- get SmfRegistration related info--------------------
+  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" + ueId + "/context-data/smf-registrations/" + std::to_string(pduSessionId);
+  Logger::udm_uecm().debug("PUT Request:" + remoteUri);
+  Method = "PUT";
+
+  nlohmann::json smfRegistration_j; 
+  to_json(smfRegistration_j, smfRegistration);
+  long http_code;
+  http_code = Curl::curl_http_client(remoteUri, Method, smfRegistration_j.dump(), Response);
+
+  nlohmann::json response_data = {};
+  try {
+    Logger::udm_uecm().debug("PUT Reponse:" + Response);
+    response_data = nlohmann::json::parse(Response.c_str());
+
+  } catch (nlohmann::json::exception &e) { // error handling
+    Logger::udm_uecm().info("Could not get Json content from UDR response");
+
+    m_ProblemDetails.setCause("USER_NOT_FOUND");
+    m_ProblemDetails.setStatus(404);
+    m_ProblemDetails.setDetail("User " + ueId + " not found in Database");
+    to_json(j_ProblemDetails, m_ProblemDetails);
+
+    Logger::udm_uecm().error("User " + ueId + " not found in Database");
+    Logger::udm_uecm().info("Send 404 Not_Found response to client");
+    response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
+    return;
+  }
+  Logger::udm_uecm().debug("http reponse code %d. \n",http_code);
+  response.send(static_cast<Pistache::Http::Code>(http_code), smfRegistration_j.dump());
 }
 
 }
