@@ -12,6 +12,12 @@
  */
 
 #include "SliceSelectionSubscriptionDataRetrievalApiImpl.h"
+#include "udm_config.hpp"
+#include "logger.hpp"
+#include "curl.hpp"
+
+using namespace config;
+extern config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
@@ -52,7 +58,7 @@ void SliceSelectionSubscriptionDataRetrievalApiImpl::get_nssai(
             response_data_json = nlohmann::json::parse(response_get.c_str());
             // TODO: 1. shall check if "singleNassai" is existing or not, if not, raise exception
             // TODO: 2. return_response_data_json: need to check if here is required to allocate memory first. Or check json code to confirm, otherwise codedump might happen
-            return_response_data_json["singleNssai"] = response_data_json["singleNssai"]
+            return_response_data_json["singleNssai"] = response_data_json["singleNssai"];
         } catch (nlohmann::json::exception &e) {
                  Logger::udm_sdm().info("Could not get json content from UDR response");
                  ProblemDetails problem_details;
