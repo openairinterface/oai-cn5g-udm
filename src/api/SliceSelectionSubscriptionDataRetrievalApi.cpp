@@ -13,6 +13,7 @@
 
 #include "SliceSelectionSubscriptionDataRetrievalApi.h"
 #include "Helpers.h"
+#include "conversions.hpp"
 
 namespace oai {
 namespace udm {
@@ -62,13 +63,15 @@ void SliceSelectionSubscriptionDataRetrievalApi::get_nssai_handler(
   }
   auto plmnIdQuery = request.query().get("plmn-id");
   Pistache::Optional<PlmnId> plmnId;
-  /*   if(!plmnIdQuery.isEmpty()){
-         PlmnId value;
-         if(fromStringValue(plmnIdQuery.get(), value)){
-             plmnId = Pistache::Some(value);
-         }
-     }
-    */
+  if(!plmnIdQuery.isEmpty()){
+        PlmnId value;
+        std::string valueplmnIdQuery= plmnIdQuery.get();
+        std::string valuechange = conv::UrlDecode(valueplmnIdQuery);
+        nlohmann::json::parse(valuechange).get_to(value);
+        plmnId = Pistache::Some(value);
+
+  }
+
   // Getting the header params
   auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
