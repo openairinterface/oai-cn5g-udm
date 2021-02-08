@@ -208,3 +208,21 @@ void conv::hex_str_to_uint8(const char *string, uint8_t *des) {
     index++;
   }
 }
+
+std::string conv::UrlDecode(std::string &SRC)
+{
+    std::string ret;
+    char ch;
+    int ii;
+    for (size_t i=0; i<SRC.length(); i++) {
+       if (int(SRC[i])==37) {
+            sscanf(SRC.substr(i+1,2).c_str(), "%x", &ii);
+            ch=static_cast<char>(ii);
+           ret+=ch;
+            i=i+2;
+        } else {
+            ret+=SRC[i];
+        }
+    }
+    return (ret);
+}

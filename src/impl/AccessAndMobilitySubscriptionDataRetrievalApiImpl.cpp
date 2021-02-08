@@ -43,7 +43,7 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
     std::string udr_ip = std::string(inet_ntoa(*((struct in_addr *)&udm_cfg.nudr.addr4)));
     std::string udr_port = std::to_string(udm_cfg.nudr.port);
     //std::string remote_uri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/"+supi+plmnId+"/provisioned-data/am-data";
-    std::string remote_uri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/"+supi+"/456789/provisioned-data/am-data";
+    std::string remote_uri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/"+supi+"/"+plmnId.get().getMcc() +plmnId.get().getMnc()+"/provisioned-data/am-data";
 
     std::string method("GET");
     std::string body("");
