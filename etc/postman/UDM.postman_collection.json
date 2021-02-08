@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "dad0413e-52dd-45b7-ab6a-105652654962",
+		"name": "UDM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AccessAndMobilitySubscriptionDataRetrieval",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ipaddress}}:{{udmport}}/nudm-sdm/v2/{{ueId}}/am-data?plmn-id={\"mcc\":\"456\",\"mnc\":\"789\"}&supported-features=aaa",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"port": "{{udmport}}",
+					"path": [
+						"nudm-sdm",
+						"v2",
+						"{{ueId}}",
+						"am-data"
+					],
+					"query": [
+						{
+							"key": "plmn-id",
+							"value": "{\"mcc\":\"456\",\"mnc\":\"789\"}"
+						},
+						{
+							"key": "supported-features",
+							"value": "aaa"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SliceSelectionSubscriptionDataRetrieval",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ipaddress}}:{{udmport}}/nudm-sdm/v2/{{ueId}}/nssai?plmn-id={\"mcc\":\"456\",\"mnc\":\"789\"}&supported-features=aaa",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"port": "{{udmport}}",
+					"path": [
+						"nudm-sdm",
+						"v2",
+						"{{ueId}}",
+						"nssai"
+					],
+					"query": [
+						{
+							"key": "plmn-id",
+							"value": "{\"mcc\":\"456\",\"mnc\":\"789\"}"
+						},
+						{
+							"key": "supported-features",
+							"value": "aaa"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SMFSelectionSubscriptionDataRetrieval",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ipaddress}}:{{udmport}}/nudm-sdm/v2/{{ueId}}/smf-select-data?plmn-id={\"mcc\":\"456\",\"mnc\":\"789\"}&supported-features=aaa",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"port": "{{udmport}}",
+					"path": [
+						"nudm-sdm",
+						"v2",
+						"{{ueId}}",
+						"smf-select-data"
+					],
+					"query": [
+						{
+							"key": "plmn-id",
+							"value": "{\"mcc\":\"456\",\"mnc\":\"789\"}"
+						},
+						{
+							"key": "supported-features",
+							"value": "aaa"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SessionManagementSubscriptionDataRetrieval",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ipaddress}}:{{udmport}}/nudm-sdm/v2/{{ueId}}/sm-data?plmn-id={\"mcc\":\"456\",\"mnc\":\"789\"}&supported-features=aaa",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"port": "{{udmport}}",
+					"path": [
+						"nudm-sdm",
+						"v2",
+						"{{ueId}}",
+						"sm-data"
+					],
+					"query": [
+						{
+							"key": "plmn-id",
+							"value": "{\"mcc\":\"456\",\"mnc\":\"789\"}"
+						},
+						{
+							"key": "supported-features",
+							"value": "aaa"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SdmSubscriptionCreation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"callbackReference\":\"bbb\",\r\n\"dnn\":\"ccc\",\r\n\"expires\":\"aaa\",\r\n\"immediateReport\":true,\r\n\"implicitUnsubscribe\":true,\r\n\"monitoredResourceUris\":[],\r\n\"nfInstanceId\":\"asdf\",\r\n\"subscriptionId\":\"ddd\",\r\n\"supportedFeatures\":\"eee\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{ipaddress}}:{{udmport}}//nudm-sdm/v2/{{ueId}}/sdm-subscriptions",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"port": "{{udmport}}",
+					"path": [
+						"",
+						"nudm-sdm",
+						"v2",
+						"{{ueId}}",
+						"sdm-subscriptions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "amf-3gpp-access",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"amfInstanceId\":\"aaa\",\"deregCallbackUri\":\"ggg\",\"guami\":{\"amfId\":\"aa\",\"plmnId\":{\"mcc\":\"a\",\"mnc\":\"b\",\"nid\":\"c\"}},\"ratType\":null}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ipaddress}}:{{udmport}}/nudm-uecm/v1/{{ueId}}/registrations/amf-3gpp-access",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"port": "{{udmport}}",
+					"path": [
+						"nudm-uecm",
+						"v1",
+						"{{ueId}}",
+						"registrations",
+						"amf-3gpp-access"
+					],
+					"query": [
+						{
+							"key": "supi",
+							"value": "11111",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "smfRegistration",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"smfInstanceId\":\"aaa\",\r\n\"smfSetId\":\"bbb\",\r\n\"supportedFeatures\":\"ccc\",\r\n\"pduSessionId\":111,\r\n\"singleNssai\":{\"sst\":123,\"sd\":\"abc\"},\r\n\"dnn\":\"ddd\",\r\n\"emergencyServices\":true,\r\n\"pcscfRestorationCallbackUri\":\"eee\",\r\n\"plmnId\":{\"mcc\":\"qqq\",\"mnc\":\"www\"},\r\n\"pgwFqdn\":\"fff\",\r\n\"epdgInd\":false,\r\n\"deregCallbackUri\":\"ggg\",\r\n\"registrationReason\":{},\r\n\"registrationTime\":\"hhh\",\r\n\"contextInfo\":{}\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ipaddress}}:{{udmport}}/nudm-uecm/v1/{{ueId}}//registrations/smf-registrations/{{pduSessionId}}",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"port": "{{udmport}}",
+					"path": [
+						"nudm-uecm",
+						"v1",
+						"{{ueId}}",
+						"",
+						"registrations",
+						"smf-registrations",
+						"{{pduSessionId}}"
+					],
+					"query": [
+						{
+							"key": "supi",
+							"value": "11111",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
