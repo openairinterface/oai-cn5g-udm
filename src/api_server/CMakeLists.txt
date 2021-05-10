@@ -19,19 +19,25 @@
 #      contact@openairinterface.org
 ################################################################################
 
-include_directories(${SRC_TOP_DIR}/../build/ext/spdlog/include)
-include_directories(${SRC_TOP_DIR}/api_server/api)
-include_directories(${SRC_TOP_DIR}/api_server/impl)
-include_directories(${SRC_TOP_DIR}/api_server/model)
-include_directories(${SRC_TOP_DIR}/api_server/)
-include_directories(${SRC_TOP_DIR}/common/)
+set(UDM_API_SERVER_DIR "${SRC_TOP_DIR}/api_server")
+
+include_directories(${UDM_API_SERVER_DIR}/api)
+include_directories(${UDM_API_SERVER_DIR}/impl)
+include_directories(${UDM_API_SERVER_DIR}/model)
+include_directories(${UDM_API_SERVER_DIR}/)
+include_directories(${SRC_TOP_DIR}/udm_app)
+include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/common/utils)
+include_directories(${SRC_TOP_DIR}/common/libngap)
+include_directories(${SRC_TOP_DIR}/5gaka)
+include_directories(${SRC_TOP_DIR}/../build/ext/spdlog/include)
 
-add_library (UDM STATIC
-  udm_app.cpp
-  udm_client.cpp 
-  udm_config.cpp 
-  curl.cpp 
+file(GLOB UDM_API_SERVER_src_files
+    ${UDM_API_SERVER_DIR}/udm-api-server.cpp
+    ${UDM_API_SERVER_DIR}/model/*.cpp
+    ${UDM_API_SERVER_DIR}/api/*.cpp
+    ${UDM_API_SERVER_DIR}/impl/*.cpp
 )
-
-
+ 
+add_library(UDM_API STATIC
+           ${UDM_API_SERVER_src_files})

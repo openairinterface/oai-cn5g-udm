@@ -18,20 +18,21 @@
 # For more information about the OpenAirInterface (OAI) Software Alliance:
 #      contact@openairinterface.org
 ################################################################################
-
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${SRC_TOP_DIR}/common)
+include_directories(${SRC_TOP_DIR}/common/unicode)
+include_directories(${SRC_TOP_DIR}/nas/common)
+include_directories(${SRC_TOP_DIR}/utils)
+include_directories(${SRC_TOP_DIR}/utils/bstr)
 include_directories(${SRC_TOP_DIR}/../build/ext/spdlog/include)
-include_directories(${SRC_TOP_DIR}/api_server/api)
-include_directories(${SRC_TOP_DIR}/api_server/impl)
-include_directories(${SRC_TOP_DIR}/api_server/model)
-include_directories(${SRC_TOP_DIR}/api_server/)
-include_directories(${SRC_TOP_DIR}/common/)
-include_directories(${SRC_TOP_DIR}/common/utils)
 
-add_library (UDM STATIC
-  udm_app.cpp
-  udm_client.cpp 
-  udm_config.cpp 
-  curl.cpp 
-)
+set(CN_UTILS_SRC STATIC
+ ${CMAKE_CURRENT_SOURCE_DIR}/bstrlib.c
+ ${CMAKE_CURRENT_SOURCE_DIR}/if.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/string.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/pid_file.cpp
+ )
+
+add_library(CN_UTILS ${CN_UTILS_SRC})
 
 
