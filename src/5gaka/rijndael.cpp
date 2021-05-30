@@ -21,7 +21,9 @@
 
 /*! \file rijndael.cpp
  \brief
- \author  Keliang DU, BUPT
+ \brief Based on https://github.com/OPENAIRINTERFACE/openair-hss
+ \author Jian Yang, Fengjiao He, Hongxin Wang, Keliang DU
+ \company
  \date 2020
  \email: contact@openairinterface.org
  */
@@ -53,6 +55,7 @@ u8 S[256] = {
     140, 161, 137, 13,  191, 230, 66,  104, 65,  153, 45,  15,  176, 84,  187,
     22,
 };
+
 /*------- This array does the multiplication by x in GF(2^8) ------*/
 u8 Xtime[256] = {
     0,   2,   4,   6,   8,   10,  12,  14,  16,  18,  20,  22,  24,  26,  28,
@@ -113,20 +116,17 @@ void Authentication_5gaka::RijndaelKeySchedule(const uint8_t key[16]) {
   return;
 }
 
-/************ internal functions ******************/
 //------------------------------------------------------------------------------
 void KeyAdd(u8 state[4][4], u8 roundKeys[11][4][4], int round) {
   for (int i = 0; i < 4; i++)
-    for (int j = 0; j < 4; j++)
-      state[i][j] ^= roundKeys[round][i][j];
+    for (int j = 0; j < 4; j++) state[i][j] ^= roundKeys[round][i][j];
   return;
 }
 
 //------------------------------------------------------------------------------
 int ByteSub(u8 state[4][4]) {
   for (int i = 0; i < 4; i++)
-    for (int j = 0; j < 4; j++)
-      state[i][j] = S[state[i][j]];
+    for (int j = 0; j < 4; j++) state[i][j] = S[state[i][j]];
   return 0;
 }
 
@@ -136,7 +136,7 @@ void ShiftRow(u8 state[4][4]) {
   /*
    * left rotate row 1 by 1
    */
-  temp = state[1][0];
+  temp        = state[1][0];
   state[1][0] = state[1][1];
   state[1][1] = state[1][2];
   state[1][2] = state[1][3];
@@ -144,16 +144,16 @@ void ShiftRow(u8 state[4][4]) {
   /*
    * left rotate row 2 by 2
    */
-  temp = state[2][0];
+  temp        = state[2][0];
   state[2][0] = state[2][2];
   state[2][2] = temp;
-  temp = state[2][1];
+  temp        = state[2][1];
   state[2][1] = state[2][3];
   state[2][3] = temp;
   /*
    * left rotate row 3 by 3
    */
-  temp = state[3][0];
+  temp        = state[3][0];
   state[3][0] = state[3][3];
   state[3][3] = state[3][2];
   state[3][2] = state[3][1];
@@ -187,19 +187,17 @@ void MixColumn(u8 state[4][4]) {
  16-byte output (using round keys already derived from 16-byte
  key).
  -----------------------------------------------------------------*/
-void Authentication_5gaka::RijndaelEncrypt(const uint8_t input[16],
-                                           uint8_t output[16]) {
+void Authentication_5gaka::RijndaelEncrypt(
+    const uint8_t input[16], uint8_t output[16]) {
   int i = 0, r = 0;
   u8 state[4][4];
-  for (i = 0; i < 16; i++)
-    state[i & 0x3][i >> 2] = input[i];
+  for (i = 0; i < 16; i++) state[i & 0x3][i >> 2] = input[i];
   KeyAdd(state, roundKeys, 0);
 #if AUTH_ALG_ON
   printf("end of round(%d)\n0x", 0);
 #endif
-  // for (int i = 0; i < 16; i++)
-  //  printf("%x ", state[i & 0x3][i >> 2]);
-  // printf("\n");
+  for (int i = 0; i < 16; i++) printf("%x ", state[i & 0x3][i >> 2]);
+  printf("\n");
   for (r = 1; r <= 9; r++) {
     ByteSub(state);
     ShiftRow(state);
@@ -207,8 +205,7 @@ void Authentication_5gaka::RijndaelEncrypt(const uint8_t input[16],
     KeyAdd(state, roundKeys, r);
 #if AUTH_ALG_ON
     printf("end of round(%d)\n0x", r);
-    for (i = 0; i < 16; i++)
-      printf("%x ", state[i & 0x3][i >> 2]);
+    for (i = 0; i < 16; i++) printf("%x ", state[i & 0x3][i >> 2]);
     printf("\n");
 #endif
   }
@@ -217,16 +214,13 @@ void Authentication_5gaka::RijndaelEncrypt(const uint8_t input[16],
   KeyAdd(state, roundKeys, r);
 #if AUTH_ALG_ON
   printf("end of round(%d)\n0x", r);
-  for (int i = 0; i < 16; i++)
-    printf("%x ", state[i & 0x3][i >> 2]);
+  for (int i = 0; i < 16; i++) printf("%x ", state[i & 0x3][i >> 2]);
   printf("\n");
 #endif
-  for (i = 0; i < 16; i++)
-    output[i] = state[i & 0x3][i >> 2];
+  for (i = 0; i < 16; i++) output[i] = state[i & 0x3][i >> 2];
 #if AUTH_ALG_ON
   printf("output_encrypt: ");
-  for (i = 0; i < 16; i++)
-    printf("%x", output[i]);
+  for (i = 0; i < 16; i++) printf("%x", output[i]);
   printf("\n");
 #endif
   return;

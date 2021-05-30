@@ -46,19 +46,18 @@
   (aDDRESS)[0], (aDDRESS)[1], (aDDRESS)[2], (aDDRESS)[3]
 
 class conv {
-public:
-  static void hexa_to_ascii(uint8_t *from, char *to, size_t length);
-  static int ascii_to_hex(uint8_t *dst, const char *h);
+ public:
+  static void hexa_to_ascii(uint8_t* from, char* to, size_t length);
+  static int ascii_to_hex(uint8_t* dst, const char* h);
   static struct in_addr fromString(const std::string addr4);
-  static std::string toString(const struct in_addr &inaddr);
-  static std::string toString(const struct in6_addr &in6addr);
-  static std::string mccToString(const uint8_t digit1, const uint8_t digit2,
-                                 const uint8_t digit3);
-  static std::string mncToString(const uint8_t digit1, const uint8_t digit2,
-                                 const uint8_t digit3);
-  static std::string uint8_to_hex_string(const uint8_t *v, const size_t s);
-  static void hex_str_to_uint8(const char *string, uint8_t *des);
-  static std::string UrlDecode(std::string &SRC);
-
+  static std::string toString(const struct in_addr& inaddr);
+  static std::string toString(const struct in6_addr& in6addr);
+  static std::string mccToString(
+      const uint8_t digit1, const uint8_t digit2, const uint8_t digit3);
+  static std::string mncToString(
+      const uint8_t digit1, const uint8_t digit2, const uint8_t digit3);
+  static std::string uint8_to_hex_string(const uint8_t* v, const size_t s);
+  static void hex_str_to_uint8(const char* string, uint8_t* des);
+  static std::string UrlDecode(std::string& SRC);
 };
 #endif /* FILE_CONVERSIONS_HPP_SEEN */

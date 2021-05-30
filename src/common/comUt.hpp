@@ -29,23 +29,30 @@
 #ifndef _PRINT_BUFFER_H
 #define _PRINT_BUFFER_H
 
-#include "logger.hpp"
 #include <string>
 
-//------------------------------------------------------------------------------
-void print_buffer(const std::string app, const std::string commit, uint8_t *buf,
-                  int len) {
-  if (!app.compare("udm_ueau"))
-    Logger::udm_ueau().debug(commit.c_str());
-#if DEBUG_IS_ON
-  for (int i = 0; i < len; i++)
-    printf("%x ", buf[i]);
+#include "iostream"
+#include "logger.hpp"
+using namespace std;
+
+void print_buffer(
+    const std::string app, const std::string commit, uint8_t* buf, int len) {
+  if (!app.compare("udm_ueau")) Logger::udm_ueau().debug(commit.c_str());
+  for (int i = 0; i < len; i++) printf("%x ", buf[i]);
   printf("\n");
-#endif
 }
 
 //------------------------------------------------------------------------------
-void hexStr2Byte(const char *src, unsigned char *dest, int len) {
+void print_buffer(
+    const string app, const string commit, const uint8_t* buf, int len) {
+  if (!app.compare("udm_ueau")) cout << commit.c_str() << endl;
+  Logger::udm_ueau().debug(commit.c_str());
+
+  for (int i = 0; i < len; i++) printf("%x ", buf[i]);
+  printf("\n");
+}
+
+void hexStr2Byte(const char* src, unsigned char* dest, int len) {
   short i;
   unsigned char hBy, lBy;
   for (i = 0; i < len; i += 2) {

@@ -21,7 +21,9 @@
 
 /*! \file authentication_algorithms_with_5gaka.hpp
  \brief
+ \brief Based on https://github.com/OPENAIRINTERFACE/openair-hss
  \author  Keliang DU, BUPT
+ \company
  \date 2020
  \email: contact@openairinterface.org
  */
@@ -67,7 +69,7 @@ typedef struct {
   uint8_t xresStar[16];
   uint8_t autn[16];
   uint8_t kausf[32];
-} _5G_HE_AV_t; // clause 6.3.6.2.5, ts33.501
+} _5G_HE_AV_t;  // clause 6.3.6.2.5, ts33.501
 
 typedef struct {
   uint8_t avType;
@@ -97,61 +99,120 @@ typedef enum {
   NAS_INT_ALG = 0x02,
   RRC_ENC_ALG = 0x03,
   RRC_INT_ALG = 0x04,
-  UP_ENC_ALG = 0x05,
-  UP_INT_ALG = 0x06
+  UP_ENC_ALG  = 0x05,
+  UP_INT_ALG  = 0x06
 } algorithm_type_dist_t;
 
 class Authentication_5gaka {
-public:
-  /****** internal algorithms f1 f2 f3 f4 f5 ********/
-  static void f1(const uint8_t opc[16], const uint8_t k[16],
-                 const uint8_t _rand[16], const uint8_t sqn[6],
-                 const uint8_t amf[2], uint8_t mac_a[8]);
-  static void f1star(const uint8_t kP[16], const uint8_t k[16],
-                     const uint8_t rand[16], const uint8_t sqn[6],
-                     const uint8_t amf[2], uint8_t mac_s[8]);
-  static void f2345(const uint8_t opc[16], const uint8_t k[16],
-                    const uint8_t _rand[16], uint8_t res[8], uint8_t ck[16],
-                    uint8_t ik[16], uint8_t ak[6]);
-  static void f5star(const uint8_t kP[16], const uint8_t k[16],
-                     const uint8_t rand[16], uint8_t ak[6]);
-  /****** key derive  ***********/
-  static void kdf(uint8_t *key, uint16_t key_len, uint8_t *s, uint16_t s_len,
-                  uint8_t *out, uint16_t out_len);
-  static void derive_kasme(uint8_t ck[16], uint8_t ik[16], uint8_t plmn[3],
-                           uint8_t sqn[6], uint8_t ak[6], uint8_t kasme[32]);
-  static void derive_kausf(uint8_t ck[16], uint8_t ik[16],
-                           std::string serving_network, uint8_t sqn[6],
-                           uint8_t ak[6], uint8_t kausf[32]);
-  static void derive_kseaf(std::string serving_network, uint8_t kausf[32],
-                           uint8_t kseaf[32]);
-  static void derive_kamf(std::string imsi, uint8_t *kseaf, uint8_t *kamf,
-                          uint16_t abba);
-  static void derive_knas(algorithm_type_dist_t nas_alg_type,
-                          uint8_t nas_alg_id, uint8_t kamf[32], uint8_t *knas);
-  static void derive_kgnb(uint32_t uplinkCount, uint8_t accessType,
-                          uint8_t kamf[32], uint8_t *kgnb);
-  static uint8_t *sqn_ms_derive(const uint8_t opc[16], uint8_t *key,
-                                uint8_t *auts, uint8_t *rand, uint8_t *amf);
-  /****** general functions ********/
-  static void ComputeOPc(const uint8_t kP[16], const uint8_t opP[16],
-                         uint8_t opcP[16]);
-  static void generate_autn(const uint8_t sqn[6], const uint8_t ak[6],
-                            const uint8_t amf[2], const uint8_t mac_a[8],
-                            uint8_t autn[16]);
-  static int generate_vector(const uint8_t opc[16], uint64_t imsi,
-                             uint8_t key[16], uint8_t plmn[3], uint8_t sqn[6],
-                             auc_vector_t *vector);
-  static void annex_a_4_33501(uint8_t ck[16], uint8_t ik[16], uint8_t *input,
-                              uint8_t rand[16], std::string serving_network,
-                              uint8_t *output);
-  static void generate_random(uint8_t *random_p, ssize_t length);
+ public:
+ public:
+  /*
+   * f1: Computes network authentication code MAC-A from key K, random,
+  challenge RAND, sequence number SQN and authentication management field AMF.
+   * @param [const uint8_t[16]] opc
+   * @param [const uint8_t[16]] k
+   * @param [const uint8_t[16]] _rand
+   * @param [const uint8_t[6]] sqn
+   * @param [const uint8_t[2]] amf
+   * @param [uint8_t[8]] mac_a
+   * @return
+   */
+  static void f1(
+      const uint8_t opc[16], const uint8_t k[16], const uint8_t _rand[16],
+      const uint8_t sqn[6], const uint8_t amf[2], uint8_t mac_a[8]);
 
-  /****** Rijndael ********/
+  /*
+   * f1star: Computes resynch authentication code MAC-S from key K, random
+     challenge RAND, sequence number SQN and authentication management
+     field AMF.
+   * @param [const uint8_t[16]] kP
+   * @param [const uint8_t[16]] k
+   * @param [const uint8_t[16]] _rand
+   * @param [const uint8_t[6]] sqn
+   * @param [const uint8_t[2]] amf
+   * @param [uint8_t[8]] mac_s
+   * @return
+   */
+  static void f1star(
+      const uint8_t kP[16], const uint8_t k[16], const uint8_t rand[16],
+      const uint8_t sqn[6], const uint8_t amf[2], uint8_t mac_s[8]);
+
+  /*
+   * f2345: Takes key K and random challenge RAND, and returns response RES,
+     confidentiality key CK, integrity key IK and anonymity key AK
+   * @param [const uint8_t[16]] opc
+   * @param [const uint8_t[16]] k
+   * @param [const uint8_t[16]] _rand
+   * @param [const uint8_t[8]] res
+   * @param [const uint8_t[16]] ck
+   * @param [uint8_t[16]] ik
+   * @param [uint8_t[6]] ak
+   * @return
+   */
+  static void f2345(
+      const uint8_t opc[16], const uint8_t k[16], const uint8_t _rand[16],
+      uint8_t res[8], uint8_t ck[16], uint8_t ik[16], uint8_t ak[6]);
+
+  /*
+   * F5star: Takes key K and random challenge RAND, and returns resynch
+     anonymity key AK
+   * @param [const uint8_t[16]] kP
+   * @param [const uint8_t[16]] k
+   * @param [const uint8_t[16]] rand
+   * @param [const uint8_t[6]] ak
+   * @return
+   */
+  static void f5star(
+      const uint8_t kP[16], const uint8_t k[16], const uint8_t rand[16],
+      uint8_t ak[6]);
+
+  static void kdf(
+      uint8_t* key, uint16_t key_len, uint8_t* s, uint16_t s_len, uint8_t* out,
+      uint16_t out_len);
+  static void derive_kasme(
+      uint8_t ck[16], uint8_t ik[16], uint8_t plmn[3], uint8_t sqn[6],
+      uint8_t ak[6], uint8_t kasme[32]);
+  static void derive_kausf(
+      uint8_t ck[16], uint8_t ik[16], std::string serving_network,
+      uint8_t sqn[6], uint8_t ak[6], uint8_t kausf[32]);
+  static void derive_kseaf(
+      std::string serving_network, uint8_t kausf[32], uint8_t kseaf[32]);
+  static void derive_kamf(
+      std::string imsi, uint8_t* kseaf, uint8_t* kamf, uint16_t abba);
+  static void derive_knas(
+      algorithm_type_dist_t nas_alg_type, uint8_t nas_alg_id, uint8_t kamf[32],
+      uint8_t* knas);
+  static void derive_kgnb(
+      uint32_t uplinkCount, uint8_t accessType, uint8_t kamf[32],
+      uint8_t* kgnb);
+  static uint8_t* sqn_ms_derive(
+      const uint8_t opc[16], uint8_t* key, uint8_t* auts, uint8_t* rand,
+      uint8_t* amf);
+
+  /*
+   * ComputeOPc: Function to compute OPc from OP and K.
+   * @param [const uint8_t[16]] kP
+   * @param [const uint8_t[16]] opP
+   * @param [uint8_t[16]] opcP
+   * @return
+   */
+  static void ComputeOPc(
+      const uint8_t kP[16], const uint8_t opP[16], uint8_t opcP[16]);
+  static void generate_autn(
+      const uint8_t sqn[6], const uint8_t ak[6], const uint8_t amf[2],
+      const uint8_t mac_a[8], uint8_t autn[16]);
+  static int generate_vector(
+      const uint8_t opc[16], uint64_t imsi, uint8_t key[16], uint8_t plmn[3],
+      uint8_t sqn[6], auc_vector_t* vector);
+  static void annex_a_4_33501(
+      uint8_t ck[16], uint8_t ik[16], uint8_t* input, uint8_t rand[16],
+      std::string serving_network, uint8_t* output);
+  static void generate_random(uint8_t* random_p, ssize_t length);
+
   static void RijndaelKeySchedule(const uint8_t key[16]);
   static void RijndaelEncrypt(const uint8_t in[16], uint8_t out[16]);
 
-private:
+ private:
   auc_vector_t auc_vector;
 };
 
