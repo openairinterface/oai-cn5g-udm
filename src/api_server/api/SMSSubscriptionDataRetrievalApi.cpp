@@ -12,6 +12,7 @@
  */
 
 #include "SMSSubscriptionDataRetrievalApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -26,25 +27,27 @@ SMSSubscriptionDataRetrievalApi::SMSSubscriptionDataRetrievalApi(
   router = rtr;
 }
 
-void SMSSubscriptionDataRetrievalApi::init() { setupRoutes(); }
+void SMSSubscriptionDataRetrievalApi::init() {
+  setupRoutes();
+}
 
 void SMSSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
       *router, base + "/:supi/sms-data",
-      Routes::bind(&SMSSubscriptionDataRetrievalApi::get_sms_data_handler,
-                   this));
+      Routes::bind(
+          &SMSSubscriptionDataRetrievalApi::get_sms_data_handler, this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&SMSSubscriptionDataRetrievalApi::
-                       sms_subscription_data_retrieval_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &SMSSubscriptionDataRetrievalApi::
+          sms_subscription_data_retrieval_api_default_handler,
+      this));
 }
 
 void SMSSubscriptionDataRetrievalApi::get_sms_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
@@ -71,17 +74,18 @@ void SMSSubscriptionDataRetrievalApi::get_sms_data_handler(
       }
     */
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_sms_data(supi, supportedFeatures, plmnId, ifNoneMatch,
-                       ifModifiedSince, response);
-  } catch (nlohmann::detail::exception &e) {
+    this->get_sms_data(
+        supi, supportedFeatures, plmnId, ifNoneMatch, ifModifiedSince,
+        response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -90,12 +94,12 @@ void SMSSubscriptionDataRetrievalApi::get_sms_data_handler(
 
 void SMSSubscriptionDataRetrievalApi::
     sms_subscription_data_retrieval_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

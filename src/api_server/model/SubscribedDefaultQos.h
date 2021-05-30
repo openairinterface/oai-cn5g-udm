@@ -19,8 +19,9 @@
 #ifndef SubscribedDefaultQos_H_
 #define SubscribedDefaultQos_H_
 
-#include "Arp.h"
 #include <nlohmann/json.hpp>
+
+#include "Arp.h"
 
 namespace oai {
 namespace udm {
@@ -30,7 +31,7 @@ namespace model {
 ///
 /// </summary>
 class SubscribedDefaultQos {
-public:
+ public:
   SubscribedDefaultQos();
   virtual ~SubscribedDefaultQos();
 
@@ -48,7 +49,7 @@ public:
   ///
   /// </summary>
   Arp getArp() const;
-  void setArp(Arp const &value);
+  void setArp(Arp const& value);
   /// <summary>
   ///
   /// </summary>
@@ -57,10 +58,10 @@ public:
   bool priorityLevelIsSet() const;
   void unsetPriorityLevel();
 
-  friend void to_json(nlohmann::json &j, const SubscribedDefaultQos &o);
-  friend void from_json(const nlohmann::json &j, SubscribedDefaultQos &o);
+  friend void to_json(nlohmann::json& j, const SubscribedDefaultQos& o);
+  friend void from_json(const nlohmann::json& j, SubscribedDefaultQos& o);
 
-protected:
+ protected:
   int32_t m__5qi;
 
   Arp m_Arp;
@@ -69,8 +70,8 @@ protected:
   bool m_PriorityLevelIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SubscribedDefaultQos_H_ */

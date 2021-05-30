@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class Area {
-public:
+ public:
   Area();
   virtual ~Area();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// Area members
 
-  friend void to_json(nlohmann::json &j, const Area &o);
-  friend void from_json(const nlohmann::json &j, Area &o);
+  friend void to_json(nlohmann::json& j, const Area& o);
+  friend void from_json(const nlohmann::json& j, Area& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* Area_H_ */

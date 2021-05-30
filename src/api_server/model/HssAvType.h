@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class HssAvType {
-public:
+ public:
   HssAvType();
   virtual ~HssAvType();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// HssAvType members
 
-  friend void to_json(nlohmann::json &j, const HssAvType &o);
-  friend void from_json(const nlohmann::json &j, HssAvType &o);
+  friend void to_json(nlohmann::json& j, const HssAvType& o);
+  friend void from_json(const nlohmann::json& j, HssAvType& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* HssAvType_H_ */

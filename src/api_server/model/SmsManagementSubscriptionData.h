@@ -19,10 +19,11 @@
 #ifndef SmsManagementSubscriptionData_H_
 #define SmsManagementSubscriptionData_H_
 
-#include "TraceData.h"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
+
+#include "TraceData.h"
 
 namespace oai {
 namespace udm {
@@ -32,7 +33,7 @@ namespace model {
 ///
 /// </summary>
 class SmsManagementSubscriptionData {
-public:
+ public:
   SmsManagementSubscriptionData();
   virtual ~SmsManagementSubscriptionData();
 
@@ -45,7 +46,7 @@ public:
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
@@ -93,23 +94,23 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getSharedSmsMngDataIds();
+  std::vector<std::string>& getSharedSmsMngDataIds();
   bool sharedSmsMngDataIdsIsSet() const;
   void unsetSharedSmsMngDataIds();
   /// <summary>
   ///
   /// </summary>
   TraceData getTraceData() const;
-  void setTraceData(TraceData const &value);
+  void setTraceData(TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
 
-  friend void to_json(nlohmann::json &j,
-                      const SmsManagementSubscriptionData &o);
-  friend void from_json(const nlohmann::json &j,
-                        SmsManagementSubscriptionData &o);
+  friend void to_json(
+      nlohmann::json& j, const SmsManagementSubscriptionData& o);
+  friend void from_json(
+      const nlohmann::json& j, SmsManagementSubscriptionData& o);
 
-protected:
+ protected:
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
   bool m_MtSmsSubscribed;
@@ -130,8 +131,8 @@ protected:
   bool m_TraceDataIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SmsManagementSubscriptionData_H_ */

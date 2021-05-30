@@ -19,9 +19,10 @@
 #ifndef AvImsGbaEapAka_H_
 #define AvImsGbaEapAka_H_
 
-#include "HssAvType.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "HssAvType.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class AvImsGbaEapAka {
-public:
+ public:
   AvImsGbaEapAka();
   virtual ~AvImsGbaEapAka();
 
@@ -44,37 +45,37 @@ public:
   ///
   /// </summary>
   HssAvType getAvType() const;
-  void setAvType(HssAvType const &value);
+  void setAvType(HssAvType const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getRand() const;
-  void setRand(std::string const &value);
+  void setRand(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getXres() const;
-  void setXres(std::string const &value);
+  void setXres(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getAutn() const;
-  void setAutn(std::string const &value);
+  void setAutn(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getCk() const;
-  void setCk(std::string const &value);
+  void setCk(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getIk() const;
-  void setIk(std::string const &value);
+  void setIk(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const AvImsGbaEapAka &o);
-  friend void from_json(const nlohmann::json &j, AvImsGbaEapAka &o);
+  friend void to_json(nlohmann::json& j, const AvImsGbaEapAka& o);
+  friend void from_json(const nlohmann::json& j, AvImsGbaEapAka& o);
 
-protected:
+ protected:
   HssAvType m_AvType;
 
   std::string m_Rand;
@@ -88,8 +89,8 @@ protected:
   std::string m_Ik;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AvImsGbaEapAka_H_ */

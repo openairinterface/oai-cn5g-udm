@@ -19,6 +19,9 @@
 #ifndef SubscriptionDataSets_H_
 #define SubscriptionDataSets_H_
 
+#include <nlohmann/json.hpp>
+#include <vector>
+
 #include "AccessAndMobilitySubscriptionData.h"
 #include "SessionManagementSubscriptionData.h"
 #include "SmfSelectionSubscriptionData.h"
@@ -27,8 +30,6 @@
 #include "TraceData.h"
 #include "UeContextInSmfData.h"
 #include "UeContextInSmsfData.h"
-#include <nlohmann/json.hpp>
-#include <vector>
 
 namespace oai {
 namespace udm {
@@ -38,7 +39,7 @@ namespace model {
 ///
 /// </summary>
 class SubscriptionDataSets {
-public:
+ public:
   SubscriptionDataSets();
   virtual ~SubscriptionDataSets();
 
@@ -51,62 +52,62 @@ public:
   ///
   /// </summary>
   AccessAndMobilitySubscriptionData getAmData() const;
-  void setAmData(AccessAndMobilitySubscriptionData const &value);
+  void setAmData(AccessAndMobilitySubscriptionData const& value);
   bool amDataIsSet() const;
   void unsetAmData();
   /// <summary>
   ///
   /// </summary>
   SmfSelectionSubscriptionData getSmfSelData() const;
-  void setSmfSelData(SmfSelectionSubscriptionData const &value);
+  void setSmfSelData(SmfSelectionSubscriptionData const& value);
   bool smfSelDataIsSet() const;
   void unsetSmfSelData();
   /// <summary>
   ///
   /// </summary>
   UeContextInSmfData getUecSmfData() const;
-  void setUecSmfData(UeContextInSmfData const &value);
+  void setUecSmfData(UeContextInSmfData const& value);
   bool uecSmfDataIsSet() const;
   void unsetUecSmfData();
   /// <summary>
   ///
   /// </summary>
   UeContextInSmsfData getUecSmsfData() const;
-  void setUecSmsfData(UeContextInSmsfData const &value);
+  void setUecSmsfData(UeContextInSmsfData const& value);
   bool uecSmsfDataIsSet() const;
   void unsetUecSmsfData();
   /// <summary>
   ///
   /// </summary>
   SmsSubscriptionData getSmsSubsData() const;
-  void setSmsSubsData(SmsSubscriptionData const &value);
+  void setSmsSubsData(SmsSubscriptionData const& value);
   bool smsSubsDataIsSet() const;
   void unsetSmsSubsData();
   /// <summary>
   ///
   /// </summary>
-  std::vector<SessionManagementSubscriptionData> &getSmData();
+  std::vector<SessionManagementSubscriptionData>& getSmData();
   bool smDataIsSet() const;
   void unsetSmData();
   /// <summary>
   ///
   /// </summary>
   TraceData getTraceData() const;
-  void setTraceData(TraceData const &value);
+  void setTraceData(TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
   /// <summary>
   ///
   /// </summary>
   SmsManagementSubscriptionData getSmsMngData() const;
-  void setSmsMngData(SmsManagementSubscriptionData const &value);
+  void setSmsMngData(SmsManagementSubscriptionData const& value);
   bool smsMngDataIsSet() const;
   void unsetSmsMngData();
 
-  friend void to_json(nlohmann::json &j, const SubscriptionDataSets &o);
-  friend void from_json(const nlohmann::json &j, SubscriptionDataSets &o);
+  friend void to_json(nlohmann::json& j, const SubscriptionDataSets& o);
+  friend void from_json(const nlohmann::json& j, SubscriptionDataSets& o);
 
-protected:
+ protected:
   AccessAndMobilitySubscriptionData m_AmData;
   bool m_AmDataIsSet;
   SmfSelectionSubscriptionData m_SmfSelData;
@@ -125,8 +126,8 @@ protected:
   bool m_SmsMngDataIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SubscriptionDataSets_H_ */

@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class HssAuthTypeInUri {
-public:
+ public:
   HssAuthTypeInUri();
   virtual ~HssAuthTypeInUri();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// HssAuthTypeInUri members
 
-  friend void to_json(nlohmann::json &j, const HssAuthTypeInUri &o);
-  friend void from_json(const nlohmann::json &j, HssAuthTypeInUri &o);
+  friend void to_json(nlohmann::json& j, const HssAuthTypeInUri& o);
+  friend void from_json(const nlohmann::json& j, HssAuthTypeInUri& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* HssAuthTypeInUri_H_ */

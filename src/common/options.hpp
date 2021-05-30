@@ -18,6 +18,7 @@
 #define __OPTIONS_H
 
 #include <stdint.h>
+
 #include <string>
 
 class Options {

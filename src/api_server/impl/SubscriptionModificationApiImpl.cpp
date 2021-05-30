@@ -24,18 +24,18 @@ SubscriptionModificationApiImpl::SubscriptionModificationApiImpl(
     : SubscriptionModificationApi(rtr) {}
 
 void SubscriptionModificationApiImpl::modify(
-    const std::string &supi, const std::string &subscriptionId,
-    const SdmSubsModification &sdmSubsModification,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& supi, const std::string& subscriptionId,
+    const SdmSubsModification& sdmSubsModification,
+    Pistache::Http::ResponseWriter& response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 void SubscriptionModificationApiImpl::modify_shared_data_subs(
-    const std::string &subscriptionId,
-    const SdmSubsModification &sdmSubsModification,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& subscriptionId,
+    const SdmSubsModification& sdmSubsModification,
+    Pistache::Http::ResponseWriter& response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

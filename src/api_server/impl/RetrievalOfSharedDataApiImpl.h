@@ -20,18 +20,17 @@
 #ifndef RETRIEVAL_OF_SHARED_DATA_API_IMPL_H_
 #define RETRIEVAL_OF_SHARED_DATA_API_IMPL_H_
 
-#include <memory>
+#include <RetrievalOfSharedDataApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <RetrievalOfSharedDataApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "ProblemDetails.h"
 #include "SharedData.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -41,20 +40,20 @@ using namespace oai::udm::model;
 
 class RetrievalOfSharedDataApiImpl
     : public oai::udm::api::RetrievalOfSharedDataApi {
-public:
+ public:
   RetrievalOfSharedDataApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~RetrievalOfSharedDataApiImpl() {}
 
   void get_shared_data(
-      const Pistache::Optional<std::vector<std::string>> &sharedDataIds,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const Pistache::Optional<std::vector<std::string>>& sharedDataIds,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

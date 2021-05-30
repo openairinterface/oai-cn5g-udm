@@ -31,14 +31,16 @@
  */
 
 #include "udm-api-server.h"
+
 #include "logger.hpp"
 #include "pistache/endpoint.h"
 #include "pistache/http.h"
 #include "pistache/router.h"
 #ifdef __linux__
-#include <vector>
 #include <signal.h>
 #include <unistd.h>
+
+#include <vector>
 #endif
 
 #define PISTACHE_SERVER_MAX_PAYLOAD 32768
@@ -70,8 +72,8 @@ void setUpUnixSignals(std::vector<int> quitSignals) {
 }
 #endif
 
-//using namespace oai::udm_server::api;
-//using namespace oai::udm::app;
+// using namespace oai::udm_server::api;
+// using namespace oai::udm::app;
 
 using namespace oai::udm::api;
 using namespace config;
@@ -83,8 +85,8 @@ void UDMApiServer::init(size_t thr) {
   opts.maxRequestSize(PISTACHE_SERVER_MAX_PAYLOAD);
   m_httpEndpoint->init(opts);
 
- // m_authenticationResultDeletionApiImpl->init();
- // m_defaultApiImpl->init();
+  // m_authenticationResultDeletionApiImpl->init();
+  // m_defaultApiImpl->init();
 }
 void UDMApiServer::start() {
   Logger::udm_server().info("HTTP1 server started");

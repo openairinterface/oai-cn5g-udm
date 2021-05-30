@@ -19,9 +19,10 @@
 #ifndef PduSessionTypes_H_
 #define PduSessionTypes_H_
 
-#include "PduSessionType.h"
 #include <nlohmann/json.hpp>
 #include <vector>
+
+#include "PduSessionType.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class PduSessionTypes {
-public:
+ public:
   PduSessionTypes();
   virtual ~PduSessionTypes();
 
@@ -44,26 +45,26 @@ public:
   ///
   /// </summary>
   PduSessionType getDefaultSessionType() const;
-  void setDefaultSessionType(PduSessionType const &value);
+  void setDefaultSessionType(PduSessionType const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<PduSessionType> &getAllowedSessionTypes();
+  std::vector<PduSessionType>& getAllowedSessionTypes();
   bool allowedSessionTypesIsSet() const;
   void unsetAllowedSessionTypes();
 
-  friend void to_json(nlohmann::json &j, const PduSessionTypes &o);
-  friend void from_json(const nlohmann::json &j, PduSessionTypes &o);
+  friend void to_json(nlohmann::json& j, const PduSessionTypes& o);
+  friend void from_json(const nlohmann::json& j, PduSessionTypes& o);
 
-protected:
+ protected:
   PduSessionType m_DefaultSessionType;
 
   std::vector<PduSessionType> m_AllowedSessionTypes;
   bool m_AllowedSessionTypesIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* PduSessionTypes_H_ */

@@ -36,8 +36,9 @@
 #include <pthread.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <string>
 #include <unistd.h>
+
+#include <string>
 //}
 
 #define SQN_LENGTH_BITS (48)

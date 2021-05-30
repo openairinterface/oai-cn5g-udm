@@ -25,24 +25,30 @@ void UpSecurity::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const UpSecurity &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const UpSecurity& o) {
+  j             = nlohmann::json();
   j["upIntegr"] = o.m_UpIntegr;
   j["upConfid"] = o.m_UpConfid;
 }
 
-void from_json(const nlohmann::json &j, UpSecurity &o) {
+void from_json(const nlohmann::json& j, UpSecurity& o) {
   j.at("upIntegr").get_to(o.m_UpIntegr);
   j.at("upConfid").get_to(o.m_UpConfid);
 }
 
-UpIntegrity UpSecurity::getUpIntegr() const { return m_UpIntegr; }
-void UpSecurity::setUpIntegr(UpIntegrity const &value) { m_UpIntegr = value; }
-UpConfidentiality UpSecurity::getUpConfid() const { return m_UpConfid; }
-void UpSecurity::setUpConfid(UpConfidentiality const &value) {
+UpIntegrity UpSecurity::getUpIntegr() const {
+  return m_UpIntegr;
+}
+void UpSecurity::setUpIntegr(UpIntegrity const& value) {
+  m_UpIntegr = value;
+}
+UpConfidentiality UpSecurity::getUpConfid() const {
+  return m_UpConfid;
+}
+void UpSecurity::setUpConfid(UpConfidentiality const& value) {
   m_UpConfid = value;
 }
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

@@ -12,6 +12,7 @@
  */
 
 #include "RetrievalOfMultipleDataSetsApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -26,25 +27,27 @@ RetrievalOfMultipleDataSetsApi::RetrievalOfMultipleDataSetsApi(
   router = rtr;
 }
 
-void RetrievalOfMultipleDataSetsApi::init() { setupRoutes(); }
+void RetrievalOfMultipleDataSetsApi::init() {
+  setupRoutes();
+}
 
 void RetrievalOfMultipleDataSetsApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
       *router, base + "/:supi",
-      Routes::bind(&RetrievalOfMultipleDataSetsApi::get_data_sets_handler,
-                   this));
+      Routes::bind(
+          &RetrievalOfMultipleDataSetsApi::get_data_sets_handler, this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&RetrievalOfMultipleDataSetsApi::
-                       retrieval_of_multiple_data_sets_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &RetrievalOfMultipleDataSetsApi::
+          retrieval_of_multiple_data_sets_api_default_handler,
+      this));
 }
 
 void RetrievalOfMultipleDataSetsApi::get_data_sets_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
@@ -77,17 +80,18 @@ void RetrievalOfMultipleDataSetsApi::get_data_sets_handler(
   }
 
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_data_sets(supi, datasetNames, plmnId, supportedFeatures,
-                        ifNoneMatch, ifModifiedSince, response);
-  } catch (nlohmann::detail::exception &e) {
+    this->get_data_sets(
+        supi, datasetNames, plmnId, supportedFeatures, ifNoneMatch,
+        ifModifiedSince, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -96,12 +100,12 @@ void RetrievalOfMultipleDataSetsApi::get_data_sets_handler(
 
 void RetrievalOfMultipleDataSetsApi::
     retrieval_of_multiple_data_sets_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

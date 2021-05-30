@@ -24,9 +24,10 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
+#include <string>
+
 #include "AcknowledgeInfo.h"
 #include "ProblemDetails.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -35,7 +36,7 @@ namespace api {
 using namespace oai::udm::model;
 
 class ProvidingAcknowledgementOfSteeringOfRoamingApi {
-public:
+ public:
   ProvidingAcknowledgementOfSteeringOfRoamingApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~ProvidingAcknowledgementOfSteeringOfRoamingApi() {}
@@ -43,13 +44,14 @@ public:
 
   const std::string base = "/nudm-sdm/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void sor_ack_info_handler(const Pistache::Rest::Request &request,
-                            Pistache::Http::ResponseWriter response);
+  void sor_ack_info_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void providing_acknowledgement_of_steering_of_roaming_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -62,13 +64,13 @@ private:
   /// </remarks>
   /// <param name="supi">Identifier of the UE</param>
   /// <param name="acknowledgeInfo"> (optional)</param>
-  virtual void sor_ack_info(const std::string &supi,
-                            const AcknowledgeInfo &acknowledgeInfo,
-                            Pistache::Http::ResponseWriter &response) = 0;
+  virtual void sor_ack_info(
+      const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* ProvidingAcknowledgementOfSteeringOfRoamingApi_H_ */

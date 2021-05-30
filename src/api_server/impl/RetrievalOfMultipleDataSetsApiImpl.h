@@ -20,19 +20,18 @@
 #ifndef RETRIEVAL_OF_MULTIPLE_DATA_SETS_API_IMPL_H_
 #define RETRIEVAL_OF_MULTIPLE_DATA_SETS_API_IMPL_H_
 
-#include <memory>
+#include <RetrievalOfMultipleDataSetsApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <RetrievalOfMultipleDataSetsApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "SubscriptionDataSets.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -42,22 +41,22 @@ using namespace oai::udm::model;
 
 class RetrievalOfMultipleDataSetsApiImpl
     : public oai::udm::api::RetrievalOfMultipleDataSetsApi {
-public:
+ public:
   RetrievalOfMultipleDataSetsApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~RetrievalOfMultipleDataSetsApiImpl() {}
 
   void get_data_sets(
-      const std::string &supi,
-      const Pistache::Optional<std::vector<std::string>> &datasetNames,
-      const Pistache::Optional<PlmnId> &plmnId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& supi,
+      const Pistache::Optional<std::vector<std::string>>& datasetNames,
+      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

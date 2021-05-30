@@ -24,16 +24,16 @@ RetrievalOfMultipleDataSetsApiImpl::RetrievalOfMultipleDataSetsApiImpl(
     : RetrievalOfMultipleDataSetsApi(rtr) {}
 
 void RetrievalOfMultipleDataSetsApiImpl::get_data_sets(
-    const std::string &supi,
-    const Pistache::Optional<std::vector<std::string>> &datasetNames,
-    const Pistache::Optional<PlmnId> &plmnId,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& supi,
+    const Pistache::Optional<std::vector<std::string>>& datasetNames,
+    const Pistache::Optional<PlmnId>& plmnId,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    Pistache::Http::ResponseWriter& response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

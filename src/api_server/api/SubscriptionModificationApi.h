@@ -24,10 +24,11 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
+#include <string>
+
 #include "ProblemDetails.h"
 #include "SdmSubsModification.h"
 #include "SdmSubscription.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -36,22 +37,24 @@ namespace api {
 using namespace oai::udm::model;
 
 class SubscriptionModificationApi {
-public:
+ public:
   SubscriptionModificationApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SubscriptionModificationApi() {}
   void init();
 
   const std::string base = "/nudm-sdm/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void modify_handler(const Pistache::Rest::Request &request,
-                      Pistache::Http::ResponseWriter response);
-  void modify_shared_data_subs_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
+  void modify_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void modify_shared_data_subs_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void subscription_modification_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -65,10 +68,10 @@ private:
   /// <param name="supi">SUPI of the user</param>
   /// <param name="subscriptionId">Id of the SDM Subscription</param>
   /// <param name="sdmSubsModification"></param>
-  virtual void modify(const std::string &supi,
-                      const std::string &subscriptionId,
-                      const SdmSubsModification &sdmSubsModification,
-                      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void modify(
+      const std::string& supi, const std::string& subscriptionId,
+      const SdmSubsModification& sdmSubsModification,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// modify the subscription
@@ -78,14 +81,14 @@ private:
   /// </remarks>
   /// <param name="subscriptionId">Id of the SDM Subscription</param>
   /// <param name="sdmSubsModification"></param>
-  virtual void
-  modify_shared_data_subs(const std::string &subscriptionId,
-                          const SdmSubsModification &sdmSubsModification,
-                          Pistache::Http::ResponseWriter &response) = 0;
+  virtual void modify_shared_data_subs(
+      const std::string& subscriptionId,
+      const SdmSubsModification& sdmSubsModification,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SubscriptionModificationApi_H_ */

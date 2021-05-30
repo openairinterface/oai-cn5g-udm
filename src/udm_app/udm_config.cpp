@@ -28,21 +28,22 @@
 
 #include "udm_config.hpp"
 
-#include "string.hpp"
 #include <iostream>
 #include <libconfig.h++>
 
 #include "if.hpp"
 #include "logger.hpp"
+#include "string.hpp"
 
 extern "C" {
-#include "common_defs.h"
 #include <arpa/inet.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include "common_defs.h"
 }
 
 using namespace libconfig;
@@ -59,50 +60,52 @@ udm_config::udm_config() {
 udm_config::~udm_config() {}
 
 //------------------------------------------------------------------------------
-int udm_config::load(const std::string &config_file) {
-  Logger::config().debug("\nLoad UDM system configuration file(%s)",
-                         config_file.c_str());
+int udm_config::load(const std::string& config_file) {
+  Logger::config().debug(
+      "\nLoad UDM system configuration file(%s)", config_file.c_str());
   Config cfg;
   unsigned char buf_in6_addr[sizeof(struct in6_addr)];
 
   try {
     cfg.readFile(config_file.c_str());
-  } catch (const FileIOException &fioex) {
-    Logger::config().error("I/O error while reading file %s - %s",
-                           config_file.c_str(), fioex.what());
+  } catch (const FileIOException& fioex) {
+    Logger::config().error(
+        "I/O error while reading file %s - %s", config_file.c_str(),
+        fioex.what());
     throw;
-  } catch (const ParseException &pex) {
-    Logger::config().error("Parse error at %s:%d - %s", pex.getFile(),
-                           pex.getLine(), pex.getError());
+  } catch (const ParseException& pex) {
+    Logger::config().error(
+        "Parse error at %s:%d - %s", pex.getFile(), pex.getLine(),
+        pex.getError());
     throw;
   }
-  const Setting &root = cfg.getRoot();
+  const Setting& root = cfg.getRoot();
 
   try {
-    const Setting &udm_cfg = root[UDM_CONFIG_STRING_UDM_CONFIG];
-  } catch (const SettingNotFoundException &nfex) {
+    const Setting& udm_cfg = root[UDM_CONFIG_STRING_UDM_CONFIG];
+  } catch (const SettingNotFoundException& nfex) {
     Logger::config().error("%s : %s", nfex.what(), nfex.getPath());
     return -1;
   }
-  const Setting &udm_cfg = root[UDM_CONFIG_STRING_UDM_CONFIG];
+  const Setting& udm_cfg = root[UDM_CONFIG_STRING_UDM_CONFIG];
   try {
     udm_cfg.lookupValue(UDM_CONFIG_STRING_INSTANCE_ID, instance);
-  } catch (const SettingNotFoundException &nfex) {
-    Logger::config().error("%s : %s, using defaults", nfex.what(),
-                           nfex.getPath());
+  } catch (const SettingNotFoundException& nfex) {
+    Logger::config().error(
+        "%s : %s, using defaults", nfex.what(), nfex.getPath());
   }
 
   try {
     udm_cfg.lookupValue(UDM_CONFIG_STRING_PID_DIRECTORY, pid_dir);
-  } catch (const SettingNotFoundException &nfex) {
-    Logger::config().error("%s : %s, using defaults", nfex.what(),
-                           nfex.getPath());
+  } catch (const SettingNotFoundException& nfex) {
+    Logger::config().error(
+        "%s : %s, using defaults", nfex.what(), nfex.getPath());
   }
   try {
     udm_cfg.lookupValue(UDM_CONFIG_STRING_UDM_NAME, UDM_Name);
-  } catch (const SettingNotFoundException &nfex) {
-    Logger::config().error("%s : %s, using defaults", nfex.what(),
-                           nfex.getPath());
+  } catch (const SettingNotFoundException& nfex) {
+    Logger::config().error(
+        "%s : %s, using defaults", nfex.what(), nfex.getPath());
   }
 
   // try {
@@ -139,13 +142,13 @@ int udm_config::load(const std::string &config_file) {
   // }
 
   try {
-    const Setting &new_if_cfg = udm_cfg[UDM_CONFIG_STRING_INTERFACES];
+    const Setting& new_if_cfg = udm_cfg[UDM_CONFIG_STRING_INTERFACES];
 
-    const Setting &sbi_udm_cfg =
+    const Setting& sbi_udm_cfg =
         new_if_cfg[UDM_CONFIG_STRING_INTERFACE_SBI_UDM];
     load_interface(sbi_udm_cfg, sbi);
 
-    const Setting &nudr_cfg = new_if_cfg[UDM_CONFIG_STRING_INTERFACE_NUDR];
+    const Setting& nudr_cfg = new_if_cfg[UDM_CONFIG_STRING_INTERFACE_NUDR];
     load_interface(nudr_cfg, nudr);
 
     // const Setting &udr_addr_pool =
@@ -168,9 +171,9 @@ int udm_config::load(const std::string &config_file) {
     //     udr_inst.selected = false;
     //   udr_pool.push_back(udr_inst);
     // }
-  } catch (const SettingNotFoundException &nfex) {
-    Logger::config().error("%s : %s, using defaults", nfex.what(),
-                           nfex.getPath());
+  } catch (const SettingNotFoundException& nfex) {
+    Logger::config().error(
+        "%s : %s, using defaults", nfex.what(), nfex.getPath());
     return -1;
   }
 
@@ -256,8 +259,8 @@ void udm_config::display() {
 
   Logger::config().info("- Nudr Networking:");
   Logger::config().info("    iface ................: %s", nudr.if_name.c_str());
-  Logger::config().info("    ip ...................: %s",
-                        inet_ntoa(nudr.addr4));
+  Logger::config().info(
+      "    ip ...................: %s", inet_ntoa(nudr.addr4));
   Logger::config().info("    port .................: %d", nudr.port);
   //  Logger::config().info("    HTTP2 port ............: %d", nudr_http2_port);
 
@@ -276,8 +279,8 @@ void udm_config::display() {
 }
 
 //------------------------------------------------------------------------------
-int udm_config::load_interface(const libconfig::Setting &if_cfg,
-                               interface_cfg_t &cfg) {
+int udm_config::load_interface(
+    const libconfig::Setting& if_cfg, interface_cfg_t& cfg) {
   if_cfg.lookupValue(UDM_CONFIG_STRING_INTERFACE_NAME, cfg.if_name);
   util::trim(cfg.if_name);
   if (not boost::iequals(cfg.if_name, "none")) {
@@ -285,23 +288,23 @@ int udm_config::load_interface(const libconfig::Setting &if_cfg,
     if_cfg.lookupValue(UDM_CONFIG_STRING_IPV4_ADDRESS, address);
     util::trim(address);
     if (boost::iequals(address, "read")) {
-      if (get_inet_addr_infos_from_iface(cfg.if_name, cfg.addr4, cfg.network4,
-                                         cfg.mtu)) {
+      if (get_inet_addr_infos_from_iface(
+              cfg.if_name, cfg.addr4, cfg.network4, cfg.mtu)) {
         Logger::config().error(
             "Could not read %s network interface configuration", cfg.if_name);
         return RETURNerror;
       }
     } else {
       std::vector<std::string> words;
-      boost::split(words, address, boost::is_any_of("/"),
-                   boost::token_compress_on);
+      boost::split(
+          words, address, boost::is_any_of("/"), boost::token_compress_on);
       if (words.size() != 2) {
-        Logger::config().error("Bad value " UDM_CONFIG_STRING_IPV4_ADDRESS
-                               " = %s in config file",
-                               address.c_str());
+        Logger::config().error(
+            "Bad value " UDM_CONFIG_STRING_IPV4_ADDRESS " = %s in config file",
+            address.c_str());
         return RETURNerror;
       }
-      unsigned char buf_in_addr[sizeof(struct in6_addr)]; // you never know...
+      unsigned char buf_in_addr[sizeof(struct in6_addr)];  // you never know...
       if (inet_pton(AF_INET, util::trim(words.at(0)).c_str(), buf_in_addr) ==
           1) {
         memcpy(&cfg.addr4, buf_in_addr, sizeof(struct in_addr));
@@ -312,13 +315,13 @@ int udm_config::load_interface(const libconfig::Setting &if_cfg,
             util::trim(words.at(0)).c_str());
         return RETURNerror;
       }
-      cfg.network4.s_addr =
-          htons(ntohs(cfg.addr4.s_addr) &
-                0xFFFFFFFF << (32 - std::stoi(util::trim(words.at(1)))));
+      cfg.network4.s_addr = htons(
+          ntohs(cfg.addr4.s_addr) &
+          0xFFFFFFFF << (32 - std::stoi(util::trim(words.at(1)))));
     }
     if_cfg.lookupValue(UDM_CONFIG_STRING_PORT, cfg.port);
   }
   return RETURNok;
 }
 
-} // namespace config
+}  // namespace config

@@ -24,10 +24,11 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
+#include <string>
+
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "TraceDataResponse.h"
-#include <string>
 
 using namespace org::openapitools::server::model;
 
@@ -38,20 +39,21 @@ namespace api {
 using namespace oai::udm::model;
 
 class TraceConfigurationDataRetrievalApi {
-public:
+ public:
   TraceConfigurationDataRetrievalApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~TraceConfigurationDataRetrievalApi() {}
   void init();
 
   const std::string base = "/nudm-sdm/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void get_trace_config_data_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
+  void get_trace_config_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void trace_configuration_data_retrieval_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -71,16 +73,16 @@ private:
   /// conditional requests, as described in RFC 7232, 3.3 (optional, default to
   /// &quot;&quot;)</param>
   virtual void get_trace_config_data(
-      const std::string &supi,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<PlmnId> &plmnId,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& supi,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* TraceConfigurationDataRetrievalApi_H_ */

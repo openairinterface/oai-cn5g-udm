@@ -20,19 +20,18 @@
 #ifndef SUBSCRIPTION_MODIFICATION_API_IMPL_H_
 #define SUBSCRIPTION_MODIFICATION_API_IMPL_H_
 
-#include <memory>
+#include <SubscriptionModificationApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <SubscriptionModificationApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "ProblemDetails.h"
 #include "SdmSubsModification.h"
 #include "SdmSubscription.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -42,20 +41,22 @@ using namespace oai::udm::model;
 
 class SubscriptionModificationApiImpl
     : public oai::udm::api::SubscriptionModificationApi {
-public:
+ public:
   SubscriptionModificationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~SubscriptionModificationApiImpl() {}
 
-  void modify(const std::string &supi, const std::string &subscriptionId,
-              const SdmSubsModification &sdmSubsModification,
-              Pistache::Http::ResponseWriter &response);
-  void modify_shared_data_subs(const std::string &subscriptionId,
-                               const SdmSubsModification &sdmSubsModification,
-                               Pistache::Http::ResponseWriter &response);
+  void modify(
+      const std::string& supi, const std::string& subscriptionId,
+      const SdmSubsModification& sdmSubsModification,
+      Pistache::Http::ResponseWriter& response);
+  void modify_shared_data_subs(
+      const std::string& subscriptionId,
+      const SdmSubsModification& sdmSubsModification,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

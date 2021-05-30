@@ -12,6 +12,7 @@
  */
 
 #include "RetrievalOfSharedDataApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -26,7 +27,9 @@ RetrievalOfSharedDataApi::RetrievalOfSharedDataApi(
   router = rtr;
 }
 
-void RetrievalOfSharedDataApi::init() { setupRoutes(); }
+void RetrievalOfSharedDataApi::init() {
+  setupRoutes();
+}
 
 void RetrievalOfSharedDataApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -42,9 +45,8 @@ void RetrievalOfSharedDataApi::setupRoutes() {
 }
 
 void RetrievalOfSharedDataApi::get_shared_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto sharedDataIdsQuery = request.query().get("shared-data-ids");
   Pistache::Optional<std::vector<std::string>> sharedDataIds;
@@ -64,17 +66,18 @@ void RetrievalOfSharedDataApi::get_shared_data_handler(
   }
 
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_shared_data(sharedDataIds, supportedFeatures, ifNoneMatch,
-                          ifModifiedSince, response);
-  } catch (nlohmann::detail::exception &e) {
+    this->get_shared_data(
+        sharedDataIds, supportedFeatures, ifNoneMatch, ifModifiedSince,
+        response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -82,11 +85,11 @@ void RetrievalOfSharedDataApi::get_shared_data_handler(
 }
 
 void RetrievalOfSharedDataApi::retrieval_of_shared_data_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

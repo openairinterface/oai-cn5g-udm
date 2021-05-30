@@ -12,6 +12,7 @@
  */
 
 #include "SubscriptionCreationApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -26,13 +27,16 @@ SubscriptionCreationApi::SubscriptionCreationApi(
   router = rtr;
 }
 
-void SubscriptionCreationApi::init() { setupRoutes(); }
+void SubscriptionCreationApi::init() {
+  setupRoutes();
+}
 
 void SubscriptionCreationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Post(*router, base + "/:supi/sdm-subscriptions",
-               Routes::bind(&SubscriptionCreationApi::subscribe_handler, this));
+  Routes::Post(
+      *router, base + "/:supi/sdm-subscriptions",
+      Routes::bind(&SubscriptionCreationApi::subscribe_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -41,7 +45,7 @@ void SubscriptionCreationApi::setupRoutes() {
 }
 
 void SubscriptionCreationApi::subscribe_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
@@ -53,11 +57,11 @@ void SubscriptionCreationApi::subscribe_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(sdmSubscription);
     this->subscribe(supi, sdmSubscription, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -65,11 +69,11 @@ void SubscriptionCreationApi::subscribe_handler(
 }
 
 void SubscriptionCreationApi::subscription_creation_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

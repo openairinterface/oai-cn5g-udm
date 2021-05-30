@@ -29,10 +29,10 @@
 #ifndef FILE_UDM_CLIENT_HPP_SEEN
 #define FILE_UDM_CLIENT_HPP_SEEN
 
+#include <curl/curl.h>
+
 #include <map>
 #include <thread>
-
-#include <curl/curl.h>
 
 namespace oai {
 namespace udm {

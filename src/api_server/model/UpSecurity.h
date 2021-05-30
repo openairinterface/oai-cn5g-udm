@@ -19,9 +19,10 @@
 #ifndef UpSecurity_H_
 #define UpSecurity_H_
 
+#include <nlohmann/json.hpp>
+
 #include "UpConfidentiality.h"
 #include "UpIntegrity.h"
-#include <nlohmann/json.hpp>
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class UpSecurity {
-public:
+ public:
   UpSecurity();
   virtual ~UpSecurity();
 
@@ -44,24 +45,24 @@ public:
   ///
   /// </summary>
   UpIntegrity getUpIntegr() const;
-  void setUpIntegr(UpIntegrity const &value);
+  void setUpIntegr(UpIntegrity const& value);
   /// <summary>
   ///
   /// </summary>
   UpConfidentiality getUpConfid() const;
-  void setUpConfid(UpConfidentiality const &value);
+  void setUpConfid(UpConfidentiality const& value);
 
-  friend void to_json(nlohmann::json &j, const UpSecurity &o);
-  friend void from_json(const nlohmann::json &j, UpSecurity &o);
+  friend void to_json(nlohmann::json& j, const UpSecurity& o);
+  friend void from_json(const nlohmann::json& j, UpSecurity& o);
 
-protected:
+ protected:
   UpIntegrity m_UpIntegr;
 
   UpConfidentiality m_UpConfid;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* UpSecurity_H_ */

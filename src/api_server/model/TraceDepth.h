@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class TraceDepth {
-public:
+ public:
   TraceDepth();
   virtual ~TraceDepth();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// TraceDepth members
 
-  friend void to_json(nlohmann::json &j, const TraceDepth &o);
-  friend void from_json(const nlohmann::json &j, TraceDepth &o);
+  friend void to_json(nlohmann::json& j, const TraceDepth& o);
+  friend void from_json(const nlohmann::json& j, TraceDepth& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* TraceDepth_H_ */

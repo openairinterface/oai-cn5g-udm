@@ -32,6 +32,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <string>
 
 /* Used to format an uint32_t containing an ipv4 address */

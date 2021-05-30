@@ -32,11 +32,13 @@
 #include <pthread.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <string>
 #include <unistd.h>
+
+#include <string>
 //}
 
 #include <curl/curl.h>
+
 #include <nlohmann/json.hpp>
 
 #include "bstrlib.h"
@@ -46,12 +48,13 @@
 #define CURL_TIMEOUT_MS 100L
 
 class Curl {
-public:
+ public:
   /****** curl function ********/
-  static long curl_http_client(std::string remoteUri, std::string Method,
-                               std::string msgBody, std::string &Response);
+  static long curl_http_client(
+      std::string remoteUri, std::string Method, std::string msgBody,
+      std::string& Response);
 
-private:
+ private:
 };
 
 #endif

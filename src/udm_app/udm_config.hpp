@@ -29,15 +29,16 @@
 #ifndef _UDM_CONFIG_H_
 #define _UDM_CONFIG_H_
 
-#include "udm_config.hpp"
-
 #include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+
 #include <libconfig.h++>
 #include <mutex>
-#include <netinet/in.h>
 #include <string>
-#include <sys/socket.h>
 #include <vector>
+
+#include "udm_config.hpp"
 //#include "thread_sched.hpp"
 
 #include <boost/algorithm/string.hpp>
@@ -136,11 +137,11 @@ typedef struct interface_cfg_s {
 // } auth_conf;
 
 class udm_config {
-public:
+ public:
   udm_config();
   ~udm_config();
-  int load(const std::string &config_file);
-  int load_interface(const Setting &if_cfg, interface_cfg_t &cfg);
+  int load(const std::string& config_file);
+  int load_interface(const Setting& if_cfg, interface_cfg_t& cfg);
   void display();
 
   unsigned int instance;
@@ -157,6 +158,6 @@ public:
   // std::vector<udr_inst_t> udr_pool;
 };
 
-} // namespace config
+}  // namespace config
 
 #endif

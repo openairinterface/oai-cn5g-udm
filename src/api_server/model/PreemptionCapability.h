@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class PreemptionCapability {
-public:
+ public:
   PreemptionCapability();
   virtual ~PreemptionCapability();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// PreemptionCapability members
 
-  friend void to_json(nlohmann::json &j, const PreemptionCapability &o);
-  friend void from_json(const nlohmann::json &j, PreemptionCapability &o);
+  friend void to_json(nlohmann::json& j, const PreemptionCapability& o);
+  friend void from_json(const nlohmann::json& j, PreemptionCapability& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* PreemptionCapability_H_ */

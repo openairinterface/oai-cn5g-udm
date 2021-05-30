@@ -39,9 +39,9 @@
 #include <iostream>
 
 #include "OCTET_STRING.h"
+#include "comUt.hpp"
 #include "logger.hpp"
 #include "sha256.hpp"
-#include "comUt.hpp"
 
 random_state_t random_state;
 

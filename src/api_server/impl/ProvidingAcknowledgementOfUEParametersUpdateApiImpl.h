@@ -20,18 +20,17 @@
 #ifndef PROVIDING_ACKNOWLEDGEMENT_OF_UE_PARAMETERS_UPDATE_API_IMPL_H_
 #define PROVIDING_ACKNOWLEDGEMENT_OF_UE_PARAMETERS_UPDATE_API_IMPL_H_
 
-#include <memory>
+#include <ProvidingAcknowledgementOfUEParametersUpdateApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <ProvidingAcknowledgementOfUEParametersUpdateApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "AcknowledgeInfo.h"
 #include "ProblemDetails.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -41,17 +40,18 @@ using namespace oai::udm::model;
 
 class ProvidingAcknowledgementOfUEParametersUpdateApiImpl
     : public oai::udm::api::ProvidingAcknowledgementOfUEParametersUpdateApi {
-public:
+ public:
   ProvidingAcknowledgementOfUEParametersUpdateApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~ProvidingAcknowledgementOfUEParametersUpdateApiImpl() {}
 
-  void upu_ack(const std::string &supi, const AcknowledgeInfo &acknowledgeInfo,
-               Pistache::Http::ResponseWriter &response);
+  void upu_ack(
+      const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

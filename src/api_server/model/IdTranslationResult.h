@@ -30,7 +30,7 @@ namespace model {
 ///
 /// </summary>
 class IdTranslationResult {
-public:
+ public:
   IdTranslationResult();
   virtual ~IdTranslationResult();
 
@@ -43,26 +43,26 @@ public:
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
   std::string getSupi() const;
-  void setSupi(std::string const &value);
+  void setSupi(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getGpsi() const;
-  void setGpsi(std::string const &value);
+  void setGpsi(std::string const& value);
   bool gpsiIsSet() const;
   void unsetGpsi();
 
-  friend void to_json(nlohmann::json &j, const IdTranslationResult &o);
-  friend void from_json(const nlohmann::json &j, IdTranslationResult &o);
+  friend void to_json(nlohmann::json& j, const IdTranslationResult& o);
+  friend void from_json(const nlohmann::json& j, IdTranslationResult& o);
 
-protected:
+ protected:
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
   std::string m_Supi;
@@ -71,8 +71,8 @@ protected:
   bool m_GpsiIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* IdTranslationResult_H_ */

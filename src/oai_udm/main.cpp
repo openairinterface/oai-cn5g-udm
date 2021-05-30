@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-#include "logger.hpp"
-#include "udm-api-server.h"
-#include "udm_config.hpp"
-#include "udm_app.hpp"
-#include "options.hpp"
-#include "pid_file.hpp"
-
-#include "pistache/endpoint.h"
-#include "pistache/http.h"
-#include "pistache/router.h"
-
 #include <signal.h>
 #include <stdint.h>
 #include <stdlib.h>  // srand
 #include <unistd.h>  // get_pid(), pause()
+
 #include <iostream>
 #include <thread>
+
+#include "logger.hpp"
+#include "options.hpp"
+#include "pid_file.hpp"
+#include "pistache/endpoint.h"
+#include "pistache/http.h"
+#include "pistache/router.h"
+#include "udm-api-server.h"
+#include "udm_app.hpp"
+#include "udm_config.hpp"
 
 using namespace oai::udm::app;
 using namespace util;
@@ -39,7 +39,7 @@ using namespace std;
 using namespace config;
 
 udm_config udm_cfg;
-udm_app* udm_app_inst   = nullptr;
+udm_app* udm_app_inst    = nullptr;
 UDMApiServer* api_server = nullptr;
 #include "udm_config.hpp"
 

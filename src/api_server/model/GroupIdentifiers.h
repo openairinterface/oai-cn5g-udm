@@ -30,7 +30,7 @@ namespace model {
 ///
 /// </summary>
 class GroupIdentifiers {
-public:
+ public:
   GroupIdentifiers();
   virtual ~GroupIdentifiers();
 
@@ -43,29 +43,29 @@ public:
   ///
   /// </summary>
   std::string getExtGroupId() const;
-  void setExtGroupId(std::string const &value);
+  void setExtGroupId(std::string const& value);
   bool extGroupIdIsSet() const;
   void unsetExtGroupId();
   /// <summary>
   ///
   /// </summary>
   std::string getIntGroupId() const;
-  void setIntGroupId(std::string const &value);
+  void setIntGroupId(std::string const& value);
   bool intGroupIdIsSet() const;
   void unsetIntGroupId();
 
-  friend void to_json(nlohmann::json &j, const GroupIdentifiers &o);
-  friend void from_json(const nlohmann::json &j, GroupIdentifiers &o);
+  friend void to_json(nlohmann::json& j, const GroupIdentifiers& o);
+  friend void from_json(const nlohmann::json& j, GroupIdentifiers& o);
 
-protected:
+ protected:
   std::string m_ExtGroupId;
   bool m_ExtGroupIdIsSet;
   std::string m_IntGroupId;
   bool m_IntGroupIdIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* GroupIdentifiers_H_ */

@@ -19,9 +19,10 @@
 #ifndef Av5GHeAka_H_
 #define Av5GHeAka_H_
 
-#include "AvType.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "AvType.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class Av5GHeAka {
-public:
+ public:
   Av5GHeAka();
   virtual ~Av5GHeAka();
 
@@ -44,32 +45,32 @@ public:
   ///
   /// </summary>
   AvType getAvType() const;
-  void setAvType(AvType const &value);
+  void setAvType(AvType const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getRand() const;
-  void setRand(std::string const &value);
+  void setRand(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getXresStar() const;
-  void setXresStar(std::string const &value);
+  void setXresStar(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getAutn() const;
-  void setAutn(std::string const &value);
+  void setAutn(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getKausf() const;
-  void setKausf(std::string const &value);
+  void setKausf(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const Av5GHeAka &o);
-  friend void from_json(const nlohmann::json &j, Av5GHeAka &o);
+  friend void to_json(nlohmann::json& j, const Av5GHeAka& o);
+  friend void from_json(const nlohmann::json& j, Av5GHeAka& o);
 
-protected:
+ protected:
   AvType m_AvType;
 
   std::string m_Rand;
@@ -81,8 +82,8 @@ protected:
   std::string m_Kausf;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* Av5GHeAka_H_ */

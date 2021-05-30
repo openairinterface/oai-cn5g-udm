@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-#include <iostream>
+#include "options.hpp"
+
+#include <getopt.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <getopt.h>
 
-#include "options.hpp"
+#include <iostream>
 
 int Options::options;
 

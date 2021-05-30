@@ -19,9 +19,10 @@
 #ifndef TraceData_H_
 #define TraceData_H_
 
-#include "TraceDepth.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "TraceDepth.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class TraceData {
-public:
+ public:
   TraceData();
   virtual ~TraceData();
 
@@ -44,48 +45,48 @@ public:
   ///
   /// </summary>
   std::string getTraceRef() const;
-  void setTraceRef(std::string const &value);
+  void setTraceRef(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   TraceDepth getTraceDepth() const;
-  void setTraceDepth(TraceDepth const &value);
+  void setTraceDepth(TraceDepth const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getNeTypeList() const;
-  void setNeTypeList(std::string const &value);
+  void setNeTypeList(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getEventList() const;
-  void setEventList(std::string const &value);
+  void setEventList(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getCollectionEntityIpv4Addr() const;
-  void setCollectionEntityIpv4Addr(std::string const &value);
+  void setCollectionEntityIpv4Addr(std::string const& value);
   bool collectionEntityIpv4AddrIsSet() const;
   void unsetCollectionEntityIpv4Addr();
   /// <summary>
   ///
   /// </summary>
   std::string getCollectionEntityIpv6Addr() const;
-  void setCollectionEntityIpv6Addr(std::string const &value);
+  void setCollectionEntityIpv6Addr(std::string const& value);
   bool collectionEntityIpv6AddrIsSet() const;
   void unsetCollectionEntityIpv6Addr();
   /// <summary>
   ///
   /// </summary>
   std::string getInterfaceList() const;
-  void setInterfaceList(std::string const &value);
+  void setInterfaceList(std::string const& value);
   bool interfaceListIsSet() const;
   void unsetInterfaceList();
 
-  friend void to_json(nlohmann::json &j, const TraceData &o);
-  friend void from_json(const nlohmann::json &j, TraceData &o);
+  friend void to_json(nlohmann::json& j, const TraceData& o);
+  friend void from_json(const nlohmann::json& j, TraceData& o);
 
-protected:
+ protected:
   std::string m_TraceRef;
 
   TraceDepth m_TraceDepth;
@@ -102,8 +103,8 @@ protected:
   bool m_InterfaceListIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* TraceData_H_ */

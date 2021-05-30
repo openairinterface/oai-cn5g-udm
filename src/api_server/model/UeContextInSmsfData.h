@@ -19,8 +19,9 @@
 #ifndef UeContextInSmsfData_H_
 #define UeContextInSmsfData_H_
 
-#include "SmsfInfo.h"
 #include <nlohmann/json.hpp>
+
+#include "SmsfInfo.h"
 
 namespace oai {
 namespace udm {
@@ -30,7 +31,7 @@ namespace model {
 ///
 /// </summary>
 class UeContextInSmsfData {
-public:
+ public:
   UeContextInSmsfData();
   virtual ~UeContextInSmsfData();
 
@@ -43,29 +44,29 @@ public:
   ///
   /// </summary>
   SmsfInfo getSmsfInfo3GppAccess() const;
-  void setSmsfInfo3GppAccess(SmsfInfo const &value);
+  void setSmsfInfo3GppAccess(SmsfInfo const& value);
   bool smsfInfo3GppAccessIsSet() const;
   void unsetSmsfInfo3GppAccess();
   /// <summary>
   ///
   /// </summary>
   SmsfInfo getSmsfInfoNon3GppAccess() const;
-  void setSmsfInfoNon3GppAccess(SmsfInfo const &value);
+  void setSmsfInfoNon3GppAccess(SmsfInfo const& value);
   bool smsfInfoNon3GppAccessIsSet() const;
   void unsetSmsfInfoNon3GppAccess();
 
-  friend void to_json(nlohmann::json &j, const UeContextInSmsfData &o);
-  friend void from_json(const nlohmann::json &j, UeContextInSmsfData &o);
+  friend void to_json(nlohmann::json& j, const UeContextInSmsfData& o);
+  friend void from_json(const nlohmann::json& j, UeContextInSmsfData& o);
 
-protected:
+ protected:
   SmsfInfo m_SmsfInfo3GppAccess;
   bool m_SmsfInfo3GppAccessIsSet;
   SmsfInfo m_SmsfInfoNon3GppAccess;
   bool m_SmsfInfoNon3GppAccessIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* UeContextInSmsfData_H_ */

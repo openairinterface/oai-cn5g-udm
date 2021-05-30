@@ -19,9 +19,10 @@
 #ifndef SorInfo_H_
 #define SorInfo_H_
 
-#include "SteeringContainer.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "SteeringContainer.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class SorInfo {
-public:
+ public:
   SorInfo();
   virtual ~SorInfo();
 
@@ -44,7 +45,7 @@ public:
   ///
   /// </summary>
   SteeringContainer getSteeringContainer() const;
-  void setSteeringContainer(SteeringContainer const &value);
+  void setSteeringContainer(SteeringContainer const& value);
   bool steeringContainerIsSet() const;
   void unsetSteeringContainer();
   /// <summary>
@@ -56,26 +57,26 @@ public:
   ///
   /// </summary>
   std::string getSorMacIausf() const;
-  void setSorMacIausf(std::string const &value);
+  void setSorMacIausf(std::string const& value);
   bool sorMacIausfIsSet() const;
   void unsetSorMacIausf();
   /// <summary>
   ///
   /// </summary>
   std::string getCountersor() const;
-  void setCountersor(std::string const &value);
+  void setCountersor(std::string const& value);
   bool countersorIsSet() const;
   void unsetCountersor();
   /// <summary>
   ///
   /// </summary>
   std::string getProvisioningTime() const;
-  void setProvisioningTime(std::string const &value);
+  void setProvisioningTime(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const SorInfo &o);
-  friend void from_json(const nlohmann::json &j, SorInfo &o);
+  friend void to_json(nlohmann::json& j, const SorInfo& o);
+  friend void from_json(const nlohmann::json& j, SorInfo& o);
 
-protected:
+ protected:
   SteeringContainer m_SteeringContainer;
   bool m_SteeringContainerIsSet;
   bool m_AckInd;
@@ -87,8 +88,8 @@ protected:
   std::string m_ProvisioningTime;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SorInfo_H_ */

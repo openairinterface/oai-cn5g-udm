@@ -24,9 +24,10 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
+#include <string>
+
 #include "ProblemDetails.h"
 #include "SdmSubscription.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -35,20 +36,21 @@ namespace api {
 using namespace oai::udm::model;
 
 class SubscriptionCreationApi {
-public:
+ public:
   SubscriptionCreationApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SubscriptionCreationApi() {}
   void init();
 
   const std::string base = "/nudm-sdm/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void subscribe_handler(const Pistache::Rest::Request &request,
-                         Pistache::Http::ResponseWriter response);
+  void subscribe_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void subscription_creation_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -61,13 +63,13 @@ private:
   /// </remarks>
   /// <param name="supi">SUPI of the user</param>
   /// <param name="sdmSubscription"></param>
-  virtual void subscribe(const std::string &supi,
-                         const SdmSubscription &sdmSubscription,
-                         Pistache::Http::ResponseWriter &response) = 0;
+  virtual void subscribe(
+      const std::string& supi, const SdmSubscription& sdmSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SubscriptionCreationApi_H_ */

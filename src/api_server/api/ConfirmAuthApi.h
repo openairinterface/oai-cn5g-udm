@@ -24,9 +24,10 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
+#include <string>
+
 #include "AuthEvent.h"
 #include "ProblemDetails.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -35,21 +36,22 @@ namespace api {
 using namespace oai::udm::model;
 
 class ConfirmAuthApi {
-public:
+ public:
   ConfirmAuthApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~ConfirmAuthApi() {}
   void init();
 
   const std::string base = "/nudm-ueau/v1";
 
-private:
+ private:
   void setupRoutes();
 
-  void confirm_auth_handler(const Pistache::Rest::Request &request,
-                            Pistache::Http::ResponseWriter response);
-  void
-  confirm_auth_api_default_handler(const Pistache::Rest::Request &request,
-                                   Pistache::Http::ResponseWriter response);
+  void confirm_auth_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void confirm_auth_api_default_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
 
@@ -61,12 +63,13 @@ private:
   /// </remarks>
   /// <param name="supi">SUPI of the user</param>
   /// <param name="authEvent"></param>
-  virtual void confirm_auth(const std::string &supi, const AuthEvent &authEvent,
-                            Pistache::Http::ResponseWriter &response) = 0;
+  virtual void confirm_auth(
+      const std::string& supi, const AuthEvent& authEvent,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* ConfirmAuthApi_H_ */

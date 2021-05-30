@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class AccessNetworkId {
-public:
+ public:
   AccessNetworkId();
   virtual ~AccessNetworkId();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// AccessNetworkId members
 
-  friend void to_json(nlohmann::json &j, const AccessNetworkId &o);
-  friend void from_json(const nlohmann::json &j, AccessNetworkId &o);
+  friend void to_json(nlohmann::json& j, const AccessNetworkId& o);
+  friend void from_json(const nlohmann::json& j, AccessNetworkId& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AccessNetworkId_H_ */

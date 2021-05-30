@@ -34,21 +34,21 @@ namespace api {
 using namespace oai::udm::model;
 
 class SubscriptionCreationForSharedDataApi {
-public:
+ public:
   SubscriptionCreationForSharedDataApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SubscriptionCreationForSharedDataApi() {}
   void init();
 
   const std::string base = "/nudm-sdm/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void
-  subscribe_to_shared_data_handler(const Pistache::Rest::Request &request,
-                                   Pistache::Http::ResponseWriter response);
+  void subscribe_to_shared_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void subscription_creation_for_shared_data_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -60,13 +60,13 @@ private:
   ///
   /// </remarks>
   /// <param name="sdmSubscription"></param>
-  virtual void
-  subscribe_to_shared_data(const SdmSubscription &sdmSubscription,
-                           Pistache::Http::ResponseWriter &response) = 0;
+  virtual void subscribe_to_shared_data(
+      const SdmSubscription& sdmSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SubscriptionCreationForSharedDataApi_H_ */

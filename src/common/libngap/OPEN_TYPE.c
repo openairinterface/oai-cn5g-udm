@@ -42,20 +42,19 @@ asn_TYPE_operation_t asn_OP_OPEN_TYPE = {
 #define ADVANCE(num_bytes)                                                     \
   do {                                                                         \
     size_t num = num_bytes;                                                    \
-    ptr = ((const char *)ptr) + num;                                           \
+    ptr        = ((const char*) ptr) + num;                                    \
     size -= num;                                                               \
     consumed_myself += num;                                                    \
   } while (0)
 
-asn_dec_rval_t OPEN_TYPE_ber_get(const asn_codec_ctx_t *opt_codec_ctx,
-                                 const asn_TYPE_descriptor_t *td, void *sptr,
-                                 const asn_TYPE_member_t *elm, const void *ptr,
-                                 size_t size) {
+asn_dec_rval_t OPEN_TYPE_ber_get(
+    const asn_codec_ctx_t* opt_codec_ctx, const asn_TYPE_descriptor_t* td,
+    void* sptr, const asn_TYPE_member_t* elm, const void* ptr, size_t size) {
   size_t consumed_myself = 0;
   asn_type_selector_result_t selected;
-  void *memb_ptr;   /* Pointer to the member */
-  void **memb_ptr2; /* Pointer to that pointer */
-  void *inner_value;
+  void* memb_ptr;   /* Pointer to the member */
+  void** memb_ptr2; /* Pointer to that pointer */
+  void* inner_value;
   asn_dec_rval_t rv;
 
   if (!(elm->flags & ATF_OPEN_TYPE)) {
@@ -63,8 +62,9 @@ asn_dec_rval_t OPEN_TYPE_ber_get(const asn_codec_ctx_t *opt_codec_ctx,
   }
 
   if (!elm->type_selector) {
-    ASN_DEBUG("Type selector is not defined for Open Type %s->%s->%s", td->name,
-              elm->name, elm->type->name);
+    ASN_DEBUG(
+        "Type selector is not defined for Open Type %s->%s->%s", td->name,
+        elm->name, elm->type->name);
     ASN__DECODE_FAILED;
   }
 
@@ -75,9 +75,9 @@ asn_dec_rval_t OPEN_TYPE_ber_get(const asn_codec_ctx_t *opt_codec_ctx,
 
   /* Fetch the pointer to this member */
   if (elm->flags & ATF_POINTER) {
-    memb_ptr2 = (void **)((char *)sptr + elm->memb_offset);
+    memb_ptr2 = (void**) ((char*) sptr + elm->memb_offset);
   } else {
-    memb_ptr = (char *)sptr + elm->memb_offset;
+    memb_ptr  = (char*) sptr + elm->memb_offset;
     memb_ptr2 = &memb_ptr;
   }
   if (*memb_ptr2 != NULL) {
@@ -87,7 +87,7 @@ asn_dec_rval_t OPEN_TYPE_ber_get(const asn_codec_ctx_t *opt_codec_ctx,
     }
   }
 
-  inner_value = (char *)*memb_ptr2 +
+  inner_value = (char*) *memb_ptr2 +
                 elm->type->elements[selected.presence_index - 1].memb_offset;
 
   ASN_DEBUG("presence %d\n", selected.presence_index);
@@ -98,21 +98,21 @@ asn_dec_rval_t OPEN_TYPE_ber_get(const asn_codec_ctx_t *opt_codec_ctx,
   ADVANCE(rv.consumed);
   rv.consumed = 0;
   switch (rv.code) {
-  case RC_OK:
-    if (CHOICE_variant_set_presence(elm->type, *memb_ptr2,
-                                    selected.presence_index) == 0) {
-      rv.code = RC_OK;
+    case RC_OK:
+      if (CHOICE_variant_set_presence(
+              elm->type, *memb_ptr2, selected.presence_index) == 0) {
+        rv.code     = RC_OK;
+        rv.consumed = consumed_myself;
+        return rv;
+      } else {
+        /* Oh, now a full-blown failure failure */
+      }
+      /* Fall through */
+    case RC_FAIL:
       rv.consumed = consumed_myself;
-      return rv;
-    } else {
-      /* Oh, now a full-blown failure failure */
-    }
-    /* Fall through */
-  case RC_FAIL:
-    rv.consumed = consumed_myself;
-    /* Fall through */
-  case RC_WMORE:
-    break;
+      /* Fall through */
+    case RC_WMORE:
+      break;
   }
 
   if (*memb_ptr2) {
@@ -126,15 +126,14 @@ asn_dec_rval_t OPEN_TYPE_ber_get(const asn_codec_ctx_t *opt_codec_ctx,
   return rv;
 }
 
-asn_dec_rval_t OPEN_TYPE_xer_get(const asn_codec_ctx_t *opt_codec_ctx,
-                                 const asn_TYPE_descriptor_t *td, void *sptr,
-                                 const asn_TYPE_member_t *elm, const void *ptr,
-                                 size_t size) {
+asn_dec_rval_t OPEN_TYPE_xer_get(
+    const asn_codec_ctx_t* opt_codec_ctx, const asn_TYPE_descriptor_t* td,
+    void* sptr, const asn_TYPE_member_t* elm, const void* ptr, size_t size) {
   size_t consumed_myself = 0;
   asn_type_selector_result_t selected;
-  void *memb_ptr;   /* Pointer to the member */
-  void **memb_ptr2; /* Pointer to that pointer */
-  void *inner_value;
+  void* memb_ptr;   /* Pointer to the member */
+  void** memb_ptr2; /* Pointer to that pointer */
+  void* inner_value;
   asn_dec_rval_t rv;
 
   int xer_context = 0;
@@ -146,8 +145,9 @@ asn_dec_rval_t OPEN_TYPE_xer_get(const asn_codec_ctx_t *opt_codec_ctx,
   }
 
   if (!elm->type_selector) {
-    ASN_DEBUG("Type selector is not defined for Open Type %s->%s->%s", td->name,
-              elm->name, elm->type->name);
+    ASN_DEBUG(
+        "Type selector is not defined for Open Type %s->%s->%s", td->name,
+        elm->name, elm->type->name);
     ASN__DECODE_FAILED;
   }
 
@@ -159,9 +159,9 @@ asn_dec_rval_t OPEN_TYPE_xer_get(const asn_codec_ctx_t *opt_codec_ctx,
   /* Fetch the pointer to this member */
   assert(elm->flags == ATF_OPEN_TYPE);
   if (elm->flags & ATF_POINTER) {
-    memb_ptr2 = (void **)((char *)sptr + elm->memb_offset);
+    memb_ptr2 = (void**) ((char*) sptr + elm->memb_offset);
   } else {
-    memb_ptr = (char *)sptr + elm->memb_offset;
+    memb_ptr  = (char*) sptr + elm->memb_offset;
     memb_ptr2 = &memb_ptr;
   }
   if (*memb_ptr2 != NULL) {
@@ -180,14 +180,14 @@ asn_dec_rval_t OPEN_TYPE_xer_get(const asn_codec_ctx_t *opt_codec_ctx,
       ASN__DECODE_FAILED;
     } else {
       switch (ch_type) {
-      case PXER_WMORE:
-        ASN__DECODE_STARVED;
-      case PXER_COMMENT:
-      case PXER_TEXT:
-        ADVANCE(ch_size);
-        continue;
-      case PXER_TAG:
-        break;
+        case PXER_WMORE:
+          ASN__DECODE_STARVED;
+        case PXER_COMMENT:
+        case PXER_TEXT:
+          ADVANCE(ch_size);
+          continue;
+        case PXER_TAG:
+          break;
       }
       break;
     }
@@ -197,15 +197,15 @@ asn_dec_rval_t OPEN_TYPE_xer_get(const asn_codec_ctx_t *opt_codec_ctx,
    * Wrapper value confirmed.
    */
   switch (xer_check_tag(ptr, ch_size, elm->name)) {
-  case XCT_OPENING:
-    ADVANCE(ch_size);
-    break;
-  case XCT_BROKEN:
-  default:
-    ASN__DECODE_FAILED;
+    case XCT_OPENING:
+      ADVANCE(ch_size);
+      break;
+    case XCT_BROKEN:
+    default:
+      ASN__DECODE_FAILED;
   }
 
-  inner_value = (char *)*memb_ptr2 +
+  inner_value = (char*) *memb_ptr2 +
                 elm->type->elements[selected.presence_index - 1].memb_offset;
 
   rv = selected.type_descriptor->op->xer_decoder(
@@ -213,32 +213,32 @@ asn_dec_rval_t OPEN_TYPE_xer_get(const asn_codec_ctx_t *opt_codec_ctx,
   ADVANCE(rv.consumed);
   rv.consumed = 0;
   switch (rv.code) {
-  case RC_OK:
-    if (CHOICE_variant_set_presence(elm->type, *memb_ptr2,
-                                    selected.presence_index) == 0) {
-      break;
-    } else {
-      rv.code = RC_FAIL;
-    }
-    /* Fall through */
-  case RC_FAIL:
-    /* Point to a best position where failure occurred */
-    rv.consumed = consumed_myself;
-    /* Fall through */
-  case RC_WMORE:
-    /* Wrt. rv.consumed==0:
-     * In case a genuine RC_WMORE, the whole Open Type decoding
-     * will have to be restarted.
-     */
-    if (*memb_ptr2) {
-      if (elm->flags & ATF_POINTER) {
-        ASN_STRUCT_FREE(*selected.type_descriptor, inner_value);
-        *memb_ptr2 = NULL;
+    case RC_OK:
+      if (CHOICE_variant_set_presence(
+              elm->type, *memb_ptr2, selected.presence_index) == 0) {
+        break;
       } else {
-        ASN_STRUCT_RESET(*selected.type_descriptor, inner_value);
+        rv.code = RC_FAIL;
       }
-    }
-    return rv;
+      /* Fall through */
+    case RC_FAIL:
+      /* Point to a best position where failure occurred */
+      rv.consumed = consumed_myself;
+      /* Fall through */
+    case RC_WMORE:
+      /* Wrt. rv.consumed==0:
+       * In case a genuine RC_WMORE, the whole Open Type decoding
+       * will have to be restarted.
+       */
+      if (*memb_ptr2) {
+        if (elm->flags & ATF_POINTER) {
+          ASN_STRUCT_FREE(*selected.type_descriptor, inner_value);
+          *memb_ptr2 = NULL;
+        } else {
+          ASN_STRUCT_RESET(*selected.type_descriptor, inner_value);
+        }
+      }
+      return rv;
   }
 
   /*
@@ -250,14 +250,14 @@ asn_dec_rval_t OPEN_TYPE_xer_get(const asn_codec_ctx_t *opt_codec_ctx,
       ASN__DECODE_FAILED;
     } else {
       switch (ch_type) {
-      case PXER_WMORE:
-        ASN__DECODE_STARVED;
-      case PXER_COMMENT:
-      case PXER_TEXT:
-        ADVANCE(ch_size);
-        continue;
-      case PXER_TAG:
-        break;
+        case PXER_WMORE:
+          ASN__DECODE_STARVED;
+        case PXER_COMMENT:
+        case PXER_TEXT:
+          ADVANCE(ch_size);
+          continue;
+        case PXER_TAG:
+          break;
       }
       break;
     }
@@ -267,12 +267,12 @@ asn_dec_rval_t OPEN_TYPE_xer_get(const asn_codec_ctx_t *opt_codec_ctx,
    * Wrapper value confirmed.
    */
   switch (xer_check_tag(ptr, ch_size, elm->name)) {
-  case XCT_CLOSING:
-    ADVANCE(ch_size);
-    break;
-  case XCT_BROKEN:
-  default:
-    ASN__DECODE_FAILED;
+    case XCT_CLOSING:
+      ADVANCE(ch_size);
+      break;
+    case XCT_BROKEN:
+    default:
+      ASN__DECODE_FAILED;
   }
 
   rv.consumed += consumed_myself;
@@ -282,14 +282,13 @@ asn_dec_rval_t OPEN_TYPE_xer_get(const asn_codec_ctx_t *opt_codec_ctx,
 
 #ifndef ASN_DISABLE_PER_SUPPORT
 
-asn_dec_rval_t OPEN_TYPE_uper_get(const asn_codec_ctx_t *opt_codec_ctx,
-                                  const asn_TYPE_descriptor_t *td, void *sptr,
-                                  const asn_TYPE_member_t *elm,
-                                  asn_per_data_t *pd) {
+asn_dec_rval_t OPEN_TYPE_uper_get(
+    const asn_codec_ctx_t* opt_codec_ctx, const asn_TYPE_descriptor_t* td,
+    void* sptr, const asn_TYPE_member_t* elm, asn_per_data_t* pd) {
   asn_type_selector_result_t selected;
-  void *memb_ptr;   /* Pointer to the member */
-  void **memb_ptr2; /* Pointer to that pointer */
-  void *inner_value;
+  void* memb_ptr;   /* Pointer to the member */
+  void** memb_ptr2; /* Pointer to that pointer */
+  void* inner_value;
   asn_dec_rval_t rv;
 
   if (!(elm->flags & ATF_OPEN_TYPE)) {
@@ -297,8 +296,9 @@ asn_dec_rval_t OPEN_TYPE_uper_get(const asn_codec_ctx_t *opt_codec_ctx,
   }
 
   if (!elm->type_selector) {
-    ASN_DEBUG("Type selector is not defined for Open Type %s->%s->%s", td->name,
-              elm->name, elm->type->name);
+    ASN_DEBUG(
+        "Type selector is not defined for Open Type %s->%s->%s", td->name,
+        elm->name, elm->type->name);
     ASN__DECODE_FAILED;
   }
 
@@ -310,9 +310,9 @@ asn_dec_rval_t OPEN_TYPE_uper_get(const asn_codec_ctx_t *opt_codec_ctx,
   /* Fetch the pointer to this member */
   assert(elm->flags == ATF_OPEN_TYPE);
   if (elm->flags & ATF_POINTER) {
-    memb_ptr2 = (void **)((char *)sptr + elm->memb_offset);
+    memb_ptr2 = (void**) ((char*) sptr + elm->memb_offset);
   } else {
-    memb_ptr = (char *)sptr + elm->memb_offset;
+    memb_ptr  = (char*) sptr + elm->memb_offset;
     memb_ptr2 = &memb_ptr;
   }
   if (*memb_ptr2 != NULL) {
@@ -322,43 +322,43 @@ asn_dec_rval_t OPEN_TYPE_uper_get(const asn_codec_ctx_t *opt_codec_ctx,
     }
   }
 
-  inner_value = (char *)*memb_ptr2 +
+  inner_value = (char*) *memb_ptr2 +
                 elm->type->elements[selected.presence_index - 1].memb_offset;
 
-  rv = uper_open_type_get(opt_codec_ctx, selected.type_descriptor, NULL,
-                          &inner_value, pd);
+  rv = uper_open_type_get(
+      opt_codec_ctx, selected.type_descriptor, NULL, &inner_value, pd);
   switch (rv.code) {
-  case RC_OK:
-    if (CHOICE_variant_set_presence(elm->type, *memb_ptr2,
-                                    selected.presence_index) == 0) {
-      break;
-    } else {
-      rv.code = RC_FAIL;
-    }
-    /* Fall through */
-  case RC_WMORE:
-  case RC_FAIL:
-    if (*memb_ptr2) {
-      if (elm->flags & ATF_POINTER) {
-        ASN_STRUCT_FREE(*selected.type_descriptor, inner_value);
-        *memb_ptr2 = NULL;
+    case RC_OK:
+      if (CHOICE_variant_set_presence(
+              elm->type, *memb_ptr2, selected.presence_index) == 0) {
+        break;
       } else {
-        ASN_STRUCT_RESET(*selected.type_descriptor, inner_value);
+        rv.code = RC_FAIL;
       }
-    }
+      /* Fall through */
+    case RC_WMORE:
+    case RC_FAIL:
+      if (*memb_ptr2) {
+        if (elm->flags & ATF_POINTER) {
+          ASN_STRUCT_FREE(*selected.type_descriptor, inner_value);
+          *memb_ptr2 = NULL;
+        } else {
+          ASN_STRUCT_RESET(*selected.type_descriptor, inner_value);
+        }
+      }
   }
   return rv;
 }
 
-asn_enc_rval_t OPEN_TYPE_encode_uper(const asn_TYPE_descriptor_t *td,
-                                     const asn_per_constraints_t *constraints,
-                                     const void *sptr, asn_per_outp_t *po) {
-  const void *memb_ptr;   /* Pointer to the member */
-  asn_TYPE_member_t *elm; /* CHOICE's element */
+asn_enc_rval_t OPEN_TYPE_encode_uper(
+    const asn_TYPE_descriptor_t* td, const asn_per_constraints_t* constraints,
+    const void* sptr, asn_per_outp_t* po) {
+  const void* memb_ptr;   /* Pointer to the member */
+  asn_TYPE_member_t* elm; /* CHOICE's element */
   asn_enc_rval_t er;
   unsigned present;
 
-  (void)constraints;
+  (void) constraints;
 
   present = CHOICE_variant_get_presence(td, sptr);
   if (present == 0 || present > td->elements_count) {
@@ -372,11 +372,10 @@ asn_enc_rval_t OPEN_TYPE_encode_uper(const asn_TYPE_descriptor_t *td,
   elm = &td->elements[present];
   if (elm->flags & ATF_POINTER) {
     /* Member is a pointer to another structure */
-    memb_ptr = *(const void *const *)((const char *)sptr + elm->memb_offset);
-    if (!memb_ptr)
-      ASN__ENCODE_FAILED;
+    memb_ptr = *(const void* const*) ((const char*) sptr + elm->memb_offset);
+    if (!memb_ptr) ASN__ENCODE_FAILED;
   } else {
-    memb_ptr = (const char *)sptr + elm->memb_offset;
+    memb_ptr = (const char*) sptr + elm->memb_offset;
   }
 
   if (uper_open_type_put(elm->type, NULL, memb_ptr, po) < 0) {
@@ -387,14 +386,13 @@ asn_enc_rval_t OPEN_TYPE_encode_uper(const asn_TYPE_descriptor_t *td,
   ASN__ENCODED_OK(er);
 }
 
-asn_dec_rval_t OPEN_TYPE_aper_get(const asn_codec_ctx_t *opt_codec_ctx,
-                                  const asn_TYPE_descriptor_t *td, void *sptr,
-                                  const asn_TYPE_member_t *elm,
-                                  asn_per_data_t *pd) {
+asn_dec_rval_t OPEN_TYPE_aper_get(
+    const asn_codec_ctx_t* opt_codec_ctx, const asn_TYPE_descriptor_t* td,
+    void* sptr, const asn_TYPE_member_t* elm, asn_per_data_t* pd) {
   asn_type_selector_result_t selected;
-  void *memb_ptr;   /* Pointer to the member */
-  void **memb_ptr2; /* Pointer to that pointer */
-  void *inner_value;
+  void* memb_ptr;   /* Pointer to the member */
+  void** memb_ptr2; /* Pointer to that pointer */
+  void* inner_value;
   asn_dec_rval_t rv;
 
   if (!(elm->flags & ATF_OPEN_TYPE)) {
@@ -402,8 +400,9 @@ asn_dec_rval_t OPEN_TYPE_aper_get(const asn_codec_ctx_t *opt_codec_ctx,
   }
 
   if (!elm->type_selector) {
-    ASN_DEBUG("Type selector is not defined for Open Type %s->%s->%s", td->name,
-              elm->name, elm->type->name);
+    ASN_DEBUG(
+        "Type selector is not defined for Open Type %s->%s->%s", td->name,
+        elm->name, elm->type->name);
     ASN__DECODE_FAILED;
   }
 
@@ -415,9 +414,9 @@ asn_dec_rval_t OPEN_TYPE_aper_get(const asn_codec_ctx_t *opt_codec_ctx,
   /* Fetch the pointer to this member */
   assert(elm->flags == ATF_OPEN_TYPE);
   if (elm->flags & ATF_POINTER) {
-    memb_ptr2 = (void **)((char *)sptr + elm->memb_offset);
+    memb_ptr2 = (void**) ((char*) sptr + elm->memb_offset);
   } else {
-    memb_ptr = (char *)sptr + elm->memb_offset;
+    memb_ptr  = (char*) sptr + elm->memb_offset;
     memb_ptr2 = &memb_ptr;
   }
   if (*memb_ptr2 != NULL) {
@@ -427,43 +426,43 @@ asn_dec_rval_t OPEN_TYPE_aper_get(const asn_codec_ctx_t *opt_codec_ctx,
     }
   }
 
-  inner_value = (char *)*memb_ptr2 +
+  inner_value = (char*) *memb_ptr2 +
                 elm->type->elements[selected.presence_index - 1].memb_offset;
 
-  rv = aper_open_type_get(opt_codec_ctx, selected.type_descriptor, NULL,
-                          &inner_value, pd);
+  rv = aper_open_type_get(
+      opt_codec_ctx, selected.type_descriptor, NULL, &inner_value, pd);
   switch (rv.code) {
-  case RC_OK:
-    if (CHOICE_variant_set_presence(elm->type, *memb_ptr2,
-                                    selected.presence_index) == 0) {
-      break;
-    } else {
-      rv.code = RC_FAIL;
-    }
-    /* Fall through */
-  case RC_WMORE:
-  case RC_FAIL:
-    if (*memb_ptr2) {
-      if (elm->flags & ATF_POINTER) {
-        ASN_STRUCT_FREE(*selected.type_descriptor, inner_value);
-        *memb_ptr2 = NULL;
+    case RC_OK:
+      if (CHOICE_variant_set_presence(
+              elm->type, *memb_ptr2, selected.presence_index) == 0) {
+        break;
       } else {
-        ASN_STRUCT_RESET(*selected.type_descriptor, inner_value);
+        rv.code = RC_FAIL;
       }
-    }
+      /* Fall through */
+    case RC_WMORE:
+    case RC_FAIL:
+      if (*memb_ptr2) {
+        if (elm->flags & ATF_POINTER) {
+          ASN_STRUCT_FREE(*selected.type_descriptor, inner_value);
+          *memb_ptr2 = NULL;
+        } else {
+          ASN_STRUCT_RESET(*selected.type_descriptor, inner_value);
+        }
+      }
   }
   return rv;
 }
 
-asn_enc_rval_t OPEN_TYPE_encode_aper(const asn_TYPE_descriptor_t *td,
-                                     const asn_per_constraints_t *constraints,
-                                     const void *sptr, asn_per_outp_t *po) {
-  const void *memb_ptr;   /* Pointer to the member */
-  asn_TYPE_member_t *elm; /* CHOICE's element */
+asn_enc_rval_t OPEN_TYPE_encode_aper(
+    const asn_TYPE_descriptor_t* td, const asn_per_constraints_t* constraints,
+    const void* sptr, asn_per_outp_t* po) {
+  const void* memb_ptr;   /* Pointer to the member */
+  asn_TYPE_member_t* elm; /* CHOICE's element */
   asn_enc_rval_t er;
   unsigned present;
 
-  (void)constraints;
+  (void) constraints;
 
   present = CHOICE_variant_get_presence(td, sptr);
   if (present == 0 || present > td->elements_count) {
@@ -477,11 +476,10 @@ asn_enc_rval_t OPEN_TYPE_encode_aper(const asn_TYPE_descriptor_t *td,
   elm = &td->elements[present];
   if (elm->flags & ATF_POINTER) {
     /* Member is a pointer to another structure */
-    memb_ptr = *(const void *const *)((const char *)sptr + elm->memb_offset);
-    if (!memb_ptr)
-      ASN__ENCODE_FAILED;
+    memb_ptr = *(const void* const*) ((const char*) sptr + elm->memb_offset);
+    if (!memb_ptr) ASN__ENCODE_FAILED;
   } else {
-    memb_ptr = (const char *)sptr + elm->memb_offset;
+    memb_ptr = (const char*) sptr + elm->memb_offset;
   }
 
   if (aper_open_type_put(elm->type, NULL, memb_ptr, po) < 0) {

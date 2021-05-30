@@ -18,11 +18,11 @@ namespace udm {
 namespace model {
 
 SmfSelectionSubscriptionData::SmfSelectionSubscriptionData() {
-  m_SupportedFeatures = "";
-  m_SupportedFeaturesIsSet = false;
+  m_SupportedFeatures          = "";
+  m_SupportedFeaturesIsSet     = false;
   m_SubscribedSnssaiInfosIsSet = false;
-  m_SharedSnssaiInfosId = "";
-  m_SharedSnssaiInfosIdIsSet = false;
+  m_SharedSnssaiInfosId        = "";
+  m_SharedSnssaiInfosIdIsSet   = false;
 }
 
 SmfSelectionSubscriptionData::~SmfSelectionSubscriptionData() {}
@@ -31,7 +31,7 @@ void SmfSelectionSubscriptionData::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const SmfSelectionSubscriptionData &o) {
+void to_json(nlohmann::json& j, const SmfSelectionSubscriptionData& o) {
   j = nlohmann::json();
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
@@ -41,7 +41,7 @@ void to_json(nlohmann::json &j, const SmfSelectionSubscriptionData &o) {
     j["sharedSnssaiInfosId"] = o.m_SharedSnssaiInfosId;
 }
 
-void from_json(const nlohmann::json &j, SmfSelectionSubscriptionData &o) {
+void from_json(const nlohmann::json& j, SmfSelectionSubscriptionData& o) {
   if (j.find("supportedFeatures") != j.end()) {
     j.at("supportedFeatures").get_to(o.m_SupportedFeatures);
     o.m_SupportedFeaturesIsSet = true;
@@ -60,8 +60,8 @@ std::string SmfSelectionSubscriptionData::getSupportedFeatures() const {
   return m_SupportedFeatures;
 }
 void SmfSelectionSubscriptionData::setSupportedFeatures(
-    std::string const &value) {
-  m_SupportedFeatures = value;
+    std::string const& value) {
+  m_SupportedFeatures      = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool SmfSelectionSubscriptionData::supportedFeaturesIsSet() const {
@@ -70,7 +70,7 @@ bool SmfSelectionSubscriptionData::supportedFeaturesIsSet() const {
 void SmfSelectionSubscriptionData::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
-std::map<std::string, SnssaiInfo> &
+std::map<std::string, SnssaiInfo>&
 SmfSelectionSubscriptionData::getSubscribedSnssaiInfos() {
   return m_SubscribedSnssaiInfos;
 }
@@ -84,8 +84,8 @@ std::string SmfSelectionSubscriptionData::getSharedSnssaiInfosId() const {
   return m_SharedSnssaiInfosId;
 }
 void SmfSelectionSubscriptionData::setSharedSnssaiInfosId(
-    std::string const &value) {
-  m_SharedSnssaiInfosId = value;
+    std::string const& value) {
+  m_SharedSnssaiInfosId      = value;
   m_SharedSnssaiInfosIdIsSet = true;
 }
 bool SmfSelectionSubscriptionData::sharedSnssaiInfosIdIsSet() const {
@@ -95,6 +95,6 @@ void SmfSelectionSubscriptionData::unsetSharedSnssaiInfosId() {
   m_SharedSnssaiInfosIdIsSet = false;
 }
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

@@ -19,9 +19,10 @@
 #ifndef HssAuthenticationInfoResult_H_
 #define HssAuthenticationInfoResult_H_
 
-#include "HssAuthenticationVectors.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "HssAuthenticationVectors.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class HssAuthenticationInfoResult {
-public:
+ public:
   HssAuthenticationInfoResult();
   virtual ~HssAuthenticationInfoResult();
 
@@ -44,27 +45,27 @@ public:
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
   HssAuthenticationVectors getHssAuthenticationVectors() const;
-  void setHssAuthenticationVectors(HssAuthenticationVectors const &value);
+  void setHssAuthenticationVectors(HssAuthenticationVectors const& value);
 
-  friend void to_json(nlohmann::json &j, const HssAuthenticationInfoResult &o);
-  friend void from_json(const nlohmann::json &j,
-                        HssAuthenticationInfoResult &o);
+  friend void to_json(nlohmann::json& j, const HssAuthenticationInfoResult& o);
+  friend void from_json(
+      const nlohmann::json& j, HssAuthenticationInfoResult& o);
 
-protected:
+ protected:
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
   HssAuthenticationVectors m_HssAuthenticationVectors;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* HssAuthenticationInfoResult_H_ */

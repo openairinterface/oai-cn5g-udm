@@ -12,9 +12,10 @@
  */
 
 #include "SliceSelectionSubscriptionDataRetrievalApiImpl.h"
-#include "udm_config.hpp"
-#include "logger.hpp"
+
 #include "curl.hpp"
+#include "logger.hpp"
+#include "udm_config.hpp"
 
 using namespace config;
 extern config::udm_config udm_cfg;
@@ -31,50 +32,61 @@ SliceSelectionSubscriptionDataRetrievalApiImpl::
     : SliceSelectionSubscriptionDataRetrievalApi(rtr) {}
 
 void SliceSelectionSubscriptionDataRetrievalApiImpl::get_nssai(
-    const std::string &supi,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    const Pistache::Optional<PlmnId> &plmnId,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-    Pistache::Http::ResponseWriter &response) {
-   // 1. populate remote uri for udp request
-    std::string udr_ip = std::string(inet_ntoa(*((struct in_addr *)&udm_cfg.nudr.addr4)));
-    std::string udr_port = std::to_string(udm_cfg.nudr.port);
-    std::string remote_uri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/"+supi+"/"+plmnId.get().getMcc() +plmnId.get().getMnc()+"/provisioned-data/sm-data";
+    const std::string& supi,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    const Pistache::Optional<PlmnId>& plmnId,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    Pistache::Http::ResponseWriter& response) {
+  // 1. populate remote uri for udp request
+  std::string udr_ip =
+      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nudr.addr4)));
+  std::string udr_port   = std::to_string(udm_cfg.nudr.port);
+  std::string remote_uri = udr_ip + ":" + udr_port +
+                           "/nudr-dr/v2/subscription-data/" + supi + "/" +
+                           plmnId.get().getMcc() + plmnId.get().getMnc() +
+                           "/provisioned-data/sm-data";
 
-    std::string method("GET");
-    std::string body("");
-    std::string response_get;
-    Logger::udm_sdm().debug("UDR: GET Request: "+ remote_uri);
-    // 2. invoke curl to get response from udr
-    long http_code = Curl::curl_http_client(remote_uri, method, body, response_get);
-    // 3. process response
-    nlohmann::json response_data_json = {};
-    nlohmann::json return_response_data_json = {};
-    try {
-            Logger::udm_sdm().debug("subscription-data: GET Response: "+response_get);
-            
-            response_data_json = nlohmann::json::parse(response_get.c_str());
-            // TODO: 1. shall check if "singleNassai" is existing or not, if not, raise exception
-            // TODO: 2. return_response_data_json: need to check if here is required to allocate memory first. Or check json code to confirm, otherwise codedump might happen
-            return_response_data_json["singleNssai"] = response_data_json["singleNssai"];
-        } catch (nlohmann::json::exception &e) {
-                 Logger::udm_sdm().info("Could not get json content from UDR response");
-                 ProblemDetails problem_details;
-                 nlohmann::json json_problem_details;
-                 problem_details.setCause("USER_NOT_FOUND");
-                 problem_details.setStatus(404);
-                 problem_details.setDetail("User " + supi + " not found in Database");                 
-                 to_json(json_problem_details, problem_details);
-                 Logger::udm_sdm().error("User " + supi + " not found in Database");
-                 Logger::udm_sdm().info("Send 404 Not_Found response to client");
-                 response.send(Pistache::Http::Code::Not_Found, json_problem_details.dump());
-                 return;
-          }
-    Logger::udm_sdm().debug("http reponse code %d.\n",http_code);
-    response.send(static_cast<Pistache::Http::Code>(http_code), return_response_data_json.dump());
+  std::string method("GET");
+  std::string body("");
+  std::string response_get;
+  Logger::udm_sdm().debug("UDR: GET Request: " + remote_uri);
+  // 2. invoke curl to get response from udr
+  long http_code =
+      Curl::curl_http_client(remote_uri, method, body, response_get);
+  // 3. process response
+  nlohmann::json response_data_json        = {};
+  nlohmann::json return_response_data_json = {};
+  try {
+    Logger::udm_sdm().debug("subscription-data: GET Response: " + response_get);
+
+    response_data_json = nlohmann::json::parse(response_get.c_str());
+    // TODO: 1. shall check if "singleNassai" is existing or not, if not, raise
+    // exception
+    // TODO: 2. return_response_data_json: need to check if here is required to
+    // allocate memory first. Or check json code to confirm, otherwise codedump
+    // might happen
+    return_response_data_json["singleNssai"] =
+        response_data_json["singleNssai"];
+  } catch (nlohmann::json::exception& e) {
+    Logger::udm_sdm().info("Could not get json content from UDR response");
+    ProblemDetails problem_details;
+    nlohmann::json json_problem_details;
+    problem_details.setCause("USER_NOT_FOUND");
+    problem_details.setStatus(404);
+    problem_details.setDetail("User " + supi + " not found in Database");
+    to_json(json_problem_details, problem_details);
+    Logger::udm_sdm().error("User " + supi + " not found in Database");
+    Logger::udm_sdm().info("Send 404 Not_Found response to client");
+    response.send(Pistache::Http::Code::Not_Found, json_problem_details.dump());
+    return;
+  }
+  Logger::udm_sdm().debug("http reponse code %d.\n", http_code);
+  response.send(
+      static_cast<Pistache::Http::Code>(http_code),
+      return_response_data_json.dump());
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

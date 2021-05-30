@@ -25,10 +25,12 @@ void HssAvType::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const HssAvType &o) { j = nlohmann::json(); }
+void to_json(nlohmann::json& j, const HssAvType& o) {
+  j = nlohmann::json();
+}
 
-void from_json(const nlohmann::json &j, HssAvType &o) {}
+void from_json(const nlohmann::json& j, HssAvType& o) {}
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

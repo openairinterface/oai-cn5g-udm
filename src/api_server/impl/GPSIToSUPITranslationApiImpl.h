@@ -20,18 +20,17 @@
 #ifndef GPSI_TO_SUPI_TRANSLATION_API_IMPL_H_
 #define GPSI_TO_SUPI_TRANSLATION_API_IMPL_H_
 
-#include <memory>
+#include <GPSIToSUPITranslationApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <GPSIToSUPITranslationApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "IdTranslationResult.h"
 #include "ProblemDetails.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -41,20 +40,20 @@ using namespace oai::udm::model;
 
 class GPSIToSUPITranslationApiImpl
     : public oai::udm::api::GPSIToSUPITranslationApi {
-public:
+ public:
   GPSIToSUPITranslationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~GPSIToSUPITranslationApiImpl() {}
 
   void get_supi(
-      const std::string &gpsi,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& gpsi,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

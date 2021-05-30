@@ -19,12 +19,13 @@
 #ifndef SdmSubscription_H_
 #define SdmSubscription_H_
 
-#include "PlmnId.h"
-#include "ServiceName.h"
-#include "Snssai.h"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
+
+#include "PlmnId.h"
+#include "ServiceName.h"
+#include "Snssai.h"
 
 using namespace org::openapitools::server::model;
 
@@ -36,7 +37,7 @@ namespace model {
 ///
 /// </summary>
 class SdmSubscription {
-public:
+ public:
   SdmSubscription();
   virtual ~SdmSubscription();
 
@@ -49,7 +50,7 @@ public:
   ///
   /// </summary>
   std::string getNfInstanceId() const;
-  void setNfInstanceId(std::string const &value);
+  void setNfInstanceId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
@@ -61,58 +62,58 @@ public:
   ///
   /// </summary>
   std::string getExpires() const;
-  void setExpires(std::string const &value);
+  void setExpires(std::string const& value);
   bool expiresIsSet() const;
   void unsetExpires();
   /// <summary>
   ///
   /// </summary>
   std::string getCallbackReference() const;
-  void setCallbackReference(std::string const &value);
+  void setCallbackReference(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   ServiceName getAmfServiceName() const;
-  void setAmfServiceName(ServiceName const &value);
+  void setAmfServiceName(ServiceName const& value);
   bool amfServiceNameIsSet() const;
   void unsetAmfServiceName();
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getMonitoredResourceUris();
+  std::vector<std::string>& getMonitoredResourceUris();
   /// <summary>
   ///
   /// </summary>
   Snssai getSingleNssai() const;
-  void setSingleNssai(Snssai const &value);
+  void setSingleNssai(Snssai const& value);
   bool singleNssaiIsSet() const;
   void unsetSingleNssai();
   /// <summary>
   ///
   /// </summary>
   std::string getDnn() const;
-  void setDnn(std::string const &value);
+  void setDnn(std::string const& value);
   bool dnnIsSet() const;
   void unsetDnn();
   /// <summary>
   ///
   /// </summary>
   std::string getSubscriptionId() const;
-  void setSubscriptionId(std::string const &value);
+  void setSubscriptionId(std::string const& value);
   bool subscriptionIdIsSet() const;
   void unsetSubscriptionId();
   /// <summary>
   ///
   /// </summary>
   PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const &value);
+  void setPlmnId(PlmnId const& value);
   bool plmnIdIsSet() const;
   void unsetPlmnId();
 
-  friend void to_json(nlohmann::json &j, const SdmSubscription &o);
-  friend void from_json(const nlohmann::json &j, SdmSubscription &o);
+  friend void to_json(nlohmann::json& j, const SdmSubscription& o);
+  friend void from_json(const nlohmann::json& j, SdmSubscription& o);
 
-protected:
+ protected:
   std::string m_NfInstanceId;
 
   bool m_ImplicitUnsubscribe;
@@ -135,8 +136,8 @@ protected:
   bool m_PlmnIdIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SdmSubscription_H_ */

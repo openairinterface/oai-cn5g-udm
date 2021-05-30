@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class EmergencyInfo {
-public:
+ public:
   EmergencyInfo();
   virtual ~EmergencyInfo();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// EmergencyInfo members
 
-  friend void to_json(nlohmann::json &j, const EmergencyInfo &o);
-  friend void from_json(const nlohmann::json &j, EmergencyInfo &o);
+  friend void to_json(nlohmann::json& j, const EmergencyInfo& o);
+  friend void from_json(const nlohmann::json& j, EmergencyInfo& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* EmergencyInfo_H_ */

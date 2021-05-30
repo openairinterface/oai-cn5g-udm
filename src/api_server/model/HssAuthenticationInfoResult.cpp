@@ -18,7 +18,7 @@ namespace udm {
 namespace model {
 
 HssAuthenticationInfoResult::HssAuthenticationInfoResult() {
-  m_SupportedFeatures = "";
+  m_SupportedFeatures      = "";
   m_SupportedFeaturesIsSet = false;
 }
 
@@ -28,14 +28,14 @@ void HssAuthenticationInfoResult::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const HssAuthenticationInfoResult &o) {
+void to_json(nlohmann::json& j, const HssAuthenticationInfoResult& o) {
   j = nlohmann::json();
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
   j["hssAuthenticationVectors"] = o.m_HssAuthenticationVectors;
 }
 
-void from_json(const nlohmann::json &j, HssAuthenticationInfoResult &o) {
+void from_json(const nlohmann::json& j, HssAuthenticationInfoResult& o) {
   if (j.find("supportedFeatures") != j.end()) {
     j.at("supportedFeatures").get_to(o.m_SupportedFeatures);
     o.m_SupportedFeaturesIsSet = true;
@@ -47,8 +47,8 @@ std::string HssAuthenticationInfoResult::getSupportedFeatures() const {
   return m_SupportedFeatures;
 }
 void HssAuthenticationInfoResult::setSupportedFeatures(
-    std::string const &value) {
-  m_SupportedFeatures = value;
+    std::string const& value) {
+  m_SupportedFeatures      = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool HssAuthenticationInfoResult::supportedFeaturesIsSet() const {
@@ -62,10 +62,10 @@ HssAuthenticationInfoResult::getHssAuthenticationVectors() const {
   return m_HssAuthenticationVectors;
 }
 void HssAuthenticationInfoResult::setHssAuthenticationVectors(
-    HssAuthenticationVectors const &value) {
+    HssAuthenticationVectors const& value) {
   m_HssAuthenticationVectors = value;
 }
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

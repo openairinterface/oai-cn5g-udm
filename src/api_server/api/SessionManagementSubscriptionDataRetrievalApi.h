@@ -24,11 +24,12 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
+#include <string>
+
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "SessionManagementSubscriptionData.h"
 #include "Snssai.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -38,7 +39,7 @@ using namespace oai::udm::model;
 using namespace org::openapitools::server::model;
 
 class SessionManagementSubscriptionDataRetrievalApi {
-public:
+ public:
   SessionManagementSubscriptionDataRetrievalApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SessionManagementSubscriptionDataRetrievalApi() {}
@@ -46,13 +47,14 @@ public:
 
   const std::string base = "/nudm-sdm/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void get_sm_data_handler(const Pistache::Rest::Request &request,
-                           Pistache::Http::ResponseWriter response);
+  void get_sm_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void session_management_subscription_data_retrieval_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -77,17 +79,17 @@ private:
   // Pistache::Optional<std::string> &supportedFeatures, const
   // Pistache::Optional<Snssai> &singleNssai, const
   // Pistache::Optional<std::string> &dnn, const Pistache::Optional<PlmnId>
-  // &plmnId, const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-  // const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-  // Pistache::Http::ResponseWriter &response) = 0;
-  virtual void get_sm_data(const std::string &supi,
-                           const Pistache::Optional<Snssai> &singleNssai,
-                           const Pistache::Optional<std::string> &dnn,
-                           Pistache::Http::ResponseWriter &response) = 0;
+  // &plmnId, const Pistache::Optional<Pistache::Http::Header::Raw>
+  // &ifNoneMatch, const Pistache::Optional<Pistache::Http::Header::Raw>
+  // &ifModifiedSince, Pistache::Http::ResponseWriter &response) = 0;
+  virtual void get_sm_data(
+      const std::string& supi, const Pistache::Optional<Snssai>& singleNssai,
+      const Pistache::Optional<std::string>& dnn,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SessionManagementSubscriptionDataRetrievalApi_H_ */

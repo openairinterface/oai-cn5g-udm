@@ -19,9 +19,10 @@
 #ifndef SnssaiInfo_H_
 #define SnssaiInfo_H_
 
-#include "DnnInfo.h"
 #include <nlohmann/json.hpp>
 #include <vector>
+
+#include "DnnInfo.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class SnssaiInfo {
-public:
+ public:
   SnssaiInfo();
   virtual ~SnssaiInfo();
 
@@ -43,17 +44,17 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<DnnInfo> &getDnnInfos();
+  std::vector<DnnInfo>& getDnnInfos();
 
-  friend void to_json(nlohmann::json &j, const SnssaiInfo &o);
-  friend void from_json(const nlohmann::json &j, SnssaiInfo &o);
+  friend void to_json(nlohmann::json& j, const SnssaiInfo& o);
+  friend void from_json(const nlohmann::json& j, SnssaiInfo& o);
 
-protected:
+ protected:
   std::vector<DnnInfo> m_DnnInfos;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SnssaiInfo_H_ */

@@ -19,9 +19,10 @@
 #ifndef Arp_H_
 #define Arp_H_
 
+#include <nlohmann/json.hpp>
+
 #include "PreemptionCapability.h"
 #include "PreemptionVulnerability.h"
-#include <nlohmann/json.hpp>
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class Arp {
-public:
+ public:
   Arp();
   virtual ~Arp();
 
@@ -49,17 +50,17 @@ public:
   ///
   /// </summary>
   PreemptionCapability getPreemptCap() const;
-  void setPreemptCap(PreemptionCapability const &value);
+  void setPreemptCap(PreemptionCapability const& value);
   /// <summary>
   ///
   /// </summary>
   PreemptionVulnerability getPreemptVuln() const;
-  void setPreemptVuln(PreemptionVulnerability const &value);
+  void setPreemptVuln(PreemptionVulnerability const& value);
 
-  friend void to_json(nlohmann::json &j, const Arp &o);
-  friend void from_json(const nlohmann::json &j, Arp &o);
+  friend void to_json(nlohmann::json& j, const Arp& o);
+  friend void from_json(const nlohmann::json& j, Arp& o);
 
-protected:
+ protected:
   int32_t m_PriorityLevel;
 
   PreemptionCapability m_PreemptCap;
@@ -67,8 +68,8 @@ protected:
   PreemptionVulnerability m_PreemptVuln;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* Arp_H_ */

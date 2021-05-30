@@ -19,9 +19,10 @@
 #ifndef ModificationNotification_H_
 #define ModificationNotification_H_
 
-#include "NotifyItem.h"
 #include <nlohmann/json.hpp>
 #include <vector>
+
+#include "NotifyItem.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class ModificationNotification {
-public:
+ public:
   ModificationNotification();
   virtual ~ModificationNotification();
 
@@ -43,17 +44,17 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<NotifyItem> &getNotifyItems();
+  std::vector<NotifyItem>& getNotifyItems();
 
-  friend void to_json(nlohmann::json &j, const ModificationNotification &o);
-  friend void from_json(const nlohmann::json &j, ModificationNotification &o);
+  friend void to_json(nlohmann::json& j, const ModificationNotification& o);
+  friend void from_json(const nlohmann::json& j, ModificationNotification& o);
 
-protected:
+ protected:
   std::vector<NotifyItem> m_NotifyItems;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* ModificationNotification_H_ */

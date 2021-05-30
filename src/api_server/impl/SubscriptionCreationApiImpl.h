@@ -20,18 +20,17 @@
 #ifndef SUBSCRIPTION_CREATION_API_IMPL_H_
 #define SUBSCRIPTION_CREATION_API_IMPL_H_
 
-#include <memory>
+#include <SubscriptionCreationApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <SubscriptionCreationApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "ProblemDetails.h"
 #include "SdmSubscription.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -41,17 +40,17 @@ using namespace oai::udm::model;
 
 class SubscriptionCreationApiImpl
     : public oai::udm::api::SubscriptionCreationApi {
-public:
+ public:
   SubscriptionCreationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~SubscriptionCreationApiImpl() {}
 
-  void subscribe(const std::string &supi,
-                 const SdmSubscription &sdmSubscription,
-                 Pistache::Http::ResponseWriter &response);
+  void subscribe(
+      const std::string& supi, const SdmSubscription& sdmSubscription,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

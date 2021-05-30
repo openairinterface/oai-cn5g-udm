@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class DataSetName {
-public:
+ public:
   DataSetName();
   virtual ~DataSetName();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// DataSetName members
 
-  friend void to_json(nlohmann::json &j, const DataSetName &o);
-  friend void from_json(const nlohmann::json &j, DataSetName &o);
+  friend void to_json(nlohmann::json& j, const DataSetName& o);
+  friend void from_json(const nlohmann::json& j, DataSetName& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* DataSetName_H_ */

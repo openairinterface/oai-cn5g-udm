@@ -19,13 +19,14 @@
 #ifndef HssAuthenticationInfoRequest_H_
 #define HssAuthenticationInfoRequest_H_
 
+#include <nlohmann/json.hpp>
+#include <string>
+
 #include "AccessNetworkId.h"
 #include "HssAuthType.h"
 #include "NodeType.h"
 #include "PlmnId.h"
 #include "ResynchronizationInfo.h"
-#include <nlohmann/json.hpp>
-#include <string>
 using namespace org::openapitools::server::model;
 namespace oai {
 namespace udm {
@@ -35,7 +36,7 @@ namespace model {
 ///
 /// </summary>
 class HssAuthenticationInfoRequest {
-public:
+ public:
   HssAuthenticationInfoRequest();
   virtual ~HssAuthenticationInfoRequest();
 
@@ -48,14 +49,14 @@ public:
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
   HssAuthType getHssAuthType() const;
-  void setHssAuthType(HssAuthType const &value);
+  void setHssAuthType(HssAuthType const& value);
   /// <summary>
   ///
   /// </summary>
@@ -65,36 +66,36 @@ public:
   ///
   /// </summary>
   NodeType getRequestingNodeType() const;
-  void setRequestingNodeType(NodeType const &value);
+  void setRequestingNodeType(NodeType const& value);
   bool requestingNodeTypeIsSet() const;
   void unsetRequestingNodeType();
   /// <summary>
   ///
   /// </summary>
   PlmnId getServingNetworkId() const;
-  void setServingNetworkId(PlmnId const &value);
+  void setServingNetworkId(PlmnId const& value);
   bool servingNetworkIdIsSet() const;
   void unsetServingNetworkId();
   /// <summary>
   ///
   /// </summary>
   ResynchronizationInfo getResynchronizationInfo() const;
-  void setResynchronizationInfo(ResynchronizationInfo const &value);
+  void setResynchronizationInfo(ResynchronizationInfo const& value);
   bool resynchronizationInfoIsSet() const;
   void unsetResynchronizationInfo();
   /// <summary>
   ///
   /// </summary>
   AccessNetworkId getAnId() const;
-  void setAnId(AccessNetworkId const &value);
+  void setAnId(AccessNetworkId const& value);
   bool anIdIsSet() const;
   void unsetAnId();
 
-  friend void to_json(nlohmann::json &j, const HssAuthenticationInfoRequest &o);
-  friend void from_json(const nlohmann::json &j,
-                        HssAuthenticationInfoRequest &o);
+  friend void to_json(nlohmann::json& j, const HssAuthenticationInfoRequest& o);
+  friend void from_json(
+      const nlohmann::json& j, HssAuthenticationInfoRequest& o);
 
-protected:
+ protected:
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
   HssAuthType m_HssAuthType;
@@ -111,8 +112,8 @@ protected:
   bool m_AnIdIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* HssAuthenticationInfoRequest_H_ */

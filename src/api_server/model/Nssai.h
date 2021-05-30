@@ -19,10 +19,11 @@
 #ifndef Nssai_H_
 #define Nssai_H_
 
-#include "Snssai.h"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
+
+#include "Snssai.h"
 
 using namespace org::openapitools::server::model;
 
@@ -34,7 +35,7 @@ namespace model {
 ///
 /// </summary>
 class Nssai {
-public:
+ public:
   Nssai();
   virtual ~Nssai();
 
@@ -47,24 +48,24 @@ public:
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Snssai> &getDefaultSingleNssais();
+  std::vector<Snssai>& getDefaultSingleNssais();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Snssai> &getSingleNssais();
+  std::vector<Snssai>& getSingleNssais();
   bool singleNssaisIsSet() const;
   void unsetSingleNssais();
 
-  friend void to_json(nlohmann::json &j, const Nssai &o);
-  friend void from_json(const nlohmann::json &j, Nssai &o);
+  friend void to_json(nlohmann::json& j, const Nssai& o);
+  friend void from_json(const nlohmann::json& j, Nssai& o);
 
-protected:
+ protected:
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
   std::vector<Snssai> m_DefaultSingleNssais;
@@ -73,8 +74,8 @@ protected:
   bool m_SingleNssaisIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* Nssai_H_ */

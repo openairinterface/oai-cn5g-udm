@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class ChangeType {
-public:
+ public:
   ChangeType();
   virtual ~ChangeType();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// ChangeType members
 
-  friend void to_json(nlohmann::json &j, const ChangeType &o);
-  friend void from_json(const nlohmann::json &j, ChangeType &o);
+  friend void to_json(nlohmann::json& j, const ChangeType& o);
+  friend void from_json(const nlohmann::json& j, ChangeType& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* ChangeType_H_ */

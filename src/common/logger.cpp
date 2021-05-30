@@ -26,12 +26,13 @@
  */
 
 #include "logger.hpp"
-#include "spdlog/sinks/syslog_sink.h"
 
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <string>
+
+#include "spdlog/sinks/syslog_sink.h"
 
 Logger* Logger::m_singleton = NULL;
 

@@ -20,18 +20,17 @@
 #ifndef PROVIDING_ACKNOWLEDGEMENT_OF_STEERING_OF_ROAMING_API_IMPL_H_
 #define PROVIDING_ACKNOWLEDGEMENT_OF_STEERING_OF_ROAMING_API_IMPL_H_
 
-#include <memory>
+#include <ProvidingAcknowledgementOfSteeringOfRoamingApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <ProvidingAcknowledgementOfSteeringOfRoamingApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "AcknowledgeInfo.h"
 #include "ProblemDetails.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -41,18 +40,18 @@ using namespace oai::udm::model;
 
 class ProvidingAcknowledgementOfSteeringOfRoamingApiImpl
     : public oai::udm::api::ProvidingAcknowledgementOfSteeringOfRoamingApi {
-public:
+ public:
   ProvidingAcknowledgementOfSteeringOfRoamingApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~ProvidingAcknowledgementOfSteeringOfRoamingApiImpl() {}
 
-  void sor_ack_info(const std::string &supi,
-                    const AcknowledgeInfo &acknowledgeInfo,
-                    Pistache::Http::ResponseWriter &response);
+  void sor_ack_info(
+      const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

@@ -19,9 +19,10 @@
 #ifndef SmsfInfo_H_
 #define SmsfInfo_H_
 
-#include "PlmnId.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "PlmnId.h"
 using namespace org::openapitools::server::model;
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class SmsfInfo {
-public:
+ public:
   SmsfInfo();
   virtual ~SmsfInfo();
 
@@ -44,24 +45,24 @@ public:
   ///
   /// </summary>
   std::string getSmsfInstanceId() const;
-  void setSmsfInstanceId(std::string const &value);
+  void setSmsfInstanceId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const &value);
+  void setPlmnId(PlmnId const& value);
 
-  friend void to_json(nlohmann::json &j, const SmsfInfo &o);
-  friend void from_json(const nlohmann::json &j, SmsfInfo &o);
+  friend void to_json(nlohmann::json& j, const SmsfInfo& o);
+  friend void from_json(const nlohmann::json& j, SmsfInfo& o);
 
-protected:
+ protected:
   std::string m_SmsfInstanceId;
 
   PlmnId m_PlmnId;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SmsfInfo_H_ */

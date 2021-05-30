@@ -12,6 +12,7 @@
  */
 
 #include "ProvidingAcknowledgementOfSteeringOfRoamingApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -27,7 +28,9 @@ ProvidingAcknowledgementOfSteeringOfRoamingApi::
   router = rtr;
 }
 
-void ProvidingAcknowledgementOfSteeringOfRoamingApi::init() { setupRoutes(); }
+void ProvidingAcknowledgementOfSteeringOfRoamingApi::init() {
+  setupRoutes();
+}
 
 void ProvidingAcknowledgementOfSteeringOfRoamingApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -46,7 +49,7 @@ void ProvidingAcknowledgementOfSteeringOfRoamingApi::setupRoutes() {
 }
 
 void ProvidingAcknowledgementOfSteeringOfRoamingApi::sor_ack_info_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
@@ -58,11 +61,11 @@ void ProvidingAcknowledgementOfSteeringOfRoamingApi::sor_ack_info_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(acknowledgeInfo);
     this->sor_ack_info(supi, acknowledgeInfo, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -71,12 +74,12 @@ void ProvidingAcknowledgementOfSteeringOfRoamingApi::sor_ack_info_handler(
 
 void ProvidingAcknowledgementOfSteeringOfRoamingApi::
     providing_acknowledgement_of_steering_of_roaming_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

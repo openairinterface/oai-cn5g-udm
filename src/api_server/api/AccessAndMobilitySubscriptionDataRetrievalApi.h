@@ -24,10 +24,11 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
+#include <string>
+
 #include "AccessAndMobilitySubscriptionData.h"
 #include "PlmnId.h"
 #include "ProblemDetails.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -36,7 +37,7 @@ namespace api {
 using namespace oai::udm::model;
 
 class AccessAndMobilitySubscriptionDataRetrievalApi {
-public:
+ public:
   AccessAndMobilitySubscriptionDataRetrievalApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~AccessAndMobilitySubscriptionDataRetrievalApi() {}
@@ -44,13 +45,14 @@ public:
 
   const std::string base = "/nudm-sdm/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void get_am_data_handler(const Pistache::Rest::Request &request,
-                           Pistache::Http::ResponseWriter response);
+  void get_am_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void access_and_mobility_subscription_data_retrieval_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -70,16 +72,16 @@ private:
   /// conditional requests, as described in RFC 7232, 3.3 (optional, default to
   /// &quot;&quot;)</param>
   virtual void get_am_data(
-      const std::string &supi,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<PlmnId> &plmnId,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& supi,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AccessAndMobilitySubscriptionDataRetrievalApi_H_ */

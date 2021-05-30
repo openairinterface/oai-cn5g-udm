@@ -30,7 +30,7 @@ namespace model {
 ///
 /// </summary>
 class AcknowledgeInfo {
-public:
+ public:
   AcknowledgeInfo();
   virtual ~AcknowledgeInfo();
 
@@ -43,33 +43,33 @@ public:
   ///
   /// </summary>
   std::string getSorMacIue() const;
-  void setSorMacIue(std::string const &value);
+  void setSorMacIue(std::string const& value);
   bool sorMacIueIsSet() const;
   void unsetSorMacIue();
   /// <summary>
   ///
   /// </summary>
   std::string getUpuMacIue() const;
-  void setUpuMacIue(std::string const &value);
+  void setUpuMacIue(std::string const& value);
   bool upuMacIueIsSet() const;
   void unsetUpuMacIue();
   /// <summary>
   ///
   /// </summary>
   std::string getSecuredPacket() const;
-  void setSecuredPacket(std::string const &value);
+  void setSecuredPacket(std::string const& value);
   bool securedPacketIsSet() const;
   void unsetSecuredPacket();
   /// <summary>
   ///
   /// </summary>
   std::string getProvisioningTime() const;
-  void setProvisioningTime(std::string const &value);
+  void setProvisioningTime(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const AcknowledgeInfo &o);
-  friend void from_json(const nlohmann::json &j, AcknowledgeInfo &o);
+  friend void to_json(nlohmann::json& j, const AcknowledgeInfo& o);
+  friend void from_json(const nlohmann::json& j, AcknowledgeInfo& o);
 
-protected:
+ protected:
   std::string m_SorMacIue;
   bool m_SorMacIueIsSet;
   std::string m_UpuMacIue;
@@ -79,8 +79,8 @@ protected:
   std::string m_ProvisioningTime;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AcknowledgeInfo_H_ */

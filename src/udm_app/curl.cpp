@@ -31,30 +31,30 @@
 using namespace config;
 extern udm_config udm_cfg;
 
-std::size_t callback(const char *in, std::size_t size, std::size_t num,
-                     std::string *out) {
+std::size_t callback(
+    const char* in, std::size_t size, std::size_t num, std::string* out) {
   const std::size_t totalBytes(size * num);
   out->append(in, totalBytes);
   return totalBytes;
 }
 
-long Curl::curl_http_client(std::string remoteUri, std::string Method,
-                            std::string msgBody, std::string &Response) {
-
+long Curl::curl_http_client(
+    std::string remoteUri, std::string Method, std::string msgBody,
+    std::string& Response) {
   Logger::udm_ueau().info("Send HTTP message with body %s", msgBody.c_str());
 
   uint32_t str_len = msgBody.length();
-  char *body_data = (char *)malloc(str_len + 1);
+  char* body_data  = (char*) malloc(str_len + 1);
   memset(body_data, 0, str_len + 1);
-  memcpy((void *)body_data, (void *)msgBody.c_str(), str_len);
+  memcpy((void*) body_data, (void*) msgBody.c_str(), str_len);
 
   curl_global_init(CURL_GLOBAL_ALL);
-  CURL *curl = curl_easy_init();
+  CURL* curl    = curl_easy_init();
   long httpCode = {0};
 
   if (curl) {
-    CURLcode res = {};
-    struct curl_slist *headers = nullptr;
+    CURLcode res               = {};
+    struct curl_slist* headers = nullptr;
     if (!Method.compare("POST") || !Method.compare("PUT") ||
         !Method.compare("PATCH")) {
       std::string content_type = "Content-Type: application/json";
@@ -75,8 +75,8 @@ long Curl::curl_http_client(std::string remoteUri, std::string Method,
     curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, CURL_TIMEOUT_MS);
     curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1);
     curl_easy_setopt(curl, CURLOPT_INTERFACE, udm_cfg.nudr.if_name.c_str());
-    Logger::udm_ueau().info("[CURL] request sent by interface " +
-                            udm_cfg.nudr.if_name);
+    Logger::udm_ueau().info(
+        "[CURL] request sent by interface " + udm_cfg.nudr.if_name);
 
     // Response information.
     std::unique_ptr<std::string> httpData(new std::string());
@@ -95,15 +95,15 @@ long Curl::curl_http_client(std::string remoteUri, std::string Method,
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
 
     // get the response
-    std::string response = *httpData.get();
+    std::string response           = *httpData.get();
     std::string json_data_response = "";
-    std::string resMsg = "";
-    bool is_response_ok = true;
+    std::string resMsg             = "";
+    bool is_response_ok            = true;
     Logger::udm_ueau().info("Get response with httpcode (%d)", httpCode);
 
     if (httpCode == 0) {
-      Logger::udm_ueau().info("Cannot get response when calling %s",
-                              remoteUri.c_str());
+      Logger::udm_ueau().info(
+          "Cannot get response when calling %s", remoteUri.c_str());
       // free curl before returning
       curl_slist_free_all(headers);
       curl_easy_cleanup(curl);
@@ -124,7 +124,7 @@ long Curl::curl_http_client(std::string remoteUri, std::string Method,
       return httpCode;
     }
 
-    else { // httpCode = 200 || httpCode = 201 || httpCode = 204
+    else {  // httpCode = 200 || httpCode = 201 || httpCode = 204
       /*
       //store location of the created context
       std::string header_response = *httpHeaderData.get();
@@ -160,14 +160,14 @@ long Curl::curl_http_client(std::string remoteUri, std::string Method,
     if (!is_response_ok) {
       try {
         response_data = nlohmann::json::parse(json_data_response);
-      } catch (nlohmann::json::exception &e) {
+      } catch (nlohmann::json::exception& e) {
         Logger::udm_ueau().info("Could not get Json content from the response");
         // Set the default Cause
         response_data["error"]["cause"] = "504 Gateway Timeout";
       }
 
-      Logger::udm_ueau().info("Get response with jsonData: %s",
-                              json_data_response.c_str());
+      Logger::udm_ueau().info(
+          "Get response with jsonData: %s", json_data_response.c_str());
 
       std::string cause = response_data["error"]["cause"];
       Logger::udm_ueau().info("Call Network Function services failure");

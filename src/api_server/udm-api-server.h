@@ -38,19 +38,25 @@
 #include "pistache/http.h"
 #include "pistache/router.h"
 #ifdef __linux__
-#include <vector>
 #include <signal.h>
 #include <unistd.h>
+
+#include <vector>
 #endif
 
+#include "AMFRegistrationFor3GPPAccessApiImpl.h"
 #include "AccessAndMobilitySubscriptionDataRetrievalApiImpl.h"
+#include "ConfirmAuthApiImpl.h"
+#include "DeleteAuthApiImpl.h"
 #include "GPSIToSUPITranslationApiImpl.h"
+#include "GenerateAuthDataApiImpl.h"
 #include "GroupIdentifiersApiImpl.h"
 #include "ProvidingAcknowledgementOfSteeringOfRoamingApiImpl.h"
 #include "ProvidingAcknowledgementOfUEParametersUpdateApiImpl.h"
 #include "RetrievalOfMultipleDataSetsApiImpl.h"
 #include "RetrievalOfSharedDataApiImpl.h"
 #include "SMFSelectionSubscriptionDataRetrievalApiImpl.h"
+#include "SMFSmfRegistrationApiImpl.h"
 #include "SMSManagementSubscriptionDataRetrievalApiImpl.h"
 #include "SMSSubscriptionDataRetrievalApiImpl.h"
 #include "SessionManagementSubscriptionDataRetrievalApiImpl.h"
@@ -63,25 +69,15 @@
 #include "TraceConfigurationDataRetrievalApiImpl.h"
 #include "UEContextInSMFDataRetrievalApiImpl.h"
 #include "UEContextInSMSFDataRetrievalApiImpl.h"
-
-#include "ConfirmAuthApiImpl.h"
-#include "DeleteAuthApiImpl.h"
-#include "GenerateAuthDataApiImpl.h"
-
-#include "SMFSmfRegistrationApiImpl.h"
-#include "AMFRegistrationFor3GPPAccessApiImpl.h"
-
-
 #include "udm_app.hpp"
 
-//using namespace oai::udm_server::api;
+// using namespace oai::udm_server::api;
 // using namespace oai::udm::api;
 using namespace oai::udm::app;
 
 using namespace oai::udm::api;
 using namespace config;
 using namespace org::openapitools::server::api;
-
 
 class UDMApiServer {
  public:
@@ -90,13 +86,13 @@ class UDMApiServer {
     m_router  = std::make_shared<Pistache::Rest::Router>();
     m_address = address.host() + ":" + (address.port()).toString();
 
-/*
-    m_defaultApiImpl =
-        std::make_shared<DefaultApiImpl>(m_router, udm_app_inst, m_address);
-    m_authenticationResultDeletionApiImpl =
-        std::make_shared<AuthenticationResultDeletionApiImpl>(
-            m_router, udm_app_inst, m_address);
-  */
+    /*
+        m_defaultApiImpl =
+            std::make_shared<DefaultApiImpl>(m_router, udm_app_inst, m_address);
+        m_authenticationResultDeletionApiImpl =
+            std::make_shared<AuthenticationResultDeletionApiImpl>(
+                m_router, udm_app_inst, m_address);
+      */
   }
   void init(size_t thr = 1);
   void start();
@@ -106,13 +102,11 @@ class UDMApiServer {
   std::shared_ptr<Pistache::Http::Endpoint> m_httpEndpoint;
   std::shared_ptr<Pistache::Rest::Router> m_router;
 
+  std::shared_ptr<AccessAndMobilitySubscriptionDataRetrievalApiImpl>
+      m_accessAndMobilitySubscriptionDataRetrievalApiImpl;
+  std::shared_ptr<GPSIToSUPITranslationApiImpl> m_gPSIToSUPITranslationApiImpl;
 
-  std::shared_ptr<AccessAndMobilitySubscriptionDataRetrievalApiImpl> m_accessAndMobilitySubscriptionDataRetrievalApiImpl;
-  std::shared_ptr<GPSIToSUPITranslationApiImpl>
-      m_gPSIToSUPITranslationApiImpl;
-
-  std::shared_ptr<GroupIdentifiersApiImpl>
-      m_groupIdentifiersApiImpl;
+  std::shared_ptr<GroupIdentifiersApiImpl> m_groupIdentifiersApiImpl;
 
   std::shared_ptr<ProvidingAcknowledgementOfSteeringOfRoamingApiImpl>
       m_providingAcknowledgementOfSteeringOfRoamingApiImpl;
@@ -123,9 +117,7 @@ class UDMApiServer {
   std::shared_ptr<RetrievalOfMultipleDataSetsApiImpl>
       m_retrievalOfMultipleDataSetsApiImpl;
 
-  std::shared_ptr<RetrievalOfSharedDataApiImpl>
-      m_retrievalOfSharedDataApiImpl;
-
+  std::shared_ptr<RetrievalOfSharedDataApiImpl> m_retrievalOfSharedDataApiImpl;
 
   std::shared_ptr<SMFSelectionSubscriptionDataRetrievalApiImpl>
       m_sMFSelectionSubscriptionDataRetrievalApiImpl;
@@ -142,20 +134,17 @@ class UDMApiServer {
   std::shared_ptr<SliceSelectionSubscriptionDataRetrievalApiImpl>
       m_sliceSelectionSubscriptionDataRetrievalApiImpl;
 
-  std::shared_ptr<SubscriptionCreationApiImpl>
-      m_subscriptionCreationApiImpl;
+  std::shared_ptr<SubscriptionCreationApiImpl> m_subscriptionCreationApiImpl;
 
   std::shared_ptr<SubscriptionCreationForSharedDataApiImpl>
       m_subscriptionCreationForSharedDataApiImpl;
 
-  std::shared_ptr<SubscriptionDeletionApiImpl>
-      m_subscriptionDeletionApiImpl;
+  std::shared_ptr<SubscriptionDeletionApiImpl> m_subscriptionDeletionApiImpl;
 
   std::shared_ptr<SubscriptionDeletionForSharedDataApiImpl>
       m_subscriptionDeletionForSharedDataApiImpl;
   std::shared_ptr<SubscriptionModificationApiImpl>
       m_subscriptionModificationApiImpl;
-
 
   std::shared_ptr<TraceConfigurationDataRetrievalApiImpl>
       m_traceConfigurationDataRetrievalApiImpl;
@@ -165,25 +154,15 @@ class UDMApiServer {
   std::shared_ptr<UEContextInSMSFDataRetrievalApiImpl>
       m_uEContextInSMSFDataRetrievalApiImpl;
 
+  std::shared_ptr<ConfirmAuthApiImpl> m_confirmAuthApiImpl;
 
-  std::shared_ptr<ConfirmAuthApiImpl>
-      m_confirmAuthApiImpl;
+  std::shared_ptr<DeleteAuthApiImpl> m_deleteAuthApiImpl;
+  std::shared_ptr<GenerateAuthDataApiImpl> m_generateAuthDataApiImpl;
 
-  std::shared_ptr<DeleteAuthApiImpl>
-      m_deleteAuthApiImpl;
-  std::shared_ptr<GenerateAuthDataApiImpl>
-      m_generateAuthDataApiImpl;
-
-
-  std::shared_ptr<SMFSmfRegistrationApiImpl>
-      m_sMFSmfRegistrationApiImpl;
+  std::shared_ptr<SMFSmfRegistrationApiImpl> m_sMFSmfRegistrationApiImpl;
 
   std::shared_ptr<AMFRegistrationFor3GPPAccessApiImpl>
       m_aMFRegistrationFor3GPPAccessApiImpl;
-
-
-
-
 
   std::string m_address;
 };

@@ -12,6 +12,7 @@
  */
 
 #include "GroupIdentifiersApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -26,7 +27,9 @@ GroupIdentifiersApi::GroupIdentifiersApi(
   router = rtr;
 }
 
-void GroupIdentifiersApi::init() { setupRoutes(); }
+void GroupIdentifiersApi::init() {
+  setupRoutes();
+}
 
 void GroupIdentifiersApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -41,9 +44,8 @@ void GroupIdentifiersApi::setupRoutes() {
 }
 
 void GroupIdentifiersApi::get_group_identifiers_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto extGroupIdQuery = request.query().get("ext-group-id");
   Pistache::Optional<std::string> extGroupId;
@@ -71,17 +73,18 @@ void GroupIdentifiersApi::get_group_identifiers_handler(
   }
 
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_group_identifiers(extGroupId, intGroupId, supportedFeatures,
-                                ifNoneMatch, ifModifiedSince, response);
-  } catch (nlohmann::detail::exception &e) {
+    this->get_group_identifiers(
+        extGroupId, intGroupId, supportedFeatures, ifNoneMatch, ifModifiedSince,
+        response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -89,11 +92,11 @@ void GroupIdentifiersApi::get_group_identifiers_handler(
 }
 
 void GroupIdentifiersApi::group_identifiers_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

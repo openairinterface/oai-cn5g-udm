@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class UpuData {
-public:
+ public:
   UpuData();
   virtual ~UpuData();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// UpuData members
 
-  friend void to_json(nlohmann::json &j, const UpuData &o);
-  friend void from_json(const nlohmann::json &j, UpuData &o);
+  friend void to_json(nlohmann::json& j, const UpuData& o);
+  friend void from_json(const nlohmann::json& j, UpuData& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* UpuData_H_ */

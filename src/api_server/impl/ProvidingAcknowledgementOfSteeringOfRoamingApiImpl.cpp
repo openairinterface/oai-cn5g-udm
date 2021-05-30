@@ -25,11 +25,11 @@ ProvidingAcknowledgementOfSteeringOfRoamingApiImpl::
     : ProvidingAcknowledgementOfSteeringOfRoamingApi(rtr) {}
 
 void ProvidingAcknowledgementOfSteeringOfRoamingApiImpl::sor_ack_info(
-    const std::string &supi, const AcknowledgeInfo &acknowledgeInfo,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
+    Pistache::Http::ResponseWriter& response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

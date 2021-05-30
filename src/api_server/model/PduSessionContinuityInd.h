@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class PduSessionContinuityInd {
-public:
+ public:
   PduSessionContinuityInd();
   virtual ~PduSessionContinuityInd();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// PduSessionContinuityInd members
 
-  friend void to_json(nlohmann::json &j, const PduSessionContinuityInd &o);
-  friend void from_json(const nlohmann::json &j, PduSessionContinuityInd &o);
+  friend void to_json(nlohmann::json& j, const PduSessionContinuityInd& o);
+  friend void from_json(const nlohmann::json& j, PduSessionContinuityInd& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* PduSessionContinuityInd_H_ */

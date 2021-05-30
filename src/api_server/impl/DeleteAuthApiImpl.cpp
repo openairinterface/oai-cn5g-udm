@@ -20,21 +20,19 @@ namespace oai {
 namespace udm {
 namespace api {
 
-//using namespace oai::udm::model;
+// using namespace oai::udm::model;
 
 DeleteAuthApiImpl::DeleteAuthApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
     : DeleteAuthApi(rtr) {}
 
-void DeleteAuthApiImpl::delete_auth(const std::string &supi,
-                                    const std::string &authEventId,
-                                    const AuthEvent &authEvent,
-                                    Pistache::Http::ResponseWriter &response) {
-
+void DeleteAuthApiImpl::delete_auth(
+    const std::string& supi, const std::string& authEventId,
+    const AuthEvent& authEvent, Pistache::Http::ResponseWriter& response) {
   Logger::udm_ueau().info("\n\nEntering delete_auth()");
 
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr *)&udm_cfg.nudr.addr4)));
+      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nudr.addr4)));
   std::string udr_port = std::to_string(udm_cfg.nudr.port);
   std::string remoteUri;
   std::string Method;
@@ -56,7 +54,7 @@ void DeleteAuthApiImpl::delete_auth(const std::string &supi,
   nlohmann::json response_data = {};
   try {
     response_data = nlohmann::json::parse(Response.c_str());
-  } catch (nlohmann::json::exception &e) { // error handling
+  } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_ueau().info("Could not get Json content from UDR response");
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
@@ -117,6 +115,6 @@ void DeleteAuthApiImpl::delete_auth(const std::string &supi,
   }
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

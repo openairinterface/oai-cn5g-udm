@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class AuthType {
-public:
+ public:
   AuthType();
   virtual ~AuthType();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// AuthType members
 
-  friend void to_json(nlohmann::json &j, const AuthType &o);
-  friend void from_json(const nlohmann::json &j, AuthType &o);
+  friend void to_json(nlohmann::json& j, const AuthType& o);
+  friend void from_json(const nlohmann::json& j, AuthType& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AuthType_H_ */

@@ -20,30 +20,26 @@
 #ifndef GENERATE_AUTH_DATA_API_IMPL_H_
 #define GENERATE_AUTH_DATA_API_IMPL_H_
 
-#include <memory>
+#include <GenerateAuthDataApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <GenerateAuthDataApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "AuthenticationInfoRequest.h"
 #include "AuthenticationInfoResult.h"
 #include "PatchItem.h"
 #include "ProblemDetails.h"
 #include "SequenceNumber.h"
-
 #include "String2Value.hpp"
 #include "authentication_algorithms_with_5gaka.hpp"
 #include "conversions.hpp"
 #include "curl.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
-
-
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -52,18 +48,18 @@ namespace api {
 using namespace oai::udm::model;
 
 class GenerateAuthDataApiImpl : public oai::udm::api::GenerateAuthDataApi {
-public:
+ public:
   GenerateAuthDataApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~GenerateAuthDataApiImpl() {}
 
-  void
-  generate_auth_data(const std::string &supiOrSuci,
-                     const AuthenticationInfoRequest &authenticationInfoRequest,
-                     Pistache::Http::ResponseWriter &response);
+  void generate_auth_data(
+      const std::string& supiOrSuci,
+      const AuthenticationInfoRequest& authenticationInfoRequest,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

@@ -12,6 +12,7 @@
  */
 
 #include "SubscriptionCreationForSharedDataApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -26,15 +27,19 @@ SubscriptionCreationForSharedDataApi::SubscriptionCreationForSharedDataApi(
   router = rtr;
 }
 
-void SubscriptionCreationForSharedDataApi::init() { setupRoutes(); }
+void SubscriptionCreationForSharedDataApi::init() {
+  setupRoutes();
+}
 
 void SubscriptionCreationForSharedDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Post(*router, base + "/shared-data-subscriptions",
-               Routes::bind(&SubscriptionCreationForSharedDataApi::
-                                subscribe_to_shared_data_handler,
-                            this));
+  Routes::Post(
+      *router, base + "/shared-data-subscriptions",
+      Routes::bind(
+          &SubscriptionCreationForSharedDataApi::
+              subscribe_to_shared_data_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -44,9 +49,8 @@ void SubscriptionCreationForSharedDataApi::setupRoutes() {
 }
 
 void SubscriptionCreationForSharedDataApi::subscribe_to_shared_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the body param
 
   SdmSubscription sdmSubscription;
@@ -54,11 +58,11 @@ void SubscriptionCreationForSharedDataApi::subscribe_to_shared_data_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(sdmSubscription);
     this->subscribe_to_shared_data(sdmSubscription, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -67,12 +71,12 @@ void SubscriptionCreationForSharedDataApi::subscribe_to_shared_data_handler(
 
 void SubscriptionCreationForSharedDataApi::
     subscription_creation_for_shared_data_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

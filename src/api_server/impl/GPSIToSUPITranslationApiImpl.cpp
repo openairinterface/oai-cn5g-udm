@@ -24,14 +24,14 @@ GPSIToSUPITranslationApiImpl::GPSIToSUPITranslationApiImpl(
     : GPSIToSUPITranslationApi(rtr) {}
 
 void GPSIToSUPITranslationApiImpl::get_supi(
-    const std::string &gpsi,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& gpsi,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    Pistache::Http::ResponseWriter& response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

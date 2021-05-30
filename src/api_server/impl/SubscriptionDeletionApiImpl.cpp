@@ -17,18 +17,18 @@ namespace oai {
 namespace udm {
 namespace api {
 
-//using namespace oai::udm::model;
+// using namespace oai::udm::model;
 
 SubscriptionDeletionApiImpl::SubscriptionDeletionApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
     : SubscriptionDeletionApi(rtr) {}
 
 void SubscriptionDeletionApiImpl::unsubscribe(
-    const std::string &supi, const std::string &subscriptionId,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& supi, const std::string& subscriptionId,
+    Pistache::Http::ResponseWriter& response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

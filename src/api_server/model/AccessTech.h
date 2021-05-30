@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class AccessTech {
-public:
+ public:
   AccessTech();
   virtual ~AccessTech();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// AccessTech members
 
-  friend void to_json(nlohmann::json &j, const AccessTech &o);
-  friend void from_json(const nlohmann::json &j, AccessTech &o);
+  friend void to_json(nlohmann::json& j, const AccessTech& o);
+  friend void from_json(const nlohmann::json& j, AccessTech& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AccessTech_H_ */

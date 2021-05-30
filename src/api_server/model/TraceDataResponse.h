@@ -19,9 +19,10 @@
 #ifndef TraceDataResponse_H_
 #define TraceDataResponse_H_
 
-#include "TraceData.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "TraceData.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class TraceDataResponse {
-public:
+ public:
   TraceDataResponse();
   virtual ~TraceDataResponse();
 
@@ -44,29 +45,29 @@ public:
   ///
   /// </summary>
   TraceData getTraceData() const;
-  void setTraceData(TraceData const &value);
+  void setTraceData(TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
   /// <summary>
   ///
   /// </summary>
   std::string getSharedTraceDataId() const;
-  void setSharedTraceDataId(std::string const &value);
+  void setSharedTraceDataId(std::string const& value);
   bool sharedTraceDataIdIsSet() const;
   void unsetSharedTraceDataId();
 
-  friend void to_json(nlohmann::json &j, const TraceDataResponse &o);
-  friend void from_json(const nlohmann::json &j, TraceDataResponse &o);
+  friend void to_json(nlohmann::json& j, const TraceDataResponse& o);
+  friend void from_json(const nlohmann::json& j, TraceDataResponse& o);
 
-protected:
+ protected:
   TraceData m_TraceData;
   bool m_TraceDataIsSet;
   std::string m_SharedTraceDataId;
   bool m_SharedTraceDataIdIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* TraceDataResponse_H_ */

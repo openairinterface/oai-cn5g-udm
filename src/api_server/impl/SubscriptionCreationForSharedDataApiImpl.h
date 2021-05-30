@@ -20,14 +20,13 @@
 #ifndef SUBSCRIPTION_CREATION_FOR_SHARED_DATA_API_IMPL_H_
 #define SUBSCRIPTION_CREATION_FOR_SHARED_DATA_API_IMPL_H_
 
-#include <memory>
+#include <SubscriptionCreationForSharedDataApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <SubscriptionCreationForSharedDataApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
 
 #include "ProblemDetails.h"
 #include "SdmSubscription.h"
@@ -40,17 +39,18 @@ using namespace oai::udm::model;
 
 class SubscriptionCreationForSharedDataApiImpl
     : public oai::udm::api::SubscriptionCreationForSharedDataApi {
-public:
+ public:
   SubscriptionCreationForSharedDataApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~SubscriptionCreationForSharedDataApiImpl() {}
 
-  void subscribe_to_shared_data(const SdmSubscription &sdmSubscription,
-                                Pistache::Http::ResponseWriter &response);
+  void subscribe_to_shared_data(
+      const SdmSubscription& sdmSubscription,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

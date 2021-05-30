@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class UpConfidentiality {
-public:
+ public:
   UpConfidentiality();
   virtual ~UpConfidentiality();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// UpConfidentiality members
 
-  friend void to_json(nlohmann::json &j, const UpConfidentiality &o);
-  friend void from_json(const nlohmann::json &j, UpConfidentiality &o);
+  friend void to_json(nlohmann::json& j, const UpConfidentiality& o);
+  friend void from_json(const nlohmann::json& j, UpConfidentiality& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* UpConfidentiality_H_ */

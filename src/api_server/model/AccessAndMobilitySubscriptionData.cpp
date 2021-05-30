@@ -18,39 +18,39 @@ namespace udm {
 namespace model {
 
 AccessAndMobilitySubscriptionData::AccessAndMobilitySubscriptionData() {
-  m_SupportedFeatures = "";
-  m_SupportedFeaturesIsSet = false;
-  m_GpsisIsSet = false;
-  m_InternalGroupIdsIsSet = false;
-  m_SubscribedUeAmbrIsSet = false;
-  m_NssaiIsSet = false;
-  m_RatRestrictionsIsSet = false;
-  m_ForbiddenAreasIsSet = false;
+  m_SupportedFeatures                = "";
+  m_SupportedFeaturesIsSet           = false;
+  m_GpsisIsSet                       = false;
+  m_InternalGroupIdsIsSet            = false;
+  m_SubscribedUeAmbrIsSet            = false;
+  m_NssaiIsSet                       = false;
+  m_RatRestrictionsIsSet             = false;
+  m_ForbiddenAreasIsSet              = false;
   m_CoreNetworkTypeRestrictionsIsSet = false;
-  m_RfspIndex = 0;
-  m_RfspIndexIsSet = false;
-  m_SubsRegTimer = 0;
-  m_SubsRegTimerIsSet = false;
-  m_UeUsageType = 0;
-  m_UeUsageTypeIsSet = false;
-  m_MpsPriority = false;
-  m_MpsPriorityIsSet = false;
-  m_McsPriority = false;
-  m_McsPriorityIsSet = false;
-  m_ActiveTime = 0;
-  m_ActiveTimeIsSet = false;
-  m_DlPacketCount = 0;
-  m_DlPacketCountIsSet = false;
-  m_SorInfoIsSet = false;
-  m_UpuInfoIsSet = false;
-  m_MicoAllowed = false;
-  m_MicoAllowedIsSet = false;
-  m_SharedAmDataIdsIsSet = false;
-  m_OdbPacketServicesIsSet = false;
-  m_SubscribedDnnListIsSet = false;
-  m_ServiceGapTime = 0;
-  m_ServiceGapTimeIsSet = false;
-  m_TraceDataIsSet = false;
+  m_RfspIndex                        = 0;
+  m_RfspIndexIsSet                   = false;
+  m_SubsRegTimer                     = 0;
+  m_SubsRegTimerIsSet                = false;
+  m_UeUsageType                      = 0;
+  m_UeUsageTypeIsSet                 = false;
+  m_MpsPriority                      = false;
+  m_MpsPriorityIsSet                 = false;
+  m_McsPriority                      = false;
+  m_McsPriorityIsSet                 = false;
+  m_ActiveTime                       = 0;
+  m_ActiveTimeIsSet                  = false;
+  m_DlPacketCount                    = 0;
+  m_DlPacketCountIsSet               = false;
+  m_SorInfoIsSet                     = false;
+  m_UpuInfoIsSet                     = false;
+  m_MicoAllowed                      = false;
+  m_MicoAllowedIsSet                 = false;
+  m_SharedAmDataIdsIsSet             = false;
+  m_OdbPacketServicesIsSet           = false;
+  m_SubscribedDnnListIsSet           = false;
+  m_ServiceGapTime                   = 0;
+  m_ServiceGapTimeIsSet              = false;
+  m_TraceDataIsSet                   = false;
 }
 
 AccessAndMobilitySubscriptionData::~AccessAndMobilitySubscriptionData() {}
@@ -59,57 +59,38 @@ void AccessAndMobilitySubscriptionData::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const AccessAndMobilitySubscriptionData &o) {
+void to_json(nlohmann::json& j, const AccessAndMobilitySubscriptionData& o) {
   j = nlohmann::json();
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  if (o.gpsisIsSet())
-    j["gpsis"] = o.m_Gpsis;
-  if (o.internalGroupIdsIsSet())
-    j["internalGroupIds"] = o.m_InternalGroupIds;
-  if (o.subscribedUeAmbrIsSet())
-    j["subscribedUeAmbr"] = o.m_SubscribedUeAmbr;
-  if (o.nssaiIsSet())
-    j["nssai"] = o.m_Nssai;
-  if (o.ratRestrictionsIsSet())
-    j["ratRestrictions"] = o.m_RatRestrictions;
-  if (o.forbiddenAreasIsSet())
-    j["forbiddenAreas"] = o.m_ForbiddenAreas;
+  if (o.gpsisIsSet()) j["gpsis"] = o.m_Gpsis;
+  if (o.internalGroupIdsIsSet()) j["internalGroupIds"] = o.m_InternalGroupIds;
+  if (o.subscribedUeAmbrIsSet()) j["subscribedUeAmbr"] = o.m_SubscribedUeAmbr;
+  if (o.nssaiIsSet()) j["nssai"] = o.m_Nssai;
+  if (o.ratRestrictionsIsSet()) j["ratRestrictions"] = o.m_RatRestrictions;
+  if (o.forbiddenAreasIsSet()) j["forbiddenAreas"] = o.m_ForbiddenAreas;
   if (o.coreNetworkTypeRestrictionsIsSet())
     j["coreNetworkTypeRestrictions"] = o.m_CoreNetworkTypeRestrictions;
-  if (o.rfspIndexIsSet())
-    j["rfspIndex"] = o.m_RfspIndex;
-  if (o.subsRegTimerIsSet())
-    j["subsRegTimer"] = o.m_SubsRegTimer;
-  if (o.ueUsageTypeIsSet())
-    j["ueUsageType"] = o.m_UeUsageType;
-  if (o.mpsPriorityIsSet())
-    j["mpsPriority"] = o.m_MpsPriority;
-  if (o.mcsPriorityIsSet())
-    j["mcsPriority"] = o.m_McsPriority;
-  if (o.activeTimeIsSet())
-    j["activeTime"] = o.m_ActiveTime;
-  if (o.dlPacketCountIsSet())
-    j["dlPacketCount"] = o.m_DlPacketCount;
-  if (o.sorInfoIsSet())
-    j["sorInfo"] = o.m_SorInfo;
-  if (o.upuInfoIsSet())
-    j["upuInfo"] = o.m_UpuInfo;
-  if (o.micoAllowedIsSet())
-    j["micoAllowed"] = o.m_MicoAllowed;
-  if (o.sharedAmDataIdsIsSet())
-    j["sharedAmDataIds"] = o.m_SharedAmDataIds;
+  if (o.rfspIndexIsSet()) j["rfspIndex"] = o.m_RfspIndex;
+  if (o.subsRegTimerIsSet()) j["subsRegTimer"] = o.m_SubsRegTimer;
+  if (o.ueUsageTypeIsSet()) j["ueUsageType"] = o.m_UeUsageType;
+  if (o.mpsPriorityIsSet()) j["mpsPriority"] = o.m_MpsPriority;
+  if (o.mcsPriorityIsSet()) j["mcsPriority"] = o.m_McsPriority;
+  if (o.activeTimeIsSet()) j["activeTime"] = o.m_ActiveTime;
+  if (o.dlPacketCountIsSet()) j["dlPacketCount"] = o.m_DlPacketCount;
+  if (o.sorInfoIsSet()) j["sorInfo"] = o.m_SorInfo;
+  if (o.upuInfoIsSet()) j["upuInfo"] = o.m_UpuInfo;
+  if (o.micoAllowedIsSet()) j["micoAllowed"] = o.m_MicoAllowed;
+  if (o.sharedAmDataIdsIsSet()) j["sharedAmDataIds"] = o.m_SharedAmDataIds;
   if (o.odbPacketServicesIsSet())
     j["odbPacketServices"] = o.m_OdbPacketServices;
   if (o.subscribedDnnListIsSet())
     j["subscribedDnnList"] = o.m_SubscribedDnnList;
-  if (o.serviceGapTimeIsSet())
-    j["serviceGapTime"] = o.m_ServiceGapTime;
-  if (o.traceDataIsSet())
-    j["traceData"] = o.m_TraceData;
+  if (o.serviceGapTimeIsSet()) j["serviceGapTime"] = o.m_ServiceGapTime;
+  if (o.traceDataIsSet()) j["traceData"] = o.m_TraceData;
 }
 
-void from_json(const nlohmann::json &j, AccessAndMobilitySubscriptionData &o) {
+void from_json(const nlohmann::json& j, AccessAndMobilitySubscriptionData& o) {
   if (j.find("supportedFeatures") != j.end()) {
     j.at("supportedFeatures").get_to(o.m_SupportedFeatures);
     o.m_SupportedFeaturesIsSet = true;
@@ -208,8 +189,8 @@ std::string AccessAndMobilitySubscriptionData::getSupportedFeatures() const {
   return m_SupportedFeatures;
 }
 void AccessAndMobilitySubscriptionData::setSupportedFeatures(
-    std::string const &value) {
-  m_SupportedFeatures = value;
+    std::string const& value) {
+  m_SupportedFeatures      = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::supportedFeaturesIsSet() const {
@@ -218,14 +199,16 @@ bool AccessAndMobilitySubscriptionData::supportedFeaturesIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
-std::vector<std::string> &AccessAndMobilitySubscriptionData::getGpsis() {
+std::vector<std::string>& AccessAndMobilitySubscriptionData::getGpsis() {
   return m_Gpsis;
 }
 bool AccessAndMobilitySubscriptionData::gpsisIsSet() const {
   return m_GpsisIsSet;
 }
-void AccessAndMobilitySubscriptionData::unsetGpsis() { m_GpsisIsSet = false; }
-std::vector<std::string> &
+void AccessAndMobilitySubscriptionData::unsetGpsis() {
+  m_GpsisIsSet = false;
+}
+std::vector<std::string>&
 AccessAndMobilitySubscriptionData::getInternalGroupIds() {
   return m_InternalGroupIds;
 }
@@ -239,8 +222,8 @@ AmbrRm AccessAndMobilitySubscriptionData::getSubscribedUeAmbr() const {
   return m_SubscribedUeAmbr;
 }
 void AccessAndMobilitySubscriptionData::setSubscribedUeAmbr(
-    AmbrRm const &value) {
-  m_SubscribedUeAmbr = value;
+    AmbrRm const& value) {
+  m_SubscribedUeAmbr      = value;
   m_SubscribedUeAmbrIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::subscribedUeAmbrIsSet() const {
@@ -249,16 +232,20 @@ bool AccessAndMobilitySubscriptionData::subscribedUeAmbrIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetSubscribedUeAmbr() {
   m_SubscribedUeAmbrIsSet = false;
 }
-Nssai AccessAndMobilitySubscriptionData::getNssai() const { return m_Nssai; }
-void AccessAndMobilitySubscriptionData::setNssai(Nssai const &value) {
-  m_Nssai = value;
+Nssai AccessAndMobilitySubscriptionData::getNssai() const {
+  return m_Nssai;
+}
+void AccessAndMobilitySubscriptionData::setNssai(Nssai const& value) {
+  m_Nssai      = value;
   m_NssaiIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::nssaiIsSet() const {
   return m_NssaiIsSet;
 }
-void AccessAndMobilitySubscriptionData::unsetNssai() { m_NssaiIsSet = false; }
-std::vector<RatType> &AccessAndMobilitySubscriptionData::getRatRestrictions() {
+void AccessAndMobilitySubscriptionData::unsetNssai() {
+  m_NssaiIsSet = false;
+}
+std::vector<RatType>& AccessAndMobilitySubscriptionData::getRatRestrictions() {
   return m_RatRestrictions;
 }
 bool AccessAndMobilitySubscriptionData::ratRestrictionsIsSet() const {
@@ -267,7 +254,7 @@ bool AccessAndMobilitySubscriptionData::ratRestrictionsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetRatRestrictions() {
   m_RatRestrictionsIsSet = false;
 }
-std::vector<Area> &AccessAndMobilitySubscriptionData::getForbiddenAreas() {
+std::vector<Area>& AccessAndMobilitySubscriptionData::getForbiddenAreas() {
   return m_ForbiddenAreas;
 }
 bool AccessAndMobilitySubscriptionData::forbiddenAreasIsSet() const {
@@ -276,7 +263,7 @@ bool AccessAndMobilitySubscriptionData::forbiddenAreasIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetForbiddenAreas() {
   m_ForbiddenAreasIsSet = false;
 }
-std::vector<CoreNetworkType> &
+std::vector<CoreNetworkType>&
 AccessAndMobilitySubscriptionData::getCoreNetworkTypeRestrictions() {
   return m_CoreNetworkTypeRestrictions;
 }
@@ -291,7 +278,7 @@ int32_t AccessAndMobilitySubscriptionData::getRfspIndex() const {
   return m_RfspIndex;
 }
 void AccessAndMobilitySubscriptionData::setRfspIndex(int32_t const value) {
-  m_RfspIndex = value;
+  m_RfspIndex      = value;
   m_RfspIndexIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::rfspIndexIsSet() const {
@@ -304,7 +291,7 @@ int32_t AccessAndMobilitySubscriptionData::getSubsRegTimer() const {
   return m_SubsRegTimer;
 }
 void AccessAndMobilitySubscriptionData::setSubsRegTimer(int32_t const value) {
-  m_SubsRegTimer = value;
+  m_SubsRegTimer      = value;
   m_SubsRegTimerIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::subsRegTimerIsSet() const {
@@ -317,7 +304,7 @@ int32_t AccessAndMobilitySubscriptionData::getUeUsageType() const {
   return m_UeUsageType;
 }
 void AccessAndMobilitySubscriptionData::setUeUsageType(int32_t const value) {
-  m_UeUsageType = value;
+  m_UeUsageType      = value;
   m_UeUsageTypeIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::ueUsageTypeIsSet() const {
@@ -330,7 +317,7 @@ bool AccessAndMobilitySubscriptionData::isMpsPriority() const {
   return m_MpsPriority;
 }
 void AccessAndMobilitySubscriptionData::setMpsPriority(bool const value) {
-  m_MpsPriority = value;
+  m_MpsPriority      = value;
   m_MpsPriorityIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::mpsPriorityIsSet() const {
@@ -343,7 +330,7 @@ bool AccessAndMobilitySubscriptionData::isMcsPriority() const {
   return m_McsPriority;
 }
 void AccessAndMobilitySubscriptionData::setMcsPriority(bool const value) {
-  m_McsPriority = value;
+  m_McsPriority      = value;
   m_McsPriorityIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::mcsPriorityIsSet() const {
@@ -356,7 +343,7 @@ int32_t AccessAndMobilitySubscriptionData::getActiveTime() const {
   return m_ActiveTime;
 }
 void AccessAndMobilitySubscriptionData::setActiveTime(int32_t const value) {
-  m_ActiveTime = value;
+  m_ActiveTime      = value;
   m_ActiveTimeIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::activeTimeIsSet() const {
@@ -369,7 +356,7 @@ int32_t AccessAndMobilitySubscriptionData::getDlPacketCount() const {
   return m_DlPacketCount;
 }
 void AccessAndMobilitySubscriptionData::setDlPacketCount(int32_t const value) {
-  m_DlPacketCount = value;
+  m_DlPacketCount      = value;
   m_DlPacketCountIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::dlPacketCountIsSet() const {
@@ -381,8 +368,8 @@ void AccessAndMobilitySubscriptionData::unsetDlPacketCount() {
 SorInfo AccessAndMobilitySubscriptionData::getSorInfo() const {
   return m_SorInfo;
 }
-void AccessAndMobilitySubscriptionData::setSorInfo(SorInfo const &value) {
-  m_SorInfo = value;
+void AccessAndMobilitySubscriptionData::setSorInfo(SorInfo const& value) {
+  m_SorInfo      = value;
   m_SorInfoIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::sorInfoIsSet() const {
@@ -394,8 +381,8 @@ void AccessAndMobilitySubscriptionData::unsetSorInfo() {
 UpuInfo AccessAndMobilitySubscriptionData::getUpuInfo() const {
   return m_UpuInfo;
 }
-void AccessAndMobilitySubscriptionData::setUpuInfo(UpuInfo const &value) {
-  m_UpuInfo = value;
+void AccessAndMobilitySubscriptionData::setUpuInfo(UpuInfo const& value) {
+  m_UpuInfo      = value;
   m_UpuInfoIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::upuInfoIsSet() const {
@@ -408,7 +395,7 @@ bool AccessAndMobilitySubscriptionData::isMicoAllowed() const {
   return m_MicoAllowed;
 }
 void AccessAndMobilitySubscriptionData::setMicoAllowed(bool const value) {
-  m_MicoAllowed = value;
+  m_MicoAllowed      = value;
   m_MicoAllowedIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::micoAllowedIsSet() const {
@@ -417,7 +404,7 @@ bool AccessAndMobilitySubscriptionData::micoAllowedIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetMicoAllowed() {
   m_MicoAllowedIsSet = false;
 }
-std::vector<std::string> &
+std::vector<std::string>&
 AccessAndMobilitySubscriptionData::getSharedAmDataIds() {
   return m_SharedAmDataIds;
 }
@@ -427,13 +414,13 @@ bool AccessAndMobilitySubscriptionData::sharedAmDataIdsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetSharedAmDataIds() {
   m_SharedAmDataIdsIsSet = false;
 }
-OdbPacketServices
-AccessAndMobilitySubscriptionData::getOdbPacketServices() const {
+OdbPacketServices AccessAndMobilitySubscriptionData::getOdbPacketServices()
+    const {
   return m_OdbPacketServices;
 }
 void AccessAndMobilitySubscriptionData::setOdbPacketServices(
-    OdbPacketServices const &value) {
-  m_OdbPacketServices = value;
+    OdbPacketServices const& value) {
+  m_OdbPacketServices      = value;
   m_OdbPacketServicesIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::odbPacketServicesIsSet() const {
@@ -442,7 +429,7 @@ bool AccessAndMobilitySubscriptionData::odbPacketServicesIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetOdbPacketServices() {
   m_OdbPacketServicesIsSet = false;
 }
-std::vector<std::string> &
+std::vector<std::string>&
 AccessAndMobilitySubscriptionData::getSubscribedDnnList() {
   return m_SubscribedDnnList;
 }
@@ -456,7 +443,7 @@ int32_t AccessAndMobilitySubscriptionData::getServiceGapTime() const {
   return m_ServiceGapTime;
 }
 void AccessAndMobilitySubscriptionData::setServiceGapTime(int32_t const value) {
-  m_ServiceGapTime = value;
+  m_ServiceGapTime      = value;
   m_ServiceGapTimeIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::serviceGapTimeIsSet() const {
@@ -468,8 +455,8 @@ void AccessAndMobilitySubscriptionData::unsetServiceGapTime() {
 TraceData AccessAndMobilitySubscriptionData::getTraceData() const {
   return m_TraceData;
 }
-void AccessAndMobilitySubscriptionData::setTraceData(TraceData const &value) {
-  m_TraceData = value;
+void AccessAndMobilitySubscriptionData::setTraceData(TraceData const& value) {
+  m_TraceData      = value;
   m_TraceDataIsSet = true;
 }
 bool AccessAndMobilitySubscriptionData::traceDataIsSet() const {
@@ -479,6 +466,6 @@ void AccessAndMobilitySubscriptionData::unsetTraceData() {
   m_TraceDataIsSet = false;
 }
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

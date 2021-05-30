@@ -12,6 +12,7 @@
  */
 
 #include "UEContextInSMFDataRetrievalApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -26,7 +27,9 @@ UEContextInSMFDataRetrievalApi::UEContextInSMFDataRetrievalApi(
   router = rtr;
 }
 
-void UEContextInSMFDataRetrievalApi::init() { setupRoutes(); }
+void UEContextInSMFDataRetrievalApi::init() {
+  setupRoutes();
+}
 
 void UEContextInSMFDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -38,14 +41,14 @@ void UEContextInSMFDataRetrievalApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&UEContextInSMFDataRetrievalApi::
-                       ue_context_in_smf_data_retrieval_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &UEContextInSMFDataRetrievalApi::
+          ue_context_in_smf_data_retrieval_api_default_handler,
+      this));
 }
 
 void UEContextInSMFDataRetrievalApi::get_ue_ctx_in_smf_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
@@ -62,11 +65,11 @@ void UEContextInSMFDataRetrievalApi::get_ue_ctx_in_smf_data_handler(
 
   try {
     this->get_ue_ctx_in_smf_data(supi, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -75,12 +78,12 @@ void UEContextInSMFDataRetrievalApi::get_ue_ctx_in_smf_data_handler(
 
 void UEContextInSMFDataRetrievalApi::
     ue_context_in_smf_data_retrieval_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class CoreNetworkType {
-public:
+ public:
   CoreNetworkType();
   virtual ~CoreNetworkType();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// CoreNetworkType members
 
-  friend void to_json(nlohmann::json &j, const CoreNetworkType &o);
-  friend void from_json(const nlohmann::json &j, CoreNetworkType &o);
+  friend void to_json(nlohmann::json& j, const CoreNetworkType& o);
+  friend void from_json(const nlohmann::json& j, CoreNetworkType& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* CoreNetworkType_H_ */

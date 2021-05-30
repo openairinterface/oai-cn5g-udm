@@ -12,6 +12,7 @@
  */
 
 #include "ConfirmAuthApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -25,13 +26,16 @@ ConfirmAuthApi::ConfirmAuthApi(std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void ConfirmAuthApi::init() { setupRoutes(); }
+void ConfirmAuthApi::init() {
+  setupRoutes();
+}
 
 void ConfirmAuthApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Post(*router, base + "/:supi/auth-events",
-               Routes::bind(&ConfirmAuthApi::confirm_auth_handler, this));
+  Routes::Post(
+      *router, base + "/:supi/auth-events",
+      Routes::bind(&ConfirmAuthApi::confirm_auth_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(
@@ -39,7 +43,7 @@ void ConfirmAuthApi::setupRoutes() {
 }
 
 void ConfirmAuthApi::confirm_auth_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
@@ -51,14 +55,14 @@ void ConfirmAuthApi::confirm_auth_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(authEvent);
     this->confirm_auth(supi, authEvent, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -66,11 +70,11 @@ void ConfirmAuthApi::confirm_auth_handler(
 }
 
 void ConfirmAuthApi::confirm_auth_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

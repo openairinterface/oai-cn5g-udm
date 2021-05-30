@@ -20,21 +20,20 @@
 #ifndef CONFIRM_AUTH_API_IMPL_H_
 #define CONFIRM_AUTH_API_IMPL_H_
 
-#include <memory>
+#include <ConfirmAuthApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <ConfirmAuthApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "AuthEvent.h"
+#include "ProblemDetails.h"
 #include "curl.hpp"
 #include "logger.hpp"
-#include "ProblemDetails.h"
 #include "sha256.hpp"
-#include <string>
 #include "udm_config.hpp"
 
 namespace oai {
@@ -44,16 +43,17 @@ namespace api {
 using namespace oai::udm::model;
 
 class ConfirmAuthApiImpl : public oai::udm::api::ConfirmAuthApi {
-public:
+ public:
   ConfirmAuthApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~ConfirmAuthApiImpl() {}
 
-  void confirm_auth(const std::string &supi, const AuthEvent &authEvent,
-                    Pistache::Http::ResponseWriter &response);
+  void confirm_auth(
+      const std::string& supi, const AuthEvent& authEvent,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

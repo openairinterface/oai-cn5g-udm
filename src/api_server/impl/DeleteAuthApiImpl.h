@@ -20,21 +20,20 @@
 #ifndef DELETE_AUTH_API_IMPL_H_
 #define DELETE_AUTH_API_IMPL_H_
 
-#include <memory>
+#include <DeleteAuthApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <DeleteAuthApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "AuthEvent.h"
+#include "ProblemDetails.h"
 #include "curl.hpp"
 #include "logger.hpp"
-#include "ProblemDetails.h"
 #include "sha256.hpp"
-#include <string>
 #include "udm_config.hpp"
 
 namespace oai {
@@ -44,17 +43,17 @@ namespace api {
 using namespace oai::udm::model;
 
 class DeleteAuthApiImpl : public oai::udm::api::DeleteAuthApi {
-public:
+ public:
   DeleteAuthApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~DeleteAuthApiImpl() {}
 
-  void delete_auth(const std::string &supi, const std::string &authEventId,
-                   const AuthEvent &authEvent,
-                   Pistache::Http::ResponseWriter &response);
+  void delete_auth(
+      const std::string& supi, const std::string& authEventId,
+      const AuthEvent& authEvent, Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

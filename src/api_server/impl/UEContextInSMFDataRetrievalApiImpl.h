@@ -20,18 +20,17 @@
 #ifndef UE_CONTEXT_IN_SMF_DATA_RETRIEVAL_API_IMPL_H_
 #define UE_CONTEXT_IN_SMF_DATA_RETRIEVAL_API_IMPL_H_
 
-#include <memory>
+#include <UEContextInSMFDataRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <UEContextInSMFDataRetrievalApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "ProblemDetails.h"
 #include "UeContextInSmfData.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -41,18 +40,18 @@ using namespace oai::udm::model;
 
 class UEContextInSMFDataRetrievalApiImpl
     : public oai::udm::api::UEContextInSMFDataRetrievalApi {
-public:
+ public:
   UEContextInSMFDataRetrievalApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~UEContextInSMFDataRetrievalApiImpl() {}
 
   void get_ue_ctx_in_smf_data(
-      const std::string &supi,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& supi,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

@@ -25,17 +25,19 @@ void SnssaiInfo::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const SnssaiInfo &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const SnssaiInfo& o) {
+  j             = nlohmann::json();
   j["dnnInfos"] = o.m_DnnInfos;
 }
 
-void from_json(const nlohmann::json &j, SnssaiInfo &o) {
+void from_json(const nlohmann::json& j, SnssaiInfo& o) {
   j.at("dnnInfos").get_to(o.m_DnnInfos);
 }
 
-std::vector<DnnInfo> &SnssaiInfo::getDnnInfos() { return m_DnnInfos; }
+std::vector<DnnInfo>& SnssaiInfo::getDnnInfos() {
+  return m_DnnInfos;
+}
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

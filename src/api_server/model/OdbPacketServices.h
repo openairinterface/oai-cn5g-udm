@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class OdbPacketServices {
-public:
+ public:
   OdbPacketServices();
   virtual ~OdbPacketServices();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// OdbPacketServices members
 
-  friend void to_json(nlohmann::json &j, const OdbPacketServices &o);
-  friend void from_json(const nlohmann::json &j, OdbPacketServices &o);
+  friend void to_json(nlohmann::json& j, const OdbPacketServices& o);
+  friend void from_json(const nlohmann::json& j, OdbPacketServices& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* OdbPacketServices_H_ */

@@ -19,6 +19,10 @@
 #ifndef AccessAndMobilitySubscriptionData_H_
 #define AccessAndMobilitySubscriptionData_H_
 
+#include <nlohmann/json.hpp>
+#include <string>
+#include <vector>
+
 #include "AmbrRm.h"
 #include "Area.h"
 #include "CoreNetworkType.h"
@@ -28,9 +32,6 @@
 #include "SorInfo.h"
 #include "TraceData.h"
 #include "UpuInfo.h"
-#include <nlohmann/json.hpp>
-#include <string>
-#include <vector>
 
 namespace oai {
 namespace udm {
@@ -40,7 +41,7 @@ namespace model {
 ///
 /// </summary>
 class AccessAndMobilitySubscriptionData {
-public:
+ public:
   AccessAndMobilitySubscriptionData();
   virtual ~AccessAndMobilitySubscriptionData();
 
@@ -53,51 +54,51 @@ public:
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getGpsis();
+  std::vector<std::string>& getGpsis();
   bool gpsisIsSet() const;
   void unsetGpsis();
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getInternalGroupIds();
+  std::vector<std::string>& getInternalGroupIds();
   bool internalGroupIdsIsSet() const;
   void unsetInternalGroupIds();
   /// <summary>
   ///
   /// </summary>
   AmbrRm getSubscribedUeAmbr() const;
-  void setSubscribedUeAmbr(AmbrRm const &value);
+  void setSubscribedUeAmbr(AmbrRm const& value);
   bool subscribedUeAmbrIsSet() const;
   void unsetSubscribedUeAmbr();
   /// <summary>
   ///
   /// </summary>
   Nssai getNssai() const;
-  void setNssai(Nssai const &value);
+  void setNssai(Nssai const& value);
   bool nssaiIsSet() const;
   void unsetNssai();
   /// <summary>
   ///
   /// </summary>
-  std::vector<RatType> &getRatRestrictions();
+  std::vector<RatType>& getRatRestrictions();
   bool ratRestrictionsIsSet() const;
   void unsetRatRestrictions();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Area> &getForbiddenAreas();
+  std::vector<Area>& getForbiddenAreas();
   bool forbiddenAreasIsSet() const;
   void unsetForbiddenAreas();
   /// <summary>
   ///
   /// </summary>
-  std::vector<CoreNetworkType> &getCoreNetworkTypeRestrictions();
+  std::vector<CoreNetworkType>& getCoreNetworkTypeRestrictions();
   bool coreNetworkTypeRestrictionsIsSet() const;
   void unsetCoreNetworkTypeRestrictions();
   /// <summary>
@@ -153,14 +154,14 @@ public:
   ///
   /// </summary>
   SorInfo getSorInfo() const;
-  void setSorInfo(SorInfo const &value);
+  void setSorInfo(SorInfo const& value);
   bool sorInfoIsSet() const;
   void unsetSorInfo();
   /// <summary>
   ///
   /// </summary>
   UpuInfo getUpuInfo() const;
-  void setUpuInfo(UpuInfo const &value);
+  void setUpuInfo(UpuInfo const& value);
   bool upuInfoIsSet() const;
   void unsetUpuInfo();
   /// <summary>
@@ -173,20 +174,20 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getSharedAmDataIds();
+  std::vector<std::string>& getSharedAmDataIds();
   bool sharedAmDataIdsIsSet() const;
   void unsetSharedAmDataIds();
   /// <summary>
   ///
   /// </summary>
   OdbPacketServices getOdbPacketServices() const;
-  void setOdbPacketServices(OdbPacketServices const &value);
+  void setOdbPacketServices(OdbPacketServices const& value);
   bool odbPacketServicesIsSet() const;
   void unsetOdbPacketServices();
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getSubscribedDnnList();
+  std::vector<std::string>& getSubscribedDnnList();
   bool subscribedDnnListIsSet() const;
   void unsetSubscribedDnnList();
   /// <summary>
@@ -200,16 +201,16 @@ public:
   ///
   /// </summary>
   TraceData getTraceData() const;
-  void setTraceData(TraceData const &value);
+  void setTraceData(TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
 
-  friend void to_json(nlohmann::json &j,
-                      const AccessAndMobilitySubscriptionData &o);
-  friend void from_json(const nlohmann::json &j,
-                        AccessAndMobilitySubscriptionData &o);
+  friend void to_json(
+      nlohmann::json& j, const AccessAndMobilitySubscriptionData& o);
+  friend void from_json(
+      const nlohmann::json& j, AccessAndMobilitySubscriptionData& o);
 
-protected:
+ protected:
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
   std::vector<std::string> m_Gpsis;
@@ -258,8 +259,8 @@ protected:
   bool m_TraceDataIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AccessAndMobilitySubscriptionData_H_ */

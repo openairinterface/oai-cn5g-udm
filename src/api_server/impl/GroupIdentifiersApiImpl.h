@@ -20,18 +20,17 @@
 #ifndef GROUP_IDENTIFIERS_API_IMPL_H_
 #define GROUP_IDENTIFIERS_API_IMPL_H_
 
-#include <memory>
+#include <GroupIdentifiersApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <GroupIdentifiersApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "GroupIdentifiers.h"
 #include "ProblemDetails.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -40,21 +39,21 @@ namespace api {
 using namespace oai::udm::model;
 
 class GroupIdentifiersApiImpl : public oai::udm::api::GroupIdentifiersApi {
-public:
+ public:
   GroupIdentifiersApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~GroupIdentifiersApiImpl() {}
 
   void get_group_identifiers(
-      const Pistache::Optional<std::string> &extGroupId,
-      const Pistache::Optional<std::string> &intGroupId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const Pistache::Optional<std::string>& extGroupId,
+      const Pistache::Optional<std::string>& intGroupId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

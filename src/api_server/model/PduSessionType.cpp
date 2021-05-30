@@ -25,12 +25,12 @@ void PduSessionType::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PduSessionType &o) {
+void to_json(nlohmann::json& j, const PduSessionType& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, PduSessionType &o) {}
+void from_json(const nlohmann::json& j, PduSessionType& o) {}
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

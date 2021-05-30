@@ -19,10 +19,11 @@
 #ifndef AuthenticationInfoResult_H_
 #define AuthenticationInfoResult_H_
 
-#include "AuthType.h"
-#include "AuthenticationVector.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "AuthType.h"
+#include "AuthenticationVector.h"
 
 namespace oai {
 namespace udm {
@@ -32,7 +33,7 @@ namespace model {
 ///
 /// </summary>
 class AuthenticationInfoResult {
-public:
+ public:
   AuthenticationInfoResult();
   virtual ~AuthenticationInfoResult();
 
@@ -45,26 +46,26 @@ public:
   ///
   /// </summary>
   AuthType getAuthType() const;
-  void setAuthType(AuthType const &value);
+  void setAuthType(AuthType const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
   AuthenticationVector getAuthenticationVector() const;
-  void setAuthenticationVector(AuthenticationVector const &value);
+  void setAuthenticationVector(AuthenticationVector const& value);
   bool authenticationVectorIsSet() const;
   void unsetAuthenticationVector();
   /// <summary>
   ///
   /// </summary>
   std::string getSupi() const;
-  void setSupi(std::string const &value);
+  void setSupi(std::string const& value);
   bool supiIsSet() const;
   void unsetSupi();
   /// <summary>
@@ -75,10 +76,10 @@ public:
   bool akmaIndIsSet() const;
   void unsetAkmaInd();
 
-  friend void to_json(nlohmann::json &j, const AuthenticationInfoResult &o);
-  friend void from_json(const nlohmann::json &j, AuthenticationInfoResult &o);
+  friend void to_json(nlohmann::json& j, const AuthenticationInfoResult& o);
+  friend void from_json(const nlohmann::json& j, AuthenticationInfoResult& o);
 
-protected:
+ protected:
   AuthType m_AuthType;
 
   std::string m_SupportedFeatures;
@@ -91,8 +92,8 @@ protected:
   bool m_AkmaIndIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AuthenticationInfoResult_H_ */

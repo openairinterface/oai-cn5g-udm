@@ -32,9 +32,9 @@ static const int _charclass[256] = {
     0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, /*  abcdefg hijklmno */
     3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0  /* pqrstuvw xyz      */
 };
-#define WHITESPACE(c) (_charclass[(unsigned char)(c)] == 1)
-#define ALNUM(c) (_charclass[(unsigned char)(c)] >= 2)
-#define ALPHA(c) (_charclass[(unsigned char)(c)] == 3)
+#define WHITESPACE(c) (_charclass[(unsigned char) (c)] == 1)
+#define ALNUM(c) (_charclass[(unsigned char) (c)] >= 2)
+#define ALPHA(c) (_charclass[(unsigned char) (c)] == 3)
 
 /* Aliases for characters, ASCII/UTF-8 */
 #define EXCLAM 0x21 /* '!' */
@@ -59,12 +59,11 @@ static const int _charclass[256] = {
     }                                                                          \
     _ret = cb(type, chunk_start, _sz, key);                                    \
     if (_ret < _sz) {                                                          \
-      if (_current_too && _ret == -1)                                          \
-        state = ns;                                                            \
+      if (_current_too && _ret == -1) state = ns;                              \
       goto finish;                                                             \
     }                                                                          \
     chunk_start = p + _current_too;                                            \
-    state = ns;                                                                \
+    state       = ns;                                                          \
   } while (0)
 
 #define TOKEN_CB(_type, _ns, _current_too)                                     \
@@ -79,130 +78,129 @@ static const int _charclass[256] = {
 /*
  * Parser itself
  */
-ssize_t pxml_parse(int *stateContext, const void *xmlbuf, size_t size,
-                   pxml_callback_f *cb, void *key) {
-  pstate_e state = (pstate_e)*stateContext;
-  const char *chunk_start = (const char *)xmlbuf;
-  const char *p = chunk_start;
-  const char *end = p + size;
+ssize_t pxml_parse(
+    int* stateContext, const void* xmlbuf, size_t size, pxml_callback_f* cb,
+    void* key) {
+  pstate_e state          = (pstate_e) *stateContext;
+  const char* chunk_start = (const char*) xmlbuf;
+  const char* p           = chunk_start;
+  const char* end         = p + size;
 
   for (; p < end; p++) {
-    int C = *(const unsigned char *)p;
+    int C = *(const unsigned char*) p;
     switch (state) {
-    case ST_TEXT:
-      /*
-       * Initial state: we're in the middle of some text,
-       * or just have started.
-       */
-      if (C == LANGLE)
-        /* We're now in the tag, probably */
-        TOKEN_CB(PXML_TEXT, ST_TAG_START, 0);
-      break;
-    case ST_TAG_START:
-      if (ALPHA(C) || (C == CSLASH))
-        state = ST_TAG_BODY;
-      else if (C == EXCLAM)
-        state = ST_COMMENT_WAIT_DASH1;
-      else
+      case ST_TEXT:
         /*
-         * Not characters and not whitespace.
-         * Must be something like "3 < 4".
+         * Initial state: we're in the middle of some text,
+         * or just have started.
          */
-        TOKEN_CB(PXML_TEXT, ST_TEXT, 1); /* Flush as data */
-      break;
-    case ST_TAG_BODY:
-      switch (C) {
-      case RANGLE:
-        /* End of the tag */
-        TOKEN_CB_FINAL(PXML_TAG, ST_TEXT, 1);
+        if (C == LANGLE) /* We're now in the tag, probably */
+          TOKEN_CB(PXML_TEXT, ST_TAG_START, 0);
         break;
-      case LANGLE:
+      case ST_TAG_START:
+        if (ALPHA(C) || (C == CSLASH))
+          state = ST_TAG_BODY;
+        else if (C == EXCLAM)
+          state = ST_COMMENT_WAIT_DASH1;
+        else
+          /*
+           * Not characters and not whitespace.
+           * Must be something like "3 < 4".
+           */
+          TOKEN_CB(PXML_TEXT, ST_TEXT, 1); /* Flush as data */
+        break;
+      case ST_TAG_BODY:
+        switch (C) {
+          case RANGLE:
+            /* End of the tag */
+            TOKEN_CB_FINAL(PXML_TAG, ST_TEXT, 1);
+            break;
+          case LANGLE:
+            /*
+             * The previous tag wasn't completed, but still
+             * recognized as valid. (Mozilla-compatible)
+             */
+            TOKEN_CB_FINAL(PXML_TAG, ST_TAG_START, 0);
+            break;
+          case CEQUAL:
+            state = ST_TAG_QUOTE_WAIT;
+            break;
+        }
+        break;
+      case ST_TAG_QUOTE_WAIT:
         /*
-         * The previous tag wasn't completed, but still
-         * recognized as valid. (Mozilla-compatible)
+         * State after the equal sign ("=") in the tag.
          */
-        TOKEN_CB_FINAL(PXML_TAG, ST_TAG_START, 0);
+        switch (C) {
+          case CQUOTE:
+            state = ST_TAG_QUOTED_STRING;
+            break;
+          case RANGLE:
+            /* End of the tag */
+            TOKEN_CB_FINAL(PXML_TAG, ST_TEXT, 1);
+            break;
+          default:
+            if (!WHITESPACE(C)) /* Unquoted string value */
+              state = ST_TAG_UNQUOTED_STRING;
+        }
         break;
-      case CEQUAL:
-        state = ST_TAG_QUOTE_WAIT;
+      case ST_TAG_QUOTED_STRING:
+        /*
+         * Tag attribute's string value in quotes.
+         */
+        if (C == CQUOTE) {
+          /* Return back to the tag state */
+          state = ST_TAG_BODY;
+        }
         break;
-      }
-      break;
-    case ST_TAG_QUOTE_WAIT:
-      /*
-       * State after the equal sign ("=") in the tag.
-       */
-      switch (C) {
-      case CQUOTE:
-        state = ST_TAG_QUOTED_STRING;
+      case ST_TAG_UNQUOTED_STRING:
+        if (C == RANGLE) {
+          /* End of the tag */
+          TOKEN_CB_FINAL(PXML_TAG, ST_TEXT, 1);
+        } else if (WHITESPACE(C)) {
+          /* Return back to the tag state */
+          state = ST_TAG_BODY;
+        }
         break;
-      case RANGLE:
-        /* End of the tag */
-        TOKEN_CB_FINAL(PXML_TAG, ST_TEXT, 1);
+      case ST_COMMENT_WAIT_DASH1:
+        if (C == CDASH) {
+          state = ST_COMMENT_WAIT_DASH2;
+        } else {
+          /* Some ordinary tag. */
+          state = ST_TAG_BODY;
+        }
         break;
-      default:
-        if (!WHITESPACE(C))
-          /* Unquoted string value */
-          state = ST_TAG_UNQUOTED_STRING;
-      }
-      break;
-    case ST_TAG_QUOTED_STRING:
-      /*
-       * Tag attribute's string value in quotes.
-       */
-      if (C == CQUOTE) {
-        /* Return back to the tag state */
-        state = ST_TAG_BODY;
-      }
-      break;
-    case ST_TAG_UNQUOTED_STRING:
-      if (C == RANGLE) {
-        /* End of the tag */
-        TOKEN_CB_FINAL(PXML_TAG, ST_TEXT, 1);
-      } else if (WHITESPACE(C)) {
-        /* Return back to the tag state */
-        state = ST_TAG_BODY;
-      }
-      break;
-    case ST_COMMENT_WAIT_DASH1:
-      if (C == CDASH) {
-        state = ST_COMMENT_WAIT_DASH2;
-      } else {
-        /* Some ordinary tag. */
-        state = ST_TAG_BODY;
-      }
-      break;
-    case ST_COMMENT_WAIT_DASH2:
-      if (C == CDASH) {
-        /* Seen "<--" */
-        state = ST_COMMENT;
-      } else {
-        /* Some ordinary tag */
-        state = ST_TAG_BODY;
-      }
-      break;
-    case ST_COMMENT:
-      if (C == CDASH) {
-        state = ST_COMMENT_CLO_DASH2;
-      }
-      break;
-    case ST_COMMENT_CLO_DASH2:
-      if (C == CDASH) {
-        state = ST_COMMENT_CLO_RT;
-      } else {
-        /* This is not an end of a comment */
-        state = ST_COMMENT;
-      }
-      break;
-    case ST_COMMENT_CLO_RT:
-      if (C == RANGLE) {
-        TOKEN_CB_FINAL(PXML_COMMENT, ST_TEXT, 1);
-      } else if (C == CDASH) {
-        /* Maintain current state, still waiting for '>' */
-      } else {
-        state = ST_COMMENT;
-      }
-      break;
+      case ST_COMMENT_WAIT_DASH2:
+        if (C == CDASH) {
+          /* Seen "<--" */
+          state = ST_COMMENT;
+        } else {
+          /* Some ordinary tag */
+          state = ST_TAG_BODY;
+        }
+        break;
+      case ST_COMMENT:
+        if (C == CDASH) {
+          state = ST_COMMENT_CLO_DASH2;
+        }
+        break;
+      case ST_COMMENT_CLO_DASH2:
+        if (C == CDASH) {
+          state = ST_COMMENT_CLO_RT;
+        } else {
+          /* This is not an end of a comment */
+          state = ST_COMMENT;
+        }
+        break;
+      case ST_COMMENT_CLO_RT:
+        if (C == RANGLE) {
+          TOKEN_CB_FINAL(PXML_COMMENT, ST_TEXT, 1);
+        } else if (C == CDASH) {
+          /* Maintain current state, still waiting for '>' */
+        } else {
+          state = ST_COMMENT;
+        }
+        break;
     } /* switch(*ptr) */
   }   /* for() */
 
@@ -211,18 +209,18 @@ ssize_t pxml_parse(int *stateContext, const void *xmlbuf, size_t size,
    */
   if (p - chunk_start) {
     switch (state) {
-    case ST_COMMENT:
-      TOKEN_CB(PXML_COMMENT, state, 0);
-      break;
-    case ST_TEXT:
-      TOKEN_CB(PXML_TEXT, state, 0);
-      break;
-    default:
-      break; /* a no-op */
+      case ST_COMMENT:
+        TOKEN_CB(PXML_COMMENT, state, 0);
+        break;
+      case ST_TEXT:
+        TOKEN_CB(PXML_TEXT, state, 0);
+        break;
+      default:
+        break; /* a no-op */
     }
   }
 
 finish:
-  *stateContext = (int)state;
-  return chunk_start - (const char *)xmlbuf;
+  *stateContext = (int) state;
+  return chunk_start - (const char*) xmlbuf;
 }

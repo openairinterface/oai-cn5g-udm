@@ -12,6 +12,7 @@
  */
 
 #include "SMFSelectionSubscriptionDataRetrievalApi.h"
+
 #include "Helpers.h"
 #include "conversions.hpp"
 
@@ -28,7 +29,9 @@ SMFSelectionSubscriptionDataRetrievalApi::
   router = rtr;
 }
 
-void SMFSelectionSubscriptionDataRetrievalApi::init() { setupRoutes(); }
+void SMFSelectionSubscriptionDataRetrievalApi::init() {
+  setupRoutes();
+}
 
 void SMFSelectionSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -47,7 +50,7 @@ void SMFSelectionSubscriptionDataRetrievalApi::setupRoutes() {
 }
 
 void SMFSelectionSubscriptionDataRetrievalApi::get_smf_sel_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
@@ -63,26 +66,26 @@ void SMFSelectionSubscriptionDataRetrievalApi::get_smf_sel_data_handler(
   }
   auto plmnIdQuery = request.query().get("plmn-id");
   Pistache::Optional<PlmnId> plmnId;
-  if(!plmnIdQuery.isEmpty()){
-        PlmnId value;
-        std::string valueplmnIdQuery= plmnIdQuery.get();
-        std::string valuechange = conv::UrlDecode(valueplmnIdQuery);
-        nlohmann::json::parse(valuechange).get_to(value);
-        plmnId = Pistache::Some(value);
-
+  if (!plmnIdQuery.isEmpty()) {
+    PlmnId value;
+    std::string valueplmnIdQuery = plmnIdQuery.get();
+    std::string valuechange      = conv::UrlDecode(valueplmnIdQuery);
+    nlohmann::json::parse(valuechange).get_to(value);
+    plmnId = Pistache::Some(value);
   }
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_smf_sel_data(supi, supportedFeatures, plmnId, ifNoneMatch,
-                           ifModifiedSince, response);
-  } catch (nlohmann::detail::exception &e) {
+    this->get_smf_sel_data(
+        supi, supportedFeatures, plmnId, ifNoneMatch, ifModifiedSince,
+        response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -91,12 +94,12 @@ void SMFSelectionSubscriptionDataRetrievalApi::get_smf_sel_data_handler(
 
 void SMFSelectionSubscriptionDataRetrievalApi::
     smf_selection_subscription_data_retrieval_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

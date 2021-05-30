@@ -30,7 +30,7 @@ namespace model {
 ///
 /// </summary>
 class AmbrRm {
-public:
+ public:
   AmbrRm();
   virtual ~AmbrRm();
 
@@ -43,24 +43,24 @@ public:
   ///
   /// </summary>
   std::string getUplink() const;
-  void setUplink(std::string const &value);
+  void setUplink(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getDownlink() const;
-  void setDownlink(std::string const &value);
+  void setDownlink(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const AmbrRm &o);
-  friend void from_json(const nlohmann::json &j, AmbrRm &o);
+  friend void to_json(nlohmann::json& j, const AmbrRm& o);
+  friend void from_json(const nlohmann::json& j, AmbrRm& o);
 
-protected:
+ protected:
   std::string m_Uplink;
 
   std::string m_Downlink;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AmbrRm_H_ */

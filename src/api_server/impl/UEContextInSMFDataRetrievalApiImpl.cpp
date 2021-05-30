@@ -24,12 +24,12 @@ UEContextInSMFDataRetrievalApiImpl::UEContextInSMFDataRetrievalApiImpl(
     : UEContextInSMFDataRetrievalApi(rtr) {}
 
 void UEContextInSMFDataRetrievalApiImpl::get_ue_ctx_in_smf_data(
-    const std::string &supi,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& supi,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

@@ -20,20 +20,19 @@
 #ifndef ACCESS_AND_MOBILITY_SUBSCRIPTION_DATA_RETRIEVAL_API_IMPL_H_
 #define ACCESS_AND_MOBILITY_SUBSCRIPTION_DATA_RETRIEVAL_API_IMPL_H_
 
-#include <memory>
+#include <AccessAndMobilitySubscriptionDataRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <AccessAndMobilitySubscriptionDataRetrievalApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "AccessAndMobilitySubscriptionData.h"
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "udm_app.hpp"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -44,28 +43,27 @@ using namespace oai::udm::model;
 
 class AccessAndMobilitySubscriptionDataRetrievalApiImpl
     : public oai::udm::api::AccessAndMobilitySubscriptionDataRetrievalApi {
-public:
+ public:
   AccessAndMobilitySubscriptionDataRetrievalApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
-	    std::string address);
+      std::string address);
   ~AccessAndMobilitySubscriptionDataRetrievalApiImpl() {}
 
   void get_am_data(
-      const std::string &supi,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<PlmnId> &plmnId,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& supi,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 
-private:
- udm_app* m_udm_app;
- std::string m_address;
-
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

@@ -20,19 +20,18 @@
 #ifndef SLICE_SELECTION_SUBSCRIPTION_DATA_RETRIEVAL_API_IMPL_H_
 #define SLICE_SELECTION_SUBSCRIPTION_DATA_RETRIEVAL_API_IMPL_H_
 
-#include <memory>
+#include <SliceSelectionSubscriptionDataRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <SliceSelectionSubscriptionDataRetrievalApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "Nssai.h"
 #include "PlmnId.h"
 #include "ProblemDetails.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -42,22 +41,22 @@ using namespace oai::udm::model;
 
 class SliceSelectionSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SliceSelectionSubscriptionDataRetrievalApi {
-public:
+ public:
   SliceSelectionSubscriptionDataRetrievalApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~SliceSelectionSubscriptionDataRetrievalApiImpl() {}
 
   void get_nssai(
-      const std::string &supi,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<PlmnId> &plmnId,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& supi,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

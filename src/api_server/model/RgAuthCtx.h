@@ -30,7 +30,7 @@ namespace model {
 ///
 /// </summary>
 class RgAuthCtx {
-public:
+ public:
   RgAuthCtx();
   virtual ~RgAuthCtx();
 
@@ -48,21 +48,21 @@ public:
   ///
   /// </summary>
   std::string getSupi() const;
-  void setSupi(std::string const &value);
+  void setSupi(std::string const& value);
   bool supiIsSet() const;
   void unsetSupi();
   /// <summary>
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
 
-  friend void to_json(nlohmann::json &j, const RgAuthCtx &o);
-  friend void from_json(const nlohmann::json &j, RgAuthCtx &o);
+  friend void to_json(nlohmann::json& j, const RgAuthCtx& o);
+  friend void from_json(const nlohmann::json& j, RgAuthCtx& o);
 
-protected:
+ protected:
   bool m_AuthInd;
 
   std::string m_Supi;
@@ -71,8 +71,8 @@ protected:
   bool m_SupportedFeaturesIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* RgAuthCtx_H_ */

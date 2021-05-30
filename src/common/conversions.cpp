@@ -29,12 +29,13 @@
 #include <arpa/inet.h>
 #include <ctype.h>
 #include <inttypes.h>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+
+#include <iomanip>
+#include <iostream>
+#include <sstream>
 
 static const char hex_to_ascii_table[16] = {
     '0', '1', '2', '3', '4', '5', '6', '7',

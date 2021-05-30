@@ -20,37 +20,37 @@
 #ifndef SUBSCRIPTION_DELETION_FOR_SHARED_DATA_API_IMPL_H_
 #define SUBSCRIPTION_DELETION_FOR_SHARED_DATA_API_IMPL_H_
 
-#include <memory>
+#include <SubscriptionDeletionForSharedDataApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <SubscriptionDeletionForSharedDataApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "ProblemDetails.h"
-#include <string>
 
 namespace oai {
 namespace udm {
 namespace api {
 
-//using namespace oai::udm::model;
+// using namespace oai::udm::model;
 
 class SubscriptionDeletionForSharedDataApiImpl
     : public oai::udm::api::SubscriptionDeletionForSharedDataApi {
-public:
+ public:
   SubscriptionDeletionForSharedDataApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~SubscriptionDeletionForSharedDataApiImpl() {}
 
-  void unsubscribe_for_shared_data(const std::string &subscriptionId,
-                                   Pistache::Http::ResponseWriter &response);
+  void unsubscribe_for_shared_data(
+      const std::string& subscriptionId,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

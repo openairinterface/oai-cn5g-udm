@@ -12,6 +12,7 @@
  */
 
 #include "SessionManagementSubscriptionDataRetrievalApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -27,7 +28,9 @@ SessionManagementSubscriptionDataRetrievalApi::
   router = rtr;
 }
 
-void SessionManagementSubscriptionDataRetrievalApi::init() { setupRoutes(); }
+void SessionManagementSubscriptionDataRetrievalApi::init() {
+  setupRoutes();
+}
 
 void SessionManagementSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -46,7 +49,7 @@ void SessionManagementSubscriptionDataRetrievalApi::setupRoutes() {
 }
 
 void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
@@ -104,11 +107,11 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
     // this->get_sm_data(supi, supportedFeatures, singleNssai, dnn, plmnId,
     // ifNoneMatch, ifModifiedSince, response);
     this->get_sm_data(supi, singleNssai, dnn, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -117,12 +120,12 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
 
 void SessionManagementSubscriptionDataRetrievalApi::
     session_management_subscription_data_retrieval_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

@@ -20,19 +20,18 @@
 #ifndef TRACE_CONFIGURATION_DATA_RETRIEVAL_API_IMPL_H_
 #define TRACE_CONFIGURATION_DATA_RETRIEVAL_API_IMPL_H_
 
-#include <memory>
+#include <TraceConfigurationDataRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <TraceConfigurationDataRetrievalApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "TraceDataResponse.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -42,22 +41,22 @@ using namespace oai::udm::model;
 
 class TraceConfigurationDataRetrievalApiImpl
     : public oai::udm::api::TraceConfigurationDataRetrievalApi {
-public:
+ public:
   TraceConfigurationDataRetrievalApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~TraceConfigurationDataRetrievalApiImpl() {}
 
   void get_trace_config_data(
-      const std::string &supi,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<PlmnId> &plmnId,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& supi,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

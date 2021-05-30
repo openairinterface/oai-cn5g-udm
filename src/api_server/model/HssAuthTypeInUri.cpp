@@ -25,12 +25,12 @@ void HssAuthTypeInUri::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const HssAuthTypeInUri &o) {
+void to_json(nlohmann::json& j, const HssAuthTypeInUri& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, HssAuthTypeInUri &o) {}
+void from_json(const nlohmann::json& j, HssAuthTypeInUri& o) {}
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class IpAddress {
-public:
+ public:
   IpAddress();
   virtual ~IpAddress();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// IpAddress members
 
-  friend void to_json(nlohmann::json &j, const IpAddress &o);
-  friend void from_json(const nlohmann::json &j, IpAddress &o);
+  friend void to_json(nlohmann::json& j, const IpAddress& o);
+  friend void from_json(const nlohmann::json& j, IpAddress& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* IpAddress_H_ */

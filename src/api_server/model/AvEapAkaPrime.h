@@ -19,9 +19,10 @@
 #ifndef AvEapAkaPrime_H_
 #define AvEapAkaPrime_H_
 
-#include "AvType.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "AvType.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class AvEapAkaPrime {
-public:
+ public:
   AvEapAkaPrime();
   virtual ~AvEapAkaPrime();
 
@@ -44,37 +45,37 @@ public:
   ///
   /// </summary>
   AvType getAvType() const;
-  void setAvType(AvType const &value);
+  void setAvType(AvType const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getRand() const;
-  void setRand(std::string const &value);
+  void setRand(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getXres() const;
-  void setXres(std::string const &value);
+  void setXres(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getAutn() const;
-  void setAutn(std::string const &value);
+  void setAutn(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getCkPrime() const;
-  void setCkPrime(std::string const &value);
+  void setCkPrime(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getIkPrime() const;
-  void setIkPrime(std::string const &value);
+  void setIkPrime(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const AvEapAkaPrime &o);
-  friend void from_json(const nlohmann::json &j, AvEapAkaPrime &o);
+  friend void to_json(nlohmann::json& j, const AvEapAkaPrime& o);
+  friend void from_json(const nlohmann::json& j, AvEapAkaPrime& o);
 
-protected:
+ protected:
   AvType m_AvType;
 
   std::string m_Rand;
@@ -88,8 +89,8 @@ protected:
   std::string m_IkPrime;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AvEapAkaPrime_H_ */

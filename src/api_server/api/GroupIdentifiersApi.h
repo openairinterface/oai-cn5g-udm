@@ -24,9 +24,10 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
+#include <string>
+
 #include "GroupIdentifiers.h"
 #include "ProblemDetails.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -35,20 +36,21 @@ namespace api {
 using namespace oai::udm::model;
 
 class GroupIdentifiersApi {
-public:
+ public:
   GroupIdentifiersApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~GroupIdentifiersApi() {}
   void init();
 
   const std::string base = "/nudm-sdm/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void get_group_identifiers_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
+  void get_group_identifiers_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void group_identifiers_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -69,16 +71,16 @@ private:
   /// conditional requests, as described in RFC 7232, 3.3 (optional, default to
   /// &quot;&quot;)</param>
   virtual void get_group_identifiers(
-      const Pistache::Optional<std::string> &extGroupId,
-      const Pistache::Optional<std::string> &intGroupId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::string>& extGroupId,
+      const Pistache::Optional<std::string>& intGroupId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* GroupIdentifiersApi_H_ */

@@ -25,12 +25,12 @@ void CoreNetworkType::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const CoreNetworkType &o) {
+void to_json(nlohmann::json& j, const CoreNetworkType& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, CoreNetworkType &o) {}
+void from_json(const nlohmann::json& j, CoreNetworkType& o) {}
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

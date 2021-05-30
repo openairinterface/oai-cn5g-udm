@@ -17,7 +17,9 @@ namespace oai {
 namespace udm {
 namespace model {
 
-PduSessionTypes::PduSessionTypes() { m_AllowedSessionTypesIsSet = false; }
+PduSessionTypes::PduSessionTypes() {
+  m_AllowedSessionTypesIsSet = false;
+}
 
 PduSessionTypes::~PduSessionTypes() {}
 
@@ -25,14 +27,14 @@ void PduSessionTypes::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PduSessionTypes &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const PduSessionTypes& o) {
+  j                       = nlohmann::json();
   j["defaultSessionType"] = o.m_DefaultSessionType;
   if (o.allowedSessionTypesIsSet())
     j["allowedSessionTypes"] = o.m_AllowedSessionTypes;
 }
 
-void from_json(const nlohmann::json &j, PduSessionTypes &o) {
+void from_json(const nlohmann::json& j, PduSessionTypes& o) {
   j.at("defaultSessionType").get_to(o.m_DefaultSessionType);
   if (j.find("allowedSessionTypes") != j.end()) {
     j.at("allowedSessionTypes").get_to(o.m_AllowedSessionTypes);
@@ -43,10 +45,10 @@ void from_json(const nlohmann::json &j, PduSessionTypes &o) {
 PduSessionType PduSessionTypes::getDefaultSessionType() const {
   return m_DefaultSessionType;
 }
-void PduSessionTypes::setDefaultSessionType(PduSessionType const &value) {
+void PduSessionTypes::setDefaultSessionType(PduSessionType const& value) {
   m_DefaultSessionType = value;
 }
-std::vector<PduSessionType> &PduSessionTypes::getAllowedSessionTypes() {
+std::vector<PduSessionType>& PduSessionTypes::getAllowedSessionTypes() {
   return m_AllowedSessionTypes;
 }
 bool PduSessionTypes::allowedSessionTypesIsSet() const {
@@ -56,6 +58,6 @@ void PduSessionTypes::unsetAllowedSessionTypes() {
   m_AllowedSessionTypesIsSet = false;
 }
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

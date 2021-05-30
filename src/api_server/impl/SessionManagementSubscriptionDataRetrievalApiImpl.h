@@ -20,20 +20,19 @@
 #ifndef SESSION_MANAGEMENT_SUBSCRIPTION_DATA_RETRIEVAL_API_IMPL_H_
 #define SESSION_MANAGEMENT_SUBSCRIPTION_DATA_RETRIEVAL_API_IMPL_H_
 
-#include <memory>
+#include <SessionManagementSubscriptionDataRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <SessionManagementSubscriptionDataRetrievalApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "SessionManagementSubscriptionData.h"
 #include "Snssai.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -43,7 +42,7 @@ using namespace oai::udm::model;
 
 class SessionManagementSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SessionManagementSubscriptionDataRetrievalApi {
-public:
+ public:
   SessionManagementSubscriptionDataRetrievalApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~SessionManagementSubscriptionDataRetrievalApiImpl() {}
@@ -52,17 +51,17 @@ public:
   // Pistache::Optional<std::string> &supportedFeatures, const
   // Pistache::Optional<Snssai> &singleNssai, const
   // Pistache::Optional<std::string> &dnn, const Pistache::Optional<PlmnId>
-  // &plmnId, const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-  // const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-  // Pistache::Http::ResponseWriter &response);
-  void get_sm_data(const std::string &supi,
-                   const Pistache::Optional<Snssai> &singleNssai,
-                   const Pistache::Optional<std::string> &dnn,
-                   Pistache::Http::ResponseWriter &response);
+  // &plmnId, const Pistache::Optional<Pistache::Http::Header::Raw>
+  // &ifNoneMatch, const Pistache::Optional<Pistache::Http::Header::Raw>
+  // &ifModifiedSince, Pistache::Http::ResponseWriter &response);
+  void get_sm_data(
+      const std::string& supi, const Pistache::Optional<Snssai>& singleNssai,
+      const Pistache::Optional<std::string>& dnn,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

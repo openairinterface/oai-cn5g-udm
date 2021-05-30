@@ -19,9 +19,10 @@
 #ifndef PduSession_H_
 #define PduSession_H_
 
-#include "PlmnId.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "PlmnId.h"
 
 using namespace org::openapitools::server::model;
 
@@ -33,7 +34,7 @@ namespace model {
 ///
 /// </summary>
 class PduSession {
-public:
+ public:
   PduSession();
   virtual ~PduSession();
 
@@ -46,22 +47,22 @@ public:
   ///
   /// </summary>
   std::string getDnn() const;
-  void setDnn(std::string const &value);
+  void setDnn(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getSmfInstanceId() const;
-  void setSmfInstanceId(std::string const &value);
+  void setSmfInstanceId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const &value);
+  void setPlmnId(PlmnId const& value);
 
-  friend void to_json(nlohmann::json &j, const PduSession &o);
-  friend void from_json(const nlohmann::json &j, PduSession &o);
+  friend void to_json(nlohmann::json& j, const PduSession& o);
+  friend void from_json(const nlohmann::json& j, PduSession& o);
 
-protected:
+ protected:
   std::string m_Dnn;
 
   std::string m_SmfInstanceId;
@@ -69,8 +70,8 @@ protected:
   PlmnId m_PlmnId;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* PduSession_H_ */

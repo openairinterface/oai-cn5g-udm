@@ -24,9 +24,10 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
+#include <string>
+
 #include "ProblemDetails.h"
 #include "UeContextInSmsfData.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -35,20 +36,21 @@ namespace api {
 using namespace oai::udm::model;
 
 class UEContextInSMSFDataRetrievalApi {
-public:
+ public:
   UEContextInSMSFDataRetrievalApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~UEContextInSMSFDataRetrievalApi() {}
   void init();
 
   const std::string base = "/nudm-sdm/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void get_ue_ctx_in_smsf_data_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
+  void get_ue_ctx_in_smsf_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void ue_context_in_smsf_data_retrieval_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -63,13 +65,13 @@ private:
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void get_ue_ctx_in_smsf_data(
-      const std::string &supi,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& supi,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* UEContextInSMSFDataRetrievalApi_H_ */

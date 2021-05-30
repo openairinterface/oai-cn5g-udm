@@ -20,20 +20,19 @@ namespace oai {
 namespace udm {
 namespace api {
 
-//using namespace oai::udm::model;
+// using namespace oai::udm::model;
 
 ConfirmAuthApiImpl::ConfirmAuthApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
     : ConfirmAuthApi(rtr) {}
 
 void ConfirmAuthApiImpl::confirm_auth(
-    const std::string &supi, const AuthEvent &authEvent,
-    Pistache::Http::ResponseWriter &response) {
-
+    const std::string& supi, const AuthEvent& authEvent,
+    Pistache::Http::ResponseWriter& response) {
   Logger::udm_ueau().info("\n\nEntering confirm_auth()");
 
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr *)&udm_cfg.nudr.addr4)));
+      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nudr.addr4)));
   std::string udr_port = std::to_string(udm_cfg.nudr.port);
   std::string remoteUri;
   std::string Method;
@@ -56,7 +55,7 @@ void ConfirmAuthApiImpl::confirm_auth(
   nlohmann::json response_data = {};
   try {
     response_data = nlohmann::json::parse(Response.c_str());
-  } catch (nlohmann::json::exception &e) { // error handling
+  } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_ueau().info("Could not get Json content from UDR response");
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
@@ -103,10 +102,10 @@ void ConfirmAuthApiImpl::confirm_auth(
   // hash_value.substr(0,hash_value.length()/2));
   Logger::udm_ueau().debug("authEventId=" + hash_value);
 
-  authEventId = hash_value; // Represents the authEvent Id per UE per serving
-                            // network assigned by the UDM during
-                            // ResultConfirmation service operation.
-  Location = std::string(inet_ntoa(*((struct in_addr *)&udm_cfg.sbi.addr4))) +
+  authEventId = hash_value;  // Represents the authEvent Id per UE per serving
+                             // network assigned by the UDM during
+                             // ResultConfirmation service operation.
+  Location = std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.sbi.addr4))) +
              ":" + std::to_string(udm_cfg.sbi.port) + "/nudm-ueau/v1/" + supi +
              "/auth-events/" + authEventId;
 
@@ -115,6 +114,6 @@ void ConfirmAuthApiImpl::confirm_auth(
   response.send(Pistache::Http::Code::Created, j_authEvent.dump());
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

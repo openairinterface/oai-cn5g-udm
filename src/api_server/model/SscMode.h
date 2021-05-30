@@ -35,7 +35,7 @@ static const std::vector<std::string> sscModeStr = {"Error", "SSC_MODE_1",
                                                     "SSC_MODE_2", "SSC_MODE_3"};
 
 class SscMode {
-public:
+ public:
   SscMode();
   SscMode(SscMode_e sscMode) : m_sscMode(sscModeStr[sscMode]){};
   SscMode(std::string sscMode) : m_sscMode(sscMode){};
@@ -46,16 +46,16 @@ public:
   /////////////////////////////////////////////
   /// SscMode members
 
-  friend void to_json(nlohmann::json &j, const SscMode &o);
-  friend void from_json(const nlohmann::json &j, SscMode &o);
+  friend void to_json(nlohmann::json& j, const SscMode& o);
+  friend void from_json(const nlohmann::json& j, SscMode& o);
 
-protected:
+ protected:
   // SscMode_e m_sscMode;
   std::string m_sscMode;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SscMode_H_ */

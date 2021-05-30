@@ -12,10 +12,11 @@
  */
 
 #include "GenerateAuthDataApiImpl.h"
-#include "comUt.hpp"
 
 #include <iomanip>
 #include <sstream>
+
+#include "comUt.hpp"
 
 using namespace config;
 extern udm_config udm_cfg;
@@ -24,17 +25,16 @@ namespace oai {
 namespace udm {
 namespace api {
 
-//using namespace oai::udm::model;
+// using namespace oai::udm::model;
 
 GenerateAuthDataApiImpl::GenerateAuthDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
     : GenerateAuthDataApi(rtr) {}
 
 void GenerateAuthDataApiImpl::generate_auth_data(
-    const std::string &supiOrSuci,
-    const AuthenticationInfoRequest &authenticationInfoRequest,
-    Pistache::Http::ResponseWriter &response) {
-
+    const std::string& supiOrSuci,
+    const AuthenticationInfoRequest& authenticationInfoRequest,
+    Pistache::Http::ResponseWriter& response) {
   Logger::udm_ueau().info("\n\nEntering generate_auth_data()");
 
   // test data
@@ -50,24 +50,24 @@ void GenerateAuthDataApiImpl::generate_auth_data(
   // std::string supi = "imsi-460010123456789";
 
   uint8_t rand[16] = {0};
-  uint8_t opc[16] = {0};
-  uint8_t key[16] = {0};
-  uint8_t sqn[6] = {0};
-  uint8_t amf[2] = {0};
+  uint8_t opc[16]  = {0};
+  uint8_t key[16]  = {0};
+  uint8_t sqn[6]   = {0};
+  uint8_t amf[2]   = {0};
 
-  uint8_t *r_sqn = NULL;    // for resync
-  std::string r_sqnms_s;    // for resync
-  uint8_t r_rand[16] = {0}; // for resync
-  uint8_t r_auts[14] = {0}; // for resync
+  uint8_t* r_sqn = NULL;     // for resync
+  std::string r_sqnms_s;     // for resync
+  uint8_t r_rand[16] = {0};  // for resync
+  uint8_t r_auts[14] = {0};  // for resync
 
-  uint8_t mac_a[8] = {0};
-  uint8_t ck[16] = {0};
-  uint8_t ik[16] = {0};
-  uint8_t ak[6] = {0};
-  uint8_t xres[8] = {0};
+  uint8_t mac_a[8]     = {0};
+  uint8_t ck[16]       = {0};
+  uint8_t ik[16]       = {0};
+  uint8_t ak[6]        = {0};
+  uint8_t xres[8]      = {0};
   uint8_t xresStar[16] = {0};
-  uint8_t autn[16] = {0};
-  uint8_t kausf[32] = {0};
+  uint8_t autn[16]     = {0};
+  uint8_t kausf[32]    = {0};
 
   std::string rand_s;
   std::string autn_s;
@@ -78,11 +78,11 @@ void GenerateAuthDataApiImpl::generate_auth_data(
   std::string key_s;
   std::string opc_s;
 
-  std::string snn = authenticationInfoRequest.getServingNetworkName();
+  std::string snn  = authenticationInfoRequest.getServingNetworkName();
   std::string supi = supiOrSuci;
 
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr *)&udm_cfg.nudr.addr4)));
+      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nudr.addr4)));
   std::string udr_port = std::to_string(udm_cfg.nudr.port);
   std::string remoteUri;
   std::string Method;
@@ -103,7 +103,7 @@ void GenerateAuthDataApiImpl::generate_auth_data(
   nlohmann::json response_data = {};
   try {
     response_data = nlohmann::json::parse(Response.c_str());
-  } catch (nlohmann::json::exception &e) { // error handling
+  } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_ueau().info("Could not get Json content from UDR response");
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
@@ -136,7 +136,7 @@ void GenerateAuthDataApiImpl::generate_auth_data(
       sqn_s = response_data["sequenceNumber"].at("sqn");
       conv::hex_str_to_uint8(sqn_s.c_str(), sqn);
       // print_buffer("udm_ueau", "Result For F1-Alg: sqn", sqn , 6);
-    } catch (nlohmann::json::exception &e) {
+    } catch (nlohmann::json::exception& e) {
       // error handling
       m_ProblemDetails.setCause("AUTHENTICATION_REJECTED");
       m_ProblemDetails.setStatus(403);
@@ -158,12 +158,13 @@ void GenerateAuthDataApiImpl::generate_auth_data(
         "Non 5G_AKA authenticationMethod configuration in database");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_ueau().error("Non 5G_AKA authenticationMethod configuration in "
-                             "database, method set = " +
-                             authMethod_s);
+    Logger::udm_ueau().error(
+        "Non 5G_AKA authenticationMethod configuration in "
+        "database, method set = " +
+        authMethod_s);
     Logger::udm_ueau().info("Send 501 Not_Implemented response to AUSF");
-    response.send(Pistache::Http::Code::Not_Implemented,
-                  j_ProblemDetails.dump());
+    response.send(
+        Pistache::Http::Code::Not_Implemented, j_ProblemDetails.dump());
     return;
   }
 
@@ -184,7 +185,7 @@ void GenerateAuthDataApiImpl::generate_auth_data(
 
     r_sqn = Authentication_5gaka::sqn_ms_derive(opc, key, r_auts, r_rand, amf);
 
-    if (r_sqn) { // Not NULL (validate auts)
+    if (r_sqn) {  // Not NULL (validate auts)
       Logger::udm_ueau().debug("Valid AUTS, generate new AV with SQNms");
 
       // UDR PATCH interface ------- replace SQNhe with
@@ -219,50 +220,55 @@ void GenerateAuthDataApiImpl::generate_auth_data(
 
       // replace SQNhe with SQNms
       int i = 0;
-      for (i; i < 6; i++)
-        sqn[i] = r_sqn[i]; // generate first, increase later
+      for (i; i < 6; i++) sqn[i] = r_sqn[i];  // generate first, increase later
       sqn_s = conv::uint8_to_hex_string(sqn, 16);
       // Logger::udm_ueau().debug("sqn string = "+sqn_s);
       sqn_s[12] = '\0';
 
       print_buffer("udm_ueau", "SQNms", sqn, 6);
 
-      if (r_sqn) { // free
+      if (r_sqn) {  // free
         free(r_sqn);
         r_sqn = NULL;
       }
     } else {
-      Logger::udm_ueau().error("Invalid AUTS, generate new AV with SQNhe = " +
-                               sqn_s);
+      Logger::udm_ueau().error(
+          "Invalid AUTS, generate new AV with SQNhe = " + sqn_s);
     }
   }
 
   // 5GAKA functions---------------------------------------------------------
-  Authentication_5gaka::generate_random(rand, 16);           // generate rand
-  Authentication_5gaka::f1(opc, key, rand, sqn, amf, mac_a); // to compute mac_a
-  Authentication_5gaka::f2345(opc, key, rand, xres, ck, ik,
-                              ak); // to compute XRES, CK, IK, AK
-  Authentication_5gaka::generate_autn(sqn, ak, amf, mac_a,
-                                      autn); // generate AUTN
-  Authentication_5gaka::annex_a_4_33501(ck, ik, xres, rand, snn,
-                                        xresStar); // generate xres*
-  Authentication_5gaka::derive_kausf(ck, ik, snn, sqn, ak,
-                                     kausf); // derive Kausf
+  Authentication_5gaka::generate_random(rand, 16);  // generate rand
+  Authentication_5gaka::f1(
+      opc, key, rand, sqn, amf,
+      mac_a);  // to compute mac_a
+  Authentication_5gaka::f2345(
+      opc, key, rand, xres, ck, ik,
+      ak);  // to compute XRES, CK, IK, AK
+  Authentication_5gaka::generate_autn(
+      sqn, ak, amf, mac_a,
+      autn);  // generate AUTN
+  Authentication_5gaka::annex_a_4_33501(
+      ck, ik, xres, rand, snn,
+      xresStar);  // generate xres*
+  Authentication_5gaka::derive_kausf(
+      ck, ik, snn, sqn, ak,
+      kausf);  // derive Kausf
 
   // convert uint8_t to string
-  rand_s = conv::uint8_to_hex_string(rand, 16);
-  autn_s = conv::uint8_to_hex_string(autn, 16);
+  rand_s     = conv::uint8_to_hex_string(rand, 16);
+  autn_s     = conv::uint8_to_hex_string(autn, 16);
   xresStar_s = conv::uint8_to_hex_string(xresStar, 16);
-  kausf_s = conv::uint8_to_hex_string(kausf, 32);
+  kausf_s    = conv::uint8_to_hex_string(kausf, 32);
 
   // convert to json
-  nlohmann::json AuthInfoResult = {};
-  AuthInfoResult["authType"] = "5G_AKA";
-  AuthInfoResult["authenticationVector"]["avType"] = "5G_HE_AKA";
-  AuthInfoResult["authenticationVector"]["rand"] = rand_s;
-  AuthInfoResult["authenticationVector"]["autn"] = autn_s;
+  nlohmann::json AuthInfoResult                      = {};
+  AuthInfoResult["authType"]                         = "5G_AKA";
+  AuthInfoResult["authenticationVector"]["avType"]   = "5G_HE_AKA";
+  AuthInfoResult["authenticationVector"]["rand"]     = rand_s;
+  AuthInfoResult["authenticationVector"]["autn"]     = autn_s;
   AuthInfoResult["authenticationVector"]["xresStar"] = xresStar_s;
-  AuthInfoResult["authenticationVector"]["kausf"] = kausf_s;
+  AuthInfoResult["authenticationVector"]["kausf"]    = kausf_s;
 
   Logger::udm_ueau().info("Send 200 Ok response to AUSF");
   response.send(Pistache::Http::Code::Ok, AuthInfoResult.dump());
@@ -271,11 +277,11 @@ void GenerateAuthDataApiImpl::generate_auth_data(
   unsigned long long sqn_value;
   std::stringstream s1;
   s1 << std::hex << sqn_s;
-  s1 >> sqn_value; // hex string to decimal value
+  s1 >> sqn_value;  // hex string to decimal value
   sqn_value += 32;
   std::stringstream s2;
   s2 << std::hex << std::setw(12) << std::setfill('0')
-     << sqn_value; // decimal value to hex string
+     << sqn_value;  // decimal value to hex string
   std::string new_sqn(s2.str());
 
   Logger::udm_ueau().debug("new_sqn = " + new_sqn);
@@ -311,6 +317,6 @@ void GenerateAuthDataApiImpl::generate_auth_data(
   Logger::udm_ueau().info("Update sqn in Database");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

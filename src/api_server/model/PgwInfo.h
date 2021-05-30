@@ -19,9 +19,10 @@
 #ifndef PgwInfo_H_
 #define PgwInfo_H_
 
-#include "PlmnId.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "PlmnId.h"
 using namespace org::openapitools::server::model;
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class PgwInfo {
-public:
+ public:
   PgwInfo();
   virtual ~PgwInfo();
 
@@ -44,24 +45,24 @@ public:
   ///
   /// </summary>
   std::string getDnn() const;
-  void setDnn(std::string const &value);
+  void setDnn(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getPgwFqdn() const;
-  void setPgwFqdn(std::string const &value);
+  void setPgwFqdn(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const &value);
+  void setPlmnId(PlmnId const& value);
   bool plmnIdIsSet() const;
   void unsetPlmnId();
 
-  friend void to_json(nlohmann::json &j, const PgwInfo &o);
-  friend void from_json(const nlohmann::json &j, PgwInfo &o);
+  friend void to_json(nlohmann::json& j, const PgwInfo& o);
+  friend void from_json(const nlohmann::json& j, PgwInfo& o);
 
-protected:
+ protected:
   std::string m_Dnn;
 
   std::string m_PgwFqdn;
@@ -70,8 +71,8 @@ protected:
   bool m_PlmnIdIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* PgwInfo_H_ */

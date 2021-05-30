@@ -30,7 +30,7 @@ namespace model {
 ///
 /// </summary>
 class DnnInfo {
-public:
+ public:
   DnnInfo();
   virtual ~DnnInfo();
 
@@ -43,7 +43,7 @@ public:
   ///
   /// </summary>
   std::string getDnn() const;
-  void setDnn(std::string const &value);
+  void setDnn(std::string const& value);
   /// <summary>
   ///
   /// </summary>
@@ -66,10 +66,10 @@ public:
   bool iwkEpsIndIsSet() const;
   void unsetIwkEpsInd();
 
-  friend void to_json(nlohmann::json &j, const DnnInfo &o);
-  friend void from_json(const nlohmann::json &j, DnnInfo &o);
+  friend void to_json(nlohmann::json& j, const DnnInfo& o);
+  friend void from_json(const nlohmann::json& j, DnnInfo& o);
 
-protected:
+ protected:
   std::string m_Dnn;
 
   bool m_DefaultDnnIndicator;
@@ -80,8 +80,8 @@ protected:
   bool m_IwkEpsIndIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* DnnInfo_H_ */

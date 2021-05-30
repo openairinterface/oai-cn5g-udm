@@ -18,8 +18,8 @@ namespace udm {
 namespace model {
 
 PgwInfo::PgwInfo() {
-  m_Dnn = "";
-  m_PgwFqdn = "";
+  m_Dnn         = "";
+  m_PgwFqdn     = "";
   m_PlmnIdIsSet = false;
 }
 
@@ -29,15 +29,14 @@ void PgwInfo::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PgwInfo &o) {
-  j = nlohmann::json();
-  j["dnn"] = o.m_Dnn;
+void to_json(nlohmann::json& j, const PgwInfo& o) {
+  j            = nlohmann::json();
+  j["dnn"]     = o.m_Dnn;
   j["pgwFqdn"] = o.m_PgwFqdn;
-  if (o.plmnIdIsSet())
-    j["plmnId"] = o.m_PlmnId;
+  if (o.plmnIdIsSet()) j["plmnId"] = o.m_PlmnId;
 }
 
-void from_json(const nlohmann::json &j, PgwInfo &o) {
+void from_json(const nlohmann::json& j, PgwInfo& o) {
   j.at("dnn").get_to(o.m_Dnn);
   j.at("pgwFqdn").get_to(o.m_PgwFqdn);
   if (j.find("plmnId") != j.end()) {
@@ -46,18 +45,32 @@ void from_json(const nlohmann::json &j, PgwInfo &o) {
   }
 }
 
-std::string PgwInfo::getDnn() const { return m_Dnn; }
-void PgwInfo::setDnn(std::string const &value) { m_Dnn = value; }
-std::string PgwInfo::getPgwFqdn() const { return m_PgwFqdn; }
-void PgwInfo::setPgwFqdn(std::string const &value) { m_PgwFqdn = value; }
-PlmnId PgwInfo::getPlmnId() const { return m_PlmnId; }
-void PgwInfo::setPlmnId(PlmnId const &value) {
-  m_PlmnId = value;
+std::string PgwInfo::getDnn() const {
+  return m_Dnn;
+}
+void PgwInfo::setDnn(std::string const& value) {
+  m_Dnn = value;
+}
+std::string PgwInfo::getPgwFqdn() const {
+  return m_PgwFqdn;
+}
+void PgwInfo::setPgwFqdn(std::string const& value) {
+  m_PgwFqdn = value;
+}
+PlmnId PgwInfo::getPlmnId() const {
+  return m_PlmnId;
+}
+void PgwInfo::setPlmnId(PlmnId const& value) {
+  m_PlmnId      = value;
   m_PlmnIdIsSet = true;
 }
-bool PgwInfo::plmnIdIsSet() const { return m_PlmnIdIsSet; }
-void PgwInfo::unsetPlmnId() { m_PlmnIdIsSet = false; }
+bool PgwInfo::plmnIdIsSet() const {
+  return m_PlmnIdIsSet;
+}
+void PgwInfo::unsetPlmnId() {
+  m_PlmnIdIsSet = false;
+}
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

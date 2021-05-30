@@ -25,11 +25,11 @@ SubscriptionCreationForSharedDataApiImpl::
     : SubscriptionCreationForSharedDataApi(rtr) {}
 
 void SubscriptionCreationForSharedDataApiImpl::subscribe_to_shared_data(
-    const SdmSubscription &sdmSubscription,
-    Pistache::Http::ResponseWriter &response) {
+    const SdmSubscription& sdmSubscription,
+    Pistache::Http::ResponseWriter& response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

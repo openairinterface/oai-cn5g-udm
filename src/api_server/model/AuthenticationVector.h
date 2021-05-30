@@ -19,11 +19,12 @@
 #ifndef AuthenticationVector_H_
 #define AuthenticationVector_H_
 
+#include <nlohmann/json.hpp>
+#include <string>
+
 #include "Av5GHeAka.h"
 #include "AvEapAkaPrime.h"
 #include "AvType.h"
-#include <nlohmann/json.hpp>
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -33,7 +34,7 @@ namespace model {
 ///
 /// </summary>
 class AuthenticationVector {
-public:
+ public:
   AuthenticationVector();
   virtual ~AuthenticationVector();
 
@@ -46,47 +47,47 @@ public:
   ///
   /// </summary>
   AvType getAvType() const;
-  void setAvType(AvType const &value);
+  void setAvType(AvType const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getRand() const;
-  void setRand(std::string const &value);
+  void setRand(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getXres() const;
-  void setXres(std::string const &value);
+  void setXres(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getAutn() const;
-  void setAutn(std::string const &value);
+  void setAutn(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getCkPrime() const;
-  void setCkPrime(std::string const &value);
+  void setCkPrime(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getIkPrime() const;
-  void setIkPrime(std::string const &value);
+  void setIkPrime(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getXresStar() const;
-  void setXresStar(std::string const &value);
+  void setXresStar(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getKausf() const;
-  void setKausf(std::string const &value);
+  void setKausf(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const AuthenticationVector &o);
-  friend void from_json(const nlohmann::json &j, AuthenticationVector &o);
+  friend void to_json(nlohmann::json& j, const AuthenticationVector& o);
+  friend void from_json(const nlohmann::json& j, AuthenticationVector& o);
 
-protected:
+ protected:
   AvType m_AvType;
 
   std::string m_Rand;
@@ -104,8 +105,8 @@ protected:
   std::string m_Kausf;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AuthenticationVector_H_ */

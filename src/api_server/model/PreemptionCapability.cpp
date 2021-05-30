@@ -25,12 +25,12 @@ void PreemptionCapability::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PreemptionCapability &o) {
+void to_json(nlohmann::json& j, const PreemptionCapability& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, PreemptionCapability &o) {}
+void from_json(const nlohmann::json& j, PreemptionCapability& o) {}
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai

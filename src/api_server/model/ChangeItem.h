@@ -19,9 +19,10 @@
 #ifndef ChangeItem_H_
 #define ChangeItem_H_
 
-#include "ChangeType.h"
 #include <nlohmann/json.hpp>
 #include <string>
+
+#include "ChangeType.h"
 
 namespace oai {
 namespace udm {
@@ -31,7 +32,7 @@ namespace model {
 ///
 /// </summary>
 class ChangeItem {
-public:
+ public:
   ChangeItem();
   virtual ~ChangeItem();
 
@@ -44,17 +45,17 @@ public:
   ///
   /// </summary>
   ChangeType getOp() const;
-  void setOp(ChangeType const &value);
+  void setOp(ChangeType const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getPath() const;
-  void setPath(std::string const &value);
+  void setPath(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getFrom() const;
-  void setFrom(std::string const &value);
+  void setFrom(std::string const& value);
   bool fromIsSet() const;
   void unsetFrom();
   /// <summary>
@@ -72,10 +73,10 @@ public:
   bool newValueIsSet() const;
   void unsetNewValue();
 
-  friend void to_json(nlohmann::json &j, const ChangeItem &o);
-  friend void from_json(const nlohmann::json &j, ChangeItem &o);
+  friend void to_json(nlohmann::json& j, const ChangeItem& o);
+  friend void from_json(const nlohmann::json& j, ChangeItem& o);
 
-protected:
+ protected:
   ChangeType m_Op;
 
   std::string m_Path;
@@ -88,8 +89,8 @@ protected:
   bool m_NewValueIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* ChangeItem_H_ */

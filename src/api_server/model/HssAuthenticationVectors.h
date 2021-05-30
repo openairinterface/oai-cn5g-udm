@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class HssAuthenticationVectors {
-public:
+ public:
   HssAuthenticationVectors();
   virtual ~HssAuthenticationVectors();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// HssAuthenticationVectors members
 
-  friend void to_json(nlohmann::json &j, const HssAuthenticationVectors &o);
-  friend void from_json(const nlohmann::json &j, HssAuthenticationVectors &o);
+  friend void to_json(nlohmann::json& j, const HssAuthenticationVectors& o);
+  friend void from_json(const nlohmann::json& j, HssAuthenticationVectors& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* HssAuthenticationVectors_H_ */

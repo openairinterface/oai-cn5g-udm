@@ -24,31 +24,32 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include "ProblemDetails.h"
 #include <string>
+
+#include "ProblemDetails.h"
 
 namespace oai {
 namespace udm {
 namespace api {
 
-//using namespace oai::udm::model;
+// using namespace oai::udm::model;
 
 class SubscriptionDeletionForSharedDataApi {
-public:
+ public:
   SubscriptionDeletionForSharedDataApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SubscriptionDeletionForSharedDataApi() {}
   void init();
 
   const std::string base = "/nudm-sdm/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void
-  unsubscribe_for_shared_data_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
+  void unsubscribe_for_shared_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void subscription_deletion_for_shared_data_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -60,13 +61,13 @@ private:
   ///
   /// </remarks>
   /// <param name="subscriptionId">Id of the Shared data Subscription</param>
-  virtual void
-  unsubscribe_for_shared_data(const std::string &subscriptionId,
-                              Pistache::Http::ResponseWriter &response) = 0;
+  virtual void unsubscribe_for_shared_data(
+      const std::string& subscriptionId,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SubscriptionDeletionForSharedDataApi_H_ */

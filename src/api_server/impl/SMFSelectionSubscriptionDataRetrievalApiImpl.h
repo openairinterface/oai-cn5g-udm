@@ -20,19 +20,18 @@
 #ifndef SMF_SELECTION_SUBSCRIPTION_DATA_RETRIEVAL_API_IMPL_H_
 #define SMF_SELECTION_SUBSCRIPTION_DATA_RETRIEVAL_API_IMPL_H_
 
-#include <memory>
+#include <SMFSelectionSubscriptionDataRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
+#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <SMFSelectionSubscriptionDataRetrievalApi.h>
-
-#include <pistache/optional.h>
+#include <memory>
+#include <string>
 
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "SmfSelectionSubscriptionData.h"
-#include <string>
 
 namespace oai {
 namespace udm {
@@ -42,22 +41,22 @@ using namespace oai::udm::model;
 
 class SMFSelectionSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SMFSelectionSubscriptionDataRetrievalApi {
-public:
+ public:
   SMFSelectionSubscriptionDataRetrievalApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~SMFSelectionSubscriptionDataRetrievalApiImpl() {}
 
   void get_smf_sel_data(
-      const std::string &supi,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<PlmnId> &plmnId,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& supi,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai
 
 #endif

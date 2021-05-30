@@ -19,14 +19,15 @@
 #ifndef SessionManagementSubscriptionData_H_
 #define SessionManagementSubscriptionData_H_
 
-#include "DnnConfiguration.h"
-#include "OdbPacketServices.h"
-#include "Snssai.h"
-#include "TraceData.h"
 #include <map>
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
+
+#include "DnnConfiguration.h"
+#include "OdbPacketServices.h"
+#include "Snssai.h"
+#include "TraceData.h"
 
 using namespace org::openapitools::server::model;
 
@@ -38,7 +39,7 @@ namespace model {
 ///
 /// </summary>
 class SessionManagementSubscriptionData {
-public:
+ public:
   SessionManagementSubscriptionData();
   virtual ~SessionManagementSubscriptionData();
 
@@ -51,12 +52,12 @@ public:
   ///
   /// </summary>
   Snssai getSingleNssai() const;
-  void setSingleNssai(Snssai const &value);
+  void setSingleNssai(Snssai const& value);
   /// <summary>
   /// A map (list of key-value pairs where Dnn serves as key) of
   /// DnnConfigurations
   /// </summary>
-  std::map<std::string, DnnConfiguration> &getDnnConfigurations();
+  std::map<std::string, DnnConfiguration>& getDnnConfigurations();
   bool dnnConfigurationsIsSet() const;
   void unsetDnnConfigurations();
 
@@ -65,44 +66,44 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getInternalGroupIds();
+  std::vector<std::string>& getInternalGroupIds();
   bool internalGroupIdsIsSet() const;
   void unsetInternalGroupIds();
   /// <summary>
   ///
   /// </summary>
   std::string getSharedDnnConfigurationsId() const;
-  void setSharedDnnConfigurationsId(std::string const &value);
+  void setSharedDnnConfigurationsId(std::string const& value);
   bool sharedDnnConfigurationsIdIsSet() const;
   void unsetSharedDnnConfigurationsId();
   /// <summary>
   ///
   /// </summary>
   OdbPacketServices getOdbPacketServices() const;
-  void setOdbPacketServices(OdbPacketServices const &value);
+  void setOdbPacketServices(OdbPacketServices const& value);
   bool odbPacketServicesIsSet() const;
   void unsetOdbPacketServices();
   /// <summary>
   ///
   /// </summary>
   TraceData getTraceData() const;
-  void setTraceData(TraceData const &value);
+  void setTraceData(TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
   /// <summary>
   ///
   /// </summary>
   std::string getSharedTraceDataId() const;
-  void setSharedTraceDataId(std::string const &value);
+  void setSharedTraceDataId(std::string const& value);
   bool sharedTraceDataIdIsSet() const;
   void unsetSharedTraceDataId();
 
-  friend void to_json(nlohmann::json &j,
-                      const SessionManagementSubscriptionData &o);
-  friend void from_json(const nlohmann::json &j,
-                        SessionManagementSubscriptionData &o);
+  friend void to_json(
+      nlohmann::json& j, const SessionManagementSubscriptionData& o);
+  friend void from_json(
+      const nlohmann::json& j, SessionManagementSubscriptionData& o);
 
-protected:
+ protected:
   Snssai m_SingleNssai;
 
   std::map<std::string, DnnConfiguration> m_DnnConfigurations;
@@ -119,8 +120,8 @@ protected:
   bool m_SharedTraceDataIdIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SessionManagementSubscriptionData_H_ */

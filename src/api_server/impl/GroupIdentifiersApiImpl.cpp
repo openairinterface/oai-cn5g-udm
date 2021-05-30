@@ -24,15 +24,15 @@ GroupIdentifiersApiImpl::GroupIdentifiersApiImpl(
     : GroupIdentifiersApi(rtr) {}
 
 void GroupIdentifiersApiImpl::get_group_identifiers(
-    const Pistache::Optional<std::string> &extGroupId,
-    const Pistache::Optional<std::string> &intGroupId,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-    Pistache::Http::ResponseWriter &response) {
+    const Pistache::Optional<std::string>& extGroupId,
+    const Pistache::Optional<std::string>& intGroupId,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    Pistache::Http::ResponseWriter& response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

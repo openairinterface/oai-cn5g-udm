@@ -45,8 +45,7 @@ static int asn_DEF_PrintableString_v2c(unsigned int value) {
   return _PrintableString_alphabet[value > 255 ? 0 : value] - 1;
 }
 static int asn_DEF_PrintableString_c2v(unsigned int code) {
-  if (code < 74)
-    return _PrintableString_code2value[code];
+  if (code < 74) return _PrintableString_code2value[code];
   return -1;
 }
 static asn_per_constraints_t asn_DEF_PrintableString_per_constraints = {
@@ -100,15 +99,14 @@ asn_TYPE_descriptor_t asn_DEF_PrintableString = {
     0  /* No specifics */
 };
 
-int PrintableString_constraint(const asn_TYPE_descriptor_t *td,
-                               const void *sptr,
-                               asn_app_constraint_failed_f *ctfailcb,
-                               void *app_key) {
-  const PrintableString_t *st = (const PrintableString_t *)sptr;
+int PrintableString_constraint(
+    const asn_TYPE_descriptor_t* td, const void* sptr,
+    asn_app_constraint_failed_f* ctfailcb, void* app_key) {
+  const PrintableString_t* st = (const PrintableString_t*) sptr;
 
   if (st && st->buf) {
-    uint8_t *buf = st->buf;
-    uint8_t *end = buf + st->size;
+    uint8_t* buf = st->buf;
+    uint8_t* end = buf + st->size;
 
     /*
      * Check the alphabet of the PrintableString.
@@ -116,18 +114,19 @@ int PrintableString_constraint(const asn_TYPE_descriptor_t *td,
      */
     for (; buf < end; buf++) {
       if (!_PrintableString_alphabet[*buf]) {
-        ASN__CTFAIL(app_key, td, sptr,
-                    "%s: value byte %ld (%d) "
-                    "not in PrintableString alphabet "
-                    "(%s:%d)",
-                    td->name, (long)((buf - st->buf) + 1), *buf, __FILE__,
-                    __LINE__);
+        ASN__CTFAIL(
+            app_key, td, sptr,
+            "%s: value byte %ld (%d) "
+            "not in PrintableString alphabet "
+            "(%s:%d)",
+            td->name, (long) ((buf - st->buf) + 1), *buf, __FILE__, __LINE__);
         return -1;
       }
     }
   } else {
-    ASN__CTFAIL(app_key, td, sptr, "%s: value not given (%s:%d)", td->name,
-                __FILE__, __LINE__);
+    ASN__CTFAIL(
+        app_key, td, sptr, "%s: value not given (%s:%d)", td->name, __FILE__,
+        __LINE__);
     return -1;
   }
 

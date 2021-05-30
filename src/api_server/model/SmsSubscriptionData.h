@@ -30,7 +30,7 @@ namespace model {
 ///
 /// </summary>
 class SmsSubscriptionData {
-public:
+ public:
   SmsSubscriptionData();
   virtual ~SmsSubscriptionData();
 
@@ -50,22 +50,22 @@ public:
   ///
   /// </summary>
   std::string getSharedSmsSubsDataId() const;
-  void setSharedSmsSubsDataId(std::string const &value);
+  void setSharedSmsSubsDataId(std::string const& value);
   bool sharedSmsSubsDataIdIsSet() const;
   void unsetSharedSmsSubsDataId();
 
-  friend void to_json(nlohmann::json &j, const SmsSubscriptionData &o);
-  friend void from_json(const nlohmann::json &j, SmsSubscriptionData &o);
+  friend void to_json(nlohmann::json& j, const SmsSubscriptionData& o);
+  friend void from_json(const nlohmann::json& j, SmsSubscriptionData& o);
 
-protected:
+ protected:
   bool m_SmsSubscribed;
   bool m_SmsSubscribedIsSet;
   std::string m_SharedSmsSubsDataId;
   bool m_SharedSmsSubsDataIdIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SmsSubscriptionData_H_ */

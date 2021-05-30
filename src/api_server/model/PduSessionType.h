@@ -30,18 +30,18 @@ namespace model {
 /// </summary>
 
 enum PduSessionType_e {
-  PDU_SESSION_TYPE_E_IPV4 = 1,
-  PDU_SESSION_TYPE_E_IPV6 = 2,
-  PDU_SESSION_TYPE_E_IPV4V6 = 3,
+  PDU_SESSION_TYPE_E_IPV4         = 1,
+  PDU_SESSION_TYPE_E_IPV6         = 2,
+  PDU_SESSION_TYPE_E_IPV4V6       = 3,
   PDU_SESSION_TYPE_E_UNSTRUCTURED = 4,
-  PDU_SESSION_TYPE_E_ETHERNET = 5
+  PDU_SESSION_TYPE_E_ETHERNET     = 5
 };
 
 static const std::vector<std::string> PduSessionTypeStr = {
     "Error", "IPV4", "IPV6", "IPV4V6", "UNSTRUCTURED", "ETHERNET"};
 
 class PduSessionType {
-public:
+ public:
   PduSessionType(PduSessionType_e sessionType)
       : m_sessionType(PduSessionTypeStr[sessionType]){};
   PduSessionType(std::string sessionType) : m_sessionType(sessionType){};
@@ -53,16 +53,16 @@ public:
   /////////////////////////////////////////////
   /// PduSessionType members
 
-  friend void to_json(nlohmann::json &j, const PduSessionType &o);
-  friend void from_json(const nlohmann::json &j, PduSessionType &o);
+  friend void to_json(nlohmann::json& j, const PduSessionType& o);
+  friend void from_json(const nlohmann::json& j, PduSessionType& o);
 
-protected:
+ protected:
   // PduSessionType_e m_sessionType;
   std::string m_sessionType;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* PduSessionType_H_ */

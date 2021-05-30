@@ -26,17 +26,18 @@
  \email: lionel.gauthier@eurecom.fr
  */
 
-#include "logger.hpp"
 #include "pid_file.hpp"
 
+#include <errno.h>
 #include <fcntl.h>
-#include <unistd.h>
+#include <libgen.h>
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <libgen.h>
+#include <unistd.h>
+
+#include "logger.hpp"
 
 int g_fd_pid_file = -1;
 __pid_t g_pid     = -1;

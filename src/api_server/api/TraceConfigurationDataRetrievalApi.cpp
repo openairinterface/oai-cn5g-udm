@@ -12,6 +12,7 @@
  */
 
 #include "TraceConfigurationDataRetrievalApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -26,7 +27,9 @@ TraceConfigurationDataRetrievalApi::TraceConfigurationDataRetrievalApi(
   router = rtr;
 }
 
-void TraceConfigurationDataRetrievalApi::init() { setupRoutes(); }
+void TraceConfigurationDataRetrievalApi::init() {
+  setupRoutes();
+}
 
 void TraceConfigurationDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -38,14 +41,14 @@ void TraceConfigurationDataRetrievalApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&TraceConfigurationDataRetrievalApi::
-                       trace_configuration_data_retrieval_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &TraceConfigurationDataRetrievalApi::
+          trace_configuration_data_retrieval_api_default_handler,
+      this));
 }
 
 void TraceConfigurationDataRetrievalApi::get_trace_config_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
@@ -69,17 +72,18 @@ void TraceConfigurationDataRetrievalApi::get_trace_config_data_handler(
       }
     */
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_trace_config_data(supi, supportedFeatures, plmnId, ifNoneMatch,
-                                ifModifiedSince, response);
-  } catch (nlohmann::detail::exception &e) {
+    this->get_trace_config_data(
+        supi, supportedFeatures, plmnId, ifNoneMatch, ifModifiedSince,
+        response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -88,12 +92,12 @@ void TraceConfigurationDataRetrievalApi::get_trace_config_data_handler(
 
 void TraceConfigurationDataRetrievalApi::
     trace_configuration_data_retrieval_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

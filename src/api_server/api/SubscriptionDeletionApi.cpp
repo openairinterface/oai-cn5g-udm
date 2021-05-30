@@ -12,6 +12,7 @@
  */
 
 #include "SubscriptionDeletionApi.h"
+
 #include "Helpers.h"
 
 namespace oai {
@@ -19,14 +20,16 @@ namespace udm {
 namespace api {
 
 using namespace org::openapitools::server::helpers;
-//using namespace oai::udm::model;
+// using namespace oai::udm::model;
 
 SubscriptionDeletionApi::SubscriptionDeletionApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void SubscriptionDeletionApi::init() { setupRoutes(); }
+void SubscriptionDeletionApi::init() {
+  setupRoutes();
+}
 
 void SubscriptionDeletionApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -42,19 +45,19 @@ void SubscriptionDeletionApi::setupRoutes() {
 }
 
 void SubscriptionDeletionApi::unsubscribe_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
-  auto supi = request.param(":supi").as<std::string>();
+  auto supi           = request.param(":supi").as<std::string>();
   auto subscriptionId = request.param(":subscriptionId").as<std::string>();
 
   try {
     this->unsubscribe(supi, subscriptionId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -62,11 +65,11 @@ void SubscriptionDeletionApi::unsubscribe_handler(
 }
 
 void SubscriptionDeletionApi::subscription_deletion_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace udm
-} // namespace oai
+}  // namespace api
+}  // namespace udm
+}  // namespace oai

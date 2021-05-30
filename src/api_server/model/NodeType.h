@@ -29,7 +29,7 @@ namespace model {
 ///
 /// </summary>
 class NodeType {
-public:
+ public:
   NodeType();
   virtual ~NodeType();
 
@@ -38,14 +38,14 @@ public:
   /////////////////////////////////////////////
   /// NodeType members
 
-  friend void to_json(nlohmann::json &j, const NodeType &o);
-  friend void from_json(const nlohmann::json &j, NodeType &o);
+  friend void to_json(nlohmann::json& j, const NodeType& o);
+  friend void from_json(const nlohmann::json& j, NodeType& o);
 
-protected:
+ protected:
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* NodeType_H_ */

@@ -19,10 +19,11 @@
 #ifndef NotifyItem_H_
 #define NotifyItem_H_
 
-#include "ChangeItem.h"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
+
+#include "ChangeItem.h"
 
 namespace oai {
 namespace udm {
@@ -32,7 +33,7 @@ namespace model {
 ///
 /// </summary>
 class NotifyItem {
-public:
+ public:
   NotifyItem();
   virtual ~NotifyItem();
 
@@ -45,23 +46,23 @@ public:
   ///
   /// </summary>
   std::string getResourceId() const;
-  void setResourceId(std::string const &value);
+  void setResourceId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<ChangeItem> &getChanges();
+  std::vector<ChangeItem>& getChanges();
 
-  friend void to_json(nlohmann::json &j, const NotifyItem &o);
-  friend void from_json(const nlohmann::json &j, NotifyItem &o);
+  friend void to_json(nlohmann::json& j, const NotifyItem& o);
+  friend void from_json(const nlohmann::json& j, NotifyItem& o);
 
-protected:
+ protected:
   std::string m_ResourceId;
 
   std::vector<ChangeItem> m_Changes;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* NotifyItem_H_ */

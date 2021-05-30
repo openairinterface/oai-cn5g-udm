@@ -19,10 +19,11 @@
 #ifndef SteeringInfo_H_
 #define SteeringInfo_H_
 
-#include "AccessTech.h"
-#include "PlmnId.h"
 #include <nlohmann/json.hpp>
 #include <vector>
+
+#include "AccessTech.h"
+#include "PlmnId.h"
 using namespace org::openapitools::server::model;
 namespace oai {
 namespace udm {
@@ -32,7 +33,7 @@ namespace model {
 ///
 /// </summary>
 class SteeringInfo {
-public:
+ public:
   SteeringInfo();
   virtual ~SteeringInfo();
 
@@ -45,26 +46,26 @@ public:
   ///
   /// </summary>
   PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const &value);
+  void setPlmnId(PlmnId const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<AccessTech> &getAccessTechList();
+  std::vector<AccessTech>& getAccessTechList();
   bool accessTechListIsSet() const;
   void unsetAccessTechList();
 
-  friend void to_json(nlohmann::json &j, const SteeringInfo &o);
-  friend void from_json(const nlohmann::json &j, SteeringInfo &o);
+  friend void to_json(nlohmann::json& j, const SteeringInfo& o);
+  friend void from_json(const nlohmann::json& j, SteeringInfo& o);
 
-protected:
+ protected:
   PlmnId m_PlmnId;
 
   std::vector<AccessTech> m_AccessTechList;
   bool m_AccessTechListIsSet;
 };
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SteeringInfo_H_ */

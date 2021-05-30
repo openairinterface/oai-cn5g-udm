@@ -17,7 +17,9 @@ namespace oai {
 namespace udm {
 namespace model {
 
-SteeringInfo::SteeringInfo() { m_AccessTechListIsSet = false; }
+SteeringInfo::SteeringInfo() {
+  m_AccessTechListIsSet = false;
+}
 
 SteeringInfo::~SteeringInfo() {}
 
@@ -25,14 +27,13 @@ void SteeringInfo::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const SteeringInfo &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const SteeringInfo& o) {
+  j           = nlohmann::json();
   j["plmnId"] = o.m_PlmnId;
-  if (o.accessTechListIsSet())
-    j["accessTechList"] = o.m_AccessTechList;
+  if (o.accessTechListIsSet()) j["accessTechList"] = o.m_AccessTechList;
 }
 
-void from_json(const nlohmann::json &j, SteeringInfo &o) {
+void from_json(const nlohmann::json& j, SteeringInfo& o) {
   j.at("plmnId").get_to(o.m_PlmnId);
   if (j.find("accessTechList") != j.end()) {
     j.at("accessTechList").get_to(o.m_AccessTechList);
@@ -40,14 +41,22 @@ void from_json(const nlohmann::json &j, SteeringInfo &o) {
   }
 }
 
-PlmnId SteeringInfo::getPlmnId() const { return m_PlmnId; }
-void SteeringInfo::setPlmnId(PlmnId const &value) { m_PlmnId = value; }
-std::vector<AccessTech> &SteeringInfo::getAccessTechList() {
+PlmnId SteeringInfo::getPlmnId() const {
+  return m_PlmnId;
+}
+void SteeringInfo::setPlmnId(PlmnId const& value) {
+  m_PlmnId = value;
+}
+std::vector<AccessTech>& SteeringInfo::getAccessTechList() {
   return m_AccessTechList;
 }
-bool SteeringInfo::accessTechListIsSet() const { return m_AccessTechListIsSet; }
-void SteeringInfo::unsetAccessTechList() { m_AccessTechListIsSet = false; }
+bool SteeringInfo::accessTechListIsSet() const {
+  return m_AccessTechListIsSet;
+}
+void SteeringInfo::unsetAccessTechList() {
+  m_AccessTechListIsSet = false;
+}
 
-} // namespace model
-} // namespace udm
-} // namespace oai
+}  // namespace model
+}  // namespace udm
+}  // namespace oai
