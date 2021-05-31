@@ -27,9 +27,7 @@ UEContextInSMSFDataRetrievalApi::UEContextInSMSFDataRetrievalApi(
   router = rtr;
 }
 
-void UEContextInSMSFDataRetrievalApi::init() {
-  setupRoutes();
-}
+void UEContextInSMSFDataRetrievalApi::init() { setupRoutes(); }
 
 void UEContextInSMSFDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -41,10 +39,10 @@ void UEContextInSMSFDataRetrievalApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(Routes::bind(
-      &UEContextInSMSFDataRetrievalApi::
-          ue_context_in_smsf_data_retrieval_api_default_handler,
-      this));
+  router->addCustomHandler(
+      Routes::bind(&UEContextInSMSFDataRetrievalApi::
+                       ue_context_in_smsf_data_retrieval_api_default_handler,
+                   this));
 }
 
 void UEContextInSMSFDataRetrievalApi::get_ue_ctx_in_smsf_data_handler(
@@ -80,8 +78,8 @@ void UEContextInSMSFDataRetrievalApi::
     ue_context_in_smsf_data_retrieval_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
 }  // namespace api

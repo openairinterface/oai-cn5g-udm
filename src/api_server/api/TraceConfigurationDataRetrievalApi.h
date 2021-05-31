@@ -30,8 +30,6 @@
 #include "ProblemDetails.h"
 #include "TraceDataResponse.h"
 
-using namespace org::openapitools::server::model;
-
 namespace oai {
 namespace udm {
 namespace api {
@@ -49,9 +47,8 @@ class TraceConfigurationDataRetrievalApi {
  private:
   void setupRoutes();
 
-  void get_trace_config_data_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void get_trace_config_data_handler(const Pistache::Rest::Request& request,
+                                     Pistache::Http::ResponseWriter response);
   void trace_configuration_data_retrieval_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

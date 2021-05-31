@@ -27,10 +27,7 @@
 #include "RegistrationReason.h"
 #include "Snssai.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -179,9 +176,6 @@ class SmfRegistration {
   bool m_ContextInfoIsSet;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* SmfRegistration_H_ */

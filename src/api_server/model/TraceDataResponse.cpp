@@ -18,8 +18,8 @@ namespace udm {
 namespace model {
 
 TraceDataResponse::TraceDataResponse() {
-  m_TraceDataIsSet         = false;
-  m_SharedTraceDataId      = "";
+  m_TraceDataIsSet = false;
+  m_SharedTraceDataId = "";
   m_SharedTraceDataIdIsSet = false;
 }
 
@@ -47,24 +47,18 @@ void from_json(const nlohmann::json& j, TraceDataResponse& o) {
   }
 }
 
-TraceData TraceDataResponse::getTraceData() const {
-  return m_TraceData;
-}
+TraceData TraceDataResponse::getTraceData() const { return m_TraceData; }
 void TraceDataResponse::setTraceData(TraceData const& value) {
-  m_TraceData      = value;
+  m_TraceData = value;
   m_TraceDataIsSet = true;
 }
-bool TraceDataResponse::traceDataIsSet() const {
-  return m_TraceDataIsSet;
-}
-void TraceDataResponse::unsetTraceData() {
-  m_TraceDataIsSet = false;
-}
+bool TraceDataResponse::traceDataIsSet() const { return m_TraceDataIsSet; }
+void TraceDataResponse::unsetTraceData() { m_TraceDataIsSet = false; }
 std::string TraceDataResponse::getSharedTraceDataId() const {
   return m_SharedTraceDataId;
 }
 void TraceDataResponse::setSharedTraceDataId(std::string const& value) {
-  m_SharedTraceDataId      = value;
+  m_SharedTraceDataId = value;
   m_SharedTraceDataIdIsSet = true;
 }
 bool TraceDataResponse::sharedTraceDataIdIsSet() const {

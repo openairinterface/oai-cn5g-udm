@@ -15,22 +15,17 @@
 
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
 using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 RetrieveSMFRegistrationApi::RetrieveSMFRegistrationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void RetrieveSMFRegistrationApi::init() {
-  setupRoutes();
-}
+void RetrieveSMFRegistrationApi::init() { setupRoutes(); }
 
 void RetrieveSMFRegistrationApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -42,17 +37,17 @@ void RetrieveSMFRegistrationApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(Routes::bind(
-      &RetrieveSMFRegistrationApi::
-          retrieve_smf_registration_api_default_handler,
-      this));
+  router->addCustomHandler(
+      Routes::bind(&RetrieveSMFRegistrationApi::
+                       retrieve_smf_registration_api_default_handler,
+                   this));
 }
 
 void RetrieveSMFRegistrationApi::retrieve_smf_registration_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
-  auto ueId         = request.param(":ueId").as<std::string>();
+  auto ueId = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
 
   try {
@@ -73,11 +68,8 @@ void RetrieveSMFRegistrationApi::retrieve_smf_registration_handler(
 
 void RetrieveSMFRegistrationApi::retrieve_smf_registration_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api

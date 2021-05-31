@@ -13,10 +13,7 @@
 
 #include "DeregistrationReason.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 DeregistrationReason::DeregistrationReason() {}
 
@@ -32,7 +29,4 @@ void to_json(nlohmann::json& j, const DeregistrationReason& o) {
 
 void from_json(const nlohmann::json& j, DeregistrationReason& o) {}
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

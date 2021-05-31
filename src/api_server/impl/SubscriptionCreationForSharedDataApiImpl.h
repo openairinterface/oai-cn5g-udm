@@ -44,9 +44,8 @@ class SubscriptionCreationForSharedDataApiImpl
       std::shared_ptr<Pistache::Rest::Router>);
   ~SubscriptionCreationForSharedDataApiImpl() {}
 
-  void subscribe_to_shared_data(
-      const SdmSubscription& sdmSubscription,
-      Pistache::Http::ResponseWriter& response);
+  void subscribe_to_shared_data(const SdmSubscription& sdmSubscription,
+                                Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api

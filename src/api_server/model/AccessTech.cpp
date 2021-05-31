@@ -25,9 +25,7 @@ void AccessTech::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json& j, const AccessTech& o) {
-  j = nlohmann::json();
-}
+void to_json(nlohmann::json& j, const AccessTech& o) { j = nlohmann::json(); }
 
 void from_json(const nlohmann::json& j, AccessTech& o) {}
 

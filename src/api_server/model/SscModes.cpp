@@ -17,9 +17,7 @@ namespace oai {
 namespace udm {
 namespace model {
 
-SscModes::SscModes() {
-  m_AllowedSscModesIsSet = false;
-}
+SscModes::SscModes() { m_AllowedSscModesIsSet = false; }
 
 SscModes::~SscModes() {}
 
@@ -28,7 +26,7 @@ void SscModes::validate() {
 }
 
 void to_json(nlohmann::json& j, const SscModes& o) {
-  j                   = nlohmann::json();
+  j = nlohmann::json();
   j["defaultSscMode"] = o.m_DefaultSscMode;
   if (o.allowedSscModesIsSet()) j["allowedSscModes"] = o.m_AllowedSscModes;
 }
@@ -41,21 +39,15 @@ void from_json(const nlohmann::json& j, SscModes& o) {
   }
 }
 
-SscMode SscModes::getDefaultSscMode() const {
-  return m_DefaultSscMode;
-}
+SscMode SscModes::getDefaultSscMode() const { return m_DefaultSscMode; }
 void SscModes::setDefaultSscMode(SscMode const& value) {
   m_DefaultSscMode = value;
 }
 std::vector<SscMode>& SscModes::getAllowedSscModes() {
   return m_AllowedSscModes;
 }
-bool SscModes::allowedSscModesIsSet() const {
-  return m_AllowedSscModesIsSet;
-}
-void SscModes::unsetAllowedSscModes() {
-  m_AllowedSscModesIsSet = false;
-}
+bool SscModes::allowedSscModesIsSet() const { return m_AllowedSscModesIsSet; }
+void SscModes::unsetAllowedSscModes() { m_AllowedSscModesIsSet = false; }
 
 }  // namespace model
 }  // namespace udm

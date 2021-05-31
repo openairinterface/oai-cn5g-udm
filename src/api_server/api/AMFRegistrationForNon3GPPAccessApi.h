@@ -29,12 +29,9 @@
 #include "AmfNon3GppAccessRegistration.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class AMFRegistrationForNon3GPPAccessApi {
  public:
@@ -47,9 +44,8 @@ class AMFRegistrationForNon3GPPAccessApi {
  private:
   void setupRoutes();
 
-  void non3_gpp_registration_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void non3_gpp_registration_handler(const Pistache::Rest::Request& request,
+                                     Pistache::Http::ResponseWriter response);
   void amf_registration_for_non3_gpp_access_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -70,9 +66,6 @@ class AMFRegistrationForNon3GPPAccessApi {
       Pistache::Http::ResponseWriter& response) = 0;
 };
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api
 
 #endif /* AMFRegistrationForNon3GPPAccessApi_H_ */

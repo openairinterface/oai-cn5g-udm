@@ -49,9 +49,8 @@ class GenerateAuthDataApi {
  private:
   void setupRoutes();
 
-  void generate_auth_data_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void generate_auth_data_handler(const Pistache::Rest::Request& request,
+                                  Pistache::Http::ResponseWriter response);
   void generate_auth_data_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

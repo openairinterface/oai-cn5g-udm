@@ -13,17 +13,14 @@
 
 #include "RegistrationDataSets.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 RegistrationDataSets::RegistrationDataSets() {
-  m_Amf3GppIsSet         = false;
-  m_AmfNon3GppIsSet      = false;
+  m_Amf3GppIsSet = false;
+  m_AmfNon3GppIsSet = false;
   m_SmfRegistrationIsSet = false;
-  m_Smsf3GppIsSet        = false;
-  m_SmsfNon3GppIsSet     = false;
+  m_Smsf3GppIsSet = false;
+  m_SmsfNon3GppIsSet = false;
 }
 
 RegistrationDataSets::~RegistrationDataSets() {}
@@ -68,35 +65,27 @@ Amf3GppAccessRegistration RegistrationDataSets::getAmf3Gpp() const {
   return m_Amf3Gpp;
 }
 void RegistrationDataSets::setAmf3Gpp(Amf3GppAccessRegistration const& value) {
-  m_Amf3Gpp      = value;
+  m_Amf3Gpp = value;
   m_Amf3GppIsSet = true;
 }
-bool RegistrationDataSets::amf3GppIsSet() const {
-  return m_Amf3GppIsSet;
-}
-void RegistrationDataSets::unsetAmf3Gpp() {
-  m_Amf3GppIsSet = false;
-}
+bool RegistrationDataSets::amf3GppIsSet() const { return m_Amf3GppIsSet; }
+void RegistrationDataSets::unsetAmf3Gpp() { m_Amf3GppIsSet = false; }
 AmfNon3GppAccessRegistration RegistrationDataSets::getAmfNon3Gpp() const {
   return m_AmfNon3Gpp;
 }
 void RegistrationDataSets::setAmfNon3Gpp(
     AmfNon3GppAccessRegistration const& value) {
-  m_AmfNon3Gpp      = value;
+  m_AmfNon3Gpp = value;
   m_AmfNon3GppIsSet = true;
 }
-bool RegistrationDataSets::amfNon3GppIsSet() const {
-  return m_AmfNon3GppIsSet;
-}
-void RegistrationDataSets::unsetAmfNon3Gpp() {
-  m_AmfNon3GppIsSet = false;
-}
+bool RegistrationDataSets::amfNon3GppIsSet() const { return m_AmfNon3GppIsSet; }
+void RegistrationDataSets::unsetAmfNon3Gpp() { m_AmfNon3GppIsSet = false; }
 SmfRegistrationInfo RegistrationDataSets::getSmfRegistration() const {
   return m_SmfRegistration;
 }
 void RegistrationDataSets::setSmfRegistration(
     SmfRegistrationInfo const& value) {
-  m_SmfRegistration      = value;
+  m_SmfRegistration = value;
   m_SmfRegistrationIsSet = true;
 }
 bool RegistrationDataSets::smfRegistrationIsSet() const {
@@ -109,30 +98,21 @@ SmsfRegistration RegistrationDataSets::getSmsf3Gpp() const {
   return m_Smsf3Gpp;
 }
 void RegistrationDataSets::setSmsf3Gpp(SmsfRegistration const& value) {
-  m_Smsf3Gpp      = value;
+  m_Smsf3Gpp = value;
   m_Smsf3GppIsSet = true;
 }
-bool RegistrationDataSets::smsf3GppIsSet() const {
-  return m_Smsf3GppIsSet;
-}
-void RegistrationDataSets::unsetSmsf3Gpp() {
-  m_Smsf3GppIsSet = false;
-}
+bool RegistrationDataSets::smsf3GppIsSet() const { return m_Smsf3GppIsSet; }
+void RegistrationDataSets::unsetSmsf3Gpp() { m_Smsf3GppIsSet = false; }
 SmsfRegistration RegistrationDataSets::getSmsfNon3Gpp() const {
   return m_SmsfNon3Gpp;
 }
 void RegistrationDataSets::setSmsfNon3Gpp(SmsfRegistration const& value) {
-  m_SmsfNon3Gpp      = value;
+  m_SmsfNon3Gpp = value;
   m_SmsfNon3GppIsSet = true;
 }
 bool RegistrationDataSets::smsfNon3GppIsSet() const {
   return m_SmsfNon3GppIsSet;
 }
-void RegistrationDataSets::unsetSmsfNon3Gpp() {
-  m_SmsfNon3GppIsSet = false;
-}
+void RegistrationDataSets::unsetSmsfNon3Gpp() { m_SmsfNon3GppIsSet = false; }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

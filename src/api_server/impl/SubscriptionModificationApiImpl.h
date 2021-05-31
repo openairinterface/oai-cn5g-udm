@@ -45,14 +45,12 @@ class SubscriptionModificationApiImpl
   SubscriptionModificationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~SubscriptionModificationApiImpl() {}
 
-  void modify(
-      const std::string& supi, const std::string& subscriptionId,
-      const SdmSubsModification& sdmSubsModification,
-      Pistache::Http::ResponseWriter& response);
-  void modify_shared_data_subs(
-      const std::string& subscriptionId,
-      const SdmSubsModification& sdmSubsModification,
-      Pistache::Http::ResponseWriter& response);
+  void modify(const std::string& supi, const std::string& subscriptionId,
+              const SdmSubsModification& sdmSubsModification,
+              Pistache::Http::ResponseWriter& response);
+  void modify_shared_data_subs(const std::string& subscriptionId,
+                               const SdmSubsModification& sdmSubsModification,
+                               Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api

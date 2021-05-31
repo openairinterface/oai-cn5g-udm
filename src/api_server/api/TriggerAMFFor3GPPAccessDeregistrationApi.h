@@ -29,12 +29,9 @@
 #include "AmfDeregInfo.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class TriggerAMFFor3GPPAccessDeregistrationApi {
  public:
@@ -48,9 +45,8 @@ class TriggerAMFFor3GPPAccessDeregistrationApi {
  private:
   void setupRoutes();
 
-  void dereg_amf_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void dereg_amf_handler(const Pistache::Rest::Request& request,
+                         Pistache::Http::ResponseWriter response);
   void trigger_amf_for3_gpp_access_deregistration_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -65,14 +61,11 @@ class TriggerAMFFor3GPPAccessDeregistrationApi {
   /// </remarks>
   /// <param name="ueId">Identifier of the UE</param>
   /// <param name="amfDeregInfo"></param>
-  virtual void dereg_amf(
-      const std::string& ueId, const AmfDeregInfo& amfDeregInfo,
-      Pistache::Http::ResponseWriter& response) = 0;
+  virtual void dereg_amf(const std::string& ueId,
+                         const AmfDeregInfo& amfDeregInfo,
+                         Pistache::Http::ResponseWriter& response) = 0;
 };
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api
 
 #endif /* TriggerAMFFor3GPPAccessDeregistrationApi_H_ */

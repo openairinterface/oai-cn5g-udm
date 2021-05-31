@@ -18,13 +18,13 @@ namespace udm {
 namespace model {
 
 HssAuthenticationInfoRequest::HssAuthenticationInfoRequest() {
-  m_SupportedFeatures          = "";
-  m_SupportedFeaturesIsSet     = false;
-  m_NumOfRequestedVectors      = 0;
-  m_RequestingNodeTypeIsSet    = false;
-  m_ServingNetworkIdIsSet      = false;
+  m_SupportedFeatures = "";
+  m_SupportedFeaturesIsSet = false;
+  m_NumOfRequestedVectors = 0;
+  m_RequestingNodeTypeIsSet = false;
+  m_ServingNetworkIdIsSet = false;
   m_ResynchronizationInfoIsSet = false;
-  m_AnIdIsSet                  = false;
+  m_AnIdIsSet = false;
 }
 
 HssAuthenticationInfoRequest::~HssAuthenticationInfoRequest() {}
@@ -37,7 +37,7 @@ void to_json(nlohmann::json& j, const HssAuthenticationInfoRequest& o) {
   j = nlohmann::json();
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  j["hssAuthType"]           = o.m_HssAuthType;
+  j["hssAuthType"] = o.m_HssAuthType;
   j["numOfRequestedVectors"] = o.m_NumOfRequestedVectors;
   if (o.requestingNodeTypeIsSet())
     j["requestingNodeType"] = o.m_RequestingNodeType;
@@ -77,7 +77,7 @@ std::string HssAuthenticationInfoRequest::getSupportedFeatures() const {
 }
 void HssAuthenticationInfoRequest::setSupportedFeatures(
     std::string const& value) {
-  m_SupportedFeatures      = value;
+  m_SupportedFeatures = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool HssAuthenticationInfoRequest::supportedFeaturesIsSet() const {
@@ -104,7 +104,7 @@ NodeType HssAuthenticationInfoRequest::getRequestingNodeType() const {
 }
 void HssAuthenticationInfoRequest::setRequestingNodeType(
     NodeType const& value) {
-  m_RequestingNodeType      = value;
+  m_RequestingNodeType = value;
   m_RequestingNodeTypeIsSet = true;
 }
 bool HssAuthenticationInfoRequest::requestingNodeTypeIsSet() const {
@@ -117,7 +117,7 @@ PlmnId HssAuthenticationInfoRequest::getServingNetworkId() const {
   return m_ServingNetworkId;
 }
 void HssAuthenticationInfoRequest::setServingNetworkId(PlmnId const& value) {
-  m_ServingNetworkId      = value;
+  m_ServingNetworkId = value;
   m_ServingNetworkIdIsSet = true;
 }
 bool HssAuthenticationInfoRequest::servingNetworkIdIsSet() const {
@@ -132,7 +132,7 @@ ResynchronizationInfo HssAuthenticationInfoRequest::getResynchronizationInfo()
 }
 void HssAuthenticationInfoRequest::setResynchronizationInfo(
     ResynchronizationInfo const& value) {
-  m_ResynchronizationInfo      = value;
+  m_ResynchronizationInfo = value;
   m_ResynchronizationInfoIsSet = true;
 }
 bool HssAuthenticationInfoRequest::resynchronizationInfoIsSet() const {
@@ -141,19 +141,13 @@ bool HssAuthenticationInfoRequest::resynchronizationInfoIsSet() const {
 void HssAuthenticationInfoRequest::unsetResynchronizationInfo() {
   m_ResynchronizationInfoIsSet = false;
 }
-AccessNetworkId HssAuthenticationInfoRequest::getAnId() const {
-  return m_AnId;
-}
+AccessNetworkId HssAuthenticationInfoRequest::getAnId() const { return m_AnId; }
 void HssAuthenticationInfoRequest::setAnId(AccessNetworkId const& value) {
-  m_AnId      = value;
+  m_AnId = value;
   m_AnIdIsSet = true;
 }
-bool HssAuthenticationInfoRequest::anIdIsSet() const {
-  return m_AnIdIsSet;
-}
-void HssAuthenticationInfoRequest::unsetAnId() {
-  m_AnIdIsSet = false;
-}
+bool HssAuthenticationInfoRequest::anIdIsSet() const { return m_AnIdIsSet; }
+void HssAuthenticationInfoRequest::unsetAnId() { m_AnIdIsSet = false; }
 
 }  // namespace model
 }  // namespace udm

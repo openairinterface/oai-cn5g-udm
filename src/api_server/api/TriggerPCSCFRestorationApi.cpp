@@ -15,22 +15,17 @@
 
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
 using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 TriggerPCSCFRestorationApi::TriggerPCSCFRestorationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void TriggerPCSCFRestorationApi::init() {
-  setupRoutes();
-}
+void TriggerPCSCFRestorationApi::init() { setupRoutes(); }
 
 void TriggerPCSCFRestorationApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -42,10 +37,10 @@ void TriggerPCSCFRestorationApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(Routes::bind(
-      &TriggerPCSCFRestorationApi::
-          trigger_pcscf_restoration_api_default_handler,
-      this));
+  router->addCustomHandler(
+      Routes::bind(&TriggerPCSCFRestorationApi::
+                       trigger_pcscf_restoration_api_default_handler,
+                   this));
 }
 
 void TriggerPCSCFRestorationApi::trigger_pcscf_restoration_handler(
@@ -74,11 +69,8 @@ void TriggerPCSCFRestorationApi::trigger_pcscf_restoration_handler(
 
 void TriggerPCSCFRestorationApi::trigger_pcscf_restoration_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api

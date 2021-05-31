@@ -13,12 +13,11 @@
 
 #include "UELocationInformationRetrievalApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 UELocationInformationRetrievalApiImpl::UELocationInformationRetrievalApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
@@ -32,6 +31,5 @@ void UELocationInformationRetrievalApiImpl::get_location_info(
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

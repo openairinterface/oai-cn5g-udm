@@ -32,28 +32,25 @@
 #include "IpSmGwRegistration.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class IPSMGWRegistrationInfoRetrievalApiImpl
-    : public org::openapitools::server::api::
-          IPSMGWRegistrationInfoRetrievalApi {
+    : public oai::udm::api::IPSMGWRegistrationInfoRetrievalApi {
  public:
   IPSMGWRegistrationInfoRetrievalApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~IPSMGWRegistrationInfoRetrievalApiImpl() {}
 
-  void get_ip_sm_gw_registration(
-      const std::string& ueId, Pistache::Http::ResponseWriter& response);
+  void get_ip_sm_gw_registration(const std::string& ueId,
+                                 Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

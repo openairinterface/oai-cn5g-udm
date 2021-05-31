@@ -18,9 +18,9 @@ namespace udm {
 namespace model {
 
 AvEpsAka::AvEpsAka() {
-  m_Rand  = "";
-  m_Xres  = "";
-  m_Autn  = "";
+  m_Rand = "";
+  m_Xres = "";
+  m_Autn = "";
   m_Kasme = "";
 }
 
@@ -31,12 +31,12 @@ void AvEpsAka::validate() {
 }
 
 void to_json(nlohmann::json& j, const AvEpsAka& o) {
-  j           = nlohmann::json();
+  j = nlohmann::json();
   j["avType"] = o.m_AvType;
-  j["rand"]   = o.m_Rand;
-  j["xres"]   = o.m_Xres;
-  j["autn"]   = o.m_Autn;
-  j["kasme"]  = o.m_Kasme;
+  j["rand"] = o.m_Rand;
+  j["xres"] = o.m_Xres;
+  j["autn"] = o.m_Autn;
+  j["kasme"] = o.m_Kasme;
 }
 
 void from_json(const nlohmann::json& j, AvEpsAka& o) {
@@ -47,36 +47,16 @@ void from_json(const nlohmann::json& j, AvEpsAka& o) {
   j.at("kasme").get_to(o.m_Kasme);
 }
 
-HssAvType AvEpsAka::getAvType() const {
-  return m_AvType;
-}
-void AvEpsAka::setAvType(HssAvType const& value) {
-  m_AvType = value;
-}
-std::string AvEpsAka::getRand() const {
-  return m_Rand;
-}
-void AvEpsAka::setRand(std::string const& value) {
-  m_Rand = value;
-}
-std::string AvEpsAka::getXres() const {
-  return m_Xres;
-}
-void AvEpsAka::setXres(std::string const& value) {
-  m_Xres = value;
-}
-std::string AvEpsAka::getAutn() const {
-  return m_Autn;
-}
-void AvEpsAka::setAutn(std::string const& value) {
-  m_Autn = value;
-}
-std::string AvEpsAka::getKasme() const {
-  return m_Kasme;
-}
-void AvEpsAka::setKasme(std::string const& value) {
-  m_Kasme = value;
-}
+HssAvType AvEpsAka::getAvType() const { return m_AvType; }
+void AvEpsAka::setAvType(HssAvType const& value) { m_AvType = value; }
+std::string AvEpsAka::getRand() const { return m_Rand; }
+void AvEpsAka::setRand(std::string const& value) { m_Rand = value; }
+std::string AvEpsAka::getXres() const { return m_Xres; }
+void AvEpsAka::setXres(std::string const& value) { m_Xres = value; }
+std::string AvEpsAka::getAutn() const { return m_Autn; }
+void AvEpsAka::setAutn(std::string const& value) { m_Autn = value; }
+std::string AvEpsAka::getKasme() const { return m_Kasme; }
+void AvEpsAka::setKasme(std::string const& value) { m_Kasme = value; }
 
 }  // namespace model
 }  // namespace udm

@@ -13,12 +13,9 @@
 
 #include "SMSFNon3GPPAccessRegistrationInfoRetrievalApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
-
-using namespace org::openapitools::server::model;
 
 SMSFNon3GPPAccessRegistrationInfoRetrievalApiImpl::
     SMSFNon3GPPAccessRegistrationInfoRetrievalApiImpl(
@@ -34,6 +31,5 @@ void SMSFNon3GPPAccessRegistrationInfoRetrievalApiImpl::
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

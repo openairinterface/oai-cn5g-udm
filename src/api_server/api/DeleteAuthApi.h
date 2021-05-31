@@ -46,12 +46,10 @@ class DeleteAuthApi {
  private:
   void setupRoutes();
 
-  void delete_auth_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
-  void delete_auth_api_default_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void delete_auth_handler(const Pistache::Rest::Request& request,
+                           Pistache::Http::ResponseWriter response);
+  void delete_auth_api_default_handler(const Pistache::Rest::Request& request,
+                                       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
 
@@ -64,9 +62,10 @@ class DeleteAuthApi {
   /// <param name="supi">SUPI of the user</param>
   /// <param name="authEventId">authEvent Id</param>
   /// <param name="authEvent"></param>
-  virtual void delete_auth(
-      const std::string& supi, const std::string& authEventId,
-      const AuthEvent& authEvent, Pistache::Http::ResponseWriter& response) = 0;
+  virtual void delete_auth(const std::string& supi,
+                           const std::string& authEventId,
+                           const AuthEvent& authEvent,
+                           Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace api

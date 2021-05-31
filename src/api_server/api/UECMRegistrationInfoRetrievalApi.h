@@ -32,12 +32,9 @@
 
 #include "Snssai.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class UECMRegistrationInfoRetrievalApi {
  public:
@@ -50,9 +47,8 @@ class UECMRegistrationInfoRetrievalApi {
  private:
   void setupRoutes();
 
-  void get_registrations_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void get_registrations_handler(const Pistache::Rest::Request& request,
+                                 Pistache::Http::ResponseWriter response);
   void uecm_registration_info_retrieval_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -79,9 +75,6 @@ class UECMRegistrationInfoRetrievalApi {
   // &response) = 0;
 };
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api
 
 #endif /* UECMRegistrationInfoRetrievalApi_H_ */

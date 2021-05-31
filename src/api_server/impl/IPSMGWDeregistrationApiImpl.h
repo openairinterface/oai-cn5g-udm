@@ -31,26 +31,23 @@
 
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 class IPSMGWDeregistrationApiImpl
-    : public org::openapitools::server::api::IPSMGWDeregistrationApi {
+    : public oai::udm::api::IPSMGWDeregistrationApi {
  public:
   IPSMGWDeregistrationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~IPSMGWDeregistrationApiImpl() {}
 
-  void ip_sm_gw_deregistration(
-      const std::string& ueId, Pistache::Http::ResponseWriter& response);
+  void ip_sm_gw_deregistration(const std::string& ueId,
+                               Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

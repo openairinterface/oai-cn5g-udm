@@ -17,9 +17,7 @@ namespace oai {
 namespace udm {
 namespace model {
 
-SmsfInfo::SmsfInfo() {
-  m_SmsfInstanceId = "";
-}
+SmsfInfo::SmsfInfo() { m_SmsfInstanceId = ""; }
 
 SmsfInfo::~SmsfInfo() {}
 
@@ -28,9 +26,9 @@ void SmsfInfo::validate() {
 }
 
 void to_json(nlohmann::json& j, const SmsfInfo& o) {
-  j                   = nlohmann::json();
+  j = nlohmann::json();
   j["smsfInstanceId"] = o.m_SmsfInstanceId;
-  j["plmnId"]         = o.m_PlmnId;
+  j["plmnId"] = o.m_PlmnId;
 }
 
 void from_json(const nlohmann::json& j, SmsfInfo& o) {
@@ -38,18 +36,12 @@ void from_json(const nlohmann::json& j, SmsfInfo& o) {
   j.at("plmnId").get_to(o.m_PlmnId);
 }
 
-std::string SmsfInfo::getSmsfInstanceId() const {
-  return m_SmsfInstanceId;
-}
+std::string SmsfInfo::getSmsfInstanceId() const { return m_SmsfInstanceId; }
 void SmsfInfo::setSmsfInstanceId(std::string const& value) {
   m_SmsfInstanceId = value;
 }
-PlmnId SmsfInfo::getPlmnId() const {
-  return m_PlmnId;
-}
-void SmsfInfo::setPlmnId(PlmnId const& value) {
-  m_PlmnId = value;
-}
+PlmnId SmsfInfo::getPlmnId() const { return m_PlmnId; }
+void SmsfInfo::setPlmnId(PlmnId const& value) { m_PlmnId = value; }
 
 }  // namespace model
 }  // namespace udm

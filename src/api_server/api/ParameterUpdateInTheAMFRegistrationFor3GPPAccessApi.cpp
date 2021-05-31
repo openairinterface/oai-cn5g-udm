@@ -15,13 +15,10 @@
 
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
 using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::
     ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi(
@@ -38,10 +35,9 @@ void ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::setupRoutes() {
 
   Routes::Patch(
       *router, base + "/:ueId/registrations/amf-3gpp-access",
-      Routes::bind(
-          &ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::
-              update3_gpp_registration_handler,
-          this));
+      Routes::bind(&ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::
+                       update3_gpp_registration_handler,
+                   this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -51,9 +47,8 @@ void ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::setupRoutes() {
 }
 
 void ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::
-    update3_gpp_registration_handler(
-        const Pistache::Rest::Request& request,
-        Pistache::Http::ResponseWriter response) {
+    update3_gpp_registration_handler(const Pistache::Rest::Request& request,
+                                     Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -74,9 +69,8 @@ void ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::
   try {
     nlohmann::json::parse(request.body())
         .get_to(amf3GppAccessRegistrationModification);
-    this->update3_gpp_registration(
-        ueId, amf3GppAccessRegistrationModification, supportedFeatures,
-        response);
+    this->update3_gpp_registration(ueId, amf3GppAccessRegistrationModification,
+                                   supportedFeatures, response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
@@ -95,11 +89,8 @@ void ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::
     parameter_update_in_the_amf_registration_for3_gpp_access_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api

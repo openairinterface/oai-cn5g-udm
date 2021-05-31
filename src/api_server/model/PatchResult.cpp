@@ -13,11 +13,7 @@
 
 #include "PatchResult.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
-
+namespace oai::udm::model {
 PatchResult::PatchResult() {}
 
 PatchResult::~PatchResult() {}
@@ -27,7 +23,7 @@ void PatchResult::validate() {
 }
 
 void to_json(nlohmann::json& j, const PatchResult& o) {
-  j           = nlohmann::json();
+  j = nlohmann::json();
   j["report"] = o.m_Report;
 }
 
@@ -35,14 +31,9 @@ void from_json(const nlohmann::json& j, PatchResult& o) {
   j.at("report").get_to(o.m_Report);
 }
 
-std::vector<ReportItem>& PatchResult::getReport() {
-  return m_Report;
-}
+std::vector<ReportItem>& PatchResult::getReport() { return m_Report; }
 void PatchResult::setReport(std::vector<ReportItem> const& value) {
   m_Report = value;
 }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

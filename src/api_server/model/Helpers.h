@@ -43,9 +43,9 @@ bool fromStringValue(const std::string& inStr, int64_t& value);
 bool fromStringValue(const std::string& inStr, bool& value);
 bool fromStringValue(const std::string& inStr, float& value);
 bool fromStringValue(const std::string& inStr, double& value);
-template<typename T>
-bool fromStringValue(
-    const std::vector<std::string>& inStr, std::vector<T>& value) {
+template <typename T>
+bool fromStringValue(const std::vector<std::string>& inStr,
+                     std::vector<T>& value) {
   try {
     for (auto& item : inStr) {
       T itemValue;
@@ -58,9 +58,9 @@ bool fromStringValue(
   }
   return value.size() > 0;
 }
-template<typename T>
-bool fromStringValue(
-    const std::string& inStr, std::vector<T>& value, char separator = ',') {
+template <typename T>
+bool fromStringValue(const std::string& inStr, std::vector<T>& value,
+                     char separator = ',') {
   std::vector<std::string> inStrings;
   std::istringstream f(inStr);
   std::string s;

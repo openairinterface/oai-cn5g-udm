@@ -47,9 +47,9 @@ class DeleteAuthApiImpl : public oai::udm::api::DeleteAuthApi {
   DeleteAuthApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~DeleteAuthApiImpl() {}
 
-  void delete_auth(
-      const std::string& supi, const std::string& authEventId,
-      const AuthEvent& authEvent, Pistache::Http::ResponseWriter& response);
+  void delete_auth(const std::string& supi, const std::string& authEventId,
+                   const AuthEvent& authEvent,
+                   Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api

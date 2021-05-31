@@ -17,9 +17,7 @@ namespace oai {
 namespace udm {
 namespace model {
 
-NotifyItem::NotifyItem() {
-  m_ResourceId = "";
-}
+NotifyItem::NotifyItem() { m_ResourceId = ""; }
 
 NotifyItem::~NotifyItem() {}
 
@@ -28,9 +26,9 @@ void NotifyItem::validate() {
 }
 
 void to_json(nlohmann::json& j, const NotifyItem& o) {
-  j               = nlohmann::json();
+  j = nlohmann::json();
   j["resourceId"] = o.m_ResourceId;
-  j["changes"]    = o.m_Changes;
+  j["changes"] = o.m_Changes;
 }
 
 void from_json(const nlohmann::json& j, NotifyItem& o) {
@@ -38,15 +36,11 @@ void from_json(const nlohmann::json& j, NotifyItem& o) {
   j.at("changes").get_to(o.m_Changes);
 }
 
-std::string NotifyItem::getResourceId() const {
-  return m_ResourceId;
-}
+std::string NotifyItem::getResourceId() const { return m_ResourceId; }
 void NotifyItem::setResourceId(std::string const& value) {
   m_ResourceId = value;
 }
-std::vector<ChangeItem>& NotifyItem::getChanges() {
-  return m_Changes;
-}
+std::vector<ChangeItem>& NotifyItem::getChanges() { return m_Changes; }
 
 }  // namespace model
 }  // namespace udm

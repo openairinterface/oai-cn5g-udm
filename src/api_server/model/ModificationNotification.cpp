@@ -26,7 +26,7 @@ void ModificationNotification::validate() {
 }
 
 void to_json(nlohmann::json& j, const ModificationNotification& o) {
-  j                = nlohmann::json();
+  j = nlohmann::json();
   j["notifyItems"] = o.m_NotifyItems;
 }
 

@@ -47,9 +47,8 @@ class RetrievalOfMultipleDataSetsApi {
  private:
   void setupRoutes();
 
-  void get_data_sets_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void get_data_sets_handler(const Pistache::Rest::Request& request,
+                             Pistache::Http::ResponseWriter response);
   void retrieval_of_multiple_data_sets_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

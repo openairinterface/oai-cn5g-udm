@@ -13,13 +13,11 @@
 
 #include "TriggerPCSCFRestorationApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 TriggerPCSCFRestorationApiImpl::TriggerPCSCFRestorationApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
     : TriggerPCSCFRestorationApi(rtr) {}
@@ -31,6 +29,5 @@ void TriggerPCSCFRestorationApiImpl::trigger_pcscf_restoration(
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

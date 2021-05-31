@@ -13,10 +13,7 @@
 
 #include "Ipv6Addr.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 Ipv6Addr::Ipv6Addr() {}
 
@@ -26,13 +23,8 @@ void Ipv6Addr::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json& j, const Ipv6Addr& o) {
-  j = nlohmann::json();
-}
+void to_json(nlohmann::json& j, const Ipv6Addr& o) { j = nlohmann::json(); }
 
 void from_json(const nlohmann::json& j, Ipv6Addr& o) {}
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

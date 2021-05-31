@@ -22,10 +22,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -53,9 +50,6 @@ class PeiUpdateInfo {
   std::string m_Pei;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* PeiUpdateInfo_H_ */

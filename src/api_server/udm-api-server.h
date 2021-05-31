@@ -77,13 +77,12 @@ using namespace oai::udm::app;
 
 using namespace oai::udm::api;
 using namespace config;
-using namespace org::openapitools::server::api;
-
+using namespace oai::udm::model;
 class UDMApiServer {
  public:
   UDMApiServer(Pistache::Address address, udm_app* udm_app_inst)
       : m_httpEndpoint(std::make_shared<Pistache::Http::Endpoint>(address)) {
-    m_router  = std::make_shared<Pistache::Rest::Router>();
+    m_router = std::make_shared<Pistache::Rest::Router>();
     m_address = address.host() + ":" + (address.port()).toString();
 
     /*

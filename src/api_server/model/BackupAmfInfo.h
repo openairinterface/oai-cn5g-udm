@@ -25,10 +25,7 @@
 
 #include "Guami.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -66,9 +63,6 @@ class BackupAmfInfo {
   bool m_GuamiListIsSet;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* BackupAmfInfo_H_ */

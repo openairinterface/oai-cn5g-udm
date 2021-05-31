@@ -205,10 +205,10 @@ class AccessAndMobilitySubscriptionData {
   bool traceDataIsSet() const;
   void unsetTraceData();
 
-  friend void to_json(
-      nlohmann::json& j, const AccessAndMobilitySubscriptionData& o);
-  friend void from_json(
-      const nlohmann::json& j, AccessAndMobilitySubscriptionData& o);
+  friend void to_json(nlohmann::json& j,
+                      const AccessAndMobilitySubscriptionData& o);
+  friend void from_json(const nlohmann::json& j,
+                        AccessAndMobilitySubscriptionData& o);
 
  protected:
   std::string m_SupportedFeatures;

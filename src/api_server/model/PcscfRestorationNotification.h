@@ -22,10 +22,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -47,16 +44,13 @@ class PcscfRestorationNotification {
   void setSupi(std::string const& value);
 
   friend void to_json(nlohmann::json& j, const PcscfRestorationNotification& o);
-  friend void from_json(
-      const nlohmann::json& j, PcscfRestorationNotification& o);
+  friend void from_json(const nlohmann::json& j,
+                        PcscfRestorationNotification& o);
 
  protected:
   std::string m_Supi;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* PcscfRestorationNotification_H_ */

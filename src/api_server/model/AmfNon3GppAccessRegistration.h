@@ -31,10 +31,7 @@
 #include "ServiceName.h"
 #include "VgmlcAddress.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -160,8 +157,8 @@ class AmfNon3GppAccessRegistration {
   void unsetContextInfo();
 
   friend void to_json(nlohmann::json& j, const AmfNon3GppAccessRegistration& o);
-  friend void from_json(
-      const nlohmann::json& j, AmfNon3GppAccessRegistration& o);
+  friend void from_json(const nlohmann::json& j,
+                        AmfNon3GppAccessRegistration& o);
 
  protected:
   std::string m_AmfInstanceId;
@@ -200,9 +197,6 @@ class AmfNon3GppAccessRegistration {
   bool m_ContextInfoIsSet;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* AmfNon3GppAccessRegistration_H_ */

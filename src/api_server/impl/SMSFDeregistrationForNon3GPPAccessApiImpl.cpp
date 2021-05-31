@@ -13,12 +13,10 @@
 
 #include "SMSFDeregistrationForNon3GPPAccessApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
-
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 SMSFDeregistrationForNon3GPPAccessApiImpl::
     SMSFDeregistrationForNon3GPPAccessApiImpl(
@@ -32,6 +30,5 @@ void SMSFDeregistrationForNon3GPPAccessApiImpl::non3_gpp_smsf_deregistration(
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

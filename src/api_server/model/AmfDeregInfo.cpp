@@ -13,10 +13,7 @@
 
 #include "AmfDeregInfo.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 AmfDeregInfo::AmfDeregInfo() {}
 
@@ -27,7 +24,7 @@ void AmfDeregInfo::validate() {
 }
 
 void to_json(nlohmann::json& j, const AmfDeregInfo& o) {
-  j                = nlohmann::json();
+  j = nlohmann::json();
   j["deregReason"] = o.m_DeregReason;
 }
 
@@ -42,7 +39,4 @@ void AmfDeregInfo::setDeregReason(DeregistrationReason const& value) {
   m_DeregReason = value;
 }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

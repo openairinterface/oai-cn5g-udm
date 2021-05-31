@@ -29,12 +29,9 @@
 #include "ProblemDetails.h"
 #include "SmsfRegistration.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class SMSFNon3GPPAccessRegistrationInfoRetrievalApi {
  public:
@@ -72,9 +69,5 @@ class SMSFNon3GPPAccessRegistrationInfoRetrievalApi {
       Pistache::Http::ResponseWriter& response) = 0;
 };
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
-
+}  // namespace oai::udm::api
 #endif /* SMSFNon3GPPAccessRegistrationInfoRetrievalApi_H_ */

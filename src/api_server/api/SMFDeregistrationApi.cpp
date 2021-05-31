@@ -15,22 +15,17 @@
 
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
 using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 SMFDeregistrationApi::SMFDeregistrationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void SMFDeregistrationApi::init() {
-  setupRoutes();
-}
+void SMFDeregistrationApi::init() { setupRoutes(); }
 
 void SMFDeregistrationApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -48,7 +43,7 @@ void SMFDeregistrationApi::smf_deregistration_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
-  auto ueId         = request.param(":ueId").as<std::string>();
+  auto ueId = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
 
   // Getting the query params
@@ -79,11 +74,8 @@ void SMFDeregistrationApi::smf_deregistration_handler(
 
 void SMFDeregistrationApi::smf_deregistration_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api

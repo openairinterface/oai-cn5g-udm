@@ -18,12 +18,12 @@ namespace udm {
 namespace model {
 
 AuthEvent::AuthEvent() {
-  m_NfInstanceId        = "";
-  m_Success             = false;
-  m_TimeStamp           = "";
-  m_AuthType            = "";
-  m_ServingNetworkName  = "";
-  m_AuthRemovalInd      = false;
+  m_NfInstanceId = "";
+  m_Success = false;
+  m_TimeStamp = "";
+  m_AuthType = "";
+  m_ServingNetworkName = "";
+  m_AuthRemovalInd = false;
   m_AuthRemovalIndIsSet = false;
 }
 
@@ -34,11 +34,11 @@ void AuthEvent::validate() {
 }
 
 void to_json(nlohmann::json& j, const AuthEvent& o) {
-  j                       = nlohmann::json();
-  j["nfInstanceId"]       = o.m_NfInstanceId;
-  j["success"]            = o.m_Success;
-  j["timeStamp"]          = o.m_TimeStamp;
-  j["authType"]           = o.m_AuthType;
+  j = nlohmann::json();
+  j["nfInstanceId"] = o.m_NfInstanceId;
+  j["success"] = o.m_Success;
+  j["timeStamp"] = o.m_TimeStamp;
+  j["authType"] = o.m_AuthType;
   j["servingNetworkName"] = o.m_ServingNetworkName;
   if (o.authRemovalIndIsSet()) j["authRemovalInd"] = o.m_AuthRemovalInd;
 }
@@ -55,49 +55,29 @@ void from_json(const nlohmann::json& j, AuthEvent& o) {
   }
 }
 
-std::string AuthEvent::getNfInstanceId() const {
-  return m_NfInstanceId;
-}
+std::string AuthEvent::getNfInstanceId() const { return m_NfInstanceId; }
 void AuthEvent::setNfInstanceId(std::string const& value) {
   m_NfInstanceId = value;
 }
-bool AuthEvent::isSuccess() const {
-  return m_Success;
-}
-void AuthEvent::setSuccess(bool const value) {
-  m_Success = value;
-}
-std::string AuthEvent::getTimeStamp() const {
-  return m_TimeStamp;
-}
-void AuthEvent::setTimeStamp(std::string const& value) {
-  m_TimeStamp = value;
-}
-std::string AuthEvent::getAuthType() const {
-  return m_AuthType;
-}
-void AuthEvent::setAuthType(std::string const& value) {
-  m_AuthType = value;
-}
+bool AuthEvent::isSuccess() const { return m_Success; }
+void AuthEvent::setSuccess(bool const value) { m_Success = value; }
+std::string AuthEvent::getTimeStamp() const { return m_TimeStamp; }
+void AuthEvent::setTimeStamp(std::string const& value) { m_TimeStamp = value; }
+std::string AuthEvent::getAuthType() const { return m_AuthType; }
+void AuthEvent::setAuthType(std::string const& value) { m_AuthType = value; }
 std::string AuthEvent::getServingNetworkName() const {
   return m_ServingNetworkName;
 }
 void AuthEvent::setServingNetworkName(std::string const& value) {
   m_ServingNetworkName = value;
 }
-bool AuthEvent::isAuthRemovalInd() const {
-  return m_AuthRemovalInd;
-}
+bool AuthEvent::isAuthRemovalInd() const { return m_AuthRemovalInd; }
 void AuthEvent::setAuthRemovalInd(bool const value) {
-  m_AuthRemovalInd      = value;
+  m_AuthRemovalInd = value;
   m_AuthRemovalIndIsSet = true;
 }
-bool AuthEvent::authRemovalIndIsSet() const {
-  return m_AuthRemovalIndIsSet;
-}
-void AuthEvent::unsetAuthRemovalInd() {
-  m_AuthRemovalIndIsSet = false;
-}
+bool AuthEvent::authRemovalIndIsSet() const { return m_AuthRemovalIndIsSet; }
+void AuthEvent::unsetAuthRemovalInd() { m_AuthRemovalIndIsSet = false; }
 
 }  // namespace model
 }  // namespace udm

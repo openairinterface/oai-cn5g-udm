@@ -13,13 +13,11 @@
 
 #include "SMSFDeregistrationFor3GPPAccessApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 SMSFDeregistrationFor3GPPAccessApiImpl::SMSFDeregistrationFor3GPPAccessApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
     : SMSFDeregistrationFor3GPPAccessApi(rtr) {}
@@ -31,6 +29,5 @@ void SMSFDeregistrationFor3GPPAccessApiImpl::_3_gpp_smsf_deregistration(
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

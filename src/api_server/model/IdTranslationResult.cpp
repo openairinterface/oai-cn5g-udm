@@ -18,11 +18,11 @@ namespace udm {
 namespace model {
 
 IdTranslationResult::IdTranslationResult() {
-  m_SupportedFeatures      = "";
+  m_SupportedFeatures = "";
   m_SupportedFeaturesIsSet = false;
-  m_Supi                   = "";
-  m_Gpsi                   = "";
-  m_GpsiIsSet              = false;
+  m_Supi = "";
+  m_Gpsi = "";
+  m_GpsiIsSet = false;
 }
 
 IdTranslationResult::~IdTranslationResult() {}
@@ -55,7 +55,7 @@ std::string IdTranslationResult::getSupportedFeatures() const {
   return m_SupportedFeatures;
 }
 void IdTranslationResult::setSupportedFeatures(std::string const& value) {
-  m_SupportedFeatures      = value;
+  m_SupportedFeatures = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool IdTranslationResult::supportedFeaturesIsSet() const {
@@ -64,25 +64,15 @@ bool IdTranslationResult::supportedFeaturesIsSet() const {
 void IdTranslationResult::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
-std::string IdTranslationResult::getSupi() const {
-  return m_Supi;
-}
-void IdTranslationResult::setSupi(std::string const& value) {
-  m_Supi = value;
-}
-std::string IdTranslationResult::getGpsi() const {
-  return m_Gpsi;
-}
+std::string IdTranslationResult::getSupi() const { return m_Supi; }
+void IdTranslationResult::setSupi(std::string const& value) { m_Supi = value; }
+std::string IdTranslationResult::getGpsi() const { return m_Gpsi; }
 void IdTranslationResult::setGpsi(std::string const& value) {
-  m_Gpsi      = value;
+  m_Gpsi = value;
   m_GpsiIsSet = true;
 }
-bool IdTranslationResult::gpsiIsSet() const {
-  return m_GpsiIsSet;
-}
-void IdTranslationResult::unsetGpsi() {
-  m_GpsiIsSet = false;
-}
+bool IdTranslationResult::gpsiIsSet() const { return m_GpsiIsSet; }
+void IdTranslationResult::unsetGpsi() { m_GpsiIsSet = false; }
 
 }  // namespace model
 }  // namespace udm

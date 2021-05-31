@@ -45,9 +45,8 @@ class ProvidingAcknowledgementOfUEParametersUpdateApiImpl
       std::shared_ptr<Pistache::Rest::Router>);
   ~ProvidingAcknowledgementOfUEParametersUpdateApiImpl() {}
 
-  void upu_ack(
-      const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
-      Pistache::Http::ResponseWriter& response);
+  void upu_ack(const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
+               Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api

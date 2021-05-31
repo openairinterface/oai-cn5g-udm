@@ -26,10 +26,7 @@
 #include "NetworkNodeDiameterAddress.h"
 #include "PlmnId.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -119,9 +116,6 @@ class SmsfRegistration {
   bool m_ContextInfoIsSet;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* SmsfRegistration_H_ */

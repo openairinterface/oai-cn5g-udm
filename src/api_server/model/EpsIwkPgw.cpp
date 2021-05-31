@@ -13,13 +13,10 @@
 
 #include "EpsIwkPgw.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 EpsIwkPgw::EpsIwkPgw() {
-  m_PgwFqdn       = "";
+  m_PgwFqdn = "";
   m_SmfInstanceId = "";
 }
 
@@ -30,8 +27,8 @@ void EpsIwkPgw::validate() {
 }
 
 void to_json(nlohmann::json& j, const EpsIwkPgw& o) {
-  j                  = nlohmann::json();
-  j["pgwFqdn"]       = o.m_PgwFqdn;
+  j = nlohmann::json();
+  j["pgwFqdn"] = o.m_PgwFqdn;
   j["smfInstanceId"] = o.m_SmfInstanceId;
 }
 
@@ -40,20 +37,11 @@ void from_json(const nlohmann::json& j, EpsIwkPgw& o) {
   j.at("smfInstanceId").get_to(o.m_SmfInstanceId);
 }
 
-std::string EpsIwkPgw::getPgwFqdn() const {
-  return m_PgwFqdn;
-}
-void EpsIwkPgw::setPgwFqdn(std::string const& value) {
-  m_PgwFqdn = value;
-}
-std::string EpsIwkPgw::getSmfInstanceId() const {
-  return m_SmfInstanceId;
-}
+std::string EpsIwkPgw::getPgwFqdn() const { return m_PgwFqdn; }
+void EpsIwkPgw::setPgwFqdn(std::string const& value) { m_PgwFqdn = value; }
+std::string EpsIwkPgw::getSmfInstanceId() const { return m_SmfInstanceId; }
 void EpsIwkPgw::setSmfInstanceId(std::string const& value) {
   m_SmfInstanceId = value;
 }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

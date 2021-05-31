@@ -15,30 +15,25 @@
 
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
 using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 IPSMGWDeregistrationApi::IPSMGWDeregistrationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void IPSMGWDeregistrationApi::init() {
-  setupRoutes();
-}
+void IPSMGWDeregistrationApi::init() { setupRoutes(); }
 
 void IPSMGWDeregistrationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(
       *router, base + "/:ueId/registrations/ip-sm-gw",
-      Routes::bind(
-          &IPSMGWDeregistrationApi::ip_sm_gw_deregistration_handler, this));
+      Routes::bind(&IPSMGWDeregistrationApi::ip_sm_gw_deregistration_handler,
+                   this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -70,11 +65,8 @@ void IPSMGWDeregistrationApi::ip_sm_gw_deregistration_handler(
 
 void IPSMGWDeregistrationApi::ipsmgw_deregistration_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api

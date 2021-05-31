@@ -24,9 +24,8 @@
 
 #include "Ipv6Addr.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace model {
 
 /// <summary>
@@ -77,8 +76,7 @@ class VgmlcAddress {
 };
 
 }  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif /* VgmlcAddress_H_ */

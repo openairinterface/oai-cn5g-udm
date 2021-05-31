@@ -13,12 +13,11 @@
 
 #include "IPSMGWRegistrationInfoRetrievalApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 IPSMGWRegistrationInfoRetrievalApiImpl::IPSMGWRegistrationInfoRetrievalApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
@@ -30,6 +29,5 @@ void IPSMGWRegistrationInfoRetrievalApiImpl::get_ip_sm_gw_registration(
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

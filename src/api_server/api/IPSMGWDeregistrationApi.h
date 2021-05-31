@@ -28,12 +28,9 @@
 
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class IPSMGWDeregistrationApi {
  public:
@@ -46,9 +43,8 @@ class IPSMGWDeregistrationApi {
  private:
   void setupRoutes();
 
-  void ip_sm_gw_deregistration_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void ip_sm_gw_deregistration_handler(const Pistache::Rest::Request& request,
+                                       Pistache::Http::ResponseWriter response);
   void ipsmgw_deregistration_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -66,9 +62,6 @@ class IPSMGWDeregistrationApi {
       const std::string& ueId, Pistache::Http::ResponseWriter& response) = 0;
 };
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api
 
 #endif /* IPSMGWDeregistrationApi_H_ */

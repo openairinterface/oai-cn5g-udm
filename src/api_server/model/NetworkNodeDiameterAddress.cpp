@@ -13,13 +13,10 @@
 
 #include "NetworkNodeDiameterAddress.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 NetworkNodeDiameterAddress::NetworkNodeDiameterAddress() {
-  m_Name  = "";
+  m_Name = "";
   m_Realm = "";
 }
 
@@ -30,8 +27,8 @@ void NetworkNodeDiameterAddress::validate() {
 }
 
 void to_json(nlohmann::json& j, const NetworkNodeDiameterAddress& o) {
-  j          = nlohmann::json();
-  j["name"]  = o.m_Name;
+  j = nlohmann::json();
+  j["name"] = o.m_Name;
   j["realm"] = o.m_Realm;
 }
 
@@ -40,20 +37,13 @@ void from_json(const nlohmann::json& j, NetworkNodeDiameterAddress& o) {
   j.at("realm").get_to(o.m_Realm);
 }
 
-std::string NetworkNodeDiameterAddress::getName() const {
-  return m_Name;
-}
+std::string NetworkNodeDiameterAddress::getName() const { return m_Name; }
 void NetworkNodeDiameterAddress::setName(std::string const& value) {
   m_Name = value;
 }
-std::string NetworkNodeDiameterAddress::getRealm() const {
-  return m_Realm;
-}
+std::string NetworkNodeDiameterAddress::getRealm() const { return m_Realm; }
 void NetworkNodeDiameterAddress::setRealm(std::string const& value) {
   m_Realm = value;
 }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

@@ -13,10 +13,7 @@
 
 #include "RegistrationReason.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 RegistrationReason::RegistrationReason() {}
 
@@ -32,7 +29,4 @@ void to_json(nlohmann::json& j, const RegistrationReason& o) {
 
 void from_json(const nlohmann::json& j, RegistrationReason& o) {}
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

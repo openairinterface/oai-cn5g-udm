@@ -13,13 +13,11 @@
 
 #include "AMFRegistrationForNon3GPPAccessApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 AMFRegistrationForNon3GPPAccessApiImpl::AMFRegistrationForNon3GPPAccessApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
     : AMFRegistrationForNon3GPPAccessApi(rtr) {}
@@ -32,6 +30,5 @@ void AMFRegistrationForNon3GPPAccessApiImpl::non3_gpp_registration(
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

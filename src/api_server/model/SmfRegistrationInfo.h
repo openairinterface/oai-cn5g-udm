@@ -24,10 +24,7 @@
 
 #include "SmfRegistration.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -55,9 +52,6 @@ class SmfRegistrationInfo {
   std::vector<SmfRegistration> m_SmfRegistrationList;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* SmfRegistrationInfo_H_ */

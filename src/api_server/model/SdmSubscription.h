@@ -27,7 +27,7 @@
 #include "ServiceName.h"
 #include "Snssai.h"
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 namespace oai {
 namespace udm {

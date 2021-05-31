@@ -40,8 +40,8 @@ void SliceSelectionSubscriptionDataRetrievalApiImpl::get_nssai(
     Pistache::Http::ResponseWriter& response) {
   // 1. populate remote uri for udp request
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nudr.addr4)));
-  std::string udr_port   = std::to_string(udm_cfg.nudr.port);
+      std::string(inet_ntoa(*((struct in_addr*)&udm_cfg.nudr.addr4)));
+  std::string udr_port = std::to_string(udm_cfg.nudr.port);
   std::string remote_uri = udr_ip + ":" + udr_port +
                            "/nudr-dr/v2/subscription-data/" + supi + "/" +
                            plmnId.get().getMcc() + plmnId.get().getMnc() +
@@ -55,7 +55,7 @@ void SliceSelectionSubscriptionDataRetrievalApiImpl::get_nssai(
   long http_code =
       Curl::curl_http_client(remote_uri, method, body, response_get);
   // 3. process response
-  nlohmann::json response_data_json        = {};
+  nlohmann::json response_data_json = {};
   nlohmann::json return_response_data_json = {};
   try {
     Logger::udm_sdm().debug("subscription-data: GET Response: " + response_get);
@@ -82,9 +82,8 @@ void SliceSelectionSubscriptionDataRetrievalApiImpl::get_nssai(
     return;
   }
   Logger::udm_sdm().debug("http reponse code %d.\n", http_code);
-  response.send(
-      static_cast<Pistache::Http::Code>(http_code),
-      return_response_data_json.dump());
+  response.send(static_cast<Pistache::Http::Code>(http_code),
+                return_response_data_json.dump());
 }
 
 }  // namespace api

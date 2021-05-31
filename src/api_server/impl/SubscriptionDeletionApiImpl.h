@@ -43,9 +43,8 @@ class SubscriptionDeletionApiImpl
   SubscriptionDeletionApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~SubscriptionDeletionApiImpl() {}
 
-  void unsubscribe(
-      const std::string& supi, const std::string& subscriptionId,
-      Pistache::Http::ResponseWriter& response);
+  void unsubscribe(const std::string& supi, const std::string& subscriptionId,
+                   Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api

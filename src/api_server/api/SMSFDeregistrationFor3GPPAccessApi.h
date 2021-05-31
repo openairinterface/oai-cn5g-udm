@@ -28,12 +28,11 @@
 
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class SMSFDeregistrationFor3GPPAccessApi {
  public:
@@ -69,8 +68,7 @@ class SMSFDeregistrationFor3GPPAccessApi {
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif /* SMSFDeregistrationFor3GPPAccessApi_H_ */

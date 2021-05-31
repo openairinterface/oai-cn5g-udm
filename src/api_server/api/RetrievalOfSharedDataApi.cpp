@@ -27,9 +27,7 @@ RetrievalOfSharedDataApi::RetrievalOfSharedDataApi(
   router = rtr;
 }
 
-void RetrievalOfSharedDataApi::init() {
-  setupRoutes();
-}
+void RetrievalOfSharedDataApi::init() { setupRoutes(); }
 
 void RetrievalOfSharedDataApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -66,13 +64,12 @@ void RetrievalOfSharedDataApi::get_shared_data_handler(
   }
 
   // Getting the header params
-  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_shared_data(
-        sharedDataIds, supportedFeatures, ifNoneMatch, ifModifiedSince,
-        response);
+    this->get_shared_data(sharedDataIds, supportedFeatures, ifNoneMatch,
+                          ifModifiedSince, response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
@@ -86,8 +83,8 @@ void RetrievalOfSharedDataApi::get_shared_data_handler(
 
 void RetrievalOfSharedDataApi::retrieval_of_shared_data_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
 }  // namespace api

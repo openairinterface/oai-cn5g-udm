@@ -29,12 +29,11 @@
 #include "Amf3GppAccessRegistration.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class AMF3GppAccessRegistrationInfoRetrievalApi {
  public:
@@ -48,9 +47,8 @@ class AMF3GppAccessRegistrationInfoRetrievalApi {
  private:
   void setupRoutes();
 
-  void get3_gpp_registration_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void get3_gpp_registration_handler(const Pistache::Rest::Request& request,
+                                     Pistache::Http::ResponseWriter response);
   void amf3_gpp_access_registration_info_retrieval_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -73,8 +71,7 @@ class AMF3GppAccessRegistrationInfoRetrievalApi {
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif /* AMF3GppAccessRegistrationInfoRetrievalApi_H_ */

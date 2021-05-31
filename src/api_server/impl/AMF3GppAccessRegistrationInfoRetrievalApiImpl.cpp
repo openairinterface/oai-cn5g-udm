@@ -13,12 +13,11 @@
 
 #include "AMF3GppAccessRegistrationInfoRetrievalApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 AMF3GppAccessRegistrationInfoRetrievalApiImpl::
     AMF3GppAccessRegistrationInfoRetrievalApiImpl(
@@ -33,6 +32,5 @@ void AMF3GppAccessRegistrationInfoRetrievalApiImpl::get3_gpp_registration(
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

@@ -29,12 +29,9 @@
 #include "PeiUpdateInfo.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class PEIUpdateApi {
  public:
@@ -47,12 +44,10 @@ class PEIUpdateApi {
  private:
   void setupRoutes();
 
-  void pei_update_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
-  void pei_update_api_default_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void pei_update_handler(const Pistache::Rest::Request& request,
+                          Pistache::Http::ResponseWriter response);
+  void pei_update_api_default_handler(const Pistache::Rest::Request& request,
+                                      Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
 
@@ -64,14 +59,11 @@ class PEIUpdateApi {
   /// </remarks>
   /// <param name="ueId">Identifier of the UE</param>
   /// <param name="peiUpdateInfo"></param>
-  virtual void pei_update(
-      const std::string& ueId, const PeiUpdateInfo& peiUpdateInfo,
-      Pistache::Http::ResponseWriter& response) = 0;
+  virtual void pei_update(const std::string& ueId,
+                          const PeiUpdateInfo& peiUpdateInfo,
+                          Pistache::Http::ResponseWriter& response) = 0;
 };
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api
 
 #endif /* PEIUpdateApi_H_ */

@@ -15,38 +15,31 @@
 
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
 using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 IPSMGWRegistrationInfoRetrievalApi::IPSMGWRegistrationInfoRetrievalApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void IPSMGWRegistrationInfoRetrievalApi::init() {
-  setupRoutes();
-}
+void IPSMGWRegistrationInfoRetrievalApi::init() { setupRoutes(); }
 
 void IPSMGWRegistrationInfoRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(
-      *router, base + "/:ueId/registrations/ip-sm-gw",
-      Routes::bind(
-          &IPSMGWRegistrationInfoRetrievalApi::
-              get_ip_sm_gw_registration_handler,
-          this));
+  Routes::Get(*router, base + "/:ueId/registrations/ip-sm-gw",
+              Routes::bind(&IPSMGWRegistrationInfoRetrievalApi::
+                               get_ip_sm_gw_registration_handler,
+                           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(Routes::bind(
-      &IPSMGWRegistrationInfoRetrievalApi::
-          ipsmgw_registration_info_retrieval_api_default_handler,
-      this));
+  router->addCustomHandler(
+      Routes::bind(&IPSMGWRegistrationInfoRetrievalApi::
+                       ipsmgw_registration_info_retrieval_api_default_handler,
+                   this));
 }
 
 void IPSMGWRegistrationInfoRetrievalApi::get_ip_sm_gw_registration_handler(
@@ -75,11 +68,8 @@ void IPSMGWRegistrationInfoRetrievalApi::
     ipsmgw_registration_info_retrieval_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api

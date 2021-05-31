@@ -18,8 +18,8 @@ namespace udm {
 namespace model {
 
 SdmSubsModification::SdmSubsModification() {
-  m_Expires                    = "";
-  m_ExpiresIsSet               = false;
+  m_Expires = "";
+  m_ExpiresIsSet = false;
   m_MonitoredResourceUrisIsSet = false;
 }
 
@@ -47,19 +47,13 @@ void from_json(const nlohmann::json& j, SdmSubsModification& o) {
   }
 }
 
-std::string SdmSubsModification::getExpires() const {
-  return m_Expires;
-}
+std::string SdmSubsModification::getExpires() const { return m_Expires; }
 void SdmSubsModification::setExpires(std::string const& value) {
-  m_Expires      = value;
+  m_Expires = value;
   m_ExpiresIsSet = true;
 }
-bool SdmSubsModification::expiresIsSet() const {
-  return m_ExpiresIsSet;
-}
-void SdmSubsModification::unsetExpires() {
-  m_ExpiresIsSet = false;
-}
+bool SdmSubsModification::expiresIsSet() const { return m_ExpiresIsSet; }
+void SdmSubsModification::unsetExpires() { m_ExpiresIsSet = false; }
 std::vector<std::string>& SdmSubsModification::getMonitoredResourceUris() {
   return m_MonitoredResourceUris;
 }

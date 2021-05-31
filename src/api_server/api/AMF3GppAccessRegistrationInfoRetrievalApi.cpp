@@ -15,13 +15,12 @@
 
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
 using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 AMF3GppAccessRegistrationInfoRetrievalApi::
     AMF3GppAccessRegistrationInfoRetrievalApi(
@@ -29,19 +28,15 @@ AMF3GppAccessRegistrationInfoRetrievalApi::
   router = rtr;
 }
 
-void AMF3GppAccessRegistrationInfoRetrievalApi::init() {
-  setupRoutes();
-}
+void AMF3GppAccessRegistrationInfoRetrievalApi::init() { setupRoutes(); }
 
 void AMF3GppAccessRegistrationInfoRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(
-      *router, base + "/:ueId/registrations/amf-3gpp-access",
-      Routes::bind(
-          &AMF3GppAccessRegistrationInfoRetrievalApi::
-              get3_gpp_registration_handler,
-          this));
+  Routes::Get(*router, base + "/:ueId/registrations/amf-3gpp-access",
+              Routes::bind(&AMF3GppAccessRegistrationInfoRetrievalApi::
+                               get3_gpp_registration_handler,
+                           this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -86,11 +81,10 @@ void AMF3GppAccessRegistrationInfoRetrievalApi::
     amf3_gpp_access_registration_info_retrieval_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

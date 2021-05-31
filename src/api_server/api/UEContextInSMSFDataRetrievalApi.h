@@ -46,9 +46,8 @@ class UEContextInSMSFDataRetrievalApi {
  private:
   void setupRoutes();
 
-  void get_ue_ctx_in_smsf_data_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void get_ue_ctx_in_smsf_data_handler(const Pistache::Rest::Request& request,
+                                       Pistache::Http::ResponseWriter response);
   void ue_context_in_smsf_data_retrieval_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

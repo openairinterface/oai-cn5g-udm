@@ -18,8 +18,8 @@ namespace udm {
 namespace model {
 
 InvalidParam_2::InvalidParam_2() {
-  m_Param       = "";
-  m_Reason      = "";
+  m_Param = "";
+  m_Reason = "";
   m_ReasonIsSet = false;
 }
 
@@ -30,7 +30,7 @@ void InvalidParam_2::validate() {
 }
 
 void to_json(nlohmann::json& j, const InvalidParam_2& o) {
-  j          = nlohmann::json();
+  j = nlohmann::json();
   j["param"] = o.m_Param;
   if (o.reasonIsSet()) j["reason"] = o.m_Reason;
 }
@@ -43,25 +43,15 @@ void from_json(const nlohmann::json& j, InvalidParam_2& o) {
   }
 }
 
-std::string InvalidParam_2::getParam() const {
-  return m_Param;
-}
-void InvalidParam_2::setParam(std::string const& value) {
-  m_Param = value;
-}
-std::string InvalidParam_2::getReason() const {
-  return m_Reason;
-}
+std::string InvalidParam_2::getParam() const { return m_Param; }
+void InvalidParam_2::setParam(std::string const& value) { m_Param = value; }
+std::string InvalidParam_2::getReason() const { return m_Reason; }
 void InvalidParam_2::setReason(std::string const& value) {
-  m_Reason      = value;
+  m_Reason = value;
   m_ReasonIsSet = true;
 }
-bool InvalidParam_2::reasonIsSet() const {
-  return m_ReasonIsSet;
-}
-void InvalidParam_2::unsetReason() {
-  m_ReasonIsSet = false;
-}
+bool InvalidParam_2::reasonIsSet() const { return m_ReasonIsSet; }
+void InvalidParam_2::unsetReason() { m_ReasonIsSet = false; }
 
 }  // namespace model
 }  // namespace udm

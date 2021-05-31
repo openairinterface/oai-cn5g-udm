@@ -28,12 +28,9 @@
 
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class SMFDeregistrationApi {
  public:
@@ -46,9 +43,8 @@ class SMFDeregistrationApi {
  private:
   void setupRoutes();
 
-  void smf_deregistration_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void smf_deregistration_handler(const Pistache::Rest::Request& request,
+                                  Pistache::Http::ResponseWriter response);
   void smf_deregistration_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -70,9 +66,6 @@ class SMFDeregistrationApi {
       Pistache::Http::ResponseWriter& response) = 0;
 };
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api
 
 #endif /* SMFDeregistrationApi_H_ */

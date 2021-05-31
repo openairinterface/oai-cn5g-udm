@@ -31,17 +31,17 @@
 
 #include "Amf3GppAccessRegistration.h"
 #include "ProblemDetails.h"
+#include "udm_app.hpp"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class AMF3GppAccessRegistrationInfoRetrievalApiImpl
-    : public org::openapitools::server::api::
-          AMF3GppAccessRegistrationInfoRetrievalApi {
+    : public oai::udm::api::AMF3GppAccessRegistrationInfoRetrievalApi {
  public:
   AMF3GppAccessRegistrationInfoRetrievalApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
@@ -51,11 +51,14 @@ class AMF3GppAccessRegistrationInfoRetrievalApiImpl
       const std::string& ueId,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

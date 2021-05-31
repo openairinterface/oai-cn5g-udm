@@ -19,12 +19,12 @@ namespace model {
 
 SorInfo::SorInfo() {
   m_SteeringContainerIsSet = false;
-  m_AckInd                 = false;
-  m_SorMacIausf            = "";
-  m_SorMacIausfIsSet       = false;
-  m_Countersor             = "";
-  m_CountersorIsSet        = false;
-  m_ProvisioningTime       = "";
+  m_AckInd = false;
+  m_SorMacIausf = "";
+  m_SorMacIausfIsSet = false;
+  m_Countersor = "";
+  m_CountersorIsSet = false;
+  m_ProvisioningTime = "";
 }
 
 SorInfo::~SorInfo() {}
@@ -64,50 +64,30 @@ SteeringContainer SorInfo::getSteeringContainer() const {
   return m_SteeringContainer;
 }
 void SorInfo::setSteeringContainer(SteeringContainer const& value) {
-  m_SteeringContainer      = value;
+  m_SteeringContainer = value;
   m_SteeringContainerIsSet = true;
 }
 bool SorInfo::steeringContainerIsSet() const {
   return m_SteeringContainerIsSet;
 }
-void SorInfo::unsetSteeringContainer() {
-  m_SteeringContainerIsSet = false;
-}
-bool SorInfo::isAckInd() const {
-  return m_AckInd;
-}
-void SorInfo::setAckInd(bool const value) {
-  m_AckInd = value;
-}
-std::string SorInfo::getSorMacIausf() const {
-  return m_SorMacIausf;
-}
+void SorInfo::unsetSteeringContainer() { m_SteeringContainerIsSet = false; }
+bool SorInfo::isAckInd() const { return m_AckInd; }
+void SorInfo::setAckInd(bool const value) { m_AckInd = value; }
+std::string SorInfo::getSorMacIausf() const { return m_SorMacIausf; }
 void SorInfo::setSorMacIausf(std::string const& value) {
-  m_SorMacIausf      = value;
+  m_SorMacIausf = value;
   m_SorMacIausfIsSet = true;
 }
-bool SorInfo::sorMacIausfIsSet() const {
-  return m_SorMacIausfIsSet;
-}
-void SorInfo::unsetSorMacIausf() {
-  m_SorMacIausfIsSet = false;
-}
-std::string SorInfo::getCountersor() const {
-  return m_Countersor;
-}
+bool SorInfo::sorMacIausfIsSet() const { return m_SorMacIausfIsSet; }
+void SorInfo::unsetSorMacIausf() { m_SorMacIausfIsSet = false; }
+std::string SorInfo::getCountersor() const { return m_Countersor; }
 void SorInfo::setCountersor(std::string const& value) {
-  m_Countersor      = value;
+  m_Countersor = value;
   m_CountersorIsSet = true;
 }
-bool SorInfo::countersorIsSet() const {
-  return m_CountersorIsSet;
-}
-void SorInfo::unsetCountersor() {
-  m_CountersorIsSet = false;
-}
-std::string SorInfo::getProvisioningTime() const {
-  return m_ProvisioningTime;
-}
+bool SorInfo::countersorIsSet() const { return m_CountersorIsSet; }
+void SorInfo::unsetCountersor() { m_CountersorIsSet = false; }
+std::string SorInfo::getProvisioningTime() const { return m_ProvisioningTime; }
 void SorInfo::setProvisioningTime(std::string const& value) {
   m_ProvisioningTime = value;
 }

@@ -30,12 +30,9 @@
 #include "PatchResult.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi {
  public:
@@ -77,9 +74,6 @@ class ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi {
       Pistache::Http::ResponseWriter& response) = 0;
 };
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api
 
 #endif /* ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi_H_ */

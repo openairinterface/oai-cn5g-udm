@@ -29,12 +29,9 @@
 #include "IpSmGwRegistration.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class IPSMGWRegistrationApi {
  public:
@@ -47,9 +44,8 @@ class IPSMGWRegistrationApi {
  private:
   void setupRoutes();
 
-  void ip_sm_gw_registration_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void ip_sm_gw_registration_handler(const Pistache::Rest::Request& request,
+                                     Pistache::Http::ResponseWriter response);
   void ipsmgw_registration_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -69,9 +65,6 @@ class IPSMGWRegistrationApi {
       Pistache::Http::ResponseWriter& response) = 0;
 };
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api
 
 #endif /* IPSMGWRegistrationApi_H_ */

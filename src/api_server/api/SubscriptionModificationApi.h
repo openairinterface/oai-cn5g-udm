@@ -47,12 +47,10 @@ class SubscriptionModificationApi {
  private:
   void setupRoutes();
 
-  void modify_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
-  void modify_shared_data_subs_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void modify_handler(const Pistache::Rest::Request& request,
+                      Pistache::Http::ResponseWriter response);
+  void modify_shared_data_subs_handler(const Pistache::Rest::Request& request,
+                                       Pistache::Http::ResponseWriter response);
   void subscription_modification_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -68,10 +66,10 @@ class SubscriptionModificationApi {
   /// <param name="supi">SUPI of the user</param>
   /// <param name="subscriptionId">Id of the SDM Subscription</param>
   /// <param name="sdmSubsModification"></param>
-  virtual void modify(
-      const std::string& supi, const std::string& subscriptionId,
-      const SdmSubsModification& sdmSubsModification,
-      Pistache::Http::ResponseWriter& response) = 0;
+  virtual void modify(const std::string& supi,
+                      const std::string& subscriptionId,
+                      const SdmSubsModification& sdmSubsModification,
+                      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// modify the subscription

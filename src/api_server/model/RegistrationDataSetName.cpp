@@ -13,10 +13,7 @@
 
 #include "RegistrationDataSetName.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 RegistrationDataSetName::RegistrationDataSetName() {}
 
@@ -32,7 +29,4 @@ void to_json(nlohmann::json& j, const RegistrationDataSetName& o) {
 
 void from_json(const nlohmann::json& j, RegistrationDataSetName& o) {}
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

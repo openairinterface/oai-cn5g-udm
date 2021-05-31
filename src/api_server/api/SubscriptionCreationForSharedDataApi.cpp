@@ -27,19 +27,15 @@ SubscriptionCreationForSharedDataApi::SubscriptionCreationForSharedDataApi(
   router = rtr;
 }
 
-void SubscriptionCreationForSharedDataApi::init() {
-  setupRoutes();
-}
+void SubscriptionCreationForSharedDataApi::init() { setupRoutes(); }
 
 void SubscriptionCreationForSharedDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Post(
-      *router, base + "/shared-data-subscriptions",
-      Routes::bind(
-          &SubscriptionCreationForSharedDataApi::
-              subscribe_to_shared_data_handler,
-          this));
+  Routes::Post(*router, base + "/shared-data-subscriptions",
+               Routes::bind(&SubscriptionCreationForSharedDataApi::
+                                subscribe_to_shared_data_handler,
+                            this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -73,8 +69,8 @@ void SubscriptionCreationForSharedDataApi::
     subscription_creation_for_shared_data_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
 }  // namespace api

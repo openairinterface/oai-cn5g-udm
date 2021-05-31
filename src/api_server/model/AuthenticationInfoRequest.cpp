@@ -18,14 +18,14 @@ namespace udm {
 namespace model {
 
 AuthenticationInfoRequest::AuthenticationInfoRequest() {
-  m_SupportedFeatures          = "";
-  m_SupportedFeaturesIsSet     = false;
-  m_ServingNetworkName         = "";
+  m_SupportedFeatures = "";
+  m_SupportedFeaturesIsSet = false;
+  m_ServingNetworkName = "";
   m_ResynchronizationInfoIsSet = false;
-  m_AusfInstanceId             = "";
-  m_CellCagInfoIsSet           = false;
-  m_N5gcInd                    = false;
-  m_N5gcIndIsSet               = false;
+  m_AusfInstanceId = "";
+  m_CellCagInfoIsSet = false;
+  m_N5gcInd = false;
+  m_N5gcIndIsSet = false;
 }
 
 AuthenticationInfoRequest::~AuthenticationInfoRequest() {}
@@ -72,7 +72,7 @@ std::string AuthenticationInfoRequest::getSupportedFeatures() const {
   return m_SupportedFeatures;
 }
 void AuthenticationInfoRequest::setSupportedFeatures(std::string const& value) {
-  m_SupportedFeatures      = value;
+  m_SupportedFeatures = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool AuthenticationInfoRequest::supportedFeaturesIsSet() const {
@@ -94,7 +94,7 @@ ResynchronizationInfo AuthenticationInfoRequest::getResynchronizationInfo()
 }
 void AuthenticationInfoRequest::setResynchronizationInfo(
     ResynchronizationInfo const& value) {
-  m_ResynchronizationInfo      = value;
+  m_ResynchronizationInfo = value;
   m_ResynchronizationInfoIsSet = true;
 }
 bool AuthenticationInfoRequest::resynchronizationInfoIsSet() const {
@@ -114,7 +114,7 @@ std::vector<std::string>& AuthenticationInfoRequest::getCellCagInfo() {
 }
 void AuthenticationInfoRequest::setCellCagInfo(
     std::vector<std::string> const& value) {
-  m_CellCagInfo      = value;
+  m_CellCagInfo = value;
   m_CellCagInfoIsSet = true;
 }
 bool AuthenticationInfoRequest::cellCagInfoIsSet() const {
@@ -123,19 +123,13 @@ bool AuthenticationInfoRequest::cellCagInfoIsSet() const {
 void AuthenticationInfoRequest::unsetCellCagInfo() {
   m_CellCagInfoIsSet = false;
 }
-bool AuthenticationInfoRequest::isN5gcInd() const {
-  return m_N5gcInd;
-}
+bool AuthenticationInfoRequest::isN5gcInd() const { return m_N5gcInd; }
 void AuthenticationInfoRequest::setN5gcInd(bool const value) {
-  m_N5gcInd      = value;
+  m_N5gcInd = value;
   m_N5gcIndIsSet = true;
 }
-bool AuthenticationInfoRequest::n5gcIndIsSet() const {
-  return m_N5gcIndIsSet;
-}
-void AuthenticationInfoRequest::unsetN5gcInd() {
-  m_N5gcIndIsSet = false;
-}
+bool AuthenticationInfoRequest::n5gcIndIsSet() const { return m_N5gcIndIsSet; }
+void AuthenticationInfoRequest::unsetN5gcInd() { m_N5gcIndIsSet = false; }
 
 }  // namespace model
 }  // namespace udm

@@ -13,14 +13,8 @@
 
 #include "PeiUpdateInfo.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
-
-PeiUpdateInfo::PeiUpdateInfo() {
-  m_Pei = "";
-}
+namespace oai::udm::model {
+PeiUpdateInfo::PeiUpdateInfo() { m_Pei = ""; }
 
 PeiUpdateInfo::~PeiUpdateInfo() {}
 
@@ -29,7 +23,7 @@ void PeiUpdateInfo::validate() {
 }
 
 void to_json(nlohmann::json& j, const PeiUpdateInfo& o) {
-  j        = nlohmann::json();
+  j = nlohmann::json();
   j["pei"] = o.m_Pei;
 }
 
@@ -37,14 +31,7 @@ void from_json(const nlohmann::json& j, PeiUpdateInfo& o) {
   j.at("pei").get_to(o.m_Pei);
 }
 
-std::string PeiUpdateInfo::getPei() const {
-  return m_Pei;
-}
-void PeiUpdateInfo::setPei(std::string const& value) {
-  m_Pei = value;
-}
+std::string PeiUpdateInfo::getPei() const { return m_Pei; }
+void PeiUpdateInfo::setPei(std::string const& value) { m_Pei = value; }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

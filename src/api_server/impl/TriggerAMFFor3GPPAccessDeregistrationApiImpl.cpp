@@ -13,12 +13,10 @@
 
 #include "TriggerAMFFor3GPPAccessDeregistrationApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
-
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 TriggerAMFFor3GPPAccessDeregistrationApiImpl::
     TriggerAMFFor3GPPAccessDeregistrationApiImpl(
@@ -32,6 +30,5 @@ void TriggerAMFFor3GPPAccessDeregistrationApiImpl::dereg_amf(
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

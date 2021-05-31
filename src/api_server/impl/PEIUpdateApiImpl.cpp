@@ -13,23 +13,20 @@
 
 #include "PEIUpdateApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 PEIUpdateApiImpl::PEIUpdateApiImpl(std::shared_ptr<Pistache::Rest::Router> rtr)
     : PEIUpdateApi(rtr) {}
 
-void PEIUpdateApiImpl::pei_update(
-    const std::string& ueId, const PeiUpdateInfo& peiUpdateInfo,
-    Pistache::Http::ResponseWriter& response) {
+void PEIUpdateApiImpl::pei_update(const std::string& ueId,
+                                  const PeiUpdateInfo& peiUpdateInfo,
+                                  Pistache::Http::ResponseWriter& response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

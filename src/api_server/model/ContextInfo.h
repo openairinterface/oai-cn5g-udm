@@ -23,9 +23,8 @@
 #include <string>
 #include <vector>
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace model {
 
 /// <summary>
@@ -58,8 +57,7 @@ class ContextInfo {
 };
 
 }  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif /* ContextInfo_H_ */

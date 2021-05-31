@@ -13,18 +13,15 @@
 
 #include "AmfNon3GppAccessRegistrationModification.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 AmfNon3GppAccessRegistrationModification::
     AmfNon3GppAccessRegistrationModification() {
-  m_PurgeFlag          = false;
-  m_PurgeFlagIsSet     = false;
-  m_Pei                = "";
-  m_PeiIsSet           = false;
-  m_ImsVoPsIsSet       = false;
+  m_PurgeFlag = false;
+  m_PurgeFlagIsSet = false;
+  m_Pei = "";
+  m_PeiIsSet = false;
+  m_ImsVoPsIsSet = false;
   m_BackupAmfInfoIsSet = false;
 }
 
@@ -35,9 +32,9 @@ void AmfNon3GppAccessRegistrationModification::validate() {
   // TODO: implement validation
 }
 
-void to_json(
-    nlohmann::json& j, const AmfNon3GppAccessRegistrationModification& o) {
-  j          = nlohmann::json();
+void to_json(nlohmann::json& j,
+             const AmfNon3GppAccessRegistrationModification& o) {
+  j = nlohmann::json();
   j["guami"] = o.m_Guami;
   if (o.purgeFlagIsSet()) j["purgeFlag"] = o.m_PurgeFlag;
   if (o.peiIsSet()) j["pei"] = o.m_Pei;
@@ -46,8 +43,8 @@ void to_json(
     j["backupAmfInfo"] = o.m_BackupAmfInfo;
 }
 
-void from_json(
-    const nlohmann::json& j, AmfNon3GppAccessRegistrationModification& o) {
+void from_json(const nlohmann::json& j,
+               AmfNon3GppAccessRegistrationModification& o) {
   j.at("guami").get_to(o.m_Guami);
   if (j.find("purgeFlag") != j.end()) {
     j.at("purgeFlag").get_to(o.m_PurgeFlag);
@@ -77,7 +74,7 @@ bool AmfNon3GppAccessRegistrationModification::isPurgeFlag() const {
   return m_PurgeFlag;
 }
 void AmfNon3GppAccessRegistrationModification::setPurgeFlag(bool const value) {
-  m_PurgeFlag      = value;
+  m_PurgeFlag = value;
   m_PurgeFlagIsSet = true;
 }
 bool AmfNon3GppAccessRegistrationModification::purgeFlagIsSet() const {
@@ -91,7 +88,7 @@ std::string AmfNon3GppAccessRegistrationModification::getPei() const {
 }
 void AmfNon3GppAccessRegistrationModification::setPei(
     std::string const& value) {
-  m_Pei      = value;
+  m_Pei = value;
   m_PeiIsSet = true;
 }
 bool AmfNon3GppAccessRegistrationModification::peiIsSet() const {
@@ -105,7 +102,7 @@ ImsVoPs AmfNon3GppAccessRegistrationModification::getImsVoPs() const {
 }
 void AmfNon3GppAccessRegistrationModification::setImsVoPs(
     ImsVoPs const& value) {
-  m_ImsVoPs      = value;
+  m_ImsVoPs = value;
   m_ImsVoPsIsSet = true;
 }
 bool AmfNon3GppAccessRegistrationModification::imsVoPsIsSet() const {
@@ -120,7 +117,7 @@ AmfNon3GppAccessRegistrationModification::getBackupAmfInfo() {
 }
 void AmfNon3GppAccessRegistrationModification::setBackupAmfInfo(
     std::vector<BackupAmfInfo> const& value) {
-  m_BackupAmfInfo      = value;
+  m_BackupAmfInfo = value;
   m_BackupAmfInfoIsSet = true;
 }
 bool AmfNon3GppAccessRegistrationModification::backupAmfInfoIsSet() const {
@@ -130,7 +127,4 @@ void AmfNon3GppAccessRegistrationModification::unsetBackupAmfInfo() {
   m_BackupAmfInfoIsSet = false;
 }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

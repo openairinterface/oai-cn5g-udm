@@ -31,27 +31,23 @@
 #include "ProblemDetails.h"
 #include "TriggerRequest.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 class TriggerPCSCFRestorationApiImpl
-    : public org::openapitools::server::api::TriggerPCSCFRestorationApi {
+    : public oai::udm::api::TriggerPCSCFRestorationApi {
  public:
   TriggerPCSCFRestorationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~TriggerPCSCFRestorationApiImpl() {}
 
-  void trigger_pcscf_restoration(
-      const TriggerRequest& triggerRequest,
-      Pistache::Http::ResponseWriter& response);
+  void trigger_pcscf_restoration(const TriggerRequest& triggerRequest,
+                                 Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

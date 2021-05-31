@@ -22,9 +22,8 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace model {
 
 /// <summary>
@@ -54,8 +53,7 @@ class TriggerRequest {
 };
 
 }  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif /* TriggerRequest_H_ */

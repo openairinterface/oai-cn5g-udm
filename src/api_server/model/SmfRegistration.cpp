@@ -13,34 +13,31 @@
 
 #include "SmfRegistration.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 SmfRegistration::SmfRegistration() {
-  m_SmfInstanceId                    = "";
-  m_SmfSetId                         = "";
-  m_SmfSetIdIsSet                    = false;
-  m_SupportedFeatures                = "";
-  m_SupportedFeaturesIsSet           = false;
-  m_PduSessionId                     = 0;
-  m_Dnn                              = "";
-  m_DnnIsSet                         = false;
-  m_EmergencyServices                = false;
-  m_EmergencyServicesIsSet           = false;
-  m_PcscfRestorationCallbackUri      = "";
+  m_SmfInstanceId = "";
+  m_SmfSetId = "";
+  m_SmfSetIdIsSet = false;
+  m_SupportedFeatures = "";
+  m_SupportedFeaturesIsSet = false;
+  m_PduSessionId = 0;
+  m_Dnn = "";
+  m_DnnIsSet = false;
+  m_EmergencyServices = false;
+  m_EmergencyServicesIsSet = false;
+  m_PcscfRestorationCallbackUri = "";
   m_PcscfRestorationCallbackUriIsSet = false;
-  m_PgwFqdn                          = "";
-  m_PgwFqdnIsSet                     = false;
-  m_EpdgInd                          = false;
-  m_EpdgIndIsSet                     = false;
-  m_DeregCallbackUri                 = "";
-  m_DeregCallbackUriIsSet            = false;
-  m_RegistrationReasonIsSet          = false;
-  m_RegistrationTime                 = "";
-  m_RegistrationTimeIsSet            = false;
-  m_ContextInfoIsSet                 = false;
+  m_PgwFqdn = "";
+  m_PgwFqdnIsSet = false;
+  m_EpdgInd = false;
+  m_EpdgIndIsSet = false;
+  m_DeregCallbackUri = "";
+  m_DeregCallbackUriIsSet = false;
+  m_RegistrationReasonIsSet = false;
+  m_RegistrationTime = "";
+  m_RegistrationTimeIsSet = false;
+  m_ContextInfoIsSet = false;
 }
 
 SmfRegistration::~SmfRegistration() {}
@@ -50,13 +47,13 @@ void SmfRegistration::validate() {
 }
 
 void to_json(nlohmann::json& j, const SmfRegistration& o) {
-  j                  = nlohmann::json();
+  j = nlohmann::json();
   j["smfInstanceId"] = o.m_SmfInstanceId;
   if (o.smfSetIdIsSet()) j["smfSetId"] = o.m_SmfSetId;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
   j["pduSessionId"] = o.m_PduSessionId;
-  j["singleNssai"]  = o.m_SingleNssai;
+  j["singleNssai"] = o.m_SingleNssai;
   if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
   if (o.emergencyServicesIsSet())
     j["emergencyServices"] = o.m_EmergencyServices;
@@ -129,24 +126,18 @@ std::string SmfRegistration::getSmfInstanceId() const {
 void SmfRegistration::setSmfInstanceId(std::string const& value) {
   m_SmfInstanceId = value;
 }
-std::string SmfRegistration::getSmfSetId() const {
-  return m_SmfSetId;
-}
+std::string SmfRegistration::getSmfSetId() const { return m_SmfSetId; }
 void SmfRegistration::setSmfSetId(std::string const& value) {
-  m_SmfSetId      = value;
+  m_SmfSetId = value;
   m_SmfSetIdIsSet = true;
 }
-bool SmfRegistration::smfSetIdIsSet() const {
-  return m_SmfSetIdIsSet;
-}
-void SmfRegistration::unsetSmfSetId() {
-  m_SmfSetIdIsSet = false;
-}
+bool SmfRegistration::smfSetIdIsSet() const { return m_SmfSetIdIsSet; }
+void SmfRegistration::unsetSmfSetId() { m_SmfSetIdIsSet = false; }
 std::string SmfRegistration::getSupportedFeatures() const {
   return m_SupportedFeatures;
 }
 void SmfRegistration::setSupportedFeatures(std::string const& value) {
-  m_SupportedFeatures      = value;
+  m_SupportedFeatures = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool SmfRegistration::supportedFeaturesIsSet() const {
@@ -155,36 +146,26 @@ bool SmfRegistration::supportedFeaturesIsSet() const {
 void SmfRegistration::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
-int32_t SmfRegistration::getPduSessionId() const {
-  return m_PduSessionId;
-}
+int32_t SmfRegistration::getPduSessionId() const { return m_PduSessionId; }
 void SmfRegistration::setPduSessionId(int32_t const value) {
   m_PduSessionId = value;
 }
-Snssai SmfRegistration::getSingleNssai() const {
-  return m_SingleNssai;
-}
+Snssai SmfRegistration::getSingleNssai() const { return m_SingleNssai; }
 void SmfRegistration::setSingleNssai(Snssai const& value) {
   m_SingleNssai = value;
 }
-std::string SmfRegistration::getDnn() const {
-  return m_Dnn;
-}
+std::string SmfRegistration::getDnn() const { return m_Dnn; }
 void SmfRegistration::setDnn(std::string const& value) {
-  m_Dnn      = value;
+  m_Dnn = value;
   m_DnnIsSet = true;
 }
-bool SmfRegistration::dnnIsSet() const {
-  return m_DnnIsSet;
-}
-void SmfRegistration::unsetDnn() {
-  m_DnnIsSet = false;
-}
+bool SmfRegistration::dnnIsSet() const { return m_DnnIsSet; }
+void SmfRegistration::unsetDnn() { m_DnnIsSet = false; }
 bool SmfRegistration::isEmergencyServices() const {
   return m_EmergencyServices;
 }
 void SmfRegistration::setEmergencyServices(bool const value) {
-  m_EmergencyServices      = value;
+  m_EmergencyServices = value;
   m_EmergencyServicesIsSet = true;
 }
 bool SmfRegistration::emergencyServicesIsSet() const {
@@ -197,7 +178,7 @@ std::string SmfRegistration::getPcscfRestorationCallbackUri() const {
   return m_PcscfRestorationCallbackUri;
 }
 void SmfRegistration::setPcscfRestorationCallbackUri(std::string const& value) {
-  m_PcscfRestorationCallbackUri      = value;
+  m_PcscfRestorationCallbackUri = value;
   m_PcscfRestorationCallbackUriIsSet = true;
 }
 bool SmfRegistration::pcscfRestorationCallbackUriIsSet() const {
@@ -206,43 +187,27 @@ bool SmfRegistration::pcscfRestorationCallbackUriIsSet() const {
 void SmfRegistration::unsetPcscfRestorationCallbackUri() {
   m_PcscfRestorationCallbackUriIsSet = false;
 }
-PlmnId SmfRegistration::getPlmnId() const {
-  return m_PlmnId;
-}
-void SmfRegistration::setPlmnId(PlmnId const& value) {
-  m_PlmnId = value;
-}
-std::string SmfRegistration::getPgwFqdn() const {
-  return m_PgwFqdn;
-}
+PlmnId SmfRegistration::getPlmnId() const { return m_PlmnId; }
+void SmfRegistration::setPlmnId(PlmnId const& value) { m_PlmnId = value; }
+std::string SmfRegistration::getPgwFqdn() const { return m_PgwFqdn; }
 void SmfRegistration::setPgwFqdn(std::string const& value) {
-  m_PgwFqdn      = value;
+  m_PgwFqdn = value;
   m_PgwFqdnIsSet = true;
 }
-bool SmfRegistration::pgwFqdnIsSet() const {
-  return m_PgwFqdnIsSet;
-}
-void SmfRegistration::unsetPgwFqdn() {
-  m_PgwFqdnIsSet = false;
-}
-bool SmfRegistration::isEpdgInd() const {
-  return m_EpdgInd;
-}
+bool SmfRegistration::pgwFqdnIsSet() const { return m_PgwFqdnIsSet; }
+void SmfRegistration::unsetPgwFqdn() { m_PgwFqdnIsSet = false; }
+bool SmfRegistration::isEpdgInd() const { return m_EpdgInd; }
 void SmfRegistration::setEpdgInd(bool const value) {
-  m_EpdgInd      = value;
+  m_EpdgInd = value;
   m_EpdgIndIsSet = true;
 }
-bool SmfRegistration::epdgIndIsSet() const {
-  return m_EpdgIndIsSet;
-}
-void SmfRegistration::unsetEpdgInd() {
-  m_EpdgIndIsSet = false;
-}
+bool SmfRegistration::epdgIndIsSet() const { return m_EpdgIndIsSet; }
+void SmfRegistration::unsetEpdgInd() { m_EpdgIndIsSet = false; }
 std::string SmfRegistration::getDeregCallbackUri() const {
   return m_DeregCallbackUri;
 }
 void SmfRegistration::setDeregCallbackUri(std::string const& value) {
-  m_DeregCallbackUri      = value;
+  m_DeregCallbackUri = value;
   m_DeregCallbackUriIsSet = true;
 }
 bool SmfRegistration::deregCallbackUriIsSet() const {
@@ -255,7 +220,7 @@ RegistrationReason SmfRegistration::getRegistrationReason() const {
   return m_RegistrationReason;
 }
 void SmfRegistration::setRegistrationReason(RegistrationReason const& value) {
-  m_RegistrationReason      = value;
+  m_RegistrationReason = value;
   m_RegistrationReasonIsSet = true;
 }
 bool SmfRegistration::registrationReasonIsSet() const {
@@ -268,7 +233,7 @@ std::string SmfRegistration::getRegistrationTime() const {
   return m_RegistrationTime;
 }
 void SmfRegistration::setRegistrationTime(std::string const& value) {
-  m_RegistrationTime      = value;
+  m_RegistrationTime = value;
   m_RegistrationTimeIsSet = true;
 }
 bool SmfRegistration::registrationTimeIsSet() const {
@@ -277,21 +242,12 @@ bool SmfRegistration::registrationTimeIsSet() const {
 void SmfRegistration::unsetRegistrationTime() {
   m_RegistrationTimeIsSet = false;
 }
-ContextInfo SmfRegistration::getContextInfo() const {
-  return m_ContextInfo;
-}
+ContextInfo SmfRegistration::getContextInfo() const { return m_ContextInfo; }
 void SmfRegistration::setContextInfo(ContextInfo const& value) {
-  m_ContextInfo      = value;
+  m_ContextInfo = value;
   m_ContextInfoIsSet = true;
 }
-bool SmfRegistration::contextInfoIsSet() const {
-  return m_ContextInfoIsSet;
-}
-void SmfRegistration::unsetContextInfo() {
-  m_ContextInfoIsSet = false;
-}
+bool SmfRegistration::contextInfoIsSet() const { return m_ContextInfoIsSet; }
+void SmfRegistration::unsetContextInfo() { m_ContextInfoIsSet = false; }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

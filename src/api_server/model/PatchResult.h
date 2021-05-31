@@ -24,10 +24,7 @@
 
 #include "ReportItem.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -55,9 +52,6 @@ class PatchResult {
   std::vector<ReportItem> m_Report;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* PatchResult_H_ */

@@ -32,9 +32,8 @@
 #include "ServiceName.h"
 #include "VgmlcAddress.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace model {
 
 /// <summary>
@@ -248,8 +247,7 @@ class Amf3GppAccessRegistration {
 };
 
 }  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif /* Amf3GppAccessRegistration_H_ */

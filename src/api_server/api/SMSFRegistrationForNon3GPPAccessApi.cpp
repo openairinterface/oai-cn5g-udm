@@ -15,32 +15,25 @@
 
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
 using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 SMSFRegistrationForNon3GPPAccessApi::SMSFRegistrationForNon3GPPAccessApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void SMSFRegistrationForNon3GPPAccessApi::init() {
-  setupRoutes();
-}
+void SMSFRegistrationForNon3GPPAccessApi::init() { setupRoutes(); }
 
 void SMSFRegistrationForNon3GPPAccessApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Put(
-      *router, base + "/:ueId/registrations/smsf-non-3gpp-access",
-      Routes::bind(
-          &SMSFRegistrationForNon3GPPAccessApi::
-              non3_gpp_smsf_registration_handler,
-          this));
+  Routes::Put(*router, base + "/:ueId/registrations/smsf-non-3gpp-access",
+              Routes::bind(&SMSFRegistrationForNon3GPPAccessApi::
+                               non3_gpp_smsf_registration_handler,
+                           this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -80,11 +73,8 @@ void SMSFRegistrationForNon3GPPAccessApi::
     smsf_registration_for_non3_gpp_access_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api

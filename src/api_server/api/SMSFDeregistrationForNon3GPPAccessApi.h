@@ -28,12 +28,9 @@
 
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class SMSFDeregistrationForNon3GPPAccessApi {
  public:
@@ -69,9 +66,6 @@ class SMSFDeregistrationForNon3GPPAccessApi {
       Pistache::Http::ResponseWriter& response) = 0;
 };
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api
 
 #endif /* SMSFDeregistrationForNon3GPPAccessApi_H_ */

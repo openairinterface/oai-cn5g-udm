@@ -13,13 +13,11 @@
 
 #include "SMSFRegistrationForNon3GPPAccessApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 SMSFRegistrationForNon3GPPAccessApiImpl::
     SMSFRegistrationForNon3GPPAccessApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr)
@@ -32,6 +30,5 @@ void SMSFRegistrationForNon3GPPAccessApiImpl::non3_gpp_smsf_registration(
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

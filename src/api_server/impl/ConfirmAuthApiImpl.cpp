@@ -15,12 +15,11 @@
 
 using namespace config;
 extern udm_config udm_cfg;
-using namespace org::openapitools::server::model;
 namespace oai {
 namespace udm {
 namespace api {
 
-// using namespace oai::udm::model;
+using namespace oai::udm::model;
 
 ConfirmAuthApiImpl::ConfirmAuthApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
@@ -32,7 +31,7 @@ void ConfirmAuthApiImpl::confirm_auth(
   Logger::udm_ueau().info("\n\nEntering confirm_auth()");
 
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nudr.addr4)));
+      std::string(inet_ntoa(*((struct in_addr*)&udm_cfg.nudr.addr4)));
   std::string udr_port = std::to_string(udm_cfg.nudr.port);
   std::string remoteUri;
   std::string Method;
@@ -105,7 +104,7 @@ void ConfirmAuthApiImpl::confirm_auth(
   authEventId = hash_value;  // Represents the authEvent Id per UE per serving
                              // network assigned by the UDM during
                              // ResultConfirmation service operation.
-  Location = std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.sbi.addr4))) +
+  Location = std::string(inet_ntoa(*((struct in_addr*)&udm_cfg.sbi.addr4))) +
              ":" + std::to_string(udm_cfg.sbi.port) + "/nudm-ueau/v1/" + supi +
              "/auth-events/" + authEventId;
 

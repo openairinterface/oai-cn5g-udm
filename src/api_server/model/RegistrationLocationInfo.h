@@ -27,10 +27,7 @@
 #include "PlmnId.h"
 #include "VgmlcAddress.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -83,9 +80,6 @@ class RegistrationLocationInfo {
   std::vector<AccessType> m_AccessTypeList;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* RegistrationLocationInfo_H_ */

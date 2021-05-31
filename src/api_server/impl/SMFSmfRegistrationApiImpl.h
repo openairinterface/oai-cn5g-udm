@@ -34,15 +34,12 @@
 #include "SmfRegistrationInfo.h"
 #include "Snssai.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
-class SMFSmfRegistrationApiImpl
-    : public org::openapitools::server::api::SMFSmfRegistrationApi {
+using namespace oai::udm::model;
+class SMFSmfRegistrationApiImpl : public oai::udm::api::SMFSmfRegistrationApi {
  public:
   SMFSmfRegistrationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~SMFSmfRegistrationApiImpl() {}
@@ -52,15 +49,13 @@ class SMFSmfRegistrationApiImpl
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
-  void registration(
-      const std::string& ueId, const int32_t& pduSessionId,
-      const SmfRegistration& smfRegistration,
-      Pistache::Http::ResponseWriter& response);
+  void registration(const std::string& ueId, const int32_t& pduSessionId,
+                    const SmfRegistration& smfRegistration,
+                    Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

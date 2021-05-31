@@ -32,26 +32,22 @@
 #include "PeiUpdateInfo.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
-class PEIUpdateApiImpl : public org::openapitools::server::api::PEIUpdateApi {
+using namespace oai::udm::model;
+class PEIUpdateApiImpl : public oai::udm::api::PEIUpdateApi {
  public:
   PEIUpdateApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~PEIUpdateApiImpl() {}
 
-  void pei_update(
-      const std::string& ueId, const PeiUpdateInfo& peiUpdateInfo,
-      Pistache::Http::ResponseWriter& response);
+  void pei_update(const std::string& ueId, const PeiUpdateInfo& peiUpdateInfo,
+                  Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

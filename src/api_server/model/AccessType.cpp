@@ -13,10 +13,7 @@
 
 #include "AccessType.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 AccessType::AccessType() {}
 
@@ -26,13 +23,8 @@ void AccessType::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json& j, const AccessType& o) {
-  j = nlohmann::json();
-}
+void to_json(nlohmann::json& j, const AccessType& o) { j = nlohmann::json(); }
 
 void from_json(const nlohmann::json& j, AccessType& o) {}
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

@@ -33,15 +33,13 @@
 #include "PatchResult.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 class ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiImpl
-    : public org::openapitools::server::api::
+    : public oai::udm::api::
           ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi {
  public:
   ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiImpl(
@@ -57,8 +55,7 @@ class ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiImpl
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

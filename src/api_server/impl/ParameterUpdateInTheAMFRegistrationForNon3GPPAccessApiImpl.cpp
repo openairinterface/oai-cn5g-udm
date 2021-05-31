@@ -13,12 +13,11 @@
 
 #include "ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiImpl::
     ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiImpl(
@@ -36,6 +35,5 @@ void ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiImpl::
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

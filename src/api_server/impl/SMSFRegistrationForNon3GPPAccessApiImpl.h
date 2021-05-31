@@ -32,29 +32,25 @@
 #include "ProblemDetails.h"
 #include "SmsfRegistration.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 class SMSFRegistrationForNon3GPPAccessApiImpl
-    : public org::openapitools::server::api::
-          SMSFRegistrationForNon3GPPAccessApi {
+    : public oai::udm::api::SMSFRegistrationForNon3GPPAccessApi {
  public:
   SMSFRegistrationForNon3GPPAccessApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~SMSFRegistrationForNon3GPPAccessApiImpl() {}
 
-  void non3_gpp_smsf_registration(
-      const std::string& ueId, const SmsfRegistration& smsfRegistration,
-      Pistache::Http::ResponseWriter& response);
+  void non3_gpp_smsf_registration(const std::string& ueId,
+                                  const SmsfRegistration& smsfRegistration,
+                                  Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

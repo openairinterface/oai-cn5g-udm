@@ -31,28 +31,22 @@
 
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
-class SMFDeregistrationApiImpl
-    : public org::openapitools::server::api::SMFDeregistrationApi {
+class SMFDeregistrationApiImpl : public oai::udm::api::SMFDeregistrationApi {
  public:
   SMFDeregistrationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~SMFDeregistrationApiImpl() {}
 
-  void smf_deregistration(
-      const std::string& ueId, const int32_t& pduSessionId,
-      const Pistache::Optional<std::string>& smfSetId,
-      Pistache::Http::ResponseWriter& response);
+  void smf_deregistration(const std::string& ueId, const int32_t& pduSessionId,
+                          const Pistache::Optional<std::string>& smfSetId,
+                          Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

@@ -22,10 +22,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -60,9 +57,6 @@ class PlmnId {
   std::string m_Mnc;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* PlmnId_H_ */

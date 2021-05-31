@@ -28,10 +28,7 @@
 #include "Guami.h"
 #include "ImsVoPs.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -101,10 +98,10 @@ class Amf3GppAccessRegistrationModification {
   bool noEeSubscriptionIndIsSet() const;
   void unsetNoEeSubscriptionInd();
 
-  friend void to_json(
-      nlohmann::json& j, const Amf3GppAccessRegistrationModification& o);
-  friend void from_json(
-      const nlohmann::json& j, Amf3GppAccessRegistrationModification& o);
+  friend void to_json(nlohmann::json& j,
+                      const Amf3GppAccessRegistrationModification& o);
+  friend void from_json(const nlohmann::json& j,
+                        Amf3GppAccessRegistrationModification& o);
 
  protected:
   Guami m_Guami;
@@ -125,9 +122,6 @@ class Amf3GppAccessRegistrationModification {
   bool m_NoEeSubscriptionIndIsSet;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* Amf3GppAccessRegistrationModification_H_ */

@@ -35,7 +35,6 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
-using namespace org::openapitools::server::model;
 
 class SMSManagementSubscriptionDataRetrievalApi {
  public:
@@ -49,9 +48,8 @@ class SMSManagementSubscriptionDataRetrievalApi {
  private:
   void setupRoutes();
 
-  void get_sms_mngt_data_handler(
-      const Pistache::Rest::Request& request,
-      Pistache::Http::ResponseWriter response);
+  void get_sms_mngt_data_handler(const Pistache::Rest::Request& request,
+                                 Pistache::Http::ResponseWriter response);
   void sms_management_subscription_data_retrieval_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

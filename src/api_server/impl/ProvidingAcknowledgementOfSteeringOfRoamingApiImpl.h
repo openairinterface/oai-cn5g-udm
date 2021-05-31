@@ -45,9 +45,9 @@ class ProvidingAcknowledgementOfSteeringOfRoamingApiImpl
       std::shared_ptr<Pistache::Rest::Router>);
   ~ProvidingAcknowledgementOfSteeringOfRoamingApiImpl() {}
 
-  void sor_ack_info(
-      const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
-      Pistache::Http::ResponseWriter& response);
+  void sor_ack_info(const std::string& supi,
+                    const AcknowledgeInfo& acknowledgeInfo,
+                    Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api

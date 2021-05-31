@@ -31,16 +31,13 @@
 
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 class SMSFDeregistrationFor3GPPAccessApiImpl
-    : public org::openapitools::server::api::
-          SMSFDeregistrationFor3GPPAccessApi {
+    : public oai::udm::api::SMSFDeregistrationFor3GPPAccessApi {
  public:
   SMSFDeregistrationFor3GPPAccessApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
@@ -52,8 +49,7 @@ class SMSFDeregistrationFor3GPPAccessApiImpl
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

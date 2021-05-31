@@ -15,22 +15,20 @@
 
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
 using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+
+using namespace oai::udm::model;
 
 SMFSmfRegistrationApi::SMFSmfRegistrationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void SMFSmfRegistrationApi::init() {
-  setupRoutes();
-}
+void SMFSmfRegistrationApi::init() { setupRoutes(); }
 
 void SMFSmfRegistrationApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -38,9 +36,9 @@ void SMFSmfRegistrationApi::setupRoutes() {
   Routes::Get(
       *router, base + "/:ueId/registrations/smf-registrations",
       Routes::bind(&SMFSmfRegistrationApi::get_smf_registration_handler, this));
-  Routes::Put(
-      *router, base + "/:ueId/registrations/smf-registrations/:pduSessionId",
-      Routes::bind(&SMFSmfRegistrationApi::registration_handler, this));
+  Routes::Put(*router,
+              base + "/:ueId/registrations/smf-registrations/:pduSessionId",
+              Routes::bind(&SMFSmfRegistrationApi::registration_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -80,8 +78,8 @@ void SMFSmfRegistrationApi::get_smf_registration_handler(
   }
 
   try {
-    this->get_smf_registration(
-        ueId, singleNssai, dnn, supportedFeatures, response);
+    this->get_smf_registration(ueId, singleNssai, dnn, supportedFeatures,
+                               response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
@@ -99,7 +97,7 @@ void SMFSmfRegistrationApi::registration_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
-  auto ueId         = request.param(":ueId").as<std::string>();
+  auto ueId = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
 
   // Getting the body param
@@ -125,11 +123,10 @@ void SMFSmfRegistrationApi::registration_handler(
 
 void SMFSmfRegistrationApi::smf_smf_registration_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

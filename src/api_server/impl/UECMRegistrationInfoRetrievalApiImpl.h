@@ -36,15 +36,13 @@
 
 #include "Snssai.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
-
+using namespace oai::udm::model;
 class UECMRegistrationInfoRetrievalApiImpl
-    : public org::openapitools::server::api::UECMRegistrationInfoRetrievalApi {
+    : public oai::udm::api::UECMRegistrationInfoRetrievalApi {
  public:
   UECMRegistrationInfoRetrievalApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~UECMRegistrationInfoRetrievalApiImpl() {}
@@ -58,8 +56,7 @@ class UECMRegistrationInfoRetrievalApiImpl
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

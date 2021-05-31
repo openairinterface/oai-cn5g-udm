@@ -25,10 +25,7 @@
 #include "AccessType.h"
 #include "DeregistrationReason.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -84,9 +81,6 @@ class DeregistrationData {
   bool m_NewSmfInstanceIdIsSet;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* DeregistrationData_H_ */

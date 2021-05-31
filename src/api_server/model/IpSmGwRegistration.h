@@ -24,10 +24,7 @@
 
 #include "NetworkNodeDiameterAddress.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -76,9 +73,6 @@ class IpSmGwRegistration {
   bool m_UnriIndicatorIsSet;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* IpSmGwRegistration_H_ */

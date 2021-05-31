@@ -27,16 +27,13 @@ GPSIToSUPITranslationApi::GPSIToSUPITranslationApi(
   router = rtr;
 }
 
-void GPSIToSUPITranslationApi::init() {
-  setupRoutes();
-}
+void GPSIToSUPITranslationApi::init() { setupRoutes(); }
 
 void GPSIToSUPITranslationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(
-      *router, base + "/:gpsi/id-translation-result",
-      Routes::bind(&GPSIToSUPITranslationApi::get_supi_handler, this));
+  Routes::Get(*router, base + "/:gpsi/id-translation-result",
+              Routes::bind(&GPSIToSUPITranslationApi::get_supi_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -61,12 +58,12 @@ void GPSIToSUPITranslationApi::get_supi_handler(
   }
 
   // Getting the header params
-  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_supi(
-        gpsi, supportedFeatures, ifNoneMatch, ifModifiedSince, response);
+    this->get_supi(gpsi, supportedFeatures, ifNoneMatch, ifModifiedSince,
+                   response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
@@ -80,8 +77,8 @@ void GPSIToSUPITranslationApi::get_supi_handler(
 
 void GPSIToSUPITranslationApi::gpsi_to_supi_translation_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
 }  // namespace api

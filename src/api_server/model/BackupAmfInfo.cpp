@@ -13,13 +13,10 @@
 
 #include "BackupAmfInfo.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 BackupAmfInfo::BackupAmfInfo() {
-  m_BackupAmf      = "";
+  m_BackupAmf = "";
   m_GuamiListIsSet = false;
 }
 
@@ -30,7 +27,7 @@ void BackupAmfInfo::validate() {
 }
 
 void to_json(nlohmann::json& j, const BackupAmfInfo& o) {
-  j              = nlohmann::json();
+  j = nlohmann::json();
   j["backupAmf"] = o.m_BackupAmf;
   if (o.guamiListIsSet() || !o.m_GuamiList.empty())
     j["guamiList"] = o.m_GuamiList;
@@ -44,27 +41,16 @@ void from_json(const nlohmann::json& j, BackupAmfInfo& o) {
   }
 }
 
-std::string BackupAmfInfo::getBackupAmf() const {
-  return m_BackupAmf;
-}
+std::string BackupAmfInfo::getBackupAmf() const { return m_BackupAmf; }
 void BackupAmfInfo::setBackupAmf(std::string const& value) {
   m_BackupAmf = value;
 }
-std::vector<Guami>& BackupAmfInfo::getGuamiList() {
-  return m_GuamiList;
-}
+std::vector<Guami>& BackupAmfInfo::getGuamiList() { return m_GuamiList; }
 void BackupAmfInfo::setGuamiList(std::vector<Guami> const& value) {
-  m_GuamiList      = value;
+  m_GuamiList = value;
   m_GuamiListIsSet = true;
 }
-bool BackupAmfInfo::guamiListIsSet() const {
-  return m_GuamiListIsSet;
-}
-void BackupAmfInfo::unsetGuamiList() {
-  m_GuamiListIsSet = false;
-}
+bool BackupAmfInfo::guamiListIsSet() const { return m_GuamiListIsSet; }
+void BackupAmfInfo::unsetGuamiList() { m_GuamiListIsSet = false; }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

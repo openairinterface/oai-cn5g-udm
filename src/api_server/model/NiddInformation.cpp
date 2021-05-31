@@ -19,8 +19,8 @@ namespace model {
 
 NiddInformation::NiddInformation() {
   m_AfInstanceId = "";
-  m_Gpsi         = "";
-  m_GpsiIsSet    = false;
+  m_Gpsi = "";
+  m_GpsiIsSet = false;
 }
 
 NiddInformation::~NiddInformation() {}
@@ -30,7 +30,7 @@ void NiddInformation::validate() {
 }
 
 void to_json(nlohmann::json& j, const NiddInformation& o) {
-  j                 = nlohmann::json();
+  j = nlohmann::json();
   j["afInstanceId"] = o.m_AfInstanceId;
   if (o.gpsiIsSet()) j["gpsi"] = o.m_Gpsi;
 }
@@ -43,25 +43,17 @@ void from_json(const nlohmann::json& j, NiddInformation& o) {
   }
 }
 
-std::string NiddInformation::getAfInstanceId() const {
-  return m_AfInstanceId;
-}
+std::string NiddInformation::getAfInstanceId() const { return m_AfInstanceId; }
 void NiddInformation::setAfInstanceId(std::string const& value) {
   m_AfInstanceId = value;
 }
-std::string NiddInformation::getGpsi() const {
-  return m_Gpsi;
-}
+std::string NiddInformation::getGpsi() const { return m_Gpsi; }
 void NiddInformation::setGpsi(std::string const& value) {
-  m_Gpsi      = value;
+  m_Gpsi = value;
   m_GpsiIsSet = true;
 }
-bool NiddInformation::gpsiIsSet() const {
-  return m_GpsiIsSet;
-}
-void NiddInformation::unsetGpsi() {
-  m_GpsiIsSet = false;
-}
+bool NiddInformation::gpsiIsSet() const { return m_GpsiIsSet; }
+void NiddInformation::unsetGpsi() { m_GpsiIsSet = false; }
 
 }  // namespace model
 }  // namespace udm

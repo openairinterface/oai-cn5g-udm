@@ -24,10 +24,7 @@
 
 #include "PlmnIdNid.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -62,9 +59,6 @@ class Guami {
   std::string m_AmfId;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* Guami_H_ */

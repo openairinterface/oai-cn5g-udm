@@ -15,13 +15,10 @@
 
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udm::api {
 
 using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 AMFNon3GPPAccessRegistrationInfoRetrievalApi::
     AMFNon3GPPAccessRegistrationInfoRetrievalApi(
@@ -29,19 +26,15 @@ AMFNon3GPPAccessRegistrationInfoRetrievalApi::
   router = rtr;
 }
 
-void AMFNon3GPPAccessRegistrationInfoRetrievalApi::init() {
-  setupRoutes();
-}
+void AMFNon3GPPAccessRegistrationInfoRetrievalApi::init() { setupRoutes(); }
 
 void AMFNon3GPPAccessRegistrationInfoRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(
-      *router, base + "/:ueId/registrations/amf-non-3gpp-access",
-      Routes::bind(
-          &AMFNon3GPPAccessRegistrationInfoRetrievalApi::
-              get_non3_gpp_registration_handler,
-          this));
+  Routes::Get(*router, base + "/:ueId/registrations/amf-non-3gpp-access",
+              Routes::bind(&AMFNon3GPPAccessRegistrationInfoRetrievalApi::
+                               get_non3_gpp_registration_handler,
+                           this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -51,9 +44,8 @@ void AMFNon3GPPAccessRegistrationInfoRetrievalApi::setupRoutes() {
 }
 
 void AMFNon3GPPAccessRegistrationInfoRetrievalApi::
-    get_non3_gpp_registration_handler(
-        const Pistache::Rest::Request& request,
-        Pistache::Http::ResponseWriter response) {
+    get_non3_gpp_registration_handler(const Pistache::Rest::Request& request,
+                                      Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -87,11 +79,8 @@ void AMFNon3GPPAccessRegistrationInfoRetrievalApi::
     amf_non3_gpp_access_registration_info_retrieval_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
-}  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::api

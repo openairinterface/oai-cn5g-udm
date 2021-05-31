@@ -13,10 +13,7 @@
 
 #include "ServiceName.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 ServiceName::ServiceName() {}
 
@@ -26,13 +23,8 @@ void ServiceName::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json& j, const ServiceName& o) {
-  j = nlohmann::json();
-}
+void to_json(nlohmann::json& j, const ServiceName& o) { j = nlohmann::json(); }
 
 void from_json(const nlohmann::json& j, ServiceName& o) {}
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

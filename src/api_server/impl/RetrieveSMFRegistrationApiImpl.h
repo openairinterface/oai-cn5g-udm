@@ -32,27 +32,24 @@
 #include "ProblemDetails.h"
 #include "SmfRegistration.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
-
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class RetrieveSMFRegistrationApiImpl
-    : public org::openapitools::server::api::RetrieveSMFRegistrationApi {
+    : public oai::udm::api::RetrieveSMFRegistrationApi {
  public:
   RetrieveSMFRegistrationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~RetrieveSMFRegistrationApiImpl() {}
 
-  void retrieve_smf_registration(
-      const std::string& ueId, const int32_t& pduSessionId,
-      Pistache::Http::ResponseWriter& response);
+  void retrieve_smf_registration(const std::string& ueId,
+                                 const int32_t& pduSessionId,
+                                 Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

@@ -22,10 +22,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -60,9 +57,5 @@ class NetworkNodeDiameterAddress {
   std::string m_Realm;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
-
+}  // namespace oai::udm::model
 #endif /* NetworkNodeDiameterAddress_H_ */

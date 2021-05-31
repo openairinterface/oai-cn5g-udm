@@ -44,9 +44,9 @@ class SubscriptionCreationApiImpl
   SubscriptionCreationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~SubscriptionCreationApiImpl() {}
 
-  void subscribe(
-      const std::string& supi, const SdmSubscription& sdmSubscription,
-      Pistache::Http::ResponseWriter& response);
+  void subscribe(const std::string& supi,
+                 const SdmSubscription& sdmSubscription,
+                 Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api

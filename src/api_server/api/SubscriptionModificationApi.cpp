@@ -27,9 +27,7 @@ SubscriptionModificationApi::SubscriptionModificationApi(
   router = rtr;
 }
 
-void SubscriptionModificationApi::init() {
-  setupRoutes();
-}
+void SubscriptionModificationApi::init() { setupRoutes(); }
 
 void SubscriptionModificationApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -43,17 +41,17 @@ void SubscriptionModificationApi::setupRoutes() {
           &SubscriptionModificationApi::modify_shared_data_subs_handler, this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(Routes::bind(
-      &SubscriptionModificationApi::
-          subscription_modification_api_default_handler,
-      this));
+  router->addCustomHandler(
+      Routes::bind(&SubscriptionModificationApi::
+                       subscription_modification_api_default_handler,
+                   this));
 }
 
 void SubscriptionModificationApi::modify_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
-  auto supi           = request.param(":supi").as<std::string>();
+  auto supi = request.param(":supi").as<std::string>();
   auto subscriptionId = request.param(":subscriptionId").as<std::string>();
 
   // Getting the body param
@@ -85,8 +83,8 @@ void SubscriptionModificationApi::modify_shared_data_subs_handler(
 
   try {
     nlohmann::json::parse(request.body()).get_to(sdmSubsModification);
-    this->modify_shared_data_subs(
-        subscriptionId, sdmSubsModification, response);
+    this->modify_shared_data_subs(subscriptionId, sdmSubsModification,
+                                  response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
@@ -100,8 +98,8 @@ void SubscriptionModificationApi::modify_shared_data_subs_handler(
 
 void SubscriptionModificationApi::subscription_modification_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(
-      Pistache::Http::Code::Not_Found, "The requested method does not exist");
+  response.send(Pistache::Http::Code::Not_Found,
+                "The requested method does not exist");
 }
 
 }  // namespace api

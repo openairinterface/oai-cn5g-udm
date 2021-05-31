@@ -32,29 +32,24 @@
 #include "AmfDeregInfo.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
-
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class TriggerAMFFor3GPPAccessDeregistrationApiImpl
-    : public org::openapitools::server::api::
-          TriggerAMFFor3GPPAccessDeregistrationApi {
+    : public oai::udm::api::TriggerAMFFor3GPPAccessDeregistrationApi {
  public:
   TriggerAMFFor3GPPAccessDeregistrationApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
   ~TriggerAMFFor3GPPAccessDeregistrationApiImpl() {}
 
-  void dereg_amf(
-      const std::string& ueId, const AmfDeregInfo& amfDeregInfo,
-      Pistache::Http::ResponseWriter& response);
+  void dereg_amf(const std::string& ueId, const AmfDeregInfo& amfDeregInfo,
+                 Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

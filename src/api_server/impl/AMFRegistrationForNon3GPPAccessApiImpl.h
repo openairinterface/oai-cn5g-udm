@@ -32,16 +32,14 @@
 #include "AmfNon3GppAccessRegistration.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udm::model;
 
 class AMFRegistrationForNon3GPPAccessApiImpl
-    : public org::openapitools::server::api::
-          AMFRegistrationForNon3GPPAccessApi {
+    : public oai::udm::api::AMFRegistrationForNon3GPPAccessApi {
  public:
   AMFRegistrationForNon3GPPAccessApiImpl(
       std::shared_ptr<Pistache::Rest::Router>);
@@ -54,8 +52,7 @@ class AMFRegistrationForNon3GPPAccessApiImpl
 };
 
 }  // namespace api
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif

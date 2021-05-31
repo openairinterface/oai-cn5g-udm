@@ -26,10 +26,7 @@
 #include "SmfRegistrationInfo.h"
 #include "SmsfRegistration.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 /// <summary>
 ///
@@ -96,9 +93,6 @@ class RegistrationDataSets {
   bool m_SmsfNon3GppIsSet;
 };
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
 
 #endif /* RegistrationDataSets_H_ */

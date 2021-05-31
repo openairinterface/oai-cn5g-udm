@@ -13,17 +13,14 @@
 
 #include "LocationInfo.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 LocationInfo::LocationInfo() {
-  m_Supi                   = "";
-  m_SupiIsSet              = false;
-  m_Gpsi                   = "";
-  m_GpsiIsSet              = false;
-  m_SupportedFeatures      = "";
+  m_Supi = "";
+  m_SupiIsSet = false;
+  m_Gpsi = "";
+  m_GpsiIsSet = false;
+  m_SupportedFeatures = "";
   m_SupportedFeaturesIsSet = false;
 }
 
@@ -58,32 +55,20 @@ void from_json(const nlohmann::json& j, LocationInfo& o) {
   }
 }
 
-std::string LocationInfo::getSupi() const {
-  return m_Supi;
-}
+std::string LocationInfo::getSupi() const { return m_Supi; }
 void LocationInfo::setSupi(std::string const& value) {
-  m_Supi      = value;
+  m_Supi = value;
   m_SupiIsSet = true;
 }
-bool LocationInfo::supiIsSet() const {
-  return m_SupiIsSet;
-}
-void LocationInfo::unsetSupi() {
-  m_SupiIsSet = false;
-}
-std::string LocationInfo::getGpsi() const {
-  return m_Gpsi;
-}
+bool LocationInfo::supiIsSet() const { return m_SupiIsSet; }
+void LocationInfo::unsetSupi() { m_SupiIsSet = false; }
+std::string LocationInfo::getGpsi() const { return m_Gpsi; }
 void LocationInfo::setGpsi(std::string const& value) {
-  m_Gpsi      = value;
+  m_Gpsi = value;
   m_GpsiIsSet = true;
 }
-bool LocationInfo::gpsiIsSet() const {
-  return m_GpsiIsSet;
-}
-void LocationInfo::unsetGpsi() {
-  m_GpsiIsSet = false;
-}
+bool LocationInfo::gpsiIsSet() const { return m_GpsiIsSet; }
+void LocationInfo::unsetGpsi() { m_GpsiIsSet = false; }
 std::vector<RegistrationLocationInfo>&
 LocationInfo::getRegistrationLocationInfoList() {
   return m_RegistrationLocationInfoList;
@@ -96,7 +81,7 @@ std::string LocationInfo::getSupportedFeatures() const {
   return m_SupportedFeatures;
 }
 void LocationInfo::setSupportedFeatures(std::string const& value) {
-  m_SupportedFeatures      = value;
+  m_SupportedFeatures = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool LocationInfo::supportedFeaturesIsSet() const {
@@ -106,7 +91,4 @@ void LocationInfo::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

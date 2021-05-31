@@ -17,9 +17,7 @@ namespace oai {
 namespace udm {
 namespace model {
 
-PduSessionTypes::PduSessionTypes() {
-  m_AllowedSessionTypesIsSet = false;
-}
+PduSessionTypes::PduSessionTypes() { m_AllowedSessionTypesIsSet = false; }
 
 PduSessionTypes::~PduSessionTypes() {}
 
@@ -28,7 +26,7 @@ void PduSessionTypes::validate() {
 }
 
 void to_json(nlohmann::json& j, const PduSessionTypes& o) {
-  j                       = nlohmann::json();
+  j = nlohmann::json();
   j["defaultSessionType"] = o.m_DefaultSessionType;
   if (o.allowedSessionTypesIsSet())
     j["allowedSessionTypes"] = o.m_AllowedSessionTypes;

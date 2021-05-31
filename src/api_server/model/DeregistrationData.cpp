@@ -13,16 +13,13 @@
 
 #include "DeregistrationData.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
+namespace oai::udm::model {
 
 DeregistrationData::DeregistrationData() {
-  m_AccessTypeIsSet       = false;
-  m_PduSessionId          = 0;
-  m_PduSessionIdIsSet     = false;
-  m_NewSmfInstanceId      = "";
+  m_AccessTypeIsSet = false;
+  m_PduSessionId = 0;
+  m_PduSessionIdIsSet = false;
+  m_NewSmfInstanceId = "";
   m_NewSmfInstanceIdIsSet = false;
 }
 
@@ -33,7 +30,7 @@ void DeregistrationData::validate() {
 }
 
 void to_json(nlohmann::json& j, const DeregistrationData& o) {
-  j                = nlohmann::json();
+  j = nlohmann::json();
   j["deregReason"] = o.m_DeregReason;
   if (o.accessTypeIsSet()) j["accessType"] = o.m_AccessType;
   if (o.pduSessionIdIsSet()) j["pduSessionId"] = o.m_PduSessionId;
@@ -62,37 +59,27 @@ DeregistrationReason DeregistrationData::getDeregReason() const {
 void DeregistrationData::setDeregReason(DeregistrationReason const& value) {
   m_DeregReason = value;
 }
-AccessType DeregistrationData::getAccessType() const {
-  return m_AccessType;
-}
+AccessType DeregistrationData::getAccessType() const { return m_AccessType; }
 void DeregistrationData::setAccessType(AccessType const& value) {
-  m_AccessType      = value;
+  m_AccessType = value;
   m_AccessTypeIsSet = true;
 }
-bool DeregistrationData::accessTypeIsSet() const {
-  return m_AccessTypeIsSet;
-}
-void DeregistrationData::unsetAccessType() {
-  m_AccessTypeIsSet = false;
-}
-int32_t DeregistrationData::getPduSessionId() const {
-  return m_PduSessionId;
-}
+bool DeregistrationData::accessTypeIsSet() const { return m_AccessTypeIsSet; }
+void DeregistrationData::unsetAccessType() { m_AccessTypeIsSet = false; }
+int32_t DeregistrationData::getPduSessionId() const { return m_PduSessionId; }
 void DeregistrationData::setPduSessionId(int32_t const value) {
-  m_PduSessionId      = value;
+  m_PduSessionId = value;
   m_PduSessionIdIsSet = true;
 }
 bool DeregistrationData::pduSessionIdIsSet() const {
   return m_PduSessionIdIsSet;
 }
-void DeregistrationData::unsetPduSessionId() {
-  m_PduSessionIdIsSet = false;
-}
+void DeregistrationData::unsetPduSessionId() { m_PduSessionIdIsSet = false; }
 std::string DeregistrationData::getNewSmfInstanceId() const {
   return m_NewSmfInstanceId;
 }
 void DeregistrationData::setNewSmfInstanceId(std::string const& value) {
-  m_NewSmfInstanceId      = value;
+  m_NewSmfInstanceId = value;
   m_NewSmfInstanceIdIsSet = true;
 }
 bool DeregistrationData::newSmfInstanceIdIsSet() const {
@@ -102,7 +89,4 @@ void DeregistrationData::unsetNewSmfInstanceId() {
   m_NewSmfInstanceIdIsSet = false;
 }
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model

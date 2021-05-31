@@ -18,9 +18,9 @@ namespace udm {
 namespace model {
 
 SmsSubscriptionData::SmsSubscriptionData() {
-  m_SmsSubscribed            = false;
-  m_SmsSubscribedIsSet       = false;
-  m_SharedSmsSubsDataId      = "";
+  m_SmsSubscribed = false;
+  m_SmsSubscribedIsSet = false;
+  m_SharedSmsSubsDataId = "";
   m_SharedSmsSubsDataIdIsSet = false;
 }
 
@@ -48,24 +48,20 @@ void from_json(const nlohmann::json& j, SmsSubscriptionData& o) {
   }
 }
 
-bool SmsSubscriptionData::isSmsSubscribed() const {
-  return m_SmsSubscribed;
-}
+bool SmsSubscriptionData::isSmsSubscribed() const { return m_SmsSubscribed; }
 void SmsSubscriptionData::setSmsSubscribed(bool const value) {
-  m_SmsSubscribed      = value;
+  m_SmsSubscribed = value;
   m_SmsSubscribedIsSet = true;
 }
 bool SmsSubscriptionData::smsSubscribedIsSet() const {
   return m_SmsSubscribedIsSet;
 }
-void SmsSubscriptionData::unsetSmsSubscribed() {
-  m_SmsSubscribedIsSet = false;
-}
+void SmsSubscriptionData::unsetSmsSubscribed() { m_SmsSubscribedIsSet = false; }
 std::string SmsSubscriptionData::getSharedSmsSubsDataId() const {
   return m_SharedSmsSubsDataId;
 }
 void SmsSubscriptionData::setSharedSmsSubsDataId(std::string const& value) {
-  m_SharedSmsSubsDataId      = value;
+  m_SharedSmsSubsDataId = value;
   m_SharedSmsSubsDataIdIsSet = true;
 }
 bool SmsSubscriptionData::sharedSmsSubsDataIdIsSet() const {

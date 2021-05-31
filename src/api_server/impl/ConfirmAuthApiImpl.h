@@ -47,9 +47,8 @@ class ConfirmAuthApiImpl : public oai::udm::api::ConfirmAuthApi {
   ConfirmAuthApiImpl(std::shared_ptr<Pistache::Rest::Router>);
   ~ConfirmAuthApiImpl() {}
 
-  void confirm_auth(
-      const std::string& supi, const AuthEvent& authEvent,
-      Pistache::Http::ResponseWriter& response);
+  void confirm_auth(const std::string& supi, const AuthEvent& authEvent,
+                    Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api

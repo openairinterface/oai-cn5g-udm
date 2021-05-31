@@ -13,11 +13,7 @@
 
 #include "ImsVoPs.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace model {
-
+namespace oai::udm::model {
 ImsVoPs::ImsVoPs() {}
 
 ImsVoPs::~ImsVoPs() {}
@@ -26,13 +22,8 @@ void ImsVoPs::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json& j, const ImsVoPs& o) {
-  j = nlohmann::json();
-}
+void to_json(nlohmann::json& j, const ImsVoPs& o) { j = nlohmann::json(); }
 
 void from_json(const nlohmann::json& j, ImsVoPs& o) {}
 
-}  // namespace model
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace oai::udm::model
