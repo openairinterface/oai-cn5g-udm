@@ -35,20 +35,29 @@
 #include "logger.hpp"
 #include "sha256.hpp"
 #include "udm_config.hpp"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class ConfirmAuthApiImpl : public oai::udm::api::ConfirmAuthApi {
  public:
-  ConfirmAuthApiImpl(std::shared_ptr<Pistache::Rest::Router>);
+  ConfirmAuthApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~ConfirmAuthApiImpl() {}
 
-  void confirm_auth(const std::string& supi, const AuthEvent& authEvent,
-                    Pistache::Http::ResponseWriter& response);
+  void confirm_auth(
+      const std::string& supi, const AuthEvent& authEvent,
+      Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

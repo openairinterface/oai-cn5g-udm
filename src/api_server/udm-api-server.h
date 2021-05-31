@@ -82,16 +82,16 @@ class UDMApiServer {
  public:
   UDMApiServer(Pistache::Address address, udm_app* udm_app_inst)
       : m_httpEndpoint(std::make_shared<Pistache::Http::Endpoint>(address)) {
-    m_router = std::make_shared<Pistache::Rest::Router>();
+    m_router  = std::make_shared<Pistache::Rest::Router>();
     m_address = address.host() + ":" + (address.port()).toString();
 
-    /*
-        m_defaultApiImpl =
-            std::make_shared<DefaultApiImpl>(m_router, udm_app_inst, m_address);
-        m_authenticationResultDeletionApiImpl =
-            std::make_shared<AuthenticationResultDeletionApiImpl>(
-                m_router, udm_app_inst, m_address);
-      */
+    m_confirmAuthApiImpl =
+        std::make_shared<ConfirmAuthApiImpl>(m_router, udm_app_inst, m_address);
+    m_deleteAuthApiImpl =
+        std::make_shared<DeleteAuthApiImpl>(m_router, udm_app_inst, m_address);
+
+    m_generateAuthDataApiImpl = std::make_shared<GenerateAuthDataApiImpl>(
+        m_router, udm_app_inst, m_address);
   }
   void init(size_t thr = 1);
   void start();

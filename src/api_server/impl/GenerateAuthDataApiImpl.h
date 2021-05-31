@@ -40,22 +40,30 @@
 #include "curl.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class GenerateAuthDataApiImpl : public oai::udm::api::GenerateAuthDataApi {
  public:
-  GenerateAuthDataApiImpl(std::shared_ptr<Pistache::Rest::Router>);
+  GenerateAuthDataApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~GenerateAuthDataApiImpl() {}
 
   void generate_auth_data(
       const std::string& supiOrSuci,
       const AuthenticationInfoRequest& authenticationInfoRequest,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api
