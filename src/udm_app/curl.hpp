@@ -50,9 +50,8 @@
 class Curl {
  public:
   /****** curl function ********/
-  static long curl_http_client(
-      std::string remoteUri, std::string Method, std::string msgBody,
-      std::string& Response);
+  static long curl_http_client(std::string remoteUri, std::string Method,
+                               std::string msgBody, std::string& Response);
 
  private:
 };

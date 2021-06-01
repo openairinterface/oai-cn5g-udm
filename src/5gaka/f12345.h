@@ -85,11 +85,11 @@ void f1(u8 k[16], u8 rand[16], u8 sqn[6], u8 amf[2], u8 mac_a[8]) {
   Authentication_5gaka::RijndaelEncrypt(rijndaelInput, temp);
 
   for (i = 0; i < 6; i++) {
-    in1[i]     = sqn[i];
+    in1[i] = sqn[i];
     in1[i + 8] = sqn[i];
   }
   for (i = 0; i < 2; i++) {
-    in1[i + 6]  = amf[i];
+    in1[i + 6] = amf[i];
     in1[i + 14] = amf[i];
   }
 
@@ -199,11 +199,11 @@ void f1star(u8 k[16], u8 rand[16], u8 sqn[6], u8 amf[2], u8 mac_s[8]) {
   Authentication_5gaka::RijndaelEncrypt(rijndaelInput, temp);
 
   for (i = 0; i < 6; i++) {
-    in1[i]     = sqn[i];
+    in1[i] = sqn[i];
     in1[i + 8] = sqn[i];
   }
   for (i = 0; i < 2; i++) {
-    in1[i + 6]  = amf[i];
+    in1[i + 6] = amf[i];
     in1[i + 14] = amf[i];
   }
 

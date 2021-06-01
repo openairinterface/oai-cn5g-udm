@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudm_SDM
  * Nudm Subscriber Data Management Service. � 2019, 3GPP Organizational Partners
@@ -15,8 +35,8 @@
 
 #include "curl.hpp"
 #include "logger.hpp"
-#include "udm_config.hpp"
 #include "udm_app.hpp"
+#include "udm_config.hpp"
 
 using namespace config;
 extern config::udm_config udm_cfg;
@@ -44,8 +64,8 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
     Pistache::Http::ResponseWriter& response) {
   // 1. populate remote uri for udp request
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nudr.addr4)));
-  std::string udr_port   = std::to_string(udm_cfg.nudr.port);
+      std::string(inet_ntoa(*((struct in_addr*)&udm_cfg.nudr.addr4)));
+  std::string udr_port = std::to_string(udm_cfg.nudr.port);
   std::string remote_uri = udr_ip + ":" + udr_port +
                            "/nudr-dr/v2/subscription-data/" + supi + "/" +
                            plmnId.get().getMcc() + plmnId.get().getMnc() +
@@ -77,8 +97,8 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
     return;
   }
   Logger::udm_sdm().debug("http reponse code %d.\n", http_code);
-  response.send(
-      static_cast<Pistache::Http::Code>(http_code), response_data_json.dump());
+  response.send(static_cast<Pistache::Http::Code>(http_code),
+                response_data_json.dump());
 }
 
 }  // namespace api

@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudm_UEAU
  * UDM UE Authentication Service. � 2020, 3GPP Organizational Partners (ARIB,
@@ -49,24 +69,24 @@ void GenerateAuthDataApiImpl::generate_auth_data(
   // std::string supi = "imsi-460010123456789";
 
   uint8_t rand[16] = {0};
-  uint8_t opc[16]  = {0};
-  uint8_t key[16]  = {0};
-  uint8_t sqn[6]   = {0};
-  uint8_t amf[2]   = {0};
+  uint8_t opc[16] = {0};
+  uint8_t key[16] = {0};
+  uint8_t sqn[6] = {0};
+  uint8_t amf[2] = {0};
 
   uint8_t* r_sqn = NULL;     // for resync
   std::string r_sqnms_s;     // for resync
   uint8_t r_rand[16] = {0};  // for resync
   uint8_t r_auts[14] = {0};  // for resync
 
-  uint8_t mac_a[8]     = {0};
-  uint8_t ck[16]       = {0};
-  uint8_t ik[16]       = {0};
-  uint8_t ak[6]        = {0};
-  uint8_t xres[8]      = {0};
+  uint8_t mac_a[8] = {0};
+  uint8_t ck[16] = {0};
+  uint8_t ik[16] = {0};
+  uint8_t ak[6] = {0};
+  uint8_t xres[8] = {0};
   uint8_t xresStar[16] = {0};
-  uint8_t autn[16]     = {0};
-  uint8_t kausf[32]    = {0};
+  uint8_t autn[16] = {0};
+  uint8_t kausf[32] = {0};
 
   std::string rand_s;
   std::string autn_s;
@@ -77,11 +97,11 @@ void GenerateAuthDataApiImpl::generate_auth_data(
   std::string key_s;
   std::string opc_s;
 
-  std::string snn  = authenticationInfoRequest.getServingNetworkName();
+  std::string snn = authenticationInfoRequest.getServingNetworkName();
   std::string supi = supiOrSuci;
 
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nudr.addr4)));
+      std::string(inet_ntoa(*((struct in_addr*)&udm_cfg.nudr.addr4)));
   std::string udr_port = std::to_string(udm_cfg.nudr.port);
   std::string remoteUri;
   std::string Method;
@@ -162,8 +182,8 @@ void GenerateAuthDataApiImpl::generate_auth_data(
         "database, method set = " +
         authMethod_s);
     Logger::udm_ueau().info("Send 501 Not_Implemented response to AUSF");
-    response.send(
-        Pistache::Http::Code::Not_Implemented, j_ProblemDetails.dump());
+    response.send(Pistache::Http::Code::Not_Implemented,
+                  j_ProblemDetails.dump());
     return;
   }
 
@@ -231,43 +251,38 @@ void GenerateAuthDataApiImpl::generate_auth_data(
         r_sqn = NULL;
       }
     } else {
-      Logger::udm_ueau().error(
-          "Invalid AUTS, generate new AV with SQNhe = " + sqn_s);
+      Logger::udm_ueau().error("Invalid AUTS, generate new AV with SQNhe = " +
+                               sqn_s);
     }
   }
 
   // 5GAKA functions---------------------------------------------------------
   Authentication_5gaka::generate_random(rand, 16);  // generate rand
-  Authentication_5gaka::f1(
-      opc, key, rand, sqn, amf,
-      mac_a);  // to compute mac_a
-  Authentication_5gaka::f2345(
-      opc, key, rand, xres, ck, ik,
-      ak);  // to compute XRES, CK, IK, AK
-  Authentication_5gaka::generate_autn(
-      sqn, ak, amf, mac_a,
-      autn);  // generate AUTN
-  Authentication_5gaka::annex_a_4_33501(
-      ck, ik, xres, rand, snn,
-      xresStar);  // generate xres*
-  Authentication_5gaka::derive_kausf(
-      ck, ik, snn, sqn, ak,
-      kausf);  // derive Kausf
+  Authentication_5gaka::f1(opc, key, rand, sqn, amf,
+                           mac_a);  // to compute mac_a
+  Authentication_5gaka::f2345(opc, key, rand, xres, ck, ik,
+                              ak);  // to compute XRES, CK, IK, AK
+  Authentication_5gaka::generate_autn(sqn, ak, amf, mac_a,
+                                      autn);  // generate AUTN
+  Authentication_5gaka::annex_a_4_33501(ck, ik, xres, rand, snn,
+                                        xresStar);  // generate xres*
+  Authentication_5gaka::derive_kausf(ck, ik, snn, sqn, ak,
+                                     kausf);  // derive Kausf
 
   // convert uint8_t to string
-  rand_s     = conv::uint8_to_hex_string(rand, 16);
-  autn_s     = conv::uint8_to_hex_string(autn, 16);
+  rand_s = conv::uint8_to_hex_string(rand, 16);
+  autn_s = conv::uint8_to_hex_string(autn, 16);
   xresStar_s = conv::uint8_to_hex_string(xresStar, 16);
-  kausf_s    = conv::uint8_to_hex_string(kausf, 32);
+  kausf_s = conv::uint8_to_hex_string(kausf, 32);
 
   // convert to json
-  nlohmann::json AuthInfoResult                      = {};
-  AuthInfoResult["authType"]                         = "5G_AKA";
-  AuthInfoResult["authenticationVector"]["avType"]   = "5G_HE_AKA";
-  AuthInfoResult["authenticationVector"]["rand"]     = rand_s;
-  AuthInfoResult["authenticationVector"]["autn"]     = autn_s;
+  nlohmann::json AuthInfoResult = {};
+  AuthInfoResult["authType"] = "5G_AKA";
+  AuthInfoResult["authenticationVector"]["avType"] = "5G_HE_AKA";
+  AuthInfoResult["authenticationVector"]["rand"] = rand_s;
+  AuthInfoResult["authenticationVector"]["autn"] = autn_s;
   AuthInfoResult["authenticationVector"]["xresStar"] = xresStar_s;
-  AuthInfoResult["authenticationVector"]["kausf"]    = kausf_s;
+  AuthInfoResult["authenticationVector"]["kausf"] = kausf_s;
 
   Logger::udm_ueau().info("Send 200 Ok response to AUSF");
   response.send(Pistache::Http::Code::Ok, AuthInfoResult.dump());

@@ -8,8 +8,8 @@
 #ifndef ASN_APPLICATION_H
 #define ASN_APPLICATION_H
 
-#include "asn_system.h" /* for platform-dependent types */
 #include "asn_codecs.h" /* for ASN.1 codecs specifics */
+#include "asn_system.h" /* for platform-dependent types */
 
 #ifdef __cplusplus
 extern "C" {

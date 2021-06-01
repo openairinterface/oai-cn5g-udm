@@ -65,8 +65,8 @@ void setUpUnixSignals(std::vector<int> quitSignals) {
 
   struct sigaction sa;
   sa.sa_handler = sigHandler;
-  sa.sa_mask    = blocking_mask;
-  sa.sa_flags   = 0;
+  sa.sa_mask = blocking_mask;
+  sa.sa_flags = 0;
 
   for (auto sig : quitSignals) sigaction(sig, &sa, nullptr);
 }
@@ -113,6 +113,4 @@ void UDMApiServer::start() {
   m_httpEndpoint->setHandler(m_router->handler());
   m_httpEndpoint->serve();
 }
-void UDMApiServer::shutdown() {
-  m_httpEndpoint->shutdown();
-}
+void UDMApiServer::shutdown() { m_httpEndpoint->shutdown(); }
