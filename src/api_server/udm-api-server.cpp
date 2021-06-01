@@ -82,9 +82,31 @@ void UDMApiServer::init(size_t thr) {
   opts.maxRequestSize(PISTACHE_SERVER_MAX_PAYLOAD);
   m_httpEndpoint->init(opts);
 
+  m_accessAndMobilitySubscriptionDataRetrievalApiImpl->init();
+  m_gPSIToSUPITranslationApiImpl->init();
+  m_groupIdentifiersApiImpl->init();
+  m_providingAcknowledgementOfSteeringOfRoamingApiImpl->init();
+  m_providingAcknowledgementOfUEParametersUpdateApiImpl->init();
+  m_retrievalOfMultipleDataSetsApiImpl->init();
+  m_retrievalOfSharedDataApiImpl->init();
+  m_sMFSelectionSubscriptionDataRetrievalApiImpl->init();
+  m_sMSManagementSubscriptionDataRetrievalApiImpl->init();
+  m_sMSSubscriptionDataRetrievalApiImpl->init();
+  m_sessionManagementSubscriptionDataRetrievalApiImpl->init();
+  m_sliceSelectionSubscriptionDataRetrievalApiImpl->init();
+  m_subscriptionCreationApiImpl->init();
+  m_subscriptionCreationForSharedDataApiImpl->init();
+  m_subscriptionDeletionApiImpl->init();
+  m_subscriptionDeletionForSharedDataApiImpl->init();
+  m_subscriptionModificationApiImpl->init();
+  m_traceConfigurationDataRetrievalApiImpl->init();
+  m_uEContextInSMFDataRetrievalApiImpl->init();
+  m_uEContextInSMSFDataRetrievalApiImpl->init();
   m_confirmAuthApiImpl->init();
   m_deleteAuthApiImpl->init();
   m_generateAuthDataApiImpl->init();
+  m_sMFSmfRegistrationApiImpl->init();
+  m_aMFRegistrationFor3GPPAccessApiImpl->init();
 }
 void UDMApiServer::start() {
   Logger::udm_server().info("HTTP1 server started");

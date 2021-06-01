@@ -71,13 +71,11 @@
 #include "UEContextInSMSFDataRetrievalApiImpl.h"
 #include "udm_app.hpp"
 
-// using namespace oai::udm_server::api;
-// using namespace oai::udm::api;
 using namespace oai::udm::app;
-
 using namespace oai::udm::api;
-using namespace config;
 using namespace oai::udm::model;
+using namespace config;
+
 class UDMApiServer {
  public:
   UDMApiServer(Pistache::Address address, udm_app* udm_app_inst)
@@ -85,6 +83,70 @@ class UDMApiServer {
     m_router  = std::make_shared<Pistache::Rest::Router>();
     m_address = address.host() + ":" + (address.port()).toString();
 
+    m_accessAndMobilitySubscriptionDataRetrievalApiImpl =
+        std::make_shared<AccessAndMobilitySubscriptionDataRetrievalApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_gPSIToSUPITranslationApiImpl =
+        std::make_shared<GPSIToSUPITranslationApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_groupIdentifiersApiImpl = std::make_shared<GroupIdentifiersApiImpl>(
+        m_router, udm_app_inst, m_address);
+    m_providingAcknowledgementOfSteeringOfRoamingApiImpl =
+        std::make_shared<ProvidingAcknowledgementOfSteeringOfRoamingApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_providingAcknowledgementOfUEParametersUpdateApiImpl =
+        std::make_shared<ProvidingAcknowledgementOfUEParametersUpdateApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_retrievalOfMultipleDataSetsApiImpl =
+        std::make_shared<RetrievalOfMultipleDataSetsApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_retrievalOfSharedDataApiImpl =
+        std::make_shared<RetrievalOfSharedDataApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_sMFSelectionSubscriptionDataRetrievalApiImpl =
+        std::make_shared<SMFSelectionSubscriptionDataRetrievalApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_sMSManagementSubscriptionDataRetrievalApiImpl =
+        std::make_shared<SMSManagementSubscriptionDataRetrievalApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_sMSSubscriptionDataRetrievalApiImpl =
+        std::make_shared<SMSSubscriptionDataRetrievalApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_sessionManagementSubscriptionDataRetrievalApiImpl =
+        std::make_shared<SessionManagementSubscriptionDataRetrievalApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_sliceSelectionSubscriptionDataRetrievalApiImpl =
+        std::make_shared<SliceSelectionSubscriptionDataRetrievalApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_subscriptionCreationApiImpl =
+        std::make_shared<SubscriptionCreationApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_subscriptionCreationForSharedDataApiImpl =
+        std::make_shared<SubscriptionCreationForSharedDataApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_subscriptionDeletionApiImpl =
+        std::make_shared<SubscriptionDeletionApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_subscriptionDeletionForSharedDataApiImpl =
+        std::make_shared<SubscriptionDeletionForSharedDataApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_subscriptionModificationApiImpl =
+        std::make_shared<SubscriptionModificationApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_traceConfigurationDataRetrievalApiImpl =
+        std::make_shared<TraceConfigurationDataRetrievalApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_uEContextInSMFDataRetrievalApiImpl =
+        std::make_shared<UEContextInSMFDataRetrievalApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_uEContextInSMSFDataRetrievalApiImpl =
+        std::make_shared<UEContextInSMSFDataRetrievalApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_sMFSmfRegistrationApiImpl = std::make_shared<SMFSmfRegistrationApiImpl>(
+        m_router, udm_app_inst, m_address);
+    m_aMFRegistrationFor3GPPAccessApiImpl =
+        std::make_shared<AMFRegistrationFor3GPPAccessApiImpl>(
+            m_router, udm_app_inst, m_address);
     m_confirmAuthApiImpl =
         std::make_shared<ConfirmAuthApiImpl>(m_router, udm_app_inst, m_address);
     m_deleteAuthApiImpl =
@@ -99,6 +161,7 @@ class UDMApiServer {
  private:
   std::shared_ptr<Pistache::Http::Endpoint> m_httpEndpoint;
   std::shared_ptr<Pistache::Rest::Router> m_router;
+
   std::shared_ptr<AccessAndMobilitySubscriptionDataRetrievalApiImpl>
       m_accessAndMobilitySubscriptionDataRetrievalApiImpl;
   std::shared_ptr<GPSIToSUPITranslationApiImpl> m_gPSIToSUPITranslationApiImpl;
