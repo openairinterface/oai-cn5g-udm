@@ -21,7 +21,8 @@ using namespace oai::udm::model;
 
 SubscriptionCreationForSharedDataApiImpl::
     SubscriptionCreationForSharedDataApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
+        std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+        std::string address)
     : SubscriptionCreationForSharedDataApi(rtr) {}
 
 void SubscriptionCreationForSharedDataApiImpl::subscribe_to_shared_data(

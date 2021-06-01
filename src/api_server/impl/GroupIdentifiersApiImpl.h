@@ -31,16 +31,20 @@
 
 #include "GroupIdentifiers.h"
 #include "ProblemDetails.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class GroupIdentifiersApiImpl : public oai::udm::api::GroupIdentifiersApi {
  public:
-  GroupIdentifiersApiImpl(std::shared_ptr<Pistache::Rest::Router>);
+  GroupIdentifiersApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~GroupIdentifiersApiImpl() {}
 
   void get_group_identifiers(
@@ -50,6 +54,10 @@ class GroupIdentifiersApiImpl : public oai::udm::api::GroupIdentifiersApi {
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

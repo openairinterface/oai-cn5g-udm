@@ -20,7 +20,8 @@ namespace api {
 using namespace oai::udm::model;
 
 TraceConfigurationDataRetrievalApiImpl::TraceConfigurationDataRetrievalApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
+    std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+    std::string address)
     : TraceConfigurationDataRetrievalApi(rtr) {}
 
 void TraceConfigurationDataRetrievalApiImpl::get_trace_config_data(

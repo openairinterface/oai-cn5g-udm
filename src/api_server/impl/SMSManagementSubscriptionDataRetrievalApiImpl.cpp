@@ -18,10 +18,12 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 SMSManagementSubscriptionDataRetrievalApiImpl::
     SMSManagementSubscriptionDataRetrievalApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
+        std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+        std::string address)
     : SMSManagementSubscriptionDataRetrievalApi(rtr) {}
 
 void SMSManagementSubscriptionDataRetrievalApiImpl::get_sms_mngt_data(

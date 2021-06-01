@@ -32,18 +32,21 @@
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "SmsManagementSubscriptionData.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class SMSManagementSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SMSManagementSubscriptionDataRetrievalApi {
  public:
   SMSManagementSubscriptionDataRetrievalApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>);
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~SMSManagementSubscriptionDataRetrievalApiImpl() {}
 
   void get_sms_mngt_data(

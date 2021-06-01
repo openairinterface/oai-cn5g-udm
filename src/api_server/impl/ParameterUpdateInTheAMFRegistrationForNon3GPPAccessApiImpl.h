@@ -32,18 +32,21 @@
 #include "AmfNon3GppAccessRegistrationModification.h"
 #include "PatchResult.h"
 #include "ProblemDetails.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiImpl
     : public oai::udm::api::
           ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi {
  public:
   ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>);
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiImpl() {}
 
   void update_non3_gpp_registration(
@@ -52,6 +55,10 @@ class ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiImpl
           amfNon3GppAccessRegistrationModification,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

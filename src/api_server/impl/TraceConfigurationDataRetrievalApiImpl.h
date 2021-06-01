@@ -32,18 +32,21 @@
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "TraceDataResponse.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class TraceConfigurationDataRetrievalApiImpl
     : public oai::udm::api::TraceConfigurationDataRetrievalApi {
  public:
   TraceConfigurationDataRetrievalApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>);
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~TraceConfigurationDataRetrievalApiImpl() {}
 
   void get_trace_config_data(
@@ -53,6 +56,10 @@ class TraceConfigurationDataRetrievalApiImpl
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

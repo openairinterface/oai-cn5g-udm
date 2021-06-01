@@ -19,7 +19,8 @@ namespace api {
 
 using namespace oai::udm::model;
 UECMRegistrationInfoRetrievalApiImpl::UECMRegistrationInfoRetrievalApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
+    std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+    std::string address)
     : UECMRegistrationInfoRetrievalApi(rtr) {}
 
 // void UECMRegistrationInfoRetrievalApiImpl::get_registrations(const

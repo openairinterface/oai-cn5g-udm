@@ -18,10 +18,12 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 ProvidingAcknowledgementOfSteeringOfRoamingApiImpl::
     ProvidingAcknowledgementOfSteeringOfRoamingApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
+        std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+        std::string address)
     : ProvidingAcknowledgementOfSteeringOfRoamingApi(rtr) {}
 
 void ProvidingAcknowledgementOfSteeringOfRoamingApiImpl::sor_ack_info(

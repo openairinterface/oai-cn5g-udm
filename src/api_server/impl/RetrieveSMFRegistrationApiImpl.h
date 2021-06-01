@@ -31,21 +31,30 @@
 
 #include "ProblemDetails.h"
 #include "SmfRegistration.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
+
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class RetrieveSMFRegistrationApiImpl
     : public oai::udm::api::RetrieveSMFRegistrationApi {
  public:
-  RetrieveSMFRegistrationApiImpl(std::shared_ptr<Pistache::Rest::Router>);
+  RetrieveSMFRegistrationApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~RetrieveSMFRegistrationApiImpl() {}
 
-  void retrieve_smf_registration(const std::string& ueId,
-                                 const int32_t& pduSessionId,
-                                 Pistache::Http::ResponseWriter& response);
+  void retrieve_smf_registration(
+      const std::string& ueId, const int32_t& pduSessionId,
+      Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

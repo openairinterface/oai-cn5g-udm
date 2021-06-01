@@ -89,7 +89,6 @@ class UDMApiServer {
         std::make_shared<ConfirmAuthApiImpl>(m_router, udm_app_inst, m_address);
     m_deleteAuthApiImpl =
         std::make_shared<DeleteAuthApiImpl>(m_router, udm_app_inst, m_address);
-
     m_generateAuthDataApiImpl = std::make_shared<GenerateAuthDataApiImpl>(
         m_router, udm_app_inst, m_address);
   }
@@ -100,66 +99,45 @@ class UDMApiServer {
  private:
   std::shared_ptr<Pistache::Http::Endpoint> m_httpEndpoint;
   std::shared_ptr<Pistache::Rest::Router> m_router;
-
   std::shared_ptr<AccessAndMobilitySubscriptionDataRetrievalApiImpl>
       m_accessAndMobilitySubscriptionDataRetrievalApiImpl;
   std::shared_ptr<GPSIToSUPITranslationApiImpl> m_gPSIToSUPITranslationApiImpl;
-
   std::shared_ptr<GroupIdentifiersApiImpl> m_groupIdentifiersApiImpl;
-
   std::shared_ptr<ProvidingAcknowledgementOfSteeringOfRoamingApiImpl>
       m_providingAcknowledgementOfSteeringOfRoamingApiImpl;
-
   std::shared_ptr<ProvidingAcknowledgementOfUEParametersUpdateApiImpl>
       m_providingAcknowledgementOfUEParametersUpdateApiImpl;
-
   std::shared_ptr<RetrievalOfMultipleDataSetsApiImpl>
       m_retrievalOfMultipleDataSetsApiImpl;
-
   std::shared_ptr<RetrievalOfSharedDataApiImpl> m_retrievalOfSharedDataApiImpl;
-
   std::shared_ptr<SMFSelectionSubscriptionDataRetrievalApiImpl>
       m_sMFSelectionSubscriptionDataRetrievalApiImpl;
-
   std::shared_ptr<SMSManagementSubscriptionDataRetrievalApiImpl>
       m_sMSManagementSubscriptionDataRetrievalApiImpl;
-
   std::shared_ptr<SMSSubscriptionDataRetrievalApiImpl>
       m_sMSSubscriptionDataRetrievalApiImpl;
-
   std::shared_ptr<SessionManagementSubscriptionDataRetrievalApiImpl>
       m_sessionManagementSubscriptionDataRetrievalApiImpl;
-
   std::shared_ptr<SliceSelectionSubscriptionDataRetrievalApiImpl>
       m_sliceSelectionSubscriptionDataRetrievalApiImpl;
-
   std::shared_ptr<SubscriptionCreationApiImpl> m_subscriptionCreationApiImpl;
-
   std::shared_ptr<SubscriptionCreationForSharedDataApiImpl>
       m_subscriptionCreationForSharedDataApiImpl;
-
   std::shared_ptr<SubscriptionDeletionApiImpl> m_subscriptionDeletionApiImpl;
-
   std::shared_ptr<SubscriptionDeletionForSharedDataApiImpl>
       m_subscriptionDeletionForSharedDataApiImpl;
   std::shared_ptr<SubscriptionModificationApiImpl>
       m_subscriptionModificationApiImpl;
-
   std::shared_ptr<TraceConfigurationDataRetrievalApiImpl>
       m_traceConfigurationDataRetrievalApiImpl;
-
   std::shared_ptr<UEContextInSMFDataRetrievalApiImpl>
       m_uEContextInSMFDataRetrievalApiImpl;
   std::shared_ptr<UEContextInSMSFDataRetrievalApiImpl>
       m_uEContextInSMSFDataRetrievalApiImpl;
-
   std::shared_ptr<ConfirmAuthApiImpl> m_confirmAuthApiImpl;
-
   std::shared_ptr<DeleteAuthApiImpl> m_deleteAuthApiImpl;
   std::shared_ptr<GenerateAuthDataApiImpl> m_generateAuthDataApiImpl;
-
   std::shared_ptr<SMFSmfRegistrationApiImpl> m_sMFSmfRegistrationApiImpl;
-
   std::shared_ptr<AMFRegistrationFor3GPPAccessApiImpl>
       m_aMFRegistrationFor3GPPAccessApiImpl;
 

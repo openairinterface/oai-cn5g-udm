@@ -18,9 +18,12 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
+
 SMSF3GPPAccessRegistrationInfoRetrievalApiImpl::
     SMSF3GPPAccessRegistrationInfoRetrievalApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
+        std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+        std::string address)
     : SMSF3GPPAccessRegistrationInfoRetrievalApi(rtr) {}
 
 void SMSF3GPPAccessRegistrationInfoRetrievalApiImpl::get3_gpp_smsf_registration(

@@ -18,9 +18,12 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
+
 SMSFRegistrationForNon3GPPAccessApiImpl::
     SMSFRegistrationForNon3GPPAccessApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
+        std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+        std::string address)
     : SMSFRegistrationForNon3GPPAccessApi(rtr) {}
 
 void SMSFRegistrationForNon3GPPAccessApiImpl::non3_gpp_smsf_registration(

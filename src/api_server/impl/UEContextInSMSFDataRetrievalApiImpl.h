@@ -31,23 +31,31 @@
 
 #include "ProblemDetails.h"
 #include "UeContextInSmsfData.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class UEContextInSMSFDataRetrievalApiImpl
     : public oai::udm::api::UEContextInSMSFDataRetrievalApi {
  public:
-  UEContextInSMSFDataRetrievalApiImpl(std::shared_ptr<Pistache::Rest::Router>);
+  UEContextInSMSFDataRetrievalApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~UEContextInSMSFDataRetrievalApiImpl() {}
 
   void get_ue_ctx_in_smsf_data(
       const std::string& supi,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

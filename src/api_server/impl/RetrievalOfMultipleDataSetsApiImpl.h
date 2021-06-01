@@ -32,17 +32,21 @@
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "SubscriptionDataSets.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class RetrievalOfMultipleDataSetsApiImpl
     : public oai::udm::api::RetrievalOfMultipleDataSetsApi {
  public:
-  RetrievalOfMultipleDataSetsApiImpl(std::shared_ptr<Pistache::Rest::Router>);
+  RetrievalOfMultipleDataSetsApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~RetrievalOfMultipleDataSetsApiImpl() {}
 
   void get_data_sets(
@@ -53,6 +57,10 @@ class RetrievalOfMultipleDataSetsApiImpl
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

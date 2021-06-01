@@ -30,21 +30,30 @@
 #include <string>
 
 #include "ProblemDetails.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
-// using namespace oai::udm::model;
+using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class SubscriptionDeletionApiImpl
     : public oai::udm::api::SubscriptionDeletionApi {
  public:
-  SubscriptionDeletionApiImpl(std::shared_ptr<Pistache::Rest::Router>);
+  SubscriptionDeletionApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~SubscriptionDeletionApiImpl() {}
 
-  void unsubscribe(const std::string& supi, const std::string& subscriptionId,
-                   Pistache::Http::ResponseWriter& response);
+  void unsubscribe(
+      const std::string& supi, const std::string& subscriptionId,
+      Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

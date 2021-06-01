@@ -31,22 +31,29 @@
 
 #include "IpSmGwRegistration.h"
 #include "ProblemDetails.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class IPSMGWRegistrationInfoRetrievalApiImpl
     : public oai::udm::api::IPSMGWRegistrationInfoRetrievalApi {
  public:
   IPSMGWRegistrationInfoRetrievalApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>);
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~IPSMGWRegistrationInfoRetrievalApiImpl() {}
 
-  void get_ip_sm_gw_registration(const std::string& ueId,
-                                 Pistache::Http::ResponseWriter& response);
+  void get_ip_sm_gw_registration(
+      const std::string& ueId, Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

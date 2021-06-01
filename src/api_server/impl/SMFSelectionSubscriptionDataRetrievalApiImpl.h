@@ -32,18 +32,21 @@
 #include "PlmnId.h"
 #include "ProblemDetails.h"
 #include "SmfSelectionSubscriptionData.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class SMFSelectionSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SMFSelectionSubscriptionDataRetrievalApi {
  public:
   SMFSelectionSubscriptionDataRetrievalApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>);
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~SMFSelectionSubscriptionDataRetrievalApiImpl() {}
 
   void get_smf_sel_data(
@@ -53,6 +56,10 @@ class SMFSelectionSubscriptionDataRetrievalApiImpl
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

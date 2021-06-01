@@ -31,23 +31,31 @@
 
 #include "AmfNon3GppAccessRegistration.h"
 #include "ProblemDetails.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
+
 class AMFNon3GPPAccessRegistrationInfoRetrievalApiImpl
     : public oai::udm::api::AMFNon3GPPAccessRegistrationInfoRetrievalApi {
  public:
   AMFNon3GPPAccessRegistrationInfoRetrievalApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>);
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~AMFNon3GPPAccessRegistrationInfoRetrievalApiImpl() {}
 
   void get_non3_gpp_registration(
       const std::string& ueId,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

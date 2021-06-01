@@ -20,7 +20,8 @@ namespace api {
 using namespace oai::udm::model;
 
 UEContextInSMSFDataRetrievalApiImpl::UEContextInSMSFDataRetrievalApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
+    std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+    std::string address)
     : UEContextInSMSFDataRetrievalApi(rtr) {}
 
 void UEContextInSMSFDataRetrievalApiImpl::get_ue_ctx_in_smsf_data(

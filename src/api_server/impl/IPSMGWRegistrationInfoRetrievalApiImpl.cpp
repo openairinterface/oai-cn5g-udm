@@ -18,9 +18,11 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 IPSMGWRegistrationInfoRetrievalApiImpl::IPSMGWRegistrationInfoRetrievalApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
+    std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+    std::string address)
     : IPSMGWRegistrationInfoRetrievalApi(rtr) {}
 
 void IPSMGWRegistrationInfoRetrievalApiImpl::get_ip_sm_gw_registration(

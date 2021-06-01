@@ -31,21 +31,29 @@
 
 #include "AmfDeregInfo.h"
 #include "ProblemDetails.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class TriggerAMFFor3GPPAccessDeregistrationApiImpl
     : public oai::udm::api::TriggerAMFFor3GPPAccessDeregistrationApi {
  public:
   TriggerAMFFor3GPPAccessDeregistrationApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>);
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~TriggerAMFFor3GPPAccessDeregistrationApiImpl() {}
 
-  void dereg_amf(const std::string& ueId, const AmfDeregInfo& amfDeregInfo,
-                 Pistache::Http::ResponseWriter& response);
+  void dereg_amf(
+      const std::string& ueId, const AmfDeregInfo& amfDeregInfo,
+      Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

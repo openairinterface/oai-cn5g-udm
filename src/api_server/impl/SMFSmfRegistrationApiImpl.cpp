@@ -25,8 +25,11 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
+
 SMFSmfRegistrationApiImpl::SMFSmfRegistrationApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
+    std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+    std::string address)
     : SMFSmfRegistrationApi(rtr) {}
 
 void SMFSmfRegistrationApiImpl::get_smf_registration(
@@ -41,7 +44,7 @@ void SMFSmfRegistrationApiImpl::registration(
     const SmfRegistration& smfRegistration,
     Pistache::Http::ResponseWriter& response) {
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*)&udm_cfg.nudr.addr4)));
+      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nudr.addr4)));
   std::string udr_port = std::to_string(udm_cfg.nudr.port);
   std::string remoteUri;
   std::string Method;
@@ -61,8 +64,8 @@ void SMFSmfRegistrationApiImpl::registration(
   nlohmann::json smfRegistration_j;
   to_json(smfRegistration_j, smfRegistration);
   long http_code;
-  http_code = Curl::curl_http_client(remoteUri, Method,
-                                     smfRegistration_j.dump(), Response);
+  http_code = Curl::curl_http_client(
+      remoteUri, Method, smfRegistration_j.dump(), Response);
 
   nlohmann::json response_data = {};
   try {
@@ -83,8 +86,8 @@ void SMFSmfRegistrationApiImpl::registration(
     return;
   }
   Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
-  response.send(static_cast<Pistache::Http::Code>(http_code),
-                smfRegistration_j.dump());
+  response.send(
+      static_cast<Pistache::Http::Code>(http_code), smfRegistration_j.dump());
 }
 
 }  // namespace api

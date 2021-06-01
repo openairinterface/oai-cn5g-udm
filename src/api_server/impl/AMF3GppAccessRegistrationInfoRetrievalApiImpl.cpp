@@ -21,7 +21,8 @@ using namespace oai::udm::model;
 
 AMF3GppAccessRegistrationInfoRetrievalApiImpl::
     AMF3GppAccessRegistrationInfoRetrievalApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
+        std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+        std::string address)
     : AMF3GppAccessRegistrationInfoRetrievalApi(rtr) {}
 
 void AMF3GppAccessRegistrationInfoRetrievalApiImpl::get3_gpp_registration(

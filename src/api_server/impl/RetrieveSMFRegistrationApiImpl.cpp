@@ -18,8 +18,11 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
+
 RetrieveSMFRegistrationApiImpl::RetrieveSMFRegistrationApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
+    std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+    std::string address)
     : RetrieveSMFRegistrationApi(rtr) {}
 
 void RetrieveSMFRegistrationApiImpl::retrieve_smf_registration(

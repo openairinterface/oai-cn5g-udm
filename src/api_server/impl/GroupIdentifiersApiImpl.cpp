@@ -18,9 +18,11 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 GroupIdentifiersApiImpl::GroupIdentifiersApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
+    std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+    std::string address)
     : GroupIdentifiersApi(rtr) {}
 
 void GroupIdentifiersApiImpl::get_group_identifiers(

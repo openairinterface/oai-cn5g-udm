@@ -31,17 +31,21 @@
 
 #include "ProblemDetails.h"
 #include "SharedData.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class RetrievalOfSharedDataApiImpl
     : public oai::udm::api::RetrievalOfSharedDataApi {
  public:
-  RetrievalOfSharedDataApiImpl(std::shared_ptr<Pistache::Rest::Router>);
+  RetrievalOfSharedDataApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~RetrievalOfSharedDataApiImpl() {}
 
   void get_shared_data(
@@ -50,6 +54,10 @@ class RetrievalOfSharedDataApiImpl
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

@@ -44,7 +44,8 @@ class AMF3GppAccessRegistrationInfoRetrievalApiImpl
     : public oai::udm::api::AMF3GppAccessRegistrationInfoRetrievalApi {
  public:
   AMF3GppAccessRegistrationInfoRetrievalApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>);
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~AMF3GppAccessRegistrationInfoRetrievalApiImpl() {}
 
   void get3_gpp_registration(

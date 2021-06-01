@@ -31,20 +31,24 @@
 #include "ProblemDetails.h"
 #include "RegistrationDataSetName.h"
 #include "RegistrationDataSets.h"
-//#include "Set.h"
 #include <string>
 
 #include "Snssai.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
+
 class UECMRegistrationInfoRetrievalApiImpl
     : public oai::udm::api::UECMRegistrationInfoRetrievalApi {
  public:
-  UECMRegistrationInfoRetrievalApiImpl(std::shared_ptr<Pistache::Rest::Router>);
+  UECMRegistrationInfoRetrievalApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~UECMRegistrationInfoRetrievalApiImpl() {}
 
   // void get_registrations(const std::string &ueId, const

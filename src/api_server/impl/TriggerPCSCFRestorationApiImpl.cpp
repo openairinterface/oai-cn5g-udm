@@ -19,7 +19,8 @@ namespace api {
 
 using namespace oai::udm::model;
 TriggerPCSCFRestorationApiImpl::TriggerPCSCFRestorationApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
+    std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+    std::string address)
     : TriggerPCSCFRestorationApi(rtr) {}
 
 void TriggerPCSCFRestorationApiImpl::trigger_pcscf_restoration(

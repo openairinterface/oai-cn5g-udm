@@ -27,7 +27,8 @@ namespace api {
 using namespace oai::udm::model;
 
 AMFRegistrationFor3GPPAccessApiImpl::AMFRegistrationFor3GPPAccessApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
+    std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
+    std::string address)
     : AMFRegistrationFor3GPPAccessApi(rtr) {}
 
 void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(
@@ -35,7 +36,7 @@ void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(
     const Amf3GppAccessRegistration& amf3GppAccessRegistration,
     Pistache::Http::ResponseWriter& response) {
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*)&udm_cfg.nudr.addr4)));
+      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nudr.addr4)));
   std::string udr_port = std::to_string(udm_cfg.nudr.port);
   std::string remoteUri;
   std::string Method;
@@ -76,8 +77,9 @@ void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(
     return;
   }
   Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
-  response.send(static_cast<Pistache::Http::Code>(http_code),
-                amf3GppAccessRegistration_j.dump());
+  response.send(
+      static_cast<Pistache::Http::Code>(http_code),
+      amf3GppAccessRegistration_j.dump());
 }
 
 }  // namespace api

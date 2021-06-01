@@ -31,17 +31,21 @@
 
 #include "ProblemDetails.h"
 #include "SmsfRegistration.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
+
 class SMSF3GPPAccessRegistrationInfoRetrievalApiImpl
     : public oai::udm::api::SMSF3GPPAccessRegistrationInfoRetrievalApi {
  public:
   SMSF3GPPAccessRegistrationInfoRetrievalApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>);
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~SMSF3GPPAccessRegistrationInfoRetrievalApiImpl() {}
 
   void get3_gpp_smsf_registration(

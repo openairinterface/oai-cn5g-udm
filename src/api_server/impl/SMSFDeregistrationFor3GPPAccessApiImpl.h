@@ -30,22 +30,30 @@
 #include <string>
 
 #include "ProblemDetails.h"
+#include "udm_app.hpp"
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
+
 class SMSFDeregistrationFor3GPPAccessApiImpl
     : public oai::udm::api::SMSFDeregistrationFor3GPPAccessApi {
  public:
   SMSFDeregistrationFor3GPPAccessApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>);
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~SMSFDeregistrationFor3GPPAccessApiImpl() {}
 
   void _3_gpp_smsf_deregistration(
       const std::string& ueId, const Pistache::Optional<std::string>& smsfSetId,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace api

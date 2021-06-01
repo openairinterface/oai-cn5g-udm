@@ -65,15 +65,12 @@ void setUpUnixSignals(std::vector<int> quitSignals) {
 
   struct sigaction sa;
   sa.sa_handler = sigHandler;
-  sa.sa_mask = blocking_mask;
-  sa.sa_flags = 0;
+  sa.sa_mask    = blocking_mask;
+  sa.sa_flags   = 0;
 
   for (auto sig : quitSignals) sigaction(sig, &sa, nullptr);
 }
 #endif
-
-// using namespace oai::udm_server::api;
-// using namespace oai::udm::app;
 
 using namespace oai::udm::api;
 using namespace config;
@@ -85,12 +82,15 @@ void UDMApiServer::init(size_t thr) {
   opts.maxRequestSize(PISTACHE_SERVER_MAX_PAYLOAD);
   m_httpEndpoint->init(opts);
 
-  // m_authenticationResultDeletionApiImpl->init();
-  // m_defaultApiImpl->init();
+  m_confirmAuthApiImpl->init();
+  m_deleteAuthApiImpl->init();
+  m_generateAuthDataApiImpl->init();
 }
 void UDMApiServer::start() {
   Logger::udm_server().info("HTTP1 server started");
   m_httpEndpoint->setHandler(m_router->handler());
   m_httpEndpoint->serve();
 }
-void UDMApiServer::shutdown() { m_httpEndpoint->shutdown(); }
+void UDMApiServer::shutdown() {
+  m_httpEndpoint->shutdown();
+}
