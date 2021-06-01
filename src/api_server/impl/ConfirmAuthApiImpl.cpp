@@ -53,8 +53,8 @@ void ConfirmAuthApiImpl::confirm_auth(
   Logger::udm_ueau().info("\n\nEntering confirm_auth()");
 
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*)&udm_cfg.nudr.addr4)));
-  std::string udr_port = std::to_string(udm_cfg.nudr.port);
+      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
+  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
   std::string remoteUri;
   std::string Method;
   std::string msgBody;
@@ -126,7 +126,7 @@ void ConfirmAuthApiImpl::confirm_auth(
   authEventId = hash_value;  // Represents the authEvent Id per UE per serving
                              // network assigned by the UDM during
                              // ResultConfirmation service operation.
-  Location = std::string(inet_ntoa(*((struct in_addr*)&udm_cfg.sbi.addr4))) +
+  Location = std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.sbi.addr4))) +
              ":" + std::to_string(udm_cfg.sbi.port) + "/nudm-ueau/v1/" + supi +
              "/auth-events/" + authEventId;
 

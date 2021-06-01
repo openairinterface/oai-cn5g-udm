@@ -39,7 +39,6 @@
 #include <vector>
 
 #include "udm_config.hpp"
-//#include "thread_sched.hpp"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -51,48 +50,16 @@
 #define UDM_CONFIG_STRING_UDM_NAME "UDM_NAME"
 
 #define UDM_CONFIG_STRING_INTERFACES "INTERFACES"
-#define UDM_CONFIG_STRING_INTERFACE_SBI_UDM "SBI_UDM"
-#define UDM_CONFIG_STRING_INTERFACE_NUDR "NUDR"
+#define UDM_CONFIG_STRING_INTERFACE_SBI_UDM "SBI"
 #define UDM_CONFIG_STRING_INTERFACE_NAME "INTERFACE_NAME"
 #define UDM_CONFIG_STRING_IPV4_ADDRESS "IPV4_ADDRESS"
 #define UDM_CONFIG_STRING_PORT "PORT"
 #define UDM_CONFIG_STRING_PPID "PPID"
+#define UDM_CONFIG_STRING_API_VERSION "API_VERSION"
 
-// #define UDM_CONFIG_STRING_UDR_INSTANCES_POOL            "UDR_INSTANCES_POOL"
-// #define UDM_CONFIG_STRING_UDR_INSTANCE_ID               "UDR_INSTANCE_ID"
-// #define UDM_CONFIG_STRING_UDR_INSTANCE_PORT             "PORT"
-// #define UDM_CONFIG_STRING_UDR_INSTANCE_VERSION          "VERSION"
-// #define UDM_CONFIG_STRING_UDR_INSTANCE_SELECTED         "SELECTED"
-
-// #define UDM_CONFIG_STRING_STATISTICS_TIMER_INTERVAL
-// "STATISTICS_TIMER_INTERVAL"
-
-// #define UDM_CONFIG_STRING_GUAMI                         "GUAMI"
-// #define UDM_CONFIG_STRING_SERVED_GUAMI_LIST             "SERVED_GUAMI_LIST"
-// #define UDM_CONFIG_STRING_RegionID                      "RegionID"
-// #define UDM_CONFIG_STRING_AMFSetID                      "AMFSetID"
-// #define UDM_CONFIG_STRING_AMFPointer                    "AMFPointer"
-// #define UDM_CONFIG_STRING_RELATIVE_AMF_CAPACITY         "RELATIVE_CAPACITY"
-
-// #define UDM_CONFIG_STRING_TAC                           "TAC"
-// #define UDM_CONFIG_STRING_MCC                           "MCC"
-// #define UDM_CONFIG_STRING_MNC                           "MNC"
-// #define UDM_CONFIG_STRING_PLMN_SUPPORT_LIST             "PLMN_SUPPORT_LIST"
-
-// #define UDM_CONFIG_STRING_SLICE_SUPPORT_LIST            "SLICE_SUPPORT_LIST"
-// #define UDM_CONFIG_STRING_SST                           "SST"
-// #define UDM_CONFIG_STRING_SD                            "SD"
-
-// #define UDM_CONFIG_STRING_CORE_CONFIGURATION            "CORE_CONFIGURATION"
-// #define UDM_CONFIG_STRING_EMERGENCY_SUPPORT             "EMERGENCY_SUPPORT"
-
-// #define UDM_CONFIG_STRING_AUTHENTICATION                "AUTHENTICATION"
-// #define UDM_CONFIG_STRING_AUTH_MYSQL_SERVER             "MYSQL_server"
-// #define UDM_CONFIG_STRING_AUTH_MYSQL_USER               "MYSQL_user"
-// #define UDM_CONFIG_STRING_AUTH_MYSQL_PASS               "MYSQL_pass"
-// #define UDM_CONFIG_STRING_AUTH_MYSQL_DB                 "MYSQL_db"
-// #define UDM_CONFIG_STRING_AUTH_OPERATOR_KEY             "OPERATOR_key"
-// #define UDM_CONFIG_STRING_AUTH_RANDOM                   "RANDOM"
+#define UDM_CONFIG_STRING_UDR "UDR"
+#define UDM_CONFIG_STRING_UDR_IPV4_ADDRESS "IPV4_ADDRESS"
+#define UDM_CONFIG_STRING_UDR_PORT "PORT"
 
 using namespace libconfig;
 
@@ -107,35 +74,6 @@ typedef struct interface_cfg_s {
   unsigned int port;
 } interface_cfg_t;
 
-// typedef struct slice_s {
-//   std::string sST;
-//   std::string sD;
-// } slice_t;
-
-// typedef struct plmn_support_item_s {
-//   std::string mcc;
-//   std::string mnc;
-//   uint32_t tac;
-//   std::vector<slice_t> slice_list;
-// } plmn_item_t;
-
-// typedef struct {
-//   int id;
-//   std::string ipv4;
-//   std::string port;
-//   std::string version;
-//   bool selected;
-// } udr_inst_t;
-
-// typedef struct {
-//   std::string mysql_server;
-//   std::string mysql_user;
-//   std::string mysql_pass;
-//   std::string mysql_db;
-//   std::string operator_key;
-//   std::string random;
-// } auth_conf;
-
 class udm_config {
  public:
   udm_config();
@@ -149,13 +87,12 @@ class udm_config {
   std::string UDM_Name;
 
   interface_cfg_t sbi;
-  interface_cfg_t nudr;
 
-  // unsigned int statistics_interval;
-  // std::vector<plmn_item_t> plmn_list;
-  // std::string is_emergency_support;
-  // auth_conf auth_para;
-  // std::vector<udr_inst_t> udr_pool;
+  struct {
+    struct in_addr ipv4_addr;
+    unsigned int port;
+    std::string api_version;
+  } udr_addr;
 };
 
 }  // namespace config

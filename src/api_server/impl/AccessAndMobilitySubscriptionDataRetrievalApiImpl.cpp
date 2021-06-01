@@ -64,8 +64,8 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
     Pistache::Http::ResponseWriter& response) {
   // 1. populate remote uri for udp request
   std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*)&udm_cfg.nudr.addr4)));
-  std::string udr_port = std::to_string(udm_cfg.nudr.port);
+      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
+  std::string udr_port   = std::to_string(udm_cfg.udr_addr.port);
   std::string remote_uri = udr_ip + ":" + udr_port +
                            "/nudr-dr/v2/subscription-data/" + supi + "/" +
                            plmnId.get().getMcc() + plmnId.get().getMnc() +
@@ -97,8 +97,8 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
     return;
   }
   Logger::udm_sdm().debug("http reponse code %d.\n", http_code);
-  response.send(static_cast<Pistache::Http::Code>(http_code),
-                response_data_json.dump());
+  response.send(
+      static_cast<Pistache::Http::Code>(http_code), response_data_json.dump());
 }
 
 }  // namespace api

@@ -44,7 +44,6 @@
 #include "udm_client.hpp"
 
 using namespace oai::udm::app;
-// using namespace oai::udm::model;
 using namespace std::chrono;
 
 extern udm_app* udm_app_inst;
