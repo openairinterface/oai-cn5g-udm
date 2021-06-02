@@ -52,88 +52,96 @@ void DeleteAuthApiImpl::delete_auth(
     const AuthEvent& authEvent, Pistache::Http::ResponseWriter& response) {
   Logger::udm_ueau().info("\n\nEntering delete_auth()");
 
-  std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
-  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
-  std::string remoteUri;
-  std::string Method;
-  std::string msgBody;
-  std::string Response;
-  std::string Location;
+  nlohmann::json auth_response = {};
+  Pistache::Http::Code code    = {};
+  m_udm_app->handle_delete_auth(
+      supi, authEventId, authEvent, auth_response, code);
+  /*
 
-  nlohmann::json j_ProblemDetails;
-  ProblemDetails m_ProblemDetails;
+    //TODO: to be moved to APP
+    std::string udr_ip =
+        std::string(inet_ntoa(*((struct in_addr*)
+    &udm_cfg.udr_addr.ipv4_addr))); std::string udr_port =
+    std::to_string(udm_cfg.udr_addr.port); std::string remoteUri; std::string
+    Method; std::string msgBody; std::string Response; std::string Location;
 
-  // UDR GET interface ----- get user info--------------------
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-              supi + "/authentication-data/authentication-subscription";
-  Logger::udm_ueau().debug("GET Request:" + remoteUri);
-  Method = "GET";
+    nlohmann::json j_ProblemDetails;
+    ProblemDetails m_ProblemDetails;
 
-  Curl::curl_http_client(remoteUri, Method, "", Response);
-
-  nlohmann::json response_data = {};
-  try {
-    response_data = nlohmann::json::parse(Response.c_str());
-  } catch (nlohmann::json::exception& e) {  // error handling
-    Logger::udm_ueau().info("Could not get Json content from UDR response");
-
-    m_ProblemDetails.setCause("USER_NOT_FOUND");
-    m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
-    to_json(j_ProblemDetails, m_ProblemDetails);
-
-    Logger::udm_ueau().error("User " + supi + " not found in Database");
-    Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
-    response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
-    return;
-  }
-
-  if (!authEvent.isAuthRemovalInd()) {
-    // error handling
-    m_ProblemDetails.setStatus(400);
-    m_ProblemDetails.setDetail("authRemovalInd should be true");
-    to_json(j_ProblemDetails, m_ProblemDetails);
-
-    Logger::udm_ueau().error("authRemovalInd should be true");
-    Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
-    response.send(Pistache::Http::Code::Bad_Request, j_ProblemDetails.dump());
-    return;
-  }
-
-  std::string hash_value = sha256(supi + authEvent.getServingNetworkName());
-  // Logger::udm_ueau().debug("\n\nauthEventId=" +
-  // hash_value.substr(0,hash_value.length()/2));
-  Logger::udm_ueau().debug("authEventId=" + hash_value);
-
-  if (!hash_value.compare(authEventId)) {
-    // UDR DELETE interface ------- delete authentication
-    // status------------------------------
+    // UDR GET interface ----- get user info--------------------
     remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-                supi + "/authentication-data/authentication-status";
-
-    Logger::udm_ueau().debug("DELETE Request:" + remoteUri);
-    Method = "DELETE";
-
-    nlohmann::json j_authEvent;
-    to_json(j_authEvent, authEvent);
+                supi + "/authentication-data/authentication-subscription";
+    Logger::udm_ueau().debug("GET Request:" + remoteUri);
+    Method = "GET";
 
     Curl::curl_http_client(remoteUri, Method, "", Response);
 
-    Logger::udm_ueau().info("Send 204 No_Content response to AUSF");
-    response.send(Pistache::Http::Code::No_Content, "");
-  } else {
-    // error handling
-    // wrong autheventid
-    m_ProblemDetails.setCause("DATA_NOT_FOUND");
-    m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("Wrong authEventId");
-    to_json(j_ProblemDetails, m_ProblemDetails);
+    nlohmann::json response_data = {};
+    try {
+      response_data = nlohmann::json::parse(Response.c_str());
+    } catch (nlohmann::json::exception& e) {  // error handling
+      Logger::udm_ueau().info("Could not get Json content from UDR response");
 
-    Logger::udm_ueau().error("Wrong authEventId, should be = " + hash_value);
-    Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
-    response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
-  }
+      m_ProblemDetails.setCause("USER_NOT_FOUND");
+      m_ProblemDetails.setStatus(404);
+      m_ProblemDetails.setDetail("User " + supi + " not found in Database");
+      to_json(j_ProblemDetails, m_ProblemDetails);
+
+      Logger::udm_ueau().error("User " + supi + " not found in Database");
+      Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
+      response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
+      return;
+    }
+
+    if (!authEvent.isAuthRemovalInd()) {
+      // error handling
+      m_ProblemDetails.setStatus(400);
+      m_ProblemDetails.setDetail("authRemovalInd should be true");
+      to_json(j_ProblemDetails, m_ProblemDetails);
+
+      Logger::udm_ueau().error("authRemovalInd should be true");
+      Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
+      response.send(Pistache::Http::Code::Bad_Request, j_ProblemDetails.dump());
+      return;
+    }
+
+    std::string hash_value = sha256(supi + authEvent.getServingNetworkName());
+    // Logger::udm_ueau().debug("\n\nauthEventId=" +
+    // hash_value.substr(0,hash_value.length()/2));
+    Logger::udm_ueau().debug("authEventId=" + hash_value);
+
+    if (!hash_value.compare(authEventId)) {
+      // UDR DELETE interface ------- delete authentication
+      // status------------------------------
+      remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
+                  supi + "/authentication-data/authentication-status";
+
+      Logger::udm_ueau().debug("DELETE Request:" + remoteUri);
+      Method = "DELETE";
+
+      nlohmann::json j_authEvent;
+      to_json(j_authEvent, authEvent);
+
+      Curl::curl_http_client(remoteUri, Method, "", Response);
+
+      Logger::udm_ueau().info("Send 204 No_Content response to AUSF");
+      response.send(Pistache::Http::Code::No_Content, "");
+    } else {
+      // error handling
+      // wrong autheventid
+      m_ProblemDetails.setCause("DATA_NOT_FOUND");
+      m_ProblemDetails.setStatus(404);
+      m_ProblemDetails.setDetail("Wrong authEventId");
+      to_json(j_ProblemDetails, m_ProblemDetails);
+
+      Logger::udm_ueau().error("Wrong authEventId, should be = " + hash_value);
+      Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
+      response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
+    }
+    */
+
+  Logger::udm_ueau().info("Send response to AUSF");
+  response.send(code, auth_response);
 }
 
 }  // namespace api

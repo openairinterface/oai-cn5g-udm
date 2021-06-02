@@ -60,6 +60,11 @@ class udm_app {
       nlohmann::json& confirm_response, std::string& location,
       Pistache::Http::Code& code);
 
+  void handle_delete_auth(
+      const std::string& supi, const std::string& authEventId,
+      const oai::udm::model::AuthEvent& authEvent,
+      nlohmann::json& auth_response, Pistache::Http::Code& code);
+
  private:
 };
 }  // namespace app
