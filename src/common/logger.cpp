@@ -37,8 +37,8 @@
 Logger* Logger::m_singleton = NULL;
 
 //------------------------------------------------------------------------------
-void Logger::_init(const char* app, const bool log_stdout,
-                   const bool log_rot_file) {
+void Logger::_init(
+    const char* app, const bool log_stdout, const bool log_rot_file) {
   int num_sinks = 0;
   spdlog::set_async_mode(2048);
 #if TRACE_IS_ON
@@ -66,18 +66,19 @@ void Logger::_init(const char* app, const bool log_stdout,
   std::stringstream ss;
   ss << "[%Y-%m-%dT%H:%M:%S.%f] [" << app << "] [%n] [%l] %v";
 
-  m_config = new _Logger("configurations", m_sinks, ss.str().c_str());
-  m_system = new _Logger("system ", m_sinks, ss.str().c_str());
-  m_udm_ueau = new _Logger("udm_ueau", m_sinks, ss.str().c_str());
-  m_udm_uecm = new _Logger("udm_uecm", m_sinks, ss.str().c_str());
-  m_udm_sdm = new _Logger("udm_sdm", m_sinks, ss.str().c_str());
+  m_config     = new _Logger("configurations", m_sinks, ss.str().c_str());
+  m_system     = new _Logger("system ", m_sinks, ss.str().c_str());
+  m_udm_ueau   = new _Logger("udm_ueau", m_sinks, ss.str().c_str());
+  m_udm_uecm   = new _Logger("udm_uecm", m_sinks, ss.str().c_str());
+  m_udm_sdm    = new _Logger("udm_sdm", m_sinks, ss.str().c_str());
   m_udm_server = new _Logger("udm_server", m_sinks, ss.str().c_str());
-  m_udm_app = new _Logger("udm_app", m_sinks, ss.str().c_str());
+  m_udm_app    = new _Logger("udm_app", m_sinks, ss.str().c_str());
 }
 
 //------------------------------------------------------------------------------
-_Logger::_Logger(const char* category, std::vector<spdlog::sink_ptr>& sinks,
-                 const char* pattern)
+_Logger::_Logger(
+    const char* category, std::vector<spdlog::sink_ptr>& sinks,
+    const char* pattern)
     : m_log(category, sinks.begin(), sinks.end()) {
   m_log.set_pattern(pattern);
 #if TRACE_IS_ON

@@ -47,13 +47,16 @@ SubscriptionCreationApi::SubscriptionCreationApi(
   router = rtr;
 }
 
-void SubscriptionCreationApi::init() { setupRoutes(); }
+void SubscriptionCreationApi::init() {
+  setupRoutes();
+}
 
 void SubscriptionCreationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Post(*router, base + "/:supi/sdm-subscriptions",
-               Routes::bind(&SubscriptionCreationApi::subscribe_handler, this));
+  Routes::Post(
+      *router, base + "/:supi/sdm-subscriptions",
+      Routes::bind(&SubscriptionCreationApi::subscribe_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -87,8 +90,8 @@ void SubscriptionCreationApi::subscribe_handler(
 
 void SubscriptionCreationApi::subscription_creation_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

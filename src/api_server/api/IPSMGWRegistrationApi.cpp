@@ -45,14 +45,17 @@ IPSMGWRegistrationApi::IPSMGWRegistrationApi(
   router = rtr;
 }
 
-void IPSMGWRegistrationApi::init() { setupRoutes(); }
+void IPSMGWRegistrationApi::init() {
+  setupRoutes();
+}
 
 void IPSMGWRegistrationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Put(*router, base + "/:ueId/registrations/ip-sm-gw",
-              Routes::bind(
-                  &IPSMGWRegistrationApi::ip_sm_gw_registration_handler, this));
+  Routes::Put(
+      *router, base + "/:ueId/registrations/ip-sm-gw",
+      Routes::bind(
+          &IPSMGWRegistrationApi::ip_sm_gw_registration_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -88,8 +91,8 @@ void IPSMGWRegistrationApi::ip_sm_gw_registration_handler(
 
 void IPSMGWRegistrationApi::ipsmgw_registration_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udm::api

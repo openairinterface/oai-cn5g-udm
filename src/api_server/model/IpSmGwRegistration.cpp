@@ -36,11 +36,11 @@
 namespace oai::udm::model {
 
 IpSmGwRegistration::IpSmGwRegistration() {
-  m_IpSmGwMapAddress = "";
-  m_IpSmGwMapAddressIsSet = false;
+  m_IpSmGwMapAddress           = "";
+  m_IpSmGwMapAddressIsSet      = false;
   m_IpSmGwDiameterAddressIsSet = false;
-  m_UnriIndicator = false;
-  m_UnriIndicatorIsSet = false;
+  m_UnriIndicator              = false;
+  m_UnriIndicatorIsSet         = false;
 }
 
 IpSmGwRegistration::~IpSmGwRegistration() {}
@@ -76,7 +76,7 @@ std::string IpSmGwRegistration::getIpSmGwMapAddress() const {
   return m_IpSmGwMapAddress;
 }
 void IpSmGwRegistration::setIpSmGwMapAddress(std::string const& value) {
-  m_IpSmGwMapAddress = value;
+  m_IpSmGwMapAddress      = value;
   m_IpSmGwMapAddressIsSet = true;
 }
 bool IpSmGwRegistration::ipSmGwMapAddressIsSet() const {
@@ -91,7 +91,7 @@ NetworkNodeDiameterAddress IpSmGwRegistration::getIpSmGwDiameterAddress()
 }
 void IpSmGwRegistration::setIpSmGwDiameterAddress(
     NetworkNodeDiameterAddress const& value) {
-  m_IpSmGwDiameterAddress = value;
+  m_IpSmGwDiameterAddress      = value;
   m_IpSmGwDiameterAddressIsSet = true;
 }
 bool IpSmGwRegistration::ipSmGwDiameterAddressIsSet() const {
@@ -100,14 +100,18 @@ bool IpSmGwRegistration::ipSmGwDiameterAddressIsSet() const {
 void IpSmGwRegistration::unsetIpSmGwDiameterAddress() {
   m_IpSmGwDiameterAddressIsSet = false;
 }
-bool IpSmGwRegistration::isUnriIndicator() const { return m_UnriIndicator; }
+bool IpSmGwRegistration::isUnriIndicator() const {
+  return m_UnriIndicator;
+}
 void IpSmGwRegistration::setUnriIndicator(bool const value) {
-  m_UnriIndicator = value;
+  m_UnriIndicator      = value;
   m_UnriIndicatorIsSet = true;
 }
 bool IpSmGwRegistration::unriIndicatorIsSet() const {
   return m_UnriIndicatorIsSet;
 }
-void IpSmGwRegistration::unsetUnriIndicator() { m_UnriIndicatorIsSet = false; }
+void IpSmGwRegistration::unsetUnriIndicator() {
+  m_UnriIndicatorIsSet = false;
+}
 
 }  // namespace oai::udm::model

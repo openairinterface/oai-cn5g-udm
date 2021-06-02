@@ -65,9 +65,9 @@ using namespace oai::udm::app;
 class UECMRegistrationInfoRetrievalApiImpl
     : public oai::udm::api::UECMRegistrationInfoRetrievalApi {
  public:
-  UECMRegistrationInfoRetrievalApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                       udm_app* udm_app_inst,
-                                       std::string address);
+  UECMRegistrationInfoRetrievalApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~UECMRegistrationInfoRetrievalApiImpl() {}
 
   // void get_registrations(const std::string &ueId, const

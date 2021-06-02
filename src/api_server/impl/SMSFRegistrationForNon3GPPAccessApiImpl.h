@@ -68,9 +68,9 @@ class SMSFRegistrationForNon3GPPAccessApiImpl
       std::string address);
   ~SMSFRegistrationForNon3GPPAccessApiImpl() {}
 
-  void non3_gpp_smsf_registration(const std::string& ueId,
-                                  const SmsfRegistration& smsfRegistration,
-                                  Pistache::Http::ResponseWriter& response);
+  void non3_gpp_smsf_registration(
+      const std::string& ueId, const SmsfRegistration& smsfRegistration,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

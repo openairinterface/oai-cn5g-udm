@@ -36,37 +36,37 @@
 namespace oai::udm::model {
 
 Amf3GppAccessRegistration::Amf3GppAccessRegistration() {
-  m_AmfInstanceId = "";
-  m_SupportedFeatures = "";
-  m_SupportedFeaturesIsSet = false;
-  m_PurgeFlag = false;
-  m_PurgeFlagIsSet = false;
-  m_Pei = "";
-  m_PeiIsSet = false;
-  m_ImsVoPsIsSet = false;
-  m_DeregCallbackUri = "";
-  m_AmfServiceNameDeregIsSet = false;
-  m_PcscfRestorationCallbackUri = "";
+  m_AmfInstanceId                    = "";
+  m_SupportedFeatures                = "";
+  m_SupportedFeaturesIsSet           = false;
+  m_PurgeFlag                        = false;
+  m_PurgeFlagIsSet                   = false;
+  m_Pei                              = "";
+  m_PeiIsSet                         = false;
+  m_ImsVoPsIsSet                     = false;
+  m_DeregCallbackUri                 = "";
+  m_AmfServiceNameDeregIsSet         = false;
+  m_PcscfRestorationCallbackUri      = "";
   m_PcscfRestorationCallbackUriIsSet = false;
-  m_AmfServiceNamePcscfRestIsSet = false;
-  m_InitialRegistrationInd = false;
-  m_InitialRegistrationIndIsSet = false;
-  m_BackupAmfInfoIsSet = false;
-  m_DrFlag = false;
-  m_DrFlagIsSet = false;
-  m_UrrpIndicator = false;
-  m_UrrpIndicatorIsSet = false;
-  m_AmfEeSubscriptionId = "";
-  m_AmfEeSubscriptionIdIsSet = false;
-  m_EpsInterworkingInfoIsSet = false;
-  m_UeSrvccCapability = false;
-  m_UeSrvccCapabilityIsSet = false;
-  m_RegistrationTime = "";
-  m_RegistrationTimeIsSet = false;
-  m_VgmlcAddressIsSet = false;
-  m_ContextInfoIsSet = false;
-  m_NoEeSubscriptionInd = false;
-  m_NoEeSubscriptionIndIsSet = false;
+  m_AmfServiceNamePcscfRestIsSet     = false;
+  m_InitialRegistrationInd           = false;
+  m_InitialRegistrationIndIsSet      = false;
+  m_BackupAmfInfoIsSet               = false;
+  m_DrFlag                           = false;
+  m_DrFlagIsSet                      = false;
+  m_UrrpIndicator                    = false;
+  m_UrrpIndicatorIsSet               = false;
+  m_AmfEeSubscriptionId              = "";
+  m_AmfEeSubscriptionIdIsSet         = false;
+  m_EpsInterworkingInfoIsSet         = false;
+  m_UeSrvccCapability                = false;
+  m_UeSrvccCapabilityIsSet           = false;
+  m_RegistrationTime                 = "";
+  m_RegistrationTimeIsSet            = false;
+  m_VgmlcAddressIsSet                = false;
+  m_ContextInfoIsSet                 = false;
+  m_NoEeSubscriptionInd              = false;
+  m_NoEeSubscriptionIndIsSet         = false;
 }
 
 Amf3GppAccessRegistration::~Amf3GppAccessRegistration() {}
@@ -76,7 +76,7 @@ void Amf3GppAccessRegistration::validate() {
 }
 
 void to_json(nlohmann::json& j, const Amf3GppAccessRegistration& o) {
-  j = nlohmann::json();
+  j                  = nlohmann::json();
   j["amfInstanceId"] = o.m_AmfInstanceId;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
@@ -200,7 +200,7 @@ std::string Amf3GppAccessRegistration::getSupportedFeatures() const {
   return m_SupportedFeatures;
 }
 void Amf3GppAccessRegistration::setSupportedFeatures(std::string const& value) {
-  m_SupportedFeatures = value;
+  m_SupportedFeatures      = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool Amf3GppAccessRegistration::supportedFeaturesIsSet() const {
@@ -209,29 +209,45 @@ bool Amf3GppAccessRegistration::supportedFeaturesIsSet() const {
 void Amf3GppAccessRegistration::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
-bool Amf3GppAccessRegistration::isPurgeFlag() const { return m_PurgeFlag; }
+bool Amf3GppAccessRegistration::isPurgeFlag() const {
+  return m_PurgeFlag;
+}
 void Amf3GppAccessRegistration::setPurgeFlag(bool const value) {
-  m_PurgeFlag = value;
+  m_PurgeFlag      = value;
   m_PurgeFlagIsSet = true;
 }
 bool Amf3GppAccessRegistration::purgeFlagIsSet() const {
   return m_PurgeFlagIsSet;
 }
-void Amf3GppAccessRegistration::unsetPurgeFlag() { m_PurgeFlagIsSet = false; }
-std::string Amf3GppAccessRegistration::getPei() const { return m_Pei; }
+void Amf3GppAccessRegistration::unsetPurgeFlag() {
+  m_PurgeFlagIsSet = false;
+}
+std::string Amf3GppAccessRegistration::getPei() const {
+  return m_Pei;
+}
 void Amf3GppAccessRegistration::setPei(std::string const& value) {
-  m_Pei = value;
+  m_Pei      = value;
   m_PeiIsSet = true;
 }
-bool Amf3GppAccessRegistration::peiIsSet() const { return m_PeiIsSet; }
-void Amf3GppAccessRegistration::unsetPei() { m_PeiIsSet = false; }
-ImsVoPs Amf3GppAccessRegistration::getImsVoPs() const { return m_ImsVoPs; }
+bool Amf3GppAccessRegistration::peiIsSet() const {
+  return m_PeiIsSet;
+}
+void Amf3GppAccessRegistration::unsetPei() {
+  m_PeiIsSet = false;
+}
+ImsVoPs Amf3GppAccessRegistration::getImsVoPs() const {
+  return m_ImsVoPs;
+}
 void Amf3GppAccessRegistration::setImsVoPs(ImsVoPs const& value) {
-  m_ImsVoPs = value;
+  m_ImsVoPs      = value;
   m_ImsVoPsIsSet = true;
 }
-bool Amf3GppAccessRegistration::imsVoPsIsSet() const { return m_ImsVoPsIsSet; }
-void Amf3GppAccessRegistration::unsetImsVoPs() { m_ImsVoPsIsSet = false; }
+bool Amf3GppAccessRegistration::imsVoPsIsSet() const {
+  return m_ImsVoPsIsSet;
+}
+void Amf3GppAccessRegistration::unsetImsVoPs() {
+  m_ImsVoPsIsSet = false;
+}
 std::string Amf3GppAccessRegistration::getDeregCallbackUri() const {
   return m_DeregCallbackUri;
 }
@@ -243,7 +259,7 @@ ServiceName Amf3GppAccessRegistration::getAmfServiceNameDereg() const {
 }
 void Amf3GppAccessRegistration::setAmfServiceNameDereg(
     ServiceName const& value) {
-  m_AmfServiceNameDereg = value;
+  m_AmfServiceNameDereg      = value;
   m_AmfServiceNameDeregIsSet = true;
 }
 bool Amf3GppAccessRegistration::amfServiceNameDeregIsSet() const {
@@ -257,7 +273,7 @@ std::string Amf3GppAccessRegistration::getPcscfRestorationCallbackUri() const {
 }
 void Amf3GppAccessRegistration::setPcscfRestorationCallbackUri(
     std::string const& value) {
-  m_PcscfRestorationCallbackUri = value;
+  m_PcscfRestorationCallbackUri      = value;
   m_PcscfRestorationCallbackUriIsSet = true;
 }
 bool Amf3GppAccessRegistration::pcscfRestorationCallbackUriIsSet() const {
@@ -271,7 +287,7 @@ ServiceName Amf3GppAccessRegistration::getAmfServiceNamePcscfRest() const {
 }
 void Amf3GppAccessRegistration::setAmfServiceNamePcscfRest(
     ServiceName const& value) {
-  m_AmfServiceNamePcscfRest = value;
+  m_AmfServiceNamePcscfRest      = value;
   m_AmfServiceNamePcscfRestIsSet = true;
 }
 bool Amf3GppAccessRegistration::amfServiceNamePcscfRestIsSet() const {
@@ -284,7 +300,7 @@ bool Amf3GppAccessRegistration::isInitialRegistrationInd() const {
   return m_InitialRegistrationInd;
 }
 void Amf3GppAccessRegistration::setInitialRegistrationInd(bool const value) {
-  m_InitialRegistrationInd = value;
+  m_InitialRegistrationInd      = value;
   m_InitialRegistrationIndIsSet = true;
 }
 bool Amf3GppAccessRegistration::initialRegistrationIndIsSet() const {
@@ -293,7 +309,9 @@ bool Amf3GppAccessRegistration::initialRegistrationIndIsSet() const {
 void Amf3GppAccessRegistration::unsetInitialRegistrationInd() {
   m_InitialRegistrationIndIsSet = false;
 }
-Guami Amf3GppAccessRegistration::getGuami() const { return m_Guami; }
+Guami Amf3GppAccessRegistration::getGuami() const {
+  return m_Guami;
+}
 void Amf3GppAccessRegistration::setGuami(Guami const& value) {
   m_Guami = value;
 }
@@ -302,7 +320,7 @@ std::vector<BackupAmfInfo>& Amf3GppAccessRegistration::getBackupAmfInfo() {
 }
 void Amf3GppAccessRegistration::setBackupAmfInfo(
     std::vector<BackupAmfInfo> const& value) {
-  m_BackupAmfInfo = value;
+  m_BackupAmfInfo      = value;
   m_BackupAmfInfoIsSet = true;
 }
 bool Amf3GppAccessRegistration::backupAmfInfoIsSet() const {
@@ -311,14 +329,22 @@ bool Amf3GppAccessRegistration::backupAmfInfoIsSet() const {
 void Amf3GppAccessRegistration::unsetBackupAmfInfo() {
   m_BackupAmfInfoIsSet = false;
 }
-bool Amf3GppAccessRegistration::isDrFlag() const { return m_DrFlag; }
+bool Amf3GppAccessRegistration::isDrFlag() const {
+  return m_DrFlag;
+}
 void Amf3GppAccessRegistration::setDrFlag(bool const value) {
-  m_DrFlag = value;
+  m_DrFlag      = value;
   m_DrFlagIsSet = true;
 }
-bool Amf3GppAccessRegistration::drFlagIsSet() const { return m_DrFlagIsSet; }
-void Amf3GppAccessRegistration::unsetDrFlag() { m_DrFlagIsSet = false; }
-RatType Amf3GppAccessRegistration::getRatType() const { return m_RatType; }
+bool Amf3GppAccessRegistration::drFlagIsSet() const {
+  return m_DrFlagIsSet;
+}
+void Amf3GppAccessRegistration::unsetDrFlag() {
+  m_DrFlagIsSet = false;
+}
+RatType Amf3GppAccessRegistration::getRatType() const {
+  return m_RatType;
+}
 void Amf3GppAccessRegistration::setRatType(RatType const& value) {
   m_RatType = value;
 }
@@ -326,7 +352,7 @@ bool Amf3GppAccessRegistration::isUrrpIndicator() const {
   return m_UrrpIndicator;
 }
 void Amf3GppAccessRegistration::setUrrpIndicator(bool const value) {
-  m_UrrpIndicator = value;
+  m_UrrpIndicator      = value;
   m_UrrpIndicatorIsSet = true;
 }
 bool Amf3GppAccessRegistration::urrpIndicatorIsSet() const {
@@ -340,7 +366,7 @@ std::string Amf3GppAccessRegistration::getAmfEeSubscriptionId() const {
 }
 void Amf3GppAccessRegistration::setAmfEeSubscriptionId(
     std::string const& value) {
-  m_AmfEeSubscriptionId = value;
+  m_AmfEeSubscriptionId      = value;
   m_AmfEeSubscriptionIdIsSet = true;
 }
 bool Amf3GppAccessRegistration::amfEeSubscriptionIdIsSet() const {
@@ -354,7 +380,7 @@ EpsInterworkingInfo Amf3GppAccessRegistration::getEpsInterworkingInfo() const {
 }
 void Amf3GppAccessRegistration::setEpsInterworkingInfo(
     EpsInterworkingInfo const& value) {
-  m_EpsInterworkingInfo = value;
+  m_EpsInterworkingInfo      = value;
   m_EpsInterworkingInfoIsSet = true;
 }
 bool Amf3GppAccessRegistration::epsInterworkingInfoIsSet() const {
@@ -367,7 +393,7 @@ bool Amf3GppAccessRegistration::isUeSrvccCapability() const {
   return m_UeSrvccCapability;
 }
 void Amf3GppAccessRegistration::setUeSrvccCapability(bool const value) {
-  m_UeSrvccCapability = value;
+  m_UeSrvccCapability      = value;
   m_UeSrvccCapabilityIsSet = true;
 }
 bool Amf3GppAccessRegistration::ueSrvccCapabilityIsSet() const {
@@ -380,7 +406,7 @@ std::string Amf3GppAccessRegistration::getRegistrationTime() const {
   return m_RegistrationTime;
 }
 void Amf3GppAccessRegistration::setRegistrationTime(std::string const& value) {
-  m_RegistrationTime = value;
+  m_RegistrationTime      = value;
   m_RegistrationTimeIsSet = true;
 }
 bool Amf3GppAccessRegistration::registrationTimeIsSet() const {
@@ -393,7 +419,7 @@ VgmlcAddress Amf3GppAccessRegistration::getVgmlcAddress() const {
   return m_VgmlcAddress;
 }
 void Amf3GppAccessRegistration::setVgmlcAddress(VgmlcAddress const& value) {
-  m_VgmlcAddress = value;
+  m_VgmlcAddress      = value;
   m_VgmlcAddressIsSet = true;
 }
 bool Amf3GppAccessRegistration::vgmlcAddressIsSet() const {
@@ -406,7 +432,7 @@ ContextInfo Amf3GppAccessRegistration::getContextInfo() const {
   return m_ContextInfo;
 }
 void Amf3GppAccessRegistration::setContextInfo(ContextInfo const& value) {
-  m_ContextInfo = value;
+  m_ContextInfo      = value;
   m_ContextInfoIsSet = true;
 }
 bool Amf3GppAccessRegistration::contextInfoIsSet() const {
@@ -419,7 +445,7 @@ bool Amf3GppAccessRegistration::isNoEeSubscriptionInd() const {
   return m_NoEeSubscriptionInd;
 }
 void Amf3GppAccessRegistration::setNoEeSubscriptionInd(bool const value) {
-  m_NoEeSubscriptionInd = value;
+  m_NoEeSubscriptionInd      = value;
   m_NoEeSubscriptionIndIsSet = true;
 }
 bool Amf3GppAccessRegistration::noEeSubscriptionIndIsSet() const {

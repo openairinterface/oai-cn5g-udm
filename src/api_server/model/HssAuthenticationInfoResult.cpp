@@ -38,7 +38,7 @@ namespace udm {
 namespace model {
 
 HssAuthenticationInfoResult::HssAuthenticationInfoResult() {
-  m_SupportedFeatures = "";
+  m_SupportedFeatures      = "";
   m_SupportedFeaturesIsSet = false;
 }
 
@@ -68,7 +68,7 @@ std::string HssAuthenticationInfoResult::getSupportedFeatures() const {
 }
 void HssAuthenticationInfoResult::setSupportedFeatures(
     std::string const& value) {
-  m_SupportedFeatures = value;
+  m_SupportedFeatures      = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool HssAuthenticationInfoResult::supportedFeaturesIsSet() const {

@@ -69,8 +69,9 @@ class SessionManagementSubscriptionDataRetrievalApi {
  private:
   void setupRoutes();
 
-  void get_sm_data_handler(const Pistache::Rest::Request& request,
-                           Pistache::Http::ResponseWriter response);
+  void get_sm_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void session_management_subscription_data_retrieval_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -100,10 +101,10 @@ class SessionManagementSubscriptionDataRetrievalApi {
   // &plmnId, const Pistache::Optional<Pistache::Http::Header::Raw>
   // &ifNoneMatch, const Pistache::Optional<Pistache::Http::Header::Raw>
   // &ifModifiedSince, Pistache::Http::ResponseWriter &response) = 0;
-  virtual void get_sm_data(const std::string& supi,
-                           const Pistache::Optional<Snssai>& singleNssai,
-                           const Pistache::Optional<std::string>& dnn,
-                           Pistache::Http::ResponseWriter& response) = 0;
+  virtual void get_sm_data(
+      const std::string& supi, const Pistache::Optional<Snssai>& singleNssai,
+      const Pistache::Optional<std::string>& dnn,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace api

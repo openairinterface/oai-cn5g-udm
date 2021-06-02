@@ -68,10 +68,12 @@ class SMFSmfRegistrationApi {
  private:
   void setupRoutes();
 
-  void get_smf_registration_handler(const Pistache::Rest::Request& request,
-                                    Pistache::Http::ResponseWriter response);
-  void registration_handler(const Pistache::Rest::Request& request,
-                            Pistache::Http::ResponseWriter response);
+  void get_smf_registration_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void registration_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void smf_smf_registration_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -104,10 +106,10 @@ class SMFSmfRegistrationApi {
   /// <param name="ueId">Identifier of the UE</param>
   /// <param name="pduSessionId">Identifier of the PDU session</param>
   /// <param name="smfRegistration"></param>
-  virtual void registration(const std::string& ueId,
-                            const int32_t& pduSessionId,
-                            const SmfRegistration& smfRegistration,
-                            Pistache::Http::ResponseWriter& response) = 0;
+  virtual void registration(
+      const std::string& ueId, const int32_t& pduSessionId,
+      const SmfRegistration& smfRegistration,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace api

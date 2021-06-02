@@ -48,7 +48,9 @@ ProvidingAcknowledgementOfSteeringOfRoamingApi::
   router = rtr;
 }
 
-void ProvidingAcknowledgementOfSteeringOfRoamingApi::init() { setupRoutes(); }
+void ProvidingAcknowledgementOfSteeringOfRoamingApi::init() {
+  setupRoutes();
+}
 
 void ProvidingAcknowledgementOfSteeringOfRoamingApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -94,8 +96,8 @@ void ProvidingAcknowledgementOfSteeringOfRoamingApi::
     providing_acknowledgement_of_steering_of_roaming_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

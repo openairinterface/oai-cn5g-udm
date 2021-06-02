@@ -38,11 +38,11 @@ namespace udm {
 namespace model {
 
 VgmlcAddress::VgmlcAddress() {
-  m_VgmlcAddressIpv4 = "";
+  m_VgmlcAddressIpv4      = "";
   m_VgmlcAddressIpv4IsSet = false;
   m_VgmlcAddressIpv6IsSet = false;
-  m_VgmlcFqdn = "";
-  m_VgmlcFqdnIsSet = false;
+  m_VgmlcFqdn             = "";
+  m_VgmlcFqdnIsSet        = false;
 }
 
 VgmlcAddress::~VgmlcAddress() {}
@@ -77,31 +77,41 @@ std::string VgmlcAddress::getVgmlcAddressIpv4() const {
   return m_VgmlcAddressIpv4;
 }
 void VgmlcAddress::setVgmlcAddressIpv4(std::string const& value) {
-  m_VgmlcAddressIpv4 = value;
+  m_VgmlcAddressIpv4      = value;
   m_VgmlcAddressIpv4IsSet = true;
 }
 bool VgmlcAddress::vgmlcAddressIpv4IsSet() const {
   return m_VgmlcAddressIpv4IsSet;
 }
-void VgmlcAddress::unsetVgmlcAddressIpv4() { m_VgmlcAddressIpv4IsSet = false; }
+void VgmlcAddress::unsetVgmlcAddressIpv4() {
+  m_VgmlcAddressIpv4IsSet = false;
+}
 Ipv6Addr VgmlcAddress::getVgmlcAddressIpv6() const {
   return m_VgmlcAddressIpv6;
 }
 void VgmlcAddress::setVgmlcAddressIpv6(Ipv6Addr const& value) {
-  m_VgmlcAddressIpv6 = value;
+  m_VgmlcAddressIpv6      = value;
   m_VgmlcAddressIpv6IsSet = true;
 }
 bool VgmlcAddress::vgmlcAddressIpv6IsSet() const {
   return m_VgmlcAddressIpv6IsSet;
 }
-void VgmlcAddress::unsetVgmlcAddressIpv6() { m_VgmlcAddressIpv6IsSet = false; }
-std::string VgmlcAddress::getVgmlcFqdn() const { return m_VgmlcFqdn; }
+void VgmlcAddress::unsetVgmlcAddressIpv6() {
+  m_VgmlcAddressIpv6IsSet = false;
+}
+std::string VgmlcAddress::getVgmlcFqdn() const {
+  return m_VgmlcFqdn;
+}
 void VgmlcAddress::setVgmlcFqdn(std::string const& value) {
-  m_VgmlcFqdn = value;
+  m_VgmlcFqdn      = value;
   m_VgmlcFqdnIsSet = true;
 }
-bool VgmlcAddress::vgmlcFqdnIsSet() const { return m_VgmlcFqdnIsSet; }
-void VgmlcAddress::unsetVgmlcFqdn() { m_VgmlcFqdnIsSet = false; }
+bool VgmlcAddress::vgmlcFqdnIsSet() const {
+  return m_VgmlcFqdnIsSet;
+}
+void VgmlcAddress::unsetVgmlcFqdn() {
+  m_VgmlcFqdnIsSet = false;
+}
 
 }  // namespace model
 }  // namespace udm

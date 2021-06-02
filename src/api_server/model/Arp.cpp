@@ -37,7 +37,9 @@ namespace oai {
 namespace udm {
 namespace model {
 
-Arp::Arp() { m_PriorityLevel = 0; }
+Arp::Arp() {
+  m_PriorityLevel = 0;
+}
 
 Arp::~Arp() {}
 
@@ -46,10 +48,10 @@ void Arp::validate() {
 }
 
 void to_json(nlohmann::json& j, const Arp& o) {
-  j = nlohmann::json();
+  j                  = nlohmann::json();
   j["priorityLevel"] = o.m_PriorityLevel;
-  j["preemptCap"] = o.m_PreemptCap;
-  j["preemptVuln"] = o.m_PreemptVuln;
+  j["preemptCap"]    = o.m_PreemptCap;
+  j["preemptVuln"]   = o.m_PreemptVuln;
 }
 
 void from_json(const nlohmann::json& j, Arp& o) {
@@ -58,13 +60,21 @@ void from_json(const nlohmann::json& j, Arp& o) {
   j.at("preemptVuln").get_to(o.m_PreemptVuln);
 }
 
-int32_t Arp::getPriorityLevel() const { return m_PriorityLevel; }
-void Arp::setPriorityLevel(int32_t const value) { m_PriorityLevel = value; }
-PreemptionCapability Arp::getPreemptCap() const { return m_PreemptCap; }
+int32_t Arp::getPriorityLevel() const {
+  return m_PriorityLevel;
+}
+void Arp::setPriorityLevel(int32_t const value) {
+  m_PriorityLevel = value;
+}
+PreemptionCapability Arp::getPreemptCap() const {
+  return m_PreemptCap;
+}
 void Arp::setPreemptCap(PreemptionCapability const& value) {
   m_PreemptCap = value;
 }
-PreemptionVulnerability Arp::getPreemptVuln() const { return m_PreemptVuln; }
+PreemptionVulnerability Arp::getPreemptVuln() const {
+  return m_PreemptVuln;
+}
 void Arp::setPreemptVuln(PreemptionVulnerability const& value) {
   m_PreemptVuln = value;
 }

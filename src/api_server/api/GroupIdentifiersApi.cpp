@@ -47,7 +47,9 @@ GroupIdentifiersApi::GroupIdentifiersApi(
   router = rtr;
 }
 
-void GroupIdentifiersApi::init() { setupRoutes(); }
+void GroupIdentifiersApi::init() {
+  setupRoutes();
+}
 
 void GroupIdentifiersApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -91,12 +93,13 @@ void GroupIdentifiersApi::get_group_identifiers_handler(
   }
 
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_group_identifiers(extGroupId, intGroupId, supportedFeatures,
-                                ifNoneMatch, ifModifiedSince, response);
+    this->get_group_identifiers(
+        extGroupId, intGroupId, supportedFeatures, ifNoneMatch, ifModifiedSince,
+        response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
@@ -110,8 +113,8 @@ void GroupIdentifiersApi::get_group_identifiers_handler(
 
 void GroupIdentifiersApi::group_identifiers_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

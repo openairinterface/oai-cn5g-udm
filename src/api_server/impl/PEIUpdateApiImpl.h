@@ -62,12 +62,14 @@ using namespace oai::udm::app;
 
 class PEIUpdateApiImpl : public oai::udm::api::PEIUpdateApi {
  public:
-  PEIUpdateApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                   udm_app* udm_app_inst, std::string address);
+  PEIUpdateApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~PEIUpdateApiImpl() {}
 
-  void pei_update(const std::string& ueId, const PeiUpdateInfo& peiUpdateInfo,
-                  Pistache::Http::ResponseWriter& response);
+  void pei_update(
+      const std::string& ueId, const PeiUpdateInfo& peiUpdateInfo,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

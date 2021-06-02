@@ -35,7 +35,9 @@
 
 namespace oai::udm::model {
 
-PcscfRestorationNotification::PcscfRestorationNotification() { m_Supi = ""; }
+PcscfRestorationNotification::PcscfRestorationNotification() {
+  m_Supi = "";
+}
 
 PcscfRestorationNotification::~PcscfRestorationNotification() {}
 
@@ -44,7 +46,7 @@ void PcscfRestorationNotification::validate() {
 }
 
 void to_json(nlohmann::json& j, const PcscfRestorationNotification& o) {
-  j = nlohmann::json();
+  j         = nlohmann::json();
   j["supi"] = o.m_Supi;
 }
 
@@ -52,7 +54,9 @@ void from_json(const nlohmann::json& j, PcscfRestorationNotification& o) {
   j.at("supi").get_to(o.m_Supi);
 }
 
-std::string PcscfRestorationNotification::getSupi() const { return m_Supi; }
+std::string PcscfRestorationNotification::getSupi() const {
+  return m_Supi;
+}
 void PcscfRestorationNotification::setSupi(std::string const& value) {
   m_Supi = value;
 }

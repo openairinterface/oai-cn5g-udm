@@ -47,15 +47,19 @@ SubscriptionDeletionForSharedDataApi::SubscriptionDeletionForSharedDataApi(
   router = rtr;
 }
 
-void SubscriptionDeletionForSharedDataApi::init() { setupRoutes(); }
+void SubscriptionDeletionForSharedDataApi::init() {
+  setupRoutes();
+}
 
 void SubscriptionDeletionForSharedDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Delete(*router, base + "/shared-data-subscriptions/:subscriptionId",
-                 Routes::bind(&SubscriptionDeletionForSharedDataApi::
-                                  unsubscribe_for_shared_data_handler,
-                              this));
+  Routes::Delete(
+      *router, base + "/shared-data-subscriptions/:subscriptionId",
+      Routes::bind(
+          &SubscriptionDeletionForSharedDataApi::
+              unsubscribe_for_shared_data_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -87,8 +91,8 @@ void SubscriptionDeletionForSharedDataApi::
     subscription_deletion_for_shared_data_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

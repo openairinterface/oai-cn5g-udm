@@ -77,10 +77,10 @@ class SessionManagementSubscriptionDataRetrievalApiImpl
   // &plmnId, const Pistache::Optional<Pistache::Http::Header::Raw>
   // &ifNoneMatch, const Pistache::Optional<Pistache::Http::Header::Raw>
   // &ifModifiedSince, Pistache::Http::ResponseWriter &response);
-  void get_sm_data(const std::string& supi,
-                   const Pistache::Optional<Snssai>& singleNssai,
-                   const Pistache::Optional<std::string>& dnn,
-                   Pistache::Http::ResponseWriter& response);
+  void get_sm_data(
+      const std::string& supi, const Pistache::Optional<Snssai>& singleNssai,
+      const Pistache::Optional<std::string>& dnn,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

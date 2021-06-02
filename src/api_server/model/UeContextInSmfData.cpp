@@ -38,8 +38,8 @@ namespace udm {
 namespace model {
 
 UeContextInSmfData::UeContextInSmfData() {
-  m_PduSessionsIsSet = false;
-  m_PgwInfoIsSet = false;
+  m_PduSessionsIsSet   = false;
+  m_PgwInfoIsSet       = false;
   m_EmergencyInfoIsSet = false;
 }
 
@@ -74,22 +74,34 @@ void from_json(const nlohmann::json& j, UeContextInSmfData& o) {
 std::map<std::string, PduSession>& UeContextInSmfData::getPduSessions() {
   return m_PduSessions;
 }
-bool UeContextInSmfData::pduSessionsIsSet() const { return m_PduSessionsIsSet; }
-void UeContextInSmfData::unsetPduSessions() { m_PduSessionsIsSet = false; }
-std::vector<PgwInfo>& UeContextInSmfData::getPgwInfo() { return m_PgwInfo; }
-bool UeContextInSmfData::pgwInfoIsSet() const { return m_PgwInfoIsSet; }
-void UeContextInSmfData::unsetPgwInfo() { m_PgwInfoIsSet = false; }
+bool UeContextInSmfData::pduSessionsIsSet() const {
+  return m_PduSessionsIsSet;
+}
+void UeContextInSmfData::unsetPduSessions() {
+  m_PduSessionsIsSet = false;
+}
+std::vector<PgwInfo>& UeContextInSmfData::getPgwInfo() {
+  return m_PgwInfo;
+}
+bool UeContextInSmfData::pgwInfoIsSet() const {
+  return m_PgwInfoIsSet;
+}
+void UeContextInSmfData::unsetPgwInfo() {
+  m_PgwInfoIsSet = false;
+}
 EmergencyInfo UeContextInSmfData::getEmergencyInfo() const {
   return m_EmergencyInfo;
 }
 void UeContextInSmfData::setEmergencyInfo(EmergencyInfo const& value) {
-  m_EmergencyInfo = value;
+  m_EmergencyInfo      = value;
   m_EmergencyInfoIsSet = true;
 }
 bool UeContextInSmfData::emergencyInfoIsSet() const {
   return m_EmergencyInfoIsSet;
 }
-void UeContextInSmfData::unsetEmergencyInfo() { m_EmergencyInfoIsSet = false; }
+void UeContextInSmfData::unsetEmergencyInfo() {
+  m_EmergencyInfoIsSet = false;
+}
 
 }  // namespace model
 }  // namespace udm

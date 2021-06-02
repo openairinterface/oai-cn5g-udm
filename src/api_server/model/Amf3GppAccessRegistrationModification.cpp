@@ -36,16 +36,16 @@
 namespace oai::udm::model {
 
 Amf3GppAccessRegistrationModification::Amf3GppAccessRegistrationModification() {
-  m_PurgeFlag = false;
-  m_PurgeFlagIsSet = false;
-  m_Pei = "";
-  m_PeiIsSet = false;
-  m_ImsVoPsIsSet = false;
-  m_BackupAmfInfoIsSet = false;
+  m_PurgeFlag                = false;
+  m_PurgeFlagIsSet           = false;
+  m_Pei                      = "";
+  m_PeiIsSet                 = false;
+  m_ImsVoPsIsSet             = false;
+  m_BackupAmfInfoIsSet       = false;
   m_EpsInterworkingInfoIsSet = false;
-  m_UeSrvccCapability = false;
-  m_UeSrvccCapabilityIsSet = false;
-  m_NoEeSubscriptionInd = false;
+  m_UeSrvccCapability        = false;
+  m_UeSrvccCapabilityIsSet   = false;
+  m_NoEeSubscriptionInd      = false;
   m_NoEeSubscriptionIndIsSet = false;
 }
 
@@ -56,9 +56,9 @@ void Amf3GppAccessRegistrationModification::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json& j,
-             const Amf3GppAccessRegistrationModification& o) {
-  j = nlohmann::json();
+void to_json(
+    nlohmann::json& j, const Amf3GppAccessRegistrationModification& o) {
+  j          = nlohmann::json();
   j["guami"] = o.m_Guami;
   if (o.purgeFlagIsSet()) j["purgeFlag"] = o.m_PurgeFlag;
   if (o.peiIsSet()) j["pei"] = o.m_Pei;
@@ -73,8 +73,8 @@ void to_json(nlohmann::json& j,
     j["noEeSubscriptionInd"] = o.m_NoEeSubscriptionInd;
 }
 
-void from_json(const nlohmann::json& j,
-               Amf3GppAccessRegistrationModification& o) {
+void from_json(
+    const nlohmann::json& j, Amf3GppAccessRegistrationModification& o) {
   j.at("guami").get_to(o.m_Guami);
   if (j.find("purgeFlag") != j.end()) {
     j.at("purgeFlag").get_to(o.m_PurgeFlag);
@@ -116,7 +116,7 @@ bool Amf3GppAccessRegistrationModification::isPurgeFlag() const {
   return m_PurgeFlag;
 }
 void Amf3GppAccessRegistrationModification::setPurgeFlag(bool const value) {
-  m_PurgeFlag = value;
+  m_PurgeFlag      = value;
   m_PurgeFlagIsSet = true;
 }
 bool Amf3GppAccessRegistrationModification::purgeFlagIsSet() const {
@@ -129,18 +129,20 @@ std::string Amf3GppAccessRegistrationModification::getPei() const {
   return m_Pei;
 }
 void Amf3GppAccessRegistrationModification::setPei(std::string const& value) {
-  m_Pei = value;
+  m_Pei      = value;
   m_PeiIsSet = true;
 }
 bool Amf3GppAccessRegistrationModification::peiIsSet() const {
   return m_PeiIsSet;
 }
-void Amf3GppAccessRegistrationModification::unsetPei() { m_PeiIsSet = false; }
+void Amf3GppAccessRegistrationModification::unsetPei() {
+  m_PeiIsSet = false;
+}
 ImsVoPs Amf3GppAccessRegistrationModification::getImsVoPs() const {
   return m_ImsVoPs;
 }
 void Amf3GppAccessRegistrationModification::setImsVoPs(ImsVoPs const& value) {
-  m_ImsVoPs = value;
+  m_ImsVoPs      = value;
   m_ImsVoPsIsSet = true;
 }
 bool Amf3GppAccessRegistrationModification::imsVoPsIsSet() const {
@@ -155,7 +157,7 @@ Amf3GppAccessRegistrationModification::getBackupAmfInfo() {
 }
 void Amf3GppAccessRegistrationModification::setBackupAmfInfo(
     std::vector<BackupAmfInfo> const& value) {
-  m_BackupAmfInfo = value;
+  m_BackupAmfInfo      = value;
   m_BackupAmfInfoIsSet = true;
 }
 bool Amf3GppAccessRegistrationModification::backupAmfInfoIsSet() const {
@@ -170,7 +172,7 @@ Amf3GppAccessRegistrationModification::getEpsInterworkingInfo() const {
 }
 void Amf3GppAccessRegistrationModification::setEpsInterworkingInfo(
     EpsInterworkingInfo const& value) {
-  m_EpsInterworkingInfo = value;
+  m_EpsInterworkingInfo      = value;
   m_EpsInterworkingInfoIsSet = true;
 }
 bool Amf3GppAccessRegistrationModification::epsInterworkingInfoIsSet() const {
@@ -184,7 +186,7 @@ bool Amf3GppAccessRegistrationModification::isUeSrvccCapability() const {
 }
 void Amf3GppAccessRegistrationModification::setUeSrvccCapability(
     bool const value) {
-  m_UeSrvccCapability = value;
+  m_UeSrvccCapability      = value;
   m_UeSrvccCapabilityIsSet = true;
 }
 bool Amf3GppAccessRegistrationModification::ueSrvccCapabilityIsSet() const {
@@ -198,7 +200,7 @@ bool Amf3GppAccessRegistrationModification::isNoEeSubscriptionInd() const {
 }
 void Amf3GppAccessRegistrationModification::setNoEeSubscriptionInd(
     bool const value) {
-  m_NoEeSubscriptionInd = value;
+  m_NoEeSubscriptionInd      = value;
   m_NoEeSubscriptionIndIsSet = true;
 }
 bool Amf3GppAccessRegistrationModification::noEeSubscriptionIndIsSet() const {

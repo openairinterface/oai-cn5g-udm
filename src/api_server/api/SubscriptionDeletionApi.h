@@ -65,8 +65,9 @@ class SubscriptionDeletionApi {
  private:
   void setupRoutes();
 
-  void unsubscribe_handler(const Pistache::Rest::Request& request,
-                           Pistache::Http::ResponseWriter response);
+  void unsubscribe_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void subscription_deletion_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -81,9 +82,9 @@ class SubscriptionDeletionApi {
   /// </remarks>
   /// <param name="supi">SUPI of the user</param>
   /// <param name="subscriptionId">Id of the SDM Subscription</param>
-  virtual void unsubscribe(const std::string& supi,
-                           const std::string& subscriptionId,
-                           Pistache::Http::ResponseWriter& response) = 0;
+  virtual void unsubscribe(
+      const std::string& supi, const std::string& subscriptionId,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace api

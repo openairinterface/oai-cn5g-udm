@@ -48,7 +48,9 @@ SMSManagementSubscriptionDataRetrievalApi::
   router = rtr;
 }
 
-void SMSManagementSubscriptionDataRetrievalApi::init() { setupRoutes(); }
+void SMSManagementSubscriptionDataRetrievalApi::init() {
+  setupRoutes();
+}
 
 void SMSManagementSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -91,12 +93,13 @@ void SMSManagementSubscriptionDataRetrievalApi::get_sms_mngt_data_handler(
      }
     */
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_sms_mngt_data(supi, supportedFeatures, plmnId, ifNoneMatch,
-                            ifModifiedSince, response);
+    this->get_sms_mngt_data(
+        supi, supportedFeatures, plmnId, ifNoneMatch, ifModifiedSince,
+        response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
@@ -112,8 +115,8 @@ void SMSManagementSubscriptionDataRetrievalApi::
     sms_management_subscription_data_retrieval_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

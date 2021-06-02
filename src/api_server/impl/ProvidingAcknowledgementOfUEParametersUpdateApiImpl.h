@@ -68,8 +68,9 @@ class ProvidingAcknowledgementOfUEParametersUpdateApiImpl
       std::string address);
   ~ProvidingAcknowledgementOfUEParametersUpdateApiImpl() {}
 
-  void upu_ack(const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
-               Pistache::Http::ResponseWriter& response);
+  void upu_ack(
+      const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

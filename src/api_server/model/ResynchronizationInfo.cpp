@@ -49,7 +49,7 @@ void ResynchronizationInfo::validate() {
 }
 
 void to_json(nlohmann::json& j, const ResynchronizationInfo& o) {
-  j = nlohmann::json();
+  j         = nlohmann::json();
   j["rand"] = o.m_Rand;
   j["auts"] = o.m_Auts;
 }
@@ -59,11 +59,15 @@ void from_json(const nlohmann::json& j, ResynchronizationInfo& o) {
   j.at("auts").get_to(o.m_Auts);
 }
 
-std::string ResynchronizationInfo::getRand() const { return m_Rand; }
+std::string ResynchronizationInfo::getRand() const {
+  return m_Rand;
+}
 void ResynchronizationInfo::setRand(std::string const& value) {
   m_Rand = value;
 }
-std::string ResynchronizationInfo::getAuts() const { return m_Auts; }
+std::string ResynchronizationInfo::getAuts() const {
+  return m_Auts;
+}
 void ResynchronizationInfo::setAuts(std::string const& value) {
   m_Auts = value;
 }

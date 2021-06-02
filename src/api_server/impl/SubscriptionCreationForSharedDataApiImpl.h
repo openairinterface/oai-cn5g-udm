@@ -67,8 +67,9 @@ class SubscriptionCreationForSharedDataApiImpl
       std::string address);
   ~SubscriptionCreationForSharedDataApiImpl() {}
 
-  void subscribe_to_shared_data(const SdmSubscription& sdmSubscription,
-                                Pistache::Http::ResponseWriter& response);
+  void subscribe_to_shared_data(
+      const SdmSubscription& sdmSubscription,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

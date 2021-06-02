@@ -62,12 +62,14 @@ using namespace oai::udm::app;
 class TriggerPCSCFRestorationApiImpl
     : public oai::udm::api::TriggerPCSCFRestorationApi {
  public:
-  TriggerPCSCFRestorationApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                 udm_app* udm_app_inst, std::string address);
+  TriggerPCSCFRestorationApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~TriggerPCSCFRestorationApiImpl() {}
 
-  void trigger_pcscf_restoration(const TriggerRequest& triggerRequest,
-                                 Pistache::Http::ResponseWriter& response);
+  void trigger_pcscf_restoration(
+      const TriggerRequest& triggerRequest,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

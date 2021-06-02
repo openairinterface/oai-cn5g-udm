@@ -46,15 +46,17 @@ TriggerAMFFor3GPPAccessDeregistrationApi::
   router = rtr;
 }
 
-void TriggerAMFFor3GPPAccessDeregistrationApi::init() { setupRoutes(); }
+void TriggerAMFFor3GPPAccessDeregistrationApi::init() {
+  setupRoutes();
+}
 
 void TriggerAMFFor3GPPAccessDeregistrationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
       *router, base + "/:ueId/registrations/amf-3gpp-access/dereg-amf",
-      Routes::bind(&TriggerAMFFor3GPPAccessDeregistrationApi::dereg_amf_handler,
-                   this));
+      Routes::bind(
+          &TriggerAMFFor3GPPAccessDeregistrationApi::dereg_amf_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -94,8 +96,8 @@ void TriggerAMFFor3GPPAccessDeregistrationApi::
     trigger_amf_for3_gpp_access_deregistration_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udm::api

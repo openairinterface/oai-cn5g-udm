@@ -38,14 +38,14 @@ namespace udm {
 namespace model {
 
 TraceData::TraceData() {
-  m_TraceRef = "";
-  m_NeTypeList = "";
-  m_EventList = "";
-  m_CollectionEntityIpv4Addr = "";
+  m_TraceRef                      = "";
+  m_NeTypeList                    = "";
+  m_EventList                     = "";
+  m_CollectionEntityIpv4Addr      = "";
   m_CollectionEntityIpv4AddrIsSet = false;
   m_CollectionEntityIpv6AddrIsSet = false;
-  m_InterfaceList = "";
-  m_InterfaceListIsSet = false;
+  m_InterfaceList                 = "";
+  m_InterfaceListIsSet            = false;
 }
 
 TraceData::~TraceData() {}
@@ -55,11 +55,11 @@ void TraceData::validate() {
 }
 
 void to_json(nlohmann::json& j, const TraceData& o) {
-  j = nlohmann::json();
-  j["traceRef"] = o.m_TraceRef;
+  j               = nlohmann::json();
+  j["traceRef"]   = o.m_TraceRef;
   j["traceDepth"] = o.m_TraceDepth;
   j["neTypeList"] = o.m_NeTypeList;
-  j["eventList"] = o.m_EventList;
+  j["eventList"]  = o.m_EventList;
   if (o.collectionEntityIpv4AddrIsSet())
     j["collectionEntityIpv4Addr"] = o.m_CollectionEntityIpv4Addr;
   if (o.collectionEntityIpv6AddrIsSet())
@@ -86,21 +86,35 @@ void from_json(const nlohmann::json& j, TraceData& o) {
   }
 }
 
-std::string TraceData::getTraceRef() const { return m_TraceRef; }
-void TraceData::setTraceRef(std::string const& value) { m_TraceRef = value; }
-TraceDepth TraceData::getTraceDepth() const { return m_TraceDepth; }
-void TraceData::setTraceDepth(TraceDepth const& value) { m_TraceDepth = value; }
-std::string TraceData::getNeTypeList() const { return m_NeTypeList; }
+std::string TraceData::getTraceRef() const {
+  return m_TraceRef;
+}
+void TraceData::setTraceRef(std::string const& value) {
+  m_TraceRef = value;
+}
+TraceDepth TraceData::getTraceDepth() const {
+  return m_TraceDepth;
+}
+void TraceData::setTraceDepth(TraceDepth const& value) {
+  m_TraceDepth = value;
+}
+std::string TraceData::getNeTypeList() const {
+  return m_NeTypeList;
+}
 void TraceData::setNeTypeList(std::string const& value) {
   m_NeTypeList = value;
 }
-std::string TraceData::getEventList() const { return m_EventList; }
-void TraceData::setEventList(std::string const& value) { m_EventList = value; }
+std::string TraceData::getEventList() const {
+  return m_EventList;
+}
+void TraceData::setEventList(std::string const& value) {
+  m_EventList = value;
+}
 std::string TraceData::getCollectionEntityIpv4Addr() const {
   return m_CollectionEntityIpv4Addr;
 }
 void TraceData::setCollectionEntityIpv4Addr(std::string const& value) {
-  m_CollectionEntityIpv4Addr = value;
+  m_CollectionEntityIpv4Addr      = value;
   m_CollectionEntityIpv4AddrIsSet = true;
 }
 bool TraceData::collectionEntityIpv4AddrIsSet() const {
@@ -113,7 +127,7 @@ std::string TraceData::getCollectionEntityIpv6Addr() const {
   return m_CollectionEntityIpv6Addr;
 }
 void TraceData::setCollectionEntityIpv6Addr(std::string const& value) {
-  m_CollectionEntityIpv6Addr = value;
+  m_CollectionEntityIpv6Addr      = value;
   m_CollectionEntityIpv6AddrIsSet = true;
 }
 bool TraceData::collectionEntityIpv6AddrIsSet() const {
@@ -122,13 +136,19 @@ bool TraceData::collectionEntityIpv6AddrIsSet() const {
 void TraceData::unsetCollectionEntityIpv6Addr() {
   m_CollectionEntityIpv6AddrIsSet = false;
 }
-std::string TraceData::getInterfaceList() const { return m_InterfaceList; }
+std::string TraceData::getInterfaceList() const {
+  return m_InterfaceList;
+}
 void TraceData::setInterfaceList(std::string const& value) {
-  m_InterfaceList = value;
+  m_InterfaceList      = value;
   m_InterfaceListIsSet = true;
 }
-bool TraceData::interfaceListIsSet() const { return m_InterfaceListIsSet; }
-void TraceData::unsetInterfaceList() { m_InterfaceListIsSet = false; }
+bool TraceData::interfaceListIsSet() const {
+  return m_InterfaceListIsSet;
+}
+void TraceData::unsetInterfaceList() {
+  m_InterfaceListIsSet = false;
+}
 
 }  // namespace model
 }  // namespace udm

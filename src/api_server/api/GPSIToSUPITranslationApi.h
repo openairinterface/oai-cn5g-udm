@@ -66,8 +66,9 @@ class GPSIToSUPITranslationApi {
  private:
   void setupRoutes();
 
-  void get_supi_handler(const Pistache::Rest::Request& request,
-                        Pistache::Http::ResponseWriter response);
+  void get_supi_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void gpsi_to_supi_translation_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

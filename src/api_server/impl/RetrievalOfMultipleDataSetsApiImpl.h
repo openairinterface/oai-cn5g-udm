@@ -64,9 +64,9 @@ using namespace oai::udm::app;
 class RetrievalOfMultipleDataSetsApiImpl
     : public oai::udm::api::RetrievalOfMultipleDataSetsApi {
  public:
-  RetrievalOfMultipleDataSetsApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                     udm_app* udm_app_inst,
-                                     std::string address);
+  RetrievalOfMultipleDataSetsApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~RetrievalOfMultipleDataSetsApiImpl() {}
 
   void get_data_sets(

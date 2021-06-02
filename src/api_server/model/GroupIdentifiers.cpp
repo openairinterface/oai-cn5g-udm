@@ -38,9 +38,9 @@ namespace udm {
 namespace model {
 
 GroupIdentifiers::GroupIdentifiers() {
-  m_ExtGroupId = "";
+  m_ExtGroupId      = "";
   m_ExtGroupIdIsSet = false;
-  m_IntGroupId = "";
+  m_IntGroupId      = "";
   m_IntGroupIdIsSet = false;
 }
 
@@ -67,20 +67,32 @@ void from_json(const nlohmann::json& j, GroupIdentifiers& o) {
   }
 }
 
-std::string GroupIdentifiers::getExtGroupId() const { return m_ExtGroupId; }
+std::string GroupIdentifiers::getExtGroupId() const {
+  return m_ExtGroupId;
+}
 void GroupIdentifiers::setExtGroupId(std::string const& value) {
-  m_ExtGroupId = value;
+  m_ExtGroupId      = value;
   m_ExtGroupIdIsSet = true;
 }
-bool GroupIdentifiers::extGroupIdIsSet() const { return m_ExtGroupIdIsSet; }
-void GroupIdentifiers::unsetExtGroupId() { m_ExtGroupIdIsSet = false; }
-std::string GroupIdentifiers::getIntGroupId() const { return m_IntGroupId; }
+bool GroupIdentifiers::extGroupIdIsSet() const {
+  return m_ExtGroupIdIsSet;
+}
+void GroupIdentifiers::unsetExtGroupId() {
+  m_ExtGroupIdIsSet = false;
+}
+std::string GroupIdentifiers::getIntGroupId() const {
+  return m_IntGroupId;
+}
 void GroupIdentifiers::setIntGroupId(std::string const& value) {
-  m_IntGroupId = value;
+  m_IntGroupId      = value;
   m_IntGroupIdIsSet = true;
 }
-bool GroupIdentifiers::intGroupIdIsSet() const { return m_IntGroupIdIsSet; }
-void GroupIdentifiers::unsetIntGroupId() { m_IntGroupIdIsSet = false; }
+bool GroupIdentifiers::intGroupIdIsSet() const {
+  return m_IntGroupIdIsSet;
+}
+void GroupIdentifiers::unsetIntGroupId() {
+  m_IntGroupIdIsSet = false;
+}
 
 }  // namespace model
 }  // namespace udm

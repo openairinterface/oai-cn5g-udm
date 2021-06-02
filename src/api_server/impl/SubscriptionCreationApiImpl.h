@@ -63,13 +63,14 @@ using namespace oai::udm::app;
 class SubscriptionCreationApiImpl
     : public oai::udm::api::SubscriptionCreationApi {
  public:
-  SubscriptionCreationApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                              udm_app* udm_app_inst, std::string address);
+  SubscriptionCreationApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~SubscriptionCreationApiImpl() {}
 
-  void subscribe(const std::string& supi,
-                 const SdmSubscription& sdmSubscription,
-                 Pistache::Http::ResponseWriter& response);
+  void subscribe(
+      const std::string& supi, const SdmSubscription& sdmSubscription,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

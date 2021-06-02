@@ -35,7 +35,9 @@
 
 namespace oai::udm::model {
 
-EpsInterworkingInfo::EpsInterworkingInfo() { m_EpsIwkPgwsIsSet = false; }
+EpsInterworkingInfo::EpsInterworkingInfo() {
+  m_EpsIwkPgwsIsSet = false;
+}
 
 EpsInterworkingInfo::~EpsInterworkingInfo() {}
 
@@ -61,10 +63,14 @@ std::map<std::string, EpsIwkPgw>& EpsInterworkingInfo::getEpsIwkPgws() {
 }
 void EpsInterworkingInfo::setEpsIwkPgws(
     std::map<std::string, EpsIwkPgw> const& value) {
-  m_EpsIwkPgws = value;
+  m_EpsIwkPgws      = value;
   m_EpsIwkPgwsIsSet = true;
 }
-bool EpsInterworkingInfo::epsIwkPgwsIsSet() const { return m_EpsIwkPgwsIsSet; }
-void EpsInterworkingInfo::unsetEpsIwkPgws() { m_EpsIwkPgwsIsSet = false; }
+bool EpsInterworkingInfo::epsIwkPgwsIsSet() const {
+  return m_EpsIwkPgwsIsSet;
+}
+void EpsInterworkingInfo::unsetEpsIwkPgws() {
+  m_EpsIwkPgwsIsSet = false;
+}
 
 }  // namespace oai::udm::model

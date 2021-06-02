@@ -53,9 +53,13 @@ std::string toStringValue(const bool& value) {
   return value ? std::string("true") : std::string("false");
 }
 
-std::string toStringValue(const float& value) { return std::to_string(value); }
+std::string toStringValue(const float& value) {
+  return std::to_string(value);
+}
 
-std::string toStringValue(const double& value) { return std::to_string(value); }
+std::string toStringValue(const double& value) {
+  return std::to_string(value);
+}
 
 bool fromStringValue(const std::string& inStr, std::string& value) {
   value = std::string(inStr);
@@ -81,9 +85,9 @@ bool fromStringValue(const std::string& inStr, int64_t& value) {
 }
 
 bool fromStringValue(const std::string& inStr, bool& value) {
-  bool result = true;
-  inStr == "true" ? value = true
-                  : inStr == "false" ? value = false : result = false;
+  bool result                                = true;
+  inStr == "true" ? value                    = true :
+                    inStr == "false" ? value = false : result = false;
   return result;
 }
 

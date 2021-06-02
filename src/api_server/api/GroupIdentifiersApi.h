@@ -66,8 +66,9 @@ class GroupIdentifiersApi {
  private:
   void setupRoutes();
 
-  void get_group_identifiers_handler(const Pistache::Rest::Request& request,
-                                     Pistache::Http::ResponseWriter response);
+  void get_group_identifiers_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void group_identifiers_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

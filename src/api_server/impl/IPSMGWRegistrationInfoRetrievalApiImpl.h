@@ -68,8 +68,8 @@ class IPSMGWRegistrationInfoRetrievalApiImpl
       std::string address);
   ~IPSMGWRegistrationInfoRetrievalApiImpl() {}
 
-  void get_ip_sm_gw_registration(const std::string& ueId,
-                                 Pistache::Http::ResponseWriter& response);
+  void get_ip_sm_gw_registration(
+      const std::string& ueId, Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

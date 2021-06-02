@@ -80,15 +80,15 @@ class UDMApiServer {
  public:
   UDMApiServer(Pistache::Address address, udm_app* udm_app_inst)
       : m_httpEndpoint(std::make_shared<Pistache::Http::Endpoint>(address)) {
-    m_router = std::make_shared<Pistache::Rest::Router>();
+    m_router  = std::make_shared<Pistache::Rest::Router>();
     m_address = address.host() + ":" + (address.port()).toString();
 
     m_accessAndMobilitySubscriptionDataRetrievalApiImpl =
         std::make_shared<AccessAndMobilitySubscriptionDataRetrievalApiImpl>(
             m_router, udm_app_inst, m_address);
     m_gPSIToSUPITranslationApiImpl =
-        std::make_shared<GPSIToSUPITranslationApiImpl>(m_router, udm_app_inst,
-                                                       m_address);
+        std::make_shared<GPSIToSUPITranslationApiImpl>(
+            m_router, udm_app_inst, m_address);
     m_groupIdentifiersApiImpl = std::make_shared<GroupIdentifiersApiImpl>(
         m_router, udm_app_inst, m_address);
     m_providingAcknowledgementOfSteeringOfRoamingApiImpl =
@@ -101,8 +101,8 @@ class UDMApiServer {
         std::make_shared<RetrievalOfMultipleDataSetsApiImpl>(
             m_router, udm_app_inst, m_address);
     m_retrievalOfSharedDataApiImpl =
-        std::make_shared<RetrievalOfSharedDataApiImpl>(m_router, udm_app_inst,
-                                                       m_address);
+        std::make_shared<RetrievalOfSharedDataApiImpl>(
+            m_router, udm_app_inst, m_address);
     m_sMFSelectionSubscriptionDataRetrievalApiImpl =
         std::make_shared<SMFSelectionSubscriptionDataRetrievalApiImpl>(
             m_router, udm_app_inst, m_address);
@@ -119,14 +119,14 @@ class UDMApiServer {
         std::make_shared<SliceSelectionSubscriptionDataRetrievalApiImpl>(
             m_router, udm_app_inst, m_address);
     m_subscriptionCreationApiImpl =
-        std::make_shared<SubscriptionCreationApiImpl>(m_router, udm_app_inst,
-                                                      m_address);
+        std::make_shared<SubscriptionCreationApiImpl>(
+            m_router, udm_app_inst, m_address);
     m_subscriptionCreationForSharedDataApiImpl =
         std::make_shared<SubscriptionCreationForSharedDataApiImpl>(
             m_router, udm_app_inst, m_address);
     m_subscriptionDeletionApiImpl =
-        std::make_shared<SubscriptionDeletionApiImpl>(m_router, udm_app_inst,
-                                                      m_address);
+        std::make_shared<SubscriptionDeletionApiImpl>(
+            m_router, udm_app_inst, m_address);
     m_subscriptionDeletionForSharedDataApiImpl =
         std::make_shared<SubscriptionDeletionForSharedDataApiImpl>(
             m_router, udm_app_inst, m_address);

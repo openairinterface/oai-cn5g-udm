@@ -60,13 +60,15 @@ using namespace oai::udm::app;
 
 class SMFDeregistrationApiImpl : public oai::udm::api::SMFDeregistrationApi {
  public:
-  SMFDeregistrationApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                           udm_app* udm_app_inst, std::string address);
+  SMFDeregistrationApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~SMFDeregistrationApiImpl() {}
 
-  void smf_deregistration(const std::string& ueId, const int32_t& pduSessionId,
-                          const Pistache::Optional<std::string>& smfSetId,
-                          Pistache::Http::ResponseWriter& response);
+  void smf_deregistration(
+      const std::string& ueId, const int32_t& pduSessionId,
+      const Pistache::Optional<std::string>& smfSetId,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

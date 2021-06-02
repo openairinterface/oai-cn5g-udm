@@ -64,16 +64,19 @@ using namespace oai::udm::app;
 class SubscriptionModificationApiImpl
     : public oai::udm::api::SubscriptionModificationApi {
  public:
-  SubscriptionModificationApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                  udm_app* udm_app_inst, std::string address);
+  SubscriptionModificationApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~SubscriptionModificationApiImpl() {}
 
-  void modify(const std::string& supi, const std::string& subscriptionId,
-              const SdmSubsModification& sdmSubsModification,
-              Pistache::Http::ResponseWriter& response);
-  void modify_shared_data_subs(const std::string& subscriptionId,
-                               const SdmSubsModification& sdmSubsModification,
-                               Pistache::Http::ResponseWriter& response);
+  void modify(
+      const std::string& supi, const std::string& subscriptionId,
+      const SdmSubsModification& sdmSubsModification,
+      Pistache::Http::ResponseWriter& response);
+  void modify_shared_data_subs(
+      const std::string& subscriptionId,
+      const SdmSubsModification& sdmSubsModification,
+      Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace api

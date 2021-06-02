@@ -96,10 +96,10 @@ class AmfNon3GppAccessRegistrationModification {
   bool backupAmfInfoIsSet() const;
   void unsetBackupAmfInfo();
 
-  friend void to_json(nlohmann::json& j,
-                      const AmfNon3GppAccessRegistrationModification& o);
-  friend void from_json(const nlohmann::json& j,
-                        AmfNon3GppAccessRegistrationModification& o);
+  friend void to_json(
+      nlohmann::json& j, const AmfNon3GppAccessRegistrationModification& o);
+  friend void from_json(
+      const nlohmann::json& j, AmfNon3GppAccessRegistrationModification& o);
 
  protected:
   Guami m_Guami;

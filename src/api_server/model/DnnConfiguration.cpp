@@ -38,20 +38,20 @@ namespace udm {
 namespace model {
 
 DnnConfiguration::DnnConfiguration() {
-  m_IwkEpsInd = false;
-  m_IwkEpsIndIsSet = false;
-  m__5gQosProfileIsSet = false;
-  m_SessionAmbrIsSet = false;
-  m__3gppChargingCharacteristics = "";
+  m_IwkEpsInd                         = false;
+  m_IwkEpsIndIsSet                    = false;
+  m__5gQosProfileIsSet                = false;
+  m_SessionAmbrIsSet                  = false;
+  m__3gppChargingCharacteristics      = "";
   m__3gppChargingCharacteristicsIsSet = false;
-  m_StaticIpAddressIsSet = false;
-  m_UpSecurityIsSet = false;
-  m_PduSessionContinuityIndIsSet = false;
-  m_InvokeNefSelection = false;
-  m_InvokeNefSelectionIsSet = false;
-  m_NiddNefId = "";
-  m_NiddNefIdIsSet = false;
-  m_NiddInfoIsSet = false;
+  m_StaticIpAddressIsSet              = false;
+  m_UpSecurityIsSet                   = false;
+  m_PduSessionContinuityIndIsSet      = false;
+  m_InvokeNefSelection                = false;
+  m_InvokeNefSelectionIsSet           = false;
+  m_NiddNefId                         = "";
+  m_NiddNefIdIsSet                    = false;
+  m_NiddInfoIsSet                     = false;
 }
 
 DnnConfiguration::~DnnConfiguration() {}
@@ -61,9 +61,9 @@ void DnnConfiguration::validate() {
 }
 
 void to_json(nlohmann::json& j, const DnnConfiguration& o) {
-  j = nlohmann::json();
+  j                    = nlohmann::json();
   j["pduSessionTypes"] = o.m_PduSessionTypes;
-  j["sscModes"] = o.m_SscModes;
+  j["sscModes"]        = o.m_SscModes;
   if (o.iwkEpsIndIsSet()) j["iwkEpsInd"] = o.m_IwkEpsInd;
   if (o._5gQosProfileIsSet()) j["5gQosProfile"] = o.m__5gQosProfile;
   if (o.sessionAmbrIsSet()) j["sessionAmbr"] = o.m_SessionAmbr;
@@ -131,41 +131,57 @@ PduSessionTypes DnnConfiguration::getPduSessionTypes() const {
 void DnnConfiguration::setPduSessionTypes(PduSessionTypes const& value) {
   m_PduSessionTypes = value;
 }
-SscModes DnnConfiguration::getSscModes() const { return m_SscModes; }
+SscModes DnnConfiguration::getSscModes() const {
+  return m_SscModes;
+}
 void DnnConfiguration::setSscModes(SscModes const& value) {
   m_SscModes = value;
 }
-bool DnnConfiguration::isIwkEpsInd() const { return m_IwkEpsInd; }
+bool DnnConfiguration::isIwkEpsInd() const {
+  return m_IwkEpsInd;
+}
 void DnnConfiguration::setIwkEpsInd(bool const value) {
-  m_IwkEpsInd = value;
+  m_IwkEpsInd      = value;
   m_IwkEpsIndIsSet = true;
 }
-bool DnnConfiguration::iwkEpsIndIsSet() const { return m_IwkEpsIndIsSet; }
-void DnnConfiguration::unsetIwkEpsInd() { m_IwkEpsIndIsSet = false; }
+bool DnnConfiguration::iwkEpsIndIsSet() const {
+  return m_IwkEpsIndIsSet;
+}
+void DnnConfiguration::unsetIwkEpsInd() {
+  m_IwkEpsIndIsSet = false;
+}
 SubscribedDefaultQos DnnConfiguration::get5gQosProfile() const {
   return m__5gQosProfile;
 }
 void DnnConfiguration::set5gQosProfile(SubscribedDefaultQos const& value) {
-  m__5gQosProfile = value;
+  m__5gQosProfile      = value;
   m__5gQosProfileIsSet = true;
 }
 bool DnnConfiguration::_5gQosProfileIsSet() const {
   return m__5gQosProfileIsSet;
 }
-void DnnConfiguration::unset_5gQosProfile() { m__5gQosProfileIsSet = false; }
-Ambr DnnConfiguration::getSessionAmbr() const { return m_SessionAmbr; }
+void DnnConfiguration::unset_5gQosProfile() {
+  m__5gQosProfileIsSet = false;
+}
+Ambr DnnConfiguration::getSessionAmbr() const {
+  return m_SessionAmbr;
+}
 void DnnConfiguration::setSessionAmbr(Ambr const& value) {
-  m_SessionAmbr = value;
+  m_SessionAmbr      = value;
   m_SessionAmbrIsSet = true;
 }
-bool DnnConfiguration::sessionAmbrIsSet() const { return m_SessionAmbrIsSet; }
-void DnnConfiguration::unsetSessionAmbr() { m_SessionAmbrIsSet = false; }
+bool DnnConfiguration::sessionAmbrIsSet() const {
+  return m_SessionAmbrIsSet;
+}
+void DnnConfiguration::unsetSessionAmbr() {
+  m_SessionAmbrIsSet = false;
+}
 std::string DnnConfiguration::get3gppChargingCharacteristics() const {
   return m__3gppChargingCharacteristics;
 }
 void DnnConfiguration::set3gppChargingCharacteristics(
     std::string const& value) {
-  m__3gppChargingCharacteristics = value;
+  m__3gppChargingCharacteristics      = value;
   m__3gppChargingCharacteristicsIsSet = true;
 }
 bool DnnConfiguration::_3gppChargingCharacteristicsIsSet() const {
@@ -183,19 +199,25 @@ bool DnnConfiguration::staticIpAddressIsSet() const {
 void DnnConfiguration::unsetStaticIpAddress() {
   m_StaticIpAddressIsSet = false;
 }
-UpSecurity DnnConfiguration::getUpSecurity() const { return m_UpSecurity; }
+UpSecurity DnnConfiguration::getUpSecurity() const {
+  return m_UpSecurity;
+}
 void DnnConfiguration::setUpSecurity(UpSecurity const& value) {
-  m_UpSecurity = value;
+  m_UpSecurity      = value;
   m_UpSecurityIsSet = true;
 }
-bool DnnConfiguration::upSecurityIsSet() const { return m_UpSecurityIsSet; }
-void DnnConfiguration::unsetUpSecurity() { m_UpSecurityIsSet = false; }
+bool DnnConfiguration::upSecurityIsSet() const {
+  return m_UpSecurityIsSet;
+}
+void DnnConfiguration::unsetUpSecurity() {
+  m_UpSecurityIsSet = false;
+}
 PduSessionContinuityInd DnnConfiguration::getPduSessionContinuityInd() const {
   return m_PduSessionContinuityInd;
 }
 void DnnConfiguration::setPduSessionContinuityInd(
     PduSessionContinuityInd const& value) {
-  m_PduSessionContinuityInd = value;
+  m_PduSessionContinuityInd      = value;
   m_PduSessionContinuityIndIsSet = true;
 }
 bool DnnConfiguration::pduSessionContinuityIndIsSet() const {
@@ -208,7 +230,7 @@ bool DnnConfiguration::isInvokeNefSelection() const {
   return m_InvokeNefSelection;
 }
 void DnnConfiguration::setInvokeNefSelection(bool const value) {
-  m_InvokeNefSelection = value;
+  m_InvokeNefSelection      = value;
   m_InvokeNefSelectionIsSet = true;
 }
 bool DnnConfiguration::invokeNefSelectionIsSet() const {
@@ -217,20 +239,32 @@ bool DnnConfiguration::invokeNefSelectionIsSet() const {
 void DnnConfiguration::unsetInvokeNefSelection() {
   m_InvokeNefSelectionIsSet = false;
 }
-std::string DnnConfiguration::getNiddNefId() const { return m_NiddNefId; }
+std::string DnnConfiguration::getNiddNefId() const {
+  return m_NiddNefId;
+}
 void DnnConfiguration::setNiddNefId(std::string const& value) {
-  m_NiddNefId = value;
+  m_NiddNefId      = value;
   m_NiddNefIdIsSet = true;
 }
-bool DnnConfiguration::niddNefIdIsSet() const { return m_NiddNefIdIsSet; }
-void DnnConfiguration::unsetNiddNefId() { m_NiddNefIdIsSet = false; }
-NiddInformation DnnConfiguration::getNiddInfo() const { return m_NiddInfo; }
+bool DnnConfiguration::niddNefIdIsSet() const {
+  return m_NiddNefIdIsSet;
+}
+void DnnConfiguration::unsetNiddNefId() {
+  m_NiddNefIdIsSet = false;
+}
+NiddInformation DnnConfiguration::getNiddInfo() const {
+  return m_NiddInfo;
+}
 void DnnConfiguration::setNiddInfo(NiddInformation const& value) {
-  m_NiddInfo = value;
+  m_NiddInfo      = value;
   m_NiddInfoIsSet = true;
 }
-bool DnnConfiguration::niddInfoIsSet() const { return m_NiddInfoIsSet; }
-void DnnConfiguration::unsetNiddInfo() { m_NiddInfoIsSet = false; }
+bool DnnConfiguration::niddInfoIsSet() const {
+  return m_NiddInfoIsSet;
+}
+void DnnConfiguration::unsetNiddInfo() {
+  m_NiddInfoIsSet = false;
+}
 
 }  // namespace model
 }  // namespace udm

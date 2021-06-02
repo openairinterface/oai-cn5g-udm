@@ -36,10 +36,10 @@
 using namespace std;
 class comUt {
  public:
-  static void print_buffer(const std::string app, const std::string commit,
-                           uint8_t* buf, int len);
-  static void print_buffer(const string app, const string commit,
-                           const uint8_t* buf, int len);
+  static void print_buffer(
+      const std::string app, const std::string commit, uint8_t* buf, int len);
+  static void print_buffer(
+      const string app, const string commit, const uint8_t* buf, int len);
   static void hexStr2Byte(const char* src, unsigned char* dest, int len);
 };
 

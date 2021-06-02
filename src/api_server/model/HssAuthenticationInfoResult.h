@@ -75,8 +75,8 @@ class HssAuthenticationInfoResult {
   void setHssAuthenticationVectors(HssAuthenticationVectors const& value);
 
   friend void to_json(nlohmann::json& j, const HssAuthenticationInfoResult& o);
-  friend void from_json(const nlohmann::json& j,
-                        HssAuthenticationInfoResult& o);
+  friend void from_json(
+      const nlohmann::json& j, HssAuthenticationInfoResult& o);
 
  protected:
   std::string m_SupportedFeatures;

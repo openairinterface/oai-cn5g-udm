@@ -68,8 +68,9 @@ class AccessAndMobilitySubscriptionDataRetrievalApi {
  private:
   void setupRoutes();
 
-  void get_am_data_handler(const Pistache::Rest::Request& request,
-                           Pistache::Http::ResponseWriter response);
+  void get_am_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void access_and_mobility_subscription_data_retrieval_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

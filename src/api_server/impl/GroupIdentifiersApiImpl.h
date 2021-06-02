@@ -62,8 +62,9 @@ using namespace oai::udm::app;
 
 class GroupIdentifiersApiImpl : public oai::udm::api::GroupIdentifiersApi {
  public:
-  GroupIdentifiersApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                          udm_app* udm_app_inst, std::string address);
+  GroupIdentifiersApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~GroupIdentifiersApiImpl() {}
 
   void get_group_identifiers(

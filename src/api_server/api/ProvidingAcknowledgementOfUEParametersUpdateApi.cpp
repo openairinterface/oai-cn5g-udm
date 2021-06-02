@@ -48,7 +48,9 @@ ProvidingAcknowledgementOfUEParametersUpdateApi::
   router = rtr;
 }
 
-void ProvidingAcknowledgementOfUEParametersUpdateApi::init() { setupRoutes(); }
+void ProvidingAcknowledgementOfUEParametersUpdateApi::init() {
+  setupRoutes();
+}
 
 void ProvidingAcknowledgementOfUEParametersUpdateApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -94,8 +96,8 @@ void ProvidingAcknowledgementOfUEParametersUpdateApi::
     providing_acknowledgement_of_ue_parameters_update_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

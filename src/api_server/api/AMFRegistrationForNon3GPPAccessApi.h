@@ -64,8 +64,9 @@ class AMFRegistrationForNon3GPPAccessApi {
  private:
   void setupRoutes();
 
-  void non3_gpp_registration_handler(const Pistache::Rest::Request& request,
-                                     Pistache::Http::ResponseWriter response);
+  void non3_gpp_registration_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void amf_registration_for_non3_gpp_access_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

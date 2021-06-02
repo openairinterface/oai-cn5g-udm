@@ -38,13 +38,13 @@ namespace udm {
 namespace model {
 
 AcknowledgeInfo::AcknowledgeInfo() {
-  m_SorMacIue = "";
-  m_SorMacIueIsSet = false;
-  m_UpuMacIue = "";
-  m_UpuMacIueIsSet = false;
-  m_SecuredPacket = "";
+  m_SorMacIue          = "";
+  m_SorMacIueIsSet     = false;
+  m_UpuMacIue          = "";
+  m_UpuMacIueIsSet     = false;
+  m_SecuredPacket      = "";
   m_SecuredPacketIsSet = false;
-  m_ProvisioningTime = "";
+  m_ProvisioningTime   = "";
 }
 
 AcknowledgeInfo::~AcknowledgeInfo() {}
@@ -77,31 +77,45 @@ void from_json(const nlohmann::json& j, AcknowledgeInfo& o) {
   j.at("provisioningTime").get_to(o.m_ProvisioningTime);
 }
 
-std::string AcknowledgeInfo::getSorMacIue() const { return m_SorMacIue; }
+std::string AcknowledgeInfo::getSorMacIue() const {
+  return m_SorMacIue;
+}
 void AcknowledgeInfo::setSorMacIue(std::string const& value) {
-  m_SorMacIue = value;
+  m_SorMacIue      = value;
   m_SorMacIueIsSet = true;
 }
-bool AcknowledgeInfo::sorMacIueIsSet() const { return m_SorMacIueIsSet; }
-void AcknowledgeInfo::unsetSorMacIue() { m_SorMacIueIsSet = false; }
-std::string AcknowledgeInfo::getUpuMacIue() const { return m_UpuMacIue; }
+bool AcknowledgeInfo::sorMacIueIsSet() const {
+  return m_SorMacIueIsSet;
+}
+void AcknowledgeInfo::unsetSorMacIue() {
+  m_SorMacIueIsSet = false;
+}
+std::string AcknowledgeInfo::getUpuMacIue() const {
+  return m_UpuMacIue;
+}
 void AcknowledgeInfo::setUpuMacIue(std::string const& value) {
-  m_UpuMacIue = value;
+  m_UpuMacIue      = value;
   m_UpuMacIueIsSet = true;
 }
-bool AcknowledgeInfo::upuMacIueIsSet() const { return m_UpuMacIueIsSet; }
-void AcknowledgeInfo::unsetUpuMacIue() { m_UpuMacIueIsSet = false; }
+bool AcknowledgeInfo::upuMacIueIsSet() const {
+  return m_UpuMacIueIsSet;
+}
+void AcknowledgeInfo::unsetUpuMacIue() {
+  m_UpuMacIueIsSet = false;
+}
 std::string AcknowledgeInfo::getSecuredPacket() const {
   return m_SecuredPacket;
 }
 void AcknowledgeInfo::setSecuredPacket(std::string const& value) {
-  m_SecuredPacket = value;
+  m_SecuredPacket      = value;
   m_SecuredPacketIsSet = true;
 }
 bool AcknowledgeInfo::securedPacketIsSet() const {
   return m_SecuredPacketIsSet;
 }
-void AcknowledgeInfo::unsetSecuredPacket() { m_SecuredPacketIsSet = false; }
+void AcknowledgeInfo::unsetSecuredPacket() {
+  m_SecuredPacketIsSet = false;
+}
 std::string AcknowledgeInfo::getProvisioningTime() const {
   return m_ProvisioningTime;
 }

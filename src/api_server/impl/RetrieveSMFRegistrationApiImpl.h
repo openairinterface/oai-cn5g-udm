@@ -63,13 +63,14 @@ using namespace oai::udm::app;
 class RetrieveSMFRegistrationApiImpl
     : public oai::udm::api::RetrieveSMFRegistrationApi {
  public:
-  RetrieveSMFRegistrationApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                 udm_app* udm_app_inst, std::string address);
+  RetrieveSMFRegistrationApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~RetrieveSMFRegistrationApiImpl() {}
 
-  void retrieve_smf_registration(const std::string& ueId,
-                                 const int32_t& pduSessionId,
-                                 Pistache::Http::ResponseWriter& response);
+  void retrieve_smf_registration(
+      const std::string& ueId, const int32_t& pduSessionId,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

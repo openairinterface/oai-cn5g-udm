@@ -66,8 +66,9 @@ class SubscriptionCreationApi {
  private:
   void setupRoutes();
 
-  void subscribe_handler(const Pistache::Rest::Request& request,
-                         Pistache::Http::ResponseWriter response);
+  void subscribe_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void subscription_creation_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -82,9 +83,9 @@ class SubscriptionCreationApi {
   /// </remarks>
   /// <param name="supi">SUPI of the user</param>
   /// <param name="sdmSubscription"></param>
-  virtual void subscribe(const std::string& supi,
-                         const SdmSubscription& sdmSubscription,
-                         Pistache::Http::ResponseWriter& response) = 0;
+  virtual void subscribe(
+      const std::string& supi, const SdmSubscription& sdmSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace api

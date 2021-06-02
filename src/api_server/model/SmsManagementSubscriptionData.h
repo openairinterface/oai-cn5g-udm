@@ -125,10 +125,10 @@ class SmsManagementSubscriptionData {
   bool traceDataIsSet() const;
   void unsetTraceData();
 
-  friend void to_json(nlohmann::json& j,
-                      const SmsManagementSubscriptionData& o);
-  friend void from_json(const nlohmann::json& j,
-                        SmsManagementSubscriptionData& o);
+  friend void to_json(
+      nlohmann::json& j, const SmsManagementSubscriptionData& o);
+  friend void from_json(
+      const nlohmann::json& j, SmsManagementSubscriptionData& o);
 
  protected:
   std::string m_SupportedFeatures;

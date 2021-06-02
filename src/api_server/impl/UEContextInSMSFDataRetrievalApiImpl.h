@@ -63,9 +63,9 @@ using namespace oai::udm::app;
 class UEContextInSMSFDataRetrievalApiImpl
     : public oai::udm::api::UEContextInSMSFDataRetrievalApi {
  public:
-  UEContextInSMSFDataRetrievalApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                      udm_app* udm_app_inst,
-                                      std::string address);
+  UEContextInSMSFDataRetrievalApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~UEContextInSMSFDataRetrievalApiImpl() {}
 
   void get_ue_ctx_in_smsf_data(

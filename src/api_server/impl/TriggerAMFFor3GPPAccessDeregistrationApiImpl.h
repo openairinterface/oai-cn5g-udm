@@ -67,8 +67,9 @@ class TriggerAMFFor3GPPAccessDeregistrationApiImpl
       std::string address);
   ~TriggerAMFFor3GPPAccessDeregistrationApiImpl() {}
 
-  void dereg_amf(const std::string& ueId, const AmfDeregInfo& amfDeregInfo,
-                 Pistache::Http::ResponseWriter& response);
+  void dereg_amf(
+      const std::string& ueId, const AmfDeregInfo& amfDeregInfo,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

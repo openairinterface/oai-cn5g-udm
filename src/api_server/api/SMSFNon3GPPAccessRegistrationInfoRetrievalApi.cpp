@@ -46,15 +46,19 @@ SMSFNon3GPPAccessRegistrationInfoRetrievalApi::
   router = rtr;
 }
 
-void SMSFNon3GPPAccessRegistrationInfoRetrievalApi::init() { setupRoutes(); }
+void SMSFNon3GPPAccessRegistrationInfoRetrievalApi::init() {
+  setupRoutes();
+}
 
 void SMSFNon3GPPAccessRegistrationInfoRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(*router, base + "/:ueId/registrations/smsf-non-3gpp-access",
-              Routes::bind(&SMSFNon3GPPAccessRegistrationInfoRetrievalApi::
-                               get_non3_gpp_smsf_registration_handler,
-                           this));
+  Routes::Get(
+      *router, base + "/:ueId/registrations/smsf-non-3gpp-access",
+      Routes::bind(
+          &SMSFNon3GPPAccessRegistrationInfoRetrievalApi::
+              get_non3_gpp_smsf_registration_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -100,8 +104,8 @@ void SMSFNon3GPPAccessRegistrationInfoRetrievalApi::
     smsf_non3_gpp_access_registration_info_retrieval_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udm::api

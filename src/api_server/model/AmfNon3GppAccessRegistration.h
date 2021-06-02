@@ -177,8 +177,8 @@ class AmfNon3GppAccessRegistration {
   void unsetContextInfo();
 
   friend void to_json(nlohmann::json& j, const AmfNon3GppAccessRegistration& o);
-  friend void from_json(const nlohmann::json& j,
-                        AmfNon3GppAccessRegistration& o);
+  friend void from_json(
+      const nlohmann::json& j, AmfNon3GppAccessRegistration& o);
 
  protected:
   std::string m_AmfInstanceId;

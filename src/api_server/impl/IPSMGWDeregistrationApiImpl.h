@@ -62,12 +62,13 @@ using namespace oai::udm::app;
 class IPSMGWDeregistrationApiImpl
     : public oai::udm::api::IPSMGWDeregistrationApi {
  public:
-  IPSMGWDeregistrationApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                              udm_app* udm_app_inst, std::string address);
+  IPSMGWDeregistrationApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~IPSMGWDeregistrationApiImpl() {}
 
-  void ip_sm_gw_deregistration(const std::string& ueId,
-                               Pistache::Http::ResponseWriter& response);
+  void ip_sm_gw_deregistration(
+      const std::string& ueId, Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

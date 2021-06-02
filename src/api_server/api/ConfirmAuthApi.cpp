@@ -46,13 +46,16 @@ ConfirmAuthApi::ConfirmAuthApi(std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void ConfirmAuthApi::init() { setupRoutes(); }
+void ConfirmAuthApi::init() {
+  setupRoutes();
+}
 
 void ConfirmAuthApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Post(*router, base + "/:supi/auth-events",
-               Routes::bind(&ConfirmAuthApi::confirm_auth_handler, this));
+  Routes::Post(
+      *router, base + "/:supi/auth-events",
+      Routes::bind(&ConfirmAuthApi::confirm_auth_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(
@@ -88,8 +91,8 @@ void ConfirmAuthApi::confirm_auth_handler(
 
 void ConfirmAuthApi::confirm_auth_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

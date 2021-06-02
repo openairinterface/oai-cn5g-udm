@@ -38,13 +38,13 @@ namespace udm {
 namespace model {
 
 SharedData::SharedData() {
-  m_SharedDataId = "";
-  m_SharedAmDataIsSet = false;
-  m_SharedSmsSubsDataIsSet = false;
-  m_SharedSmsMngSubsDataIsSet = false;
+  m_SharedDataId                 = "";
+  m_SharedAmDataIsSet            = false;
+  m_SharedSmsSubsDataIsSet       = false;
+  m_SharedSmsMngSubsDataIsSet    = false;
   m_SharedDnnConfigurationsIsSet = false;
-  m_SharedTraceDataIsSet = false;
-  m_SharedSnssaiInfosIsSet = false;
+  m_SharedTraceDataIsSet         = false;
+  m_SharedSnssaiInfosIsSet       = false;
 }
 
 SharedData::~SharedData() {}
@@ -54,7 +54,7 @@ void SharedData::validate() {
 }
 
 void to_json(nlohmann::json& j, const SharedData& o) {
-  j = nlohmann::json();
+  j                 = nlohmann::json();
   j["sharedDataId"] = o.m_SharedDataId;
   if (o.sharedAmDataIsSet()) j["sharedAmData"] = o.m_SharedAmData;
   if (o.sharedSmsSubsDataIsSet())
@@ -96,7 +96,9 @@ void from_json(const nlohmann::json& j, SharedData& o) {
   }
 }
 
-std::string SharedData::getSharedDataId() const { return m_SharedDataId; }
+std::string SharedData::getSharedDataId() const {
+  return m_SharedDataId;
+}
 void SharedData::setSharedDataId(std::string const& value) {
   m_SharedDataId = value;
 }
@@ -105,28 +107,34 @@ AccessAndMobilitySubscriptionData SharedData::getSharedAmData() const {
 }
 void SharedData::setSharedAmData(
     AccessAndMobilitySubscriptionData const& value) {
-  m_SharedAmData = value;
+  m_SharedAmData      = value;
   m_SharedAmDataIsSet = true;
 }
-bool SharedData::sharedAmDataIsSet() const { return m_SharedAmDataIsSet; }
-void SharedData::unsetSharedAmData() { m_SharedAmDataIsSet = false; }
+bool SharedData::sharedAmDataIsSet() const {
+  return m_SharedAmDataIsSet;
+}
+void SharedData::unsetSharedAmData() {
+  m_SharedAmDataIsSet = false;
+}
 SmsSubscriptionData SharedData::getSharedSmsSubsData() const {
   return m_SharedSmsSubsData;
 }
 void SharedData::setSharedSmsSubsData(SmsSubscriptionData const& value) {
-  m_SharedSmsSubsData = value;
+  m_SharedSmsSubsData      = value;
   m_SharedSmsSubsDataIsSet = true;
 }
 bool SharedData::sharedSmsSubsDataIsSet() const {
   return m_SharedSmsSubsDataIsSet;
 }
-void SharedData::unsetSharedSmsSubsData() { m_SharedSmsSubsDataIsSet = false; }
+void SharedData::unsetSharedSmsSubsData() {
+  m_SharedSmsSubsDataIsSet = false;
+}
 SmsManagementSubscriptionData SharedData::getSharedSmsMngSubsData() const {
   return m_SharedSmsMngSubsData;
 }
 void SharedData::setSharedSmsMngSubsData(
     SmsManagementSubscriptionData const& value) {
-  m_SharedSmsMngSubsData = value;
+  m_SharedSmsMngSubsData      = value;
   m_SharedSmsMngSubsDataIsSet = true;
 }
 bool SharedData::sharedSmsMngSubsDataIsSet() const {
@@ -145,20 +153,28 @@ bool SharedData::sharedDnnConfigurationsIsSet() const {
 void SharedData::unsetSharedDnnConfigurations() {
   m_SharedDnnConfigurationsIsSet = false;
 }
-TraceData SharedData::getSharedTraceData() const { return m_SharedTraceData; }
+TraceData SharedData::getSharedTraceData() const {
+  return m_SharedTraceData;
+}
 void SharedData::setSharedTraceData(TraceData const& value) {
-  m_SharedTraceData = value;
+  m_SharedTraceData      = value;
   m_SharedTraceDataIsSet = true;
 }
-bool SharedData::sharedTraceDataIsSet() const { return m_SharedTraceDataIsSet; }
-void SharedData::unsetSharedTraceData() { m_SharedTraceDataIsSet = false; }
+bool SharedData::sharedTraceDataIsSet() const {
+  return m_SharedTraceDataIsSet;
+}
+void SharedData::unsetSharedTraceData() {
+  m_SharedTraceDataIsSet = false;
+}
 std::map<std::string, SnssaiInfo>& SharedData::getSharedSnssaiInfos() {
   return m_SharedSnssaiInfos;
 }
 bool SharedData::sharedSnssaiInfosIsSet() const {
   return m_SharedSnssaiInfosIsSet;
 }
-void SharedData::unsetSharedSnssaiInfos() { m_SharedSnssaiInfosIsSet = false; }
+void SharedData::unsetSharedSnssaiInfos() {
+  m_SharedSnssaiInfosIsSet = false;
+}
 
 }  // namespace model
 }  // namespace udm

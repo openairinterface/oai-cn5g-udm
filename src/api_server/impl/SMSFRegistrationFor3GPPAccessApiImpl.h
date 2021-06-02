@@ -63,14 +63,14 @@ using namespace oai::udm::app;
 class SMSFRegistrationFor3GPPAccessApiImpl
     : public oai::udm::api::SMSFRegistrationFor3GPPAccessApi {
  public:
-  SMSFRegistrationFor3GPPAccessApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                       udm_app* udm_app_inst,
-                                       std::string address);
+  SMSFRegistrationFor3GPPAccessApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~SMSFRegistrationFor3GPPAccessApiImpl() {}
 
-  void _3_gpp_smsf_registration(const std::string& ueId,
-                                const SmsfRegistration& smsfRegistration,
-                                Pistache::Http::ResponseWriter& response);
+  void _3_gpp_smsf_registration(
+      const std::string& ueId, const SmsfRegistration& smsfRegistration,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

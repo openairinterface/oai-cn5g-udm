@@ -68,9 +68,9 @@ class ProvidingAcknowledgementOfSteeringOfRoamingApiImpl
       std::string address);
   ~ProvidingAcknowledgementOfSteeringOfRoamingApiImpl() {}
 
-  void sor_ack_info(const std::string& supi,
-                    const AcknowledgeInfo& acknowledgeInfo,
-                    Pistache::Http::ResponseWriter& response);
+  void sor_ack_info(
+      const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

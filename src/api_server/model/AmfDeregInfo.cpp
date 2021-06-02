@@ -44,7 +44,7 @@ void AmfDeregInfo::validate() {
 }
 
 void to_json(nlohmann::json& j, const AmfDeregInfo& o) {
-  j = nlohmann::json();
+  j                = nlohmann::json();
   j["deregReason"] = o.m_DeregReason;
 }
 

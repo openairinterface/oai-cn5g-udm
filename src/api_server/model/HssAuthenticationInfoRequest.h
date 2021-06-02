@@ -112,8 +112,8 @@ class HssAuthenticationInfoRequest {
   void unsetAnId();
 
   friend void to_json(nlohmann::json& j, const HssAuthenticationInfoRequest& o);
-  friend void from_json(const nlohmann::json& j,
-                        HssAuthenticationInfoRequest& o);
+  friend void from_json(
+      const nlohmann::json& j, HssAuthenticationInfoRequest& o);
 
  protected:
   std::string m_SupportedFeatures;

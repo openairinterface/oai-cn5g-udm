@@ -46,13 +46,16 @@ DeleteAuthApi::DeleteAuthApi(std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void DeleteAuthApi::init() { setupRoutes(); }
+void DeleteAuthApi::init() {
+  setupRoutes();
+}
 
 void DeleteAuthApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Put(*router, base + "/:supi/auth-events/:authEventId",
-              Routes::bind(&DeleteAuthApi::delete_auth_handler, this));
+  Routes::Put(
+      *router, base + "/:supi/auth-events/:authEventId",
+      Routes::bind(&DeleteAuthApi::delete_auth_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(
@@ -63,7 +66,7 @@ void DeleteAuthApi::delete_auth_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
-  auto supi = request.param(":supi").as<std::string>();
+  auto supi        = request.param(":supi").as<std::string>();
   auto authEventId = request.param(":authEventId").as<std::string>();
 
   // Getting the body param
@@ -89,8 +92,8 @@ void DeleteAuthApi::delete_auth_handler(
 
 void DeleteAuthApi::delete_auth_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

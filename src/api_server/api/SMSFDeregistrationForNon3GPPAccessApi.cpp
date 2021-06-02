@@ -45,15 +45,19 @@ SMSFDeregistrationForNon3GPPAccessApi::SMSFDeregistrationForNon3GPPAccessApi(
   router = rtr;
 }
 
-void SMSFDeregistrationForNon3GPPAccessApi::init() { setupRoutes(); }
+void SMSFDeregistrationForNon3GPPAccessApi::init() {
+  setupRoutes();
+}
 
 void SMSFDeregistrationForNon3GPPAccessApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Delete(*router, base + "/:ueId/registrations/smsf-non-3gpp-access",
-                 Routes::bind(&SMSFDeregistrationForNon3GPPAccessApi::
-                                  non3_gpp_smsf_deregistration_handler,
-                              this));
+  Routes::Delete(
+      *router, base + "/:ueId/registrations/smsf-non-3gpp-access",
+      Routes::bind(
+          &SMSFDeregistrationForNon3GPPAccessApi::
+              non3_gpp_smsf_deregistration_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -99,8 +103,8 @@ void SMSFDeregistrationForNon3GPPAccessApi::
     smsf_deregistration_for_non3_gpp_access_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udm::api

@@ -64,9 +64,9 @@ using namespace oai::udm::app;
 class SMSSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SMSSubscriptionDataRetrievalApi {
  public:
-  SMSSubscriptionDataRetrievalApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                      udm_app* udm_app_inst,
-                                      std::string address);
+  SMSSubscriptionDataRetrievalApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~SMSSubscriptionDataRetrievalApiImpl() {}
 
   void get_sms_data(

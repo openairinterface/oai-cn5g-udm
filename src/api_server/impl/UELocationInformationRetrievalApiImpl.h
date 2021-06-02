@@ -62,9 +62,9 @@ using namespace oai::udm::app;
 class UELocationInformationRetrievalApiImpl
     : public oai::udm::api::UELocationInformationRetrievalApi {
  public:
-  UELocationInformationRetrievalApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                        udm_app* udm_app_inst,
-                                        std::string address);
+  UELocationInformationRetrievalApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~UELocationInformationRetrievalApiImpl() {}
 
   void get_location_info(

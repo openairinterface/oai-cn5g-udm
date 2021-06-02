@@ -66,8 +66,9 @@ class ConfirmAuthApi {
  private:
   void setupRoutes();
 
-  void confirm_auth_handler(const Pistache::Rest::Request& request,
-                            Pistache::Http::ResponseWriter response);
+  void confirm_auth_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void confirm_auth_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -82,8 +83,9 @@ class ConfirmAuthApi {
   /// </remarks>
   /// <param name="supi">SUPI of the user</param>
   /// <param name="authEvent"></param>
-  virtual void confirm_auth(const std::string& supi, const AuthEvent& authEvent,
-                            Pistache::Http::ResponseWriter& response) = 0;
+  virtual void confirm_auth(
+      const std::string& supi, const AuthEvent& authEvent,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace api

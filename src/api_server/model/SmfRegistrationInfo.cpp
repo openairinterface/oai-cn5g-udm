@@ -44,7 +44,7 @@ void SmfRegistrationInfo::validate() {
 }
 
 void to_json(nlohmann::json& j, const SmfRegistrationInfo& o) {
-  j = nlohmann::json();
+  j                        = nlohmann::json();
   j["smfRegistrationList"] = o.m_SmfRegistrationList;
 }
 

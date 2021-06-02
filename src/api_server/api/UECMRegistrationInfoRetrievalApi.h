@@ -67,8 +67,9 @@ class UECMRegistrationInfoRetrievalApi {
  private:
   void setupRoutes();
 
-  void get_registrations_handler(const Pistache::Rest::Request& request,
-                                 Pistache::Http::ResponseWriter response);
+  void get_registrations_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void uecm_registration_info_retrieval_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

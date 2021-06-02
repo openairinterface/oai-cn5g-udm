@@ -38,7 +38,7 @@ namespace udm {
 namespace model {
 
 UeContextInSmsfData::UeContextInSmsfData() {
-  m_SmsfInfo3GppAccessIsSet = false;
+  m_SmsfInfo3GppAccessIsSet    = false;
   m_SmsfInfoNon3GppAccessIsSet = false;
 }
 
@@ -71,7 +71,7 @@ SmsfInfo UeContextInSmsfData::getSmsfInfo3GppAccess() const {
   return m_SmsfInfo3GppAccess;
 }
 void UeContextInSmsfData::setSmsfInfo3GppAccess(SmsfInfo const& value) {
-  m_SmsfInfo3GppAccess = value;
+  m_SmsfInfo3GppAccess      = value;
   m_SmsfInfo3GppAccessIsSet = true;
 }
 bool UeContextInSmsfData::smsfInfo3GppAccessIsSet() const {
@@ -84,7 +84,7 @@ SmsfInfo UeContextInSmsfData::getSmsfInfoNon3GppAccess() const {
   return m_SmsfInfoNon3GppAccess;
 }
 void UeContextInSmsfData::setSmsfInfoNon3GppAccess(SmsfInfo const& value) {
-  m_SmsfInfoNon3GppAccess = value;
+  m_SmsfInfoNon3GppAccess      = value;
   m_SmsfInfoNon3GppAccessIsSet = true;
 }
 bool UeContextInSmsfData::smsfInfoNon3GppAccessIsSet() const {

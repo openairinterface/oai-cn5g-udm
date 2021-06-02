@@ -38,14 +38,14 @@ namespace udm {
 namespace model {
 
 SubscriptionDataSets::SubscriptionDataSets() {
-  m_AmDataIsSet = false;
-  m_SmfSelDataIsSet = false;
-  m_UecSmfDataIsSet = false;
+  m_AmDataIsSet      = false;
+  m_SmfSelDataIsSet  = false;
+  m_UecSmfDataIsSet  = false;
   m_UecSmsfDataIsSet = false;
   m_SmsSubsDataIsSet = false;
-  m_SmDataIsSet = false;
-  m_TraceDataIsSet = false;
-  m_SmsMngDataIsSet = false;
+  m_SmDataIsSet      = false;
+  m_TraceDataIsSet   = false;
+  m_SmsMngDataIsSet  = false;
 }
 
 SubscriptionDataSets::~SubscriptionDataSets() {}
@@ -106,75 +106,105 @@ AccessAndMobilitySubscriptionData SubscriptionDataSets::getAmData() const {
 }
 void SubscriptionDataSets::setAmData(
     AccessAndMobilitySubscriptionData const& value) {
-  m_AmData = value;
+  m_AmData      = value;
   m_AmDataIsSet = true;
 }
-bool SubscriptionDataSets::amDataIsSet() const { return m_AmDataIsSet; }
-void SubscriptionDataSets::unsetAmData() { m_AmDataIsSet = false; }
+bool SubscriptionDataSets::amDataIsSet() const {
+  return m_AmDataIsSet;
+}
+void SubscriptionDataSets::unsetAmData() {
+  m_AmDataIsSet = false;
+}
 SmfSelectionSubscriptionData SubscriptionDataSets::getSmfSelData() const {
   return m_SmfSelData;
 }
 void SubscriptionDataSets::setSmfSelData(
     SmfSelectionSubscriptionData const& value) {
-  m_SmfSelData = value;
+  m_SmfSelData      = value;
   m_SmfSelDataIsSet = true;
 }
-bool SubscriptionDataSets::smfSelDataIsSet() const { return m_SmfSelDataIsSet; }
-void SubscriptionDataSets::unsetSmfSelData() { m_SmfSelDataIsSet = false; }
+bool SubscriptionDataSets::smfSelDataIsSet() const {
+  return m_SmfSelDataIsSet;
+}
+void SubscriptionDataSets::unsetSmfSelData() {
+  m_SmfSelDataIsSet = false;
+}
 UeContextInSmfData SubscriptionDataSets::getUecSmfData() const {
   return m_UecSmfData;
 }
 void SubscriptionDataSets::setUecSmfData(UeContextInSmfData const& value) {
-  m_UecSmfData = value;
+  m_UecSmfData      = value;
   m_UecSmfDataIsSet = true;
 }
-bool SubscriptionDataSets::uecSmfDataIsSet() const { return m_UecSmfDataIsSet; }
-void SubscriptionDataSets::unsetUecSmfData() { m_UecSmfDataIsSet = false; }
+bool SubscriptionDataSets::uecSmfDataIsSet() const {
+  return m_UecSmfDataIsSet;
+}
+void SubscriptionDataSets::unsetUecSmfData() {
+  m_UecSmfDataIsSet = false;
+}
 UeContextInSmsfData SubscriptionDataSets::getUecSmsfData() const {
   return m_UecSmsfData;
 }
 void SubscriptionDataSets::setUecSmsfData(UeContextInSmsfData const& value) {
-  m_UecSmsfData = value;
+  m_UecSmsfData      = value;
   m_UecSmsfDataIsSet = true;
 }
 bool SubscriptionDataSets::uecSmsfDataIsSet() const {
   return m_UecSmsfDataIsSet;
 }
-void SubscriptionDataSets::unsetUecSmsfData() { m_UecSmsfDataIsSet = false; }
+void SubscriptionDataSets::unsetUecSmsfData() {
+  m_UecSmsfDataIsSet = false;
+}
 SmsSubscriptionData SubscriptionDataSets::getSmsSubsData() const {
   return m_SmsSubsData;
 }
 void SubscriptionDataSets::setSmsSubsData(SmsSubscriptionData const& value) {
-  m_SmsSubsData = value;
+  m_SmsSubsData      = value;
   m_SmsSubsDataIsSet = true;
 }
 bool SubscriptionDataSets::smsSubsDataIsSet() const {
   return m_SmsSubsDataIsSet;
 }
-void SubscriptionDataSets::unsetSmsSubsData() { m_SmsSubsDataIsSet = false; }
+void SubscriptionDataSets::unsetSmsSubsData() {
+  m_SmsSubsDataIsSet = false;
+}
 std::vector<SessionManagementSubscriptionData>&
 SubscriptionDataSets::getSmData() {
   return m_SmData;
 }
-bool SubscriptionDataSets::smDataIsSet() const { return m_SmDataIsSet; }
-void SubscriptionDataSets::unsetSmData() { m_SmDataIsSet = false; }
-TraceData SubscriptionDataSets::getTraceData() const { return m_TraceData; }
+bool SubscriptionDataSets::smDataIsSet() const {
+  return m_SmDataIsSet;
+}
+void SubscriptionDataSets::unsetSmData() {
+  m_SmDataIsSet = false;
+}
+TraceData SubscriptionDataSets::getTraceData() const {
+  return m_TraceData;
+}
 void SubscriptionDataSets::setTraceData(TraceData const& value) {
-  m_TraceData = value;
+  m_TraceData      = value;
   m_TraceDataIsSet = true;
 }
-bool SubscriptionDataSets::traceDataIsSet() const { return m_TraceDataIsSet; }
-void SubscriptionDataSets::unsetTraceData() { m_TraceDataIsSet = false; }
+bool SubscriptionDataSets::traceDataIsSet() const {
+  return m_TraceDataIsSet;
+}
+void SubscriptionDataSets::unsetTraceData() {
+  m_TraceDataIsSet = false;
+}
 SmsManagementSubscriptionData SubscriptionDataSets::getSmsMngData() const {
   return m_SmsMngData;
 }
 void SubscriptionDataSets::setSmsMngData(
     SmsManagementSubscriptionData const& value) {
-  m_SmsMngData = value;
+  m_SmsMngData      = value;
   m_SmsMngDataIsSet = true;
 }
-bool SubscriptionDataSets::smsMngDataIsSet() const { return m_SmsMngDataIsSet; }
-void SubscriptionDataSets::unsetSmsMngData() { m_SmsMngDataIsSet = false; }
+bool SubscriptionDataSets::smsMngDataIsSet() const {
+  return m_SmsMngDataIsSet;
+}
+void SubscriptionDataSets::unsetSmsMngData() {
+  m_SmsMngDataIsSet = false;
+}
 
 }  // namespace model
 }  // namespace udm

@@ -47,21 +47,25 @@ SMSFDeregistrationFor3GPPAccessApi::SMSFDeregistrationFor3GPPAccessApi(
   router = rtr;
 }
 
-void SMSFDeregistrationFor3GPPAccessApi::init() { setupRoutes(); }
+void SMSFDeregistrationFor3GPPAccessApi::init() {
+  setupRoutes();
+}
 
 void SMSFDeregistrationFor3GPPAccessApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Delete(*router, base + "/:ueId/registrations/smsf-3gpp-access",
-                 Routes::bind(&SMSFDeregistrationFor3GPPAccessApi::
-                                  _3_gpp_smsf_deregistration_handler,
-                              this));
+  Routes::Delete(
+      *router, base + "/:ueId/registrations/smsf-3gpp-access",
+      Routes::bind(
+          &SMSFDeregistrationFor3GPPAccessApi::
+              _3_gpp_smsf_deregistration_handler,
+          this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&SMSFDeregistrationFor3GPPAccessApi::
-                       smsf_deregistration_for3_gpp_access_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &SMSFDeregistrationFor3GPPAccessApi::
+          smsf_deregistration_for3_gpp_access_api_default_handler,
+      this));
 }
 
 void SMSFDeregistrationFor3GPPAccessApi::_3_gpp_smsf_deregistration_handler(
@@ -100,8 +104,8 @@ void SMSFDeregistrationFor3GPPAccessApi::
     smsf_deregistration_for3_gpp_access_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

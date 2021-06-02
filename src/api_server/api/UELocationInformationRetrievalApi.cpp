@@ -45,7 +45,9 @@ UELocationInformationRetrievalApi::UELocationInformationRetrievalApi(
   router = rtr;
 }
 
-void UELocationInformationRetrievalApi::init() { setupRoutes(); }
+void UELocationInformationRetrievalApi::init() {
+  setupRoutes();
+}
 
 void UELocationInformationRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -56,10 +58,10 @@ void UELocationInformationRetrievalApi::setupRoutes() {
           &UELocationInformationRetrievalApi::get_location_info_handler, this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&UELocationInformationRetrievalApi::
-                       ue_location_information_retrieval_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &UELocationInformationRetrievalApi::
+          ue_location_information_retrieval_api_default_handler,
+      this));
 }
 
 void UELocationInformationRetrievalApi::get_location_info_handler(
@@ -98,8 +100,8 @@ void UELocationInformationRetrievalApi::
     ue_location_information_retrieval_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udm::api

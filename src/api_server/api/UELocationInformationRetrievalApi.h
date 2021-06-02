@@ -64,8 +64,9 @@ class UELocationInformationRetrievalApi {
  private:
   void setupRoutes();
 
-  void get_location_info_handler(const Pistache::Rest::Request& request,
-                                 Pistache::Http::ResponseWriter response);
+  void get_location_info_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void ue_location_information_retrieval_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

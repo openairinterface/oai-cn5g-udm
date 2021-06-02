@@ -44,22 +44,25 @@ PEIUpdateApi::PEIUpdateApi(std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void PEIUpdateApi::init() { setupRoutes(); }
+void PEIUpdateApi::init() {
+  setupRoutes();
+}
 
 void PEIUpdateApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Post(*router,
-               base + "/:ueId/registrations/amf-3gpp-access/pei-update",
-               Routes::bind(&PEIUpdateApi::pei_update_handler, this));
+  Routes::Post(
+      *router, base + "/:ueId/registrations/amf-3gpp-access/pei-update",
+      Routes::bind(&PEIUpdateApi::pei_update_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(
       Routes::bind(&PEIUpdateApi::pei_update_api_default_handler, this));
 }
 
-void PEIUpdateApi::pei_update_handler(const Pistache::Rest::Request& request,
-                                      Pistache::Http::ResponseWriter response) {
+void PEIUpdateApi::pei_update_handler(
+    const Pistache::Rest::Request& request,
+    Pistache::Http::ResponseWriter response) {
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -86,8 +89,8 @@ void PEIUpdateApi::pei_update_handler(const Pistache::Rest::Request& request,
 
 void PEIUpdateApi::pei_update_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udm::api

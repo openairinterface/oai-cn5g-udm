@@ -38,13 +38,13 @@ namespace udm {
 namespace model {
 
 AuthenticationInfoResult::AuthenticationInfoResult() {
-  m_SupportedFeatures = "";
-  m_SupportedFeaturesIsSet = false;
+  m_SupportedFeatures         = "";
+  m_SupportedFeaturesIsSet    = false;
   m_AuthenticationVectorIsSet = false;
-  m_Supi = "";
-  m_SupiIsSet = false;
-  m_AkmaInd = false;
-  m_AkmaIndIsSet = false;
+  m_Supi                      = "";
+  m_SupiIsSet                 = false;
+  m_AkmaInd                   = false;
+  m_AkmaIndIsSet              = false;
 }
 
 AuthenticationInfoResult::~AuthenticationInfoResult() {}
@@ -54,7 +54,7 @@ void AuthenticationInfoResult::validate() {
 }
 
 void to_json(nlohmann::json& j, const AuthenticationInfoResult& o) {
-  j = nlohmann::json();
+  j             = nlohmann::json();
   j["authType"] = o.m_AuthType;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
@@ -84,7 +84,9 @@ void from_json(const nlohmann::json& j, AuthenticationInfoResult& o) {
   }
 }
 
-AuthType AuthenticationInfoResult::getAuthType() const { return m_AuthType; }
+AuthType AuthenticationInfoResult::getAuthType() const {
+  return m_AuthType;
+}
 void AuthenticationInfoResult::setAuthType(AuthType const& value) {
   m_AuthType = value;
 }
@@ -92,7 +94,7 @@ std::string AuthenticationInfoResult::getSupportedFeatures() const {
   return m_SupportedFeatures;
 }
 void AuthenticationInfoResult::setSupportedFeatures(std::string const& value) {
-  m_SupportedFeatures = value;
+  m_SupportedFeatures      = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool AuthenticationInfoResult::supportedFeaturesIsSet() const {
@@ -106,7 +108,7 @@ AuthenticationVector AuthenticationInfoResult::getAuthenticationVector() const {
 }
 void AuthenticationInfoResult::setAuthenticationVector(
     AuthenticationVector const& value) {
-  m_AuthenticationVector = value;
+  m_AuthenticationVector      = value;
   m_AuthenticationVectorIsSet = true;
 }
 bool AuthenticationInfoResult::authenticationVectorIsSet() const {
@@ -115,20 +117,32 @@ bool AuthenticationInfoResult::authenticationVectorIsSet() const {
 void AuthenticationInfoResult::unsetAuthenticationVector() {
   m_AuthenticationVectorIsSet = false;
 }
-std::string AuthenticationInfoResult::getSupi() const { return m_Supi; }
+std::string AuthenticationInfoResult::getSupi() const {
+  return m_Supi;
+}
 void AuthenticationInfoResult::setSupi(std::string const& value) {
-  m_Supi = value;
+  m_Supi      = value;
   m_SupiIsSet = true;
 }
-bool AuthenticationInfoResult::supiIsSet() const { return m_SupiIsSet; }
-void AuthenticationInfoResult::unsetSupi() { m_SupiIsSet = false; }
-bool AuthenticationInfoResult::isAkmaInd() const { return m_AkmaInd; }
+bool AuthenticationInfoResult::supiIsSet() const {
+  return m_SupiIsSet;
+}
+void AuthenticationInfoResult::unsetSupi() {
+  m_SupiIsSet = false;
+}
+bool AuthenticationInfoResult::isAkmaInd() const {
+  return m_AkmaInd;
+}
 void AuthenticationInfoResult::setAkmaInd(bool const value) {
-  m_AkmaInd = value;
+  m_AkmaInd      = value;
   m_AkmaIndIsSet = true;
 }
-bool AuthenticationInfoResult::akmaIndIsSet() const { return m_AkmaIndIsSet; }
-void AuthenticationInfoResult::unsetAkmaInd() { m_AkmaIndIsSet = false; }
+bool AuthenticationInfoResult::akmaIndIsSet() const {
+  return m_AkmaIndIsSet;
+}
+void AuthenticationInfoResult::unsetAkmaInd() {
+  m_AkmaIndIsSet = false;
+}
 
 }  // namespace model
 }  // namespace udm

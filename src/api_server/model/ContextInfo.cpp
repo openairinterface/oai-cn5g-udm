@@ -37,7 +37,9 @@ namespace oai {
 namespace udm {
 namespace model {
 
-ContextInfo::ContextInfo() { m_OrigHeadersIsSet = false; }
+ContextInfo::ContextInfo() {
+  m_OrigHeadersIsSet = false;
+}
 
 ContextInfo::~ContextInfo() {}
 
@@ -62,11 +64,15 @@ std::vector<std::string>& ContextInfo::getOrigHeaders() {
   return m_OrigHeaders;
 }
 void ContextInfo::setOrigHeaders(std::vector<std::string> const& value) {
-  m_OrigHeaders = value;
+  m_OrigHeaders      = value;
   m_OrigHeadersIsSet = true;
 }
-bool ContextInfo::origHeadersIsSet() const { return m_OrigHeadersIsSet; }
-void ContextInfo::unsetOrigHeaders() { m_OrigHeadersIsSet = false; }
+bool ContextInfo::origHeadersIsSet() const {
+  return m_OrigHeadersIsSet;
+}
+void ContextInfo::unsetOrigHeaders() {
+  m_OrigHeadersIsSet = false;
+}
 
 }  // namespace model
 }  // namespace udm

@@ -118,10 +118,10 @@ class SessionManagementSubscriptionData {
   bool sharedTraceDataIdIsSet() const;
   void unsetSharedTraceDataId();
 
-  friend void to_json(nlohmann::json& j,
-                      const SessionManagementSubscriptionData& o);
-  friend void from_json(const nlohmann::json& j,
-                        SessionManagementSubscriptionData& o);
+  friend void to_json(
+      nlohmann::json& j, const SessionManagementSubscriptionData& o);
+  friend void from_json(
+      const nlohmann::json& j, SessionManagementSubscriptionData& o);
 
  protected:
   Snssai m_SingleNssai;

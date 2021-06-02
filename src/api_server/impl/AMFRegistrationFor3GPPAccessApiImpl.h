@@ -63,9 +63,9 @@ using namespace oai::udm::app;
 class AMFRegistrationFor3GPPAccessApiImpl
     : public oai::udm::api::AMFRegistrationFor3GPPAccessApi {
  public:
-  AMFRegistrationFor3GPPAccessApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                      udm_app* udm_app_inst,
-                                      std::string address);
+  AMFRegistrationFor3GPPAccessApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~AMFRegistrationFor3GPPAccessApiImpl() {}
 
   void xg_3gpp_registration(

@@ -63,8 +63,9 @@ using namespace oai::udm::app;
 class RetrievalOfSharedDataApiImpl
     : public oai::udm::api::RetrievalOfSharedDataApi {
  public:
-  RetrievalOfSharedDataApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                               udm_app* udm_app_inst, std::string address);
+  RetrievalOfSharedDataApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~RetrievalOfSharedDataApiImpl() {}
 
   void get_shared_data(

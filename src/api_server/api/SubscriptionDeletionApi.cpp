@@ -47,7 +47,9 @@ SubscriptionDeletionApi::SubscriptionDeletionApi(
   router = rtr;
 }
 
-void SubscriptionDeletionApi::init() { setupRoutes(); }
+void SubscriptionDeletionApi::init() {
+  setupRoutes();
+}
 
 void SubscriptionDeletionApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -66,7 +68,7 @@ void SubscriptionDeletionApi::unsubscribe_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the path params
-  auto supi = request.param(":supi").as<std::string>();
+  auto supi           = request.param(":supi").as<std::string>();
   auto subscriptionId = request.param(":subscriptionId").as<std::string>();
 
   try {
@@ -84,8 +86,8 @@ void SubscriptionDeletionApi::unsubscribe_handler(
 
 void SubscriptionDeletionApi::subscription_deletion_api_default_handler(
     const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

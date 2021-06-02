@@ -55,9 +55,10 @@ void ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi::setupRoutes() {
 
   Routes::Patch(
       *router, base + "/:ueId/registrations/amf-non-3gpp-access",
-      Routes::bind(&ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi::
-                       update_non3_gpp_registration_handler,
-                   this));
+      Routes::bind(
+          &ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi::
+              update_non3_gpp_registration_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -91,9 +92,9 @@ void ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi::
   try {
     nlohmann::json::parse(request.body())
         .get_to(amfNon3GppAccessRegistrationModification);
-    this->update_non3_gpp_registration(ueId,
-                                       amfNon3GppAccessRegistrationModification,
-                                       supportedFeatures, response);
+    this->update_non3_gpp_registration(
+        ueId, amfNon3GppAccessRegistrationModification, supportedFeatures,
+        response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
@@ -112,8 +113,8 @@ void ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi::
     parameter_update_in_the_amf_registration_for_non3_gpp_access_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udm::api

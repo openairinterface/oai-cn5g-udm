@@ -35,7 +35,9 @@
 
 namespace oai::udm::model {
 
-Guami::Guami() { m_AmfId = ""; }
+Guami::Guami() {
+  m_AmfId = "";
+}
 
 Guami::~Guami() {}
 
@@ -44,9 +46,9 @@ void Guami::validate() {
 }
 
 void to_json(nlohmann::json& j, const Guami& o) {
-  j = nlohmann::json();
+  j           = nlohmann::json();
   j["plmnId"] = o.m_PlmnId;
-  j["amfId"] = o.m_AmfId;
+  j["amfId"]  = o.m_AmfId;
 }
 
 void from_json(const nlohmann::json& j, Guami& o) {
@@ -54,9 +56,17 @@ void from_json(const nlohmann::json& j, Guami& o) {
   j.at("amfId").get_to(o.m_AmfId);
 }
 
-PlmnIdNid Guami::getPlmnId() const { return m_PlmnId; }
-void Guami::setPlmnId(PlmnIdNid const& value) { m_PlmnId = value; }
-std::string Guami::getAmfId() const { return m_AmfId; }
-void Guami::setAmfId(std::string const& value) { m_AmfId = value; }
+PlmnIdNid Guami::getPlmnId() const {
+  return m_PlmnId;
+}
+void Guami::setPlmnId(PlmnIdNid const& value) {
+  m_PlmnId = value;
+}
+std::string Guami::getAmfId() const {
+  return m_AmfId;
+}
+void Guami::setAmfId(std::string const& value) {
+  m_AmfId = value;
+}
 
 }  // namespace oai::udm::model

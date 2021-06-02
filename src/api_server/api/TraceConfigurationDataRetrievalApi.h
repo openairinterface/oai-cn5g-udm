@@ -67,8 +67,9 @@ class TraceConfigurationDataRetrievalApi {
  private:
   void setupRoutes();
 
-  void get_trace_config_data_handler(const Pistache::Rest::Request& request,
-                                     Pistache::Http::ResponseWriter response);
+  void get_trace_config_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void trace_configuration_data_retrieval_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

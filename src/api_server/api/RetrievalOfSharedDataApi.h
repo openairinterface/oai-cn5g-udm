@@ -66,8 +66,9 @@ class RetrievalOfSharedDataApi {
  private:
   void setupRoutes();
 
-  void get_shared_data_handler(const Pistache::Rest::Request& request,
-                               Pistache::Http::ResponseWriter response);
+  void get_shared_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void retrieval_of_shared_data_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

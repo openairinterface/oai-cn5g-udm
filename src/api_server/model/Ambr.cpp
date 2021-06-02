@@ -38,7 +38,7 @@ namespace udm {
 namespace model {
 
 Ambr::Ambr() {
-  m_Uplink = "";
+  m_Uplink   = "";
   m_Downlink = "";
 }
 
@@ -49,8 +49,8 @@ void Ambr::validate() {
 }
 
 void to_json(nlohmann::json& j, const Ambr& o) {
-  j = nlohmann::json();
-  j["uplink"] = o.m_Uplink;
+  j             = nlohmann::json();
+  j["uplink"]   = o.m_Uplink;
   j["downlink"] = o.m_Downlink;
 }
 
@@ -59,10 +59,18 @@ void from_json(const nlohmann::json& j, Ambr& o) {
   j.at("downlink").get_to(o.m_Downlink);
 }
 
-std::string Ambr::getUplink() const { return m_Uplink; }
-void Ambr::setUplink(std::string const& value) { m_Uplink = value; }
-std::string Ambr::getDownlink() const { return m_Downlink; }
-void Ambr::setDownlink(std::string const& value) { m_Downlink = value; }
+std::string Ambr::getUplink() const {
+  return m_Uplink;
+}
+void Ambr::setUplink(std::string const& value) {
+  m_Uplink = value;
+}
+std::string Ambr::getDownlink() const {
+  return m_Downlink;
+}
+void Ambr::setDownlink(std::string const& value) {
+  m_Downlink = value;
+}
 
 }  // namespace model
 }  // namespace udm

@@ -85,8 +85,8 @@ class SmfSelectionSubscriptionData {
   void unsetSharedSnssaiInfosId();
 
   friend void to_json(nlohmann::json& j, const SmfSelectionSubscriptionData& o);
-  friend void from_json(const nlohmann::json& j,
-                        SmfSelectionSubscriptionData& o);
+  friend void from_json(
+      const nlohmann::json& j, SmfSelectionSubscriptionData& o);
 
  protected:
   std::string m_SupportedFeatures;

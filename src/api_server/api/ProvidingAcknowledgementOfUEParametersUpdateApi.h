@@ -67,8 +67,9 @@ class ProvidingAcknowledgementOfUEParametersUpdateApi {
  private:
   void setupRoutes();
 
-  void upu_ack_handler(const Pistache::Rest::Request& request,
-                       Pistache::Http::ResponseWriter response);
+  void upu_ack_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void providing_acknowledgement_of_ue_parameters_update_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -83,9 +84,9 @@ class ProvidingAcknowledgementOfUEParametersUpdateApi {
   /// </remarks>
   /// <param name="supi">Identifier of the UE</param>
   /// <param name="acknowledgeInfo"> (optional)</param>
-  virtual void upu_ack(const std::string& supi,
-                       const AcknowledgeInfo& acknowledgeInfo,
-                       Pistache::Http::ResponseWriter& response) = 0;
+  virtual void upu_ack(
+      const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace api

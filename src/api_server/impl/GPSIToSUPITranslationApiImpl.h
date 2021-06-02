@@ -63,8 +63,9 @@ using namespace oai::udm::app;
 class GPSIToSUPITranslationApiImpl
     : public oai::udm::api::GPSIToSUPITranslationApi {
  public:
-  GPSIToSUPITranslationApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                               udm_app* udm_app_inst, std::string address);
+  GPSIToSUPITranslationApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~GPSIToSUPITranslationApiImpl() {}
 
   void get_supi(

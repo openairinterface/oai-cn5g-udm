@@ -35,7 +35,9 @@
 
 namespace oai::udm::model {
 
-TriggerRequest::TriggerRequest() { m_Supi = ""; }
+TriggerRequest::TriggerRequest() {
+  m_Supi = "";
+}
 
 TriggerRequest::~TriggerRequest() {}
 
@@ -44,7 +46,7 @@ void TriggerRequest::validate() {
 }
 
 void to_json(nlohmann::json& j, const TriggerRequest& o) {
-  j = nlohmann::json();
+  j         = nlohmann::json();
   j["supi"] = o.m_Supi;
 }
 
@@ -52,7 +54,11 @@ void from_json(const nlohmann::json& j, TriggerRequest& o) {
   j.at("supi").get_to(o.m_Supi);
 }
 
-std::string TriggerRequest::getSupi() const { return m_Supi; }
-void TriggerRequest::setSupi(std::string const& value) { m_Supi = value; }
+std::string TriggerRequest::getSupi() const {
+  return m_Supi;
+}
+void TriggerRequest::setSupi(std::string const& value) {
+  m_Supi = value;
+}
 
 }  // namespace oai::udm::model

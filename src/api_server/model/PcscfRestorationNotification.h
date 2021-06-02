@@ -64,8 +64,8 @@ class PcscfRestorationNotification {
   void setSupi(std::string const& value);
 
   friend void to_json(nlohmann::json& j, const PcscfRestorationNotification& o);
-  friend void from_json(const nlohmann::json& j,
-                        PcscfRestorationNotification& o);
+  friend void from_json(
+      const nlohmann::json& j, PcscfRestorationNotification& o);
 
  protected:
   std::string m_Supi;

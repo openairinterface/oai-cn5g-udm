@@ -63,8 +63,9 @@ class IPSMGWDeregistrationApi {
  private:
   void setupRoutes();
 
-  void ip_sm_gw_deregistration_handler(const Pistache::Rest::Request& request,
-                                       Pistache::Http::ResponseWriter response);
+  void ip_sm_gw_deregistration_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void ipsmgw_deregistration_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

@@ -67,8 +67,9 @@ class SubscriptionDeletionForSharedDataApiImpl
       std::string address);
   ~SubscriptionDeletionForSharedDataApiImpl() {}
 
-  void unsubscribe_for_shared_data(const std::string& subscriptionId,
-                                   Pistache::Http::ResponseWriter& response);
+  void unsubscribe_for_shared_data(
+      const std::string& subscriptionId,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

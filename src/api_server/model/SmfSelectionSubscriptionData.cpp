@@ -38,11 +38,11 @@ namespace udm {
 namespace model {
 
 SmfSelectionSubscriptionData::SmfSelectionSubscriptionData() {
-  m_SupportedFeatures = "";
-  m_SupportedFeaturesIsSet = false;
+  m_SupportedFeatures          = "";
+  m_SupportedFeaturesIsSet     = false;
   m_SubscribedSnssaiInfosIsSet = false;
-  m_SharedSnssaiInfosId = "";
-  m_SharedSnssaiInfosIdIsSet = false;
+  m_SharedSnssaiInfosId        = "";
+  m_SharedSnssaiInfosIdIsSet   = false;
 }
 
 SmfSelectionSubscriptionData::~SmfSelectionSubscriptionData() {}
@@ -81,7 +81,7 @@ std::string SmfSelectionSubscriptionData::getSupportedFeatures() const {
 }
 void SmfSelectionSubscriptionData::setSupportedFeatures(
     std::string const& value) {
-  m_SupportedFeatures = value;
+  m_SupportedFeatures      = value;
   m_SupportedFeaturesIsSet = true;
 }
 bool SmfSelectionSubscriptionData::supportedFeaturesIsSet() const {
@@ -105,7 +105,7 @@ std::string SmfSelectionSubscriptionData::getSharedSnssaiInfosId() const {
 }
 void SmfSelectionSubscriptionData::setSharedSnssaiInfosId(
     std::string const& value) {
-  m_SharedSnssaiInfosId = value;
+  m_SharedSnssaiInfosId      = value;
   m_SharedSnssaiInfosIdIsSet = true;
 }
 bool SmfSelectionSubscriptionData::sharedSnssaiInfosIdIsSet() const {

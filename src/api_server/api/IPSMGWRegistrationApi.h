@@ -64,8 +64,9 @@ class IPSMGWRegistrationApi {
  private:
   void setupRoutes();
 
-  void ip_sm_gw_registration_handler(const Pistache::Rest::Request& request,
-                                     Pistache::Http::ResponseWriter response);
+  void ip_sm_gw_registration_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void ipsmgw_registration_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

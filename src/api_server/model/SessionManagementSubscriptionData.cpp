@@ -38,14 +38,14 @@ namespace udm {
 namespace model {
 
 SessionManagementSubscriptionData::SessionManagementSubscriptionData() {
-  m_DnnConfigurationsIsSet = false;
-  m_InternalGroupIdsIsSet = false;
-  m_SharedDnnConfigurationsId = "";
+  m_DnnConfigurationsIsSet         = false;
+  m_InternalGroupIdsIsSet          = false;
+  m_SharedDnnConfigurationsId      = "";
   m_SharedDnnConfigurationsIdIsSet = false;
-  m_OdbPacketServicesIsSet = false;
-  m_TraceDataIsSet = false;
-  m_SharedTraceDataId = "";
-  m_SharedTraceDataIdIsSet = false;
+  m_OdbPacketServicesIsSet         = false;
+  m_TraceDataIsSet                 = false;
+  m_SharedTraceDataId              = "";
+  m_SharedTraceDataIdIsSet         = false;
 }
 
 SessionManagementSubscriptionData::~SessionManagementSubscriptionData() {}
@@ -55,7 +55,7 @@ void SessionManagementSubscriptionData::validate() {
 }
 
 void to_json(nlohmann::json& j, const SessionManagementSubscriptionData& o) {
-  j = nlohmann::json();
+  j                = nlohmann::json();
   j["singleNssai"] = o.m_SingleNssai;
   if (o.dnnConfigurationsIsSet())
     j["dnnConfigurations"] = o.m_DnnConfigurations;
@@ -142,7 +142,7 @@ std::string SessionManagementSubscriptionData::getSharedDnnConfigurationsId()
 }
 void SessionManagementSubscriptionData::setSharedDnnConfigurationsId(
     std::string const& value) {
-  m_SharedDnnConfigurationsId = value;
+  m_SharedDnnConfigurationsId      = value;
   m_SharedDnnConfigurationsIdIsSet = true;
 }
 bool SessionManagementSubscriptionData::sharedDnnConfigurationsIdIsSet() const {
@@ -157,7 +157,7 @@ OdbPacketServices SessionManagementSubscriptionData::getOdbPacketServices()
 }
 void SessionManagementSubscriptionData::setOdbPacketServices(
     OdbPacketServices const& value) {
-  m_OdbPacketServices = value;
+  m_OdbPacketServices      = value;
   m_OdbPacketServicesIsSet = true;
 }
 bool SessionManagementSubscriptionData::odbPacketServicesIsSet() const {
@@ -170,7 +170,7 @@ TraceData SessionManagementSubscriptionData::getTraceData() const {
   return m_TraceData;
 }
 void SessionManagementSubscriptionData::setTraceData(TraceData const& value) {
-  m_TraceData = value;
+  m_TraceData      = value;
   m_TraceDataIsSet = true;
 }
 bool SessionManagementSubscriptionData::traceDataIsSet() const {
@@ -184,7 +184,7 @@ std::string SessionManagementSubscriptionData::getSharedTraceDataId() const {
 }
 void SessionManagementSubscriptionData::setSharedTraceDataId(
     std::string const& value) {
-  m_SharedTraceDataId = value;
+  m_SharedTraceDataId      = value;
   m_SharedTraceDataIdIsSet = true;
 }
 bool SessionManagementSubscriptionData::sharedTraceDataIdIsSet() const {

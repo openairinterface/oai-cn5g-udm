@@ -63,8 +63,9 @@ class SMFDeregistrationApi {
  private:
   void setupRoutes();
 
-  void smf_deregistration_handler(const Pistache::Rest::Request& request,
-                                  Pistache::Http::ResponseWriter response);
+  void smf_deregistration_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void smf_deregistration_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);

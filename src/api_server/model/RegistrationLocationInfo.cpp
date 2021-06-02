@@ -36,8 +36,8 @@
 namespace oai::udm::model {
 
 RegistrationLocationInfo::RegistrationLocationInfo() {
-  m_AmfInstanceId = "";
-  m_PlmnIdIsSet = false;
+  m_AmfInstanceId     = "";
+  m_PlmnIdIsSet       = false;
   m_VgmlcAddressIsSet = false;
 }
 
@@ -48,7 +48,7 @@ void RegistrationLocationInfo::validate() {
 }
 
 void to_json(nlohmann::json& j, const RegistrationLocationInfo& o) {
-  j = nlohmann::json();
+  j                  = nlohmann::json();
   j["amfInstanceId"] = o.m_AmfInstanceId;
   if (o.plmnIdIsSet()) j["plmnId"] = o.m_PlmnId;
   if (o.vgmlcAddressIsSet()) j["vgmlcAddress"] = o.m_VgmlcAddress;
@@ -74,18 +74,24 @@ std::string RegistrationLocationInfo::getAmfInstanceId() const {
 void RegistrationLocationInfo::setAmfInstanceId(std::string const& value) {
   m_AmfInstanceId = value;
 }
-PlmnId RegistrationLocationInfo::getPlmnId() const { return m_PlmnId; }
+PlmnId RegistrationLocationInfo::getPlmnId() const {
+  return m_PlmnId;
+}
 void RegistrationLocationInfo::setPlmnId(PlmnId const& value) {
-  m_PlmnId = value;
+  m_PlmnId      = value;
   m_PlmnIdIsSet = true;
 }
-bool RegistrationLocationInfo::plmnIdIsSet() const { return m_PlmnIdIsSet; }
-void RegistrationLocationInfo::unsetPlmnId() { m_PlmnIdIsSet = false; }
+bool RegistrationLocationInfo::plmnIdIsSet() const {
+  return m_PlmnIdIsSet;
+}
+void RegistrationLocationInfo::unsetPlmnId() {
+  m_PlmnIdIsSet = false;
+}
 VgmlcAddress RegistrationLocationInfo::getVgmlcAddress() const {
   return m_VgmlcAddress;
 }
 void RegistrationLocationInfo::setVgmlcAddress(VgmlcAddress const& value) {
-  m_VgmlcAddress = value;
+  m_VgmlcAddress      = value;
   m_VgmlcAddressIsSet = true;
 }
 bool RegistrationLocationInfo::vgmlcAddressIsSet() const {

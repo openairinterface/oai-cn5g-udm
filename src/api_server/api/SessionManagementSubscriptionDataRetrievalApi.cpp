@@ -48,7 +48,9 @@ SessionManagementSubscriptionDataRetrievalApi::
   router = rtr;
 }
 
-void SessionManagementSubscriptionDataRetrievalApi::init() { setupRoutes(); }
+void SessionManagementSubscriptionDataRetrievalApi::init() {
+  setupRoutes();
+}
 
 void SessionManagementSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -140,8 +142,8 @@ void SessionManagementSubscriptionDataRetrievalApi::
     session_management_subscription_data_retrieval_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace api

@@ -45,21 +45,23 @@ UECMRegistrationInfoRetrievalApi::UECMRegistrationInfoRetrievalApi(
   router = rtr;
 }
 
-void UECMRegistrationInfoRetrievalApi::init() { setupRoutes(); }
+void UECMRegistrationInfoRetrievalApi::init() {
+  setupRoutes();
+}
 
 void UECMRegistrationInfoRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
       *router, base + "/:ueId/registrations",
-      Routes::bind(&UECMRegistrationInfoRetrievalApi::get_registrations_handler,
-                   this));
+      Routes::bind(
+          &UECMRegistrationInfoRetrievalApi::get_registrations_handler, this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&UECMRegistrationInfoRetrievalApi::
-                       uecm_registration_info_retrieval_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &UECMRegistrationInfoRetrievalApi::
+          uecm_registration_info_retrieval_api_default_handler,
+      this));
 }
 
 void UECMRegistrationInfoRetrievalApi::get_registrations_handler(
@@ -126,8 +128,8 @@ void UECMRegistrationInfoRetrievalApi::
     uecm_registration_info_retrieval_api_default_handler(
         const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udm::api
