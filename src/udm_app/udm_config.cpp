@@ -101,13 +101,13 @@ int udm_config::load(const std::string& config_file) {
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
   }
   try {
-    udm_cfg.lookupValue(UDM_CONFIG_STRING_UDM_NAME, UDM_Name);
+    udm_cfg.lookupValue(UDM_CONFIG_STRING_UDM_NAME, udm_name);
   } catch (const SettingNotFoundException& nfex) {
     Logger::config().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
   }
 
- try {
+  try {
     const Setting& new_if_cfg = udm_cfg[UDM_CONFIG_STRING_INTERFACES];
 
     const Setting& sbi_udm_cfg =
@@ -165,7 +165,7 @@ void udm_config::display() {
       pid_dir.c_str());
   Logger::config().info(
       "- UDM NAME............................................: %s",
-      UDM_Name.c_str());
+      udm_name.c_str());
 
   Logger::config().info("- SBI Networking:");
   Logger::config().info("    iface ................: %s", sbi.if_name.c_str());

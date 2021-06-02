@@ -1,3 +1,6 @@
+// Licence : https://creativecommons.org/licenses/by-sa/4.0/legalcode
+// https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring#217605
+
 /*
  * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,12 +30,12 @@
 #include <functional>
 #include <locale>
 
-template <class T>
+template<class T>
 class Buffer {
  public:
   explicit Buffer(size_t size) {
     msize = size;
-    mbuf = new T[msize];
+    mbuf  = new T[msize];
   }
   ~Buffer() {
     if (mbuf) delete[] mbuf;
@@ -61,25 +64,26 @@ std::string util::string_format(const char* format, ...) {
   return std::string(buf.get(), size - 1);  // We don't want the '\0' inside
 }
 
-// Licence : https://creativecommons.org/licenses/by-sa/4.0/legalcode
-// https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring#217605
-
 // trim from start
 std::string& util::ltrim(std::string& s) {
-  s.erase(s.begin(),
-          std::find_if(s.begin(), s.end(),
-                       std::not1(std::ptr_fun<int, int>(std::isspace))));
+  s.erase(
+      s.begin(),
+      std::find_if(
+          s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
   return s;
 }
 
 // trim from end
 std::string& util::rtrim(std::string& s) {
-  s.erase(std::find_if(s.rbegin(), s.rend(),
-                       std::not1(std::ptr_fun<int, int>(std::isspace)))
-              .base(),
-          s.end());
+  s.erase(
+      std::find_if(
+          s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace)))
+          .base(),
+      s.end());
   return s;
 }
 
 // trim from both ends
-std::string& util::trim(std::string& s) { return util::ltrim(util::rtrim(s)); }
+std::string& util::trim(std::string& s) {
+  return util::ltrim(util::rtrim(s));
+}

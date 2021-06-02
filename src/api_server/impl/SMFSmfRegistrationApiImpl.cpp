@@ -33,7 +33,7 @@
 
 #include "SMFSmfRegistrationApiImpl.h"
 
-#include "curl.hpp"
+#include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 
@@ -84,7 +84,7 @@ void SMFSmfRegistrationApiImpl::registration(
   nlohmann::json smfRegistration_j;
   to_json(smfRegistration_j, smfRegistration);
   long http_code;
-  http_code = Curl::curl_http_client(
+  http_code = udm_client::curl_http_client(
       remoteUri, Method, smfRegistration_j.dump(), Response);
 
   nlohmann::json response_data = {};

@@ -43,7 +43,6 @@
 #include "logger.hpp"
 #include "udm_client.hpp"
 #include "udm_config.hpp"
-#include "curl.hpp"
 #include "ProblemDetails.h"
 #include "conversions.hpp"
 #include "authentication_algorithms_with_5gaka.hpp"
@@ -68,10 +67,12 @@ udm_app::udm_app(const std::string& config_file) {
   // logger::udm_server().startup("Started");
 }
 
+//------------------------------------------------------------------------------
 udm_app::~udm_app() {
   // logger::udm_server().debug("Delete UDM_APP instance...");
 }
 
+//------------------------------------------------------------------------------
 void udm_app::handle_generate_auth_data_request(
     const std::string& supiOrSuci,
     const oai::udm::model::AuthenticationInfoRequest& authenticationInfoRequest,
@@ -125,7 +126,7 @@ void udm_app::handle_generate_auth_data_request(
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
   Method = "GET";
 
-  Curl::curl_http_client(remoteUri, Method, "", Response);
+  udm_client::curl_http_client(remoteUri, Method, "", Response);
 
   nlohmann::json response_data = {};
   try {
@@ -251,7 +252,7 @@ void udm_app::handle_generate_auth_data_request(
       msgBody = "[" + j_PatchItem.dump() + "]";
       Logger::udm_ueau().debug("PATCH Request body = " + msgBody);
 
-      Curl::curl_http_client(remoteUri, Method, msgBody, Response);
+      udm_client::curl_http_client(remoteUri, Method, msgBody, Response);
 
       // replace SQNhe with SQNms
       int i = 0;
@@ -348,7 +349,7 @@ void udm_app::handle_generate_auth_data_request(
   msgBody = "[" + j_PatchItem.dump() + "]";
   // Logger::udm_ueau().debug("PATCH Request body = " + msgBody);
 
-  Curl::curl_http_client(remoteUri, Method, msgBody, Response);
+  udm_client::curl_http_client(remoteUri, Method, msgBody, Response);
 
   Logger::udm_ueau().info("Send 200 Ok response to AUSF");
   // response.send(Pistache::Http::Code::Ok, AuthInfoResult.dump());
@@ -357,6 +358,7 @@ void udm_app::handle_generate_auth_data_request(
   return;
 }
 
+//------------------------------------------------------------------------------
 void udm_app::handle_confirm_auth(
     const std::string& supi, const oai::udm::model::AuthEvent& authEvent,
     nlohmann::json& confirm_response, std::string& location,
@@ -380,7 +382,7 @@ void udm_app::handle_confirm_auth(
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
   Method = "GET";
 
-  Curl::curl_http_client(remoteUri, Method, "", Response);
+  udm_client::curl_http_client(remoteUri, Method, "", Response);
 
   nlohmann::json response_data = {};
   try {
@@ -430,7 +432,7 @@ void udm_app::handle_confirm_auth(
   msgBody = j_authEvent.dump();
   Logger::udm_ueau().debug("PATCH Request body = " + msgBody);
 
-  Curl::curl_http_client(remoteUri, Method, msgBody, Response);
+  udm_client::curl_http_client(remoteUri, Method, msgBody, Response);
 
   std::string hash_value = sha256(supi + authEvent.getServingNetworkName());
   // Logger::udm_ueau().debug("\n\nauthEventId=" +
@@ -452,6 +454,7 @@ void udm_app::handle_confirm_auth(
   return;
 }
 
+//------------------------------------------------------------------------------
 void udm_app::handle_delete_auth(
     const std::string& supi, const std::string& authEventId,
     const oai::udm::model::AuthEvent& authEvent, nlohmann::json& auth_response,
@@ -474,7 +477,7 @@ void udm_app::handle_delete_auth(
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
   Method = "GET";
 
-  Curl::curl_http_client(remoteUri, Method, "", Response);
+  udm_client::curl_http_client(remoteUri, Method, "", Response);
 
   nlohmann::json response_data = {};
   try {
@@ -528,7 +531,7 @@ void udm_app::handle_delete_auth(
     nlohmann::json j_authEvent;
     to_json(j_authEvent, authEvent);
 
-    Curl::curl_http_client(remoteUri, Method, "", Response);
+    udm_client::curl_http_client(remoteUri, Method, "", Response);
 
     Logger::udm_ueau().info("Send 204 No_Content response to AUSF");
     // response.send(Pistache::Http::Code::No_Content, "");
@@ -548,5 +551,6 @@ void udm_app::handle_delete_auth(
     // response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
     auth_response = j_ProblemDetails.dump();
     code          = Pistache::Http::Code::Not_Found;
+    return;
   }
 }

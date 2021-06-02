@@ -33,7 +33,7 @@
 
 #include "SubscriptionCreationApiImpl.h"
 
-#include "curl.hpp"
+#include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 
@@ -74,7 +74,7 @@ void SubscriptionCreationApiImpl::subscribe(
   nlohmann::json sdmSubscription_j;
   to_json(sdmSubscription_j, sdmSubscription);
   long http_code;
-  http_code = Curl::curl_http_client(
+  http_code = udm_client::curl_http_client(
       remoteUri, Method, sdmSubscription_j.dump(), Response);
 
   nlohmann::json response_data = {};

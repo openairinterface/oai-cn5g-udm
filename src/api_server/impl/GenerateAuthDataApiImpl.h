@@ -57,7 +57,6 @@
 #include "String2Value.hpp"
 #include "authentication_algorithms_with_5gaka.hpp"
 #include "conversions.hpp"
-#include "curl.hpp"
 #include "logger.hpp"
 #include "udm_app.hpp"
 #include "udm_config.hpp"
@@ -71,8 +70,9 @@ using namespace oai::udm::app;
 
 class GenerateAuthDataApiImpl : public oai::udm::api::GenerateAuthDataApi {
  public:
-  GenerateAuthDataApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                          udm_app* udm_app_inst, std::string address);
+  GenerateAuthDataApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~GenerateAuthDataApiImpl() {}
 
   void generate_auth_data(

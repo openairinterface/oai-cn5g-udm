@@ -33,7 +33,7 @@
 
 #include "SliceSelectionSubscriptionDataRetrievalApiImpl.h"
 
-#include "curl.hpp"
+#include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 
@@ -75,7 +75,7 @@ void SliceSelectionSubscriptionDataRetrievalApiImpl::get_nssai(
   Logger::udm_sdm().debug("UDR: GET Request: " + remote_uri);
   // 2. invoke curl to get response from udr
   long http_code =
-      Curl::curl_http_client(remote_uri, method, body, response_get);
+      udm_client::curl_http_client(remote_uri, method, body, response_get);
   // 3. process response
   nlohmann::json response_data_json        = {};
   nlohmann::json return_response_data_json = {};

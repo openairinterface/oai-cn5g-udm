@@ -31,7 +31,6 @@ add_library (UDM STATIC
   udm_app.cpp
   udm_client.cpp 
   udm_config.cpp 
-  curl.cpp 
 )
 
 

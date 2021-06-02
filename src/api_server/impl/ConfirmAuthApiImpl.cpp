@@ -78,7 +78,7 @@ void ConfirmAuthApiImpl::confirm_auth(
     Logger::udm_ueau().debug("GET Request:" + remoteUri);
     Method = "GET";
 
-    Curl::curl_http_client(remoteUri, Method, "", Response);
+    udm_client::curl_http_client(remoteUri, Method, "", Response);
 
     nlohmann::json response_data = {};
     try {
@@ -123,7 +123,7 @@ void ConfirmAuthApiImpl::confirm_auth(
     msgBody = j_authEvent.dump();
     Logger::udm_ueau().debug("PATCH Request body = " + msgBody);
 
-    Curl::curl_http_client(remoteUri, Method, msgBody, Response);
+    udm_client::curl_http_client(remoteUri, Method, msgBody, Response);
 
     std::string hash_value = sha256(supi + authEvent.getServingNetworkName());
     // Logger::udm_ueau().debug("\n\nauthEventId=" +

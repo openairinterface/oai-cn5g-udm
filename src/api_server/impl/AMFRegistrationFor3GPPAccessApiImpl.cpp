@@ -33,7 +33,7 @@
 
 #include "AMFRegistrationFor3GPPAccessApiImpl.h"
 
-#include "curl.hpp"
+#include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 
@@ -75,7 +75,7 @@ void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(
   nlohmann::json amf3GppAccessRegistration_j;
   to_json(amf3GppAccessRegistration_j, amf3GppAccessRegistration);
   long http_code;
-  http_code = Curl::curl_http_client(
+  http_code = udm_client::curl_http_client(
       remoteUri, Method, amf3GppAccessRegistration_j.dump(), Response);
 
   nlohmann::json response_data = {};

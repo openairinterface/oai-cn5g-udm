@@ -51,7 +51,6 @@
 
 #include "AuthEvent.h"
 #include "ProblemDetails.h"
-#include "curl.hpp"
 #include "logger.hpp"
 #include "sha256.hpp"
 #include "udm_app.hpp"
@@ -66,12 +65,14 @@ using namespace oai::udm::app;
 
 class ConfirmAuthApiImpl : public oai::udm::api::ConfirmAuthApi {
  public:
-  ConfirmAuthApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                     udm_app* udm_app_inst, std::string address);
+  ConfirmAuthApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~ConfirmAuthApiImpl() {}
 
-  void confirm_auth(const std::string& supi, const AuthEvent& authEvent,
-                    Pistache::Http::ResponseWriter& response);
+  void confirm_auth(
+      const std::string& supi, const AuthEvent& authEvent,
+      Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

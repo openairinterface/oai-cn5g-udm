@@ -51,7 +51,6 @@
 
 #include "AuthEvent.h"
 #include "ProblemDetails.h"
-#include "curl.hpp"
 #include "logger.hpp"
 #include "sha256.hpp"
 #include "udm_app.hpp"
@@ -66,13 +65,14 @@ using namespace oai::udm::app;
 
 class DeleteAuthApiImpl : public oai::udm::api::DeleteAuthApi {
  public:
-  DeleteAuthApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                    udm_app* udm_app_inst, std::string address);
+  DeleteAuthApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udm_app* udm_app_inst,
+      std::string address);
   ~DeleteAuthApiImpl() {}
 
-  void delete_auth(const std::string& supi, const std::string& authEventId,
-                   const AuthEvent& authEvent,
-                   Pistache::Http::ResponseWriter& response);
+  void delete_auth(
+      const std::string& supi, const std::string& authEventId,
+      const AuthEvent& authEvent, Pistache::Http::ResponseWriter& response);
 
  private:
   udm_app* m_udm_app;

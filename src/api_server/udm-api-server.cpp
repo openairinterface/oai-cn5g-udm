@@ -9,6 +9,7 @@
  * (https://openapi-generator.tech). https://openapi-generator.tech Do not edit
  * the class manually.
  */
+
 /*
  * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -65,8 +66,8 @@ void setUpUnixSignals(std::vector<int> quitSignals) {
 
   struct sigaction sa;
   sa.sa_handler = sigHandler;
-  sa.sa_mask = blocking_mask;
-  sa.sa_flags = 0;
+  sa.sa_mask    = blocking_mask;
+  sa.sa_flags   = 0;
 
   for (auto sig : quitSignals) sigaction(sig, &sa, nullptr);
 }
@@ -76,6 +77,7 @@ using namespace oai::udm::api;
 using namespace config;
 using namespace oai::udm::model;
 
+//------------------------------------------------------------------------------
 void UDMApiServer::init(size_t thr) {
   auto opts = Pistache::Http::Endpoint::options().threads(thr);
   opts.flags(Pistache::Tcp::Options::ReuseAddr);
@@ -108,9 +110,15 @@ void UDMApiServer::init(size_t thr) {
   m_sMFSmfRegistrationApiImpl->init();
   m_aMFRegistrationFor3GPPAccessApiImpl->init();
 }
+
+//------------------------------------------------------------------------------
 void UDMApiServer::start() {
   Logger::udm_server().info("HTTP1 server started");
   m_httpEndpoint->setHandler(m_router->handler());
   m_httpEndpoint->serve();
 }
-void UDMApiServer::shutdown() { m_httpEndpoint->shutdown(); }
+
+//------------------------------------------------------------------------------
+void UDMApiServer::shutdown() {
+  m_httpEndpoint->shutdown();
+}

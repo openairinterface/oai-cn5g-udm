@@ -84,7 +84,7 @@ class udm_config {
 
   unsigned int instance;
   std::string pid_dir;
-  std::string UDM_Name;
+  std::string udm_name;
 
   interface_cfg_t sbi;
 
