@@ -35,6 +35,7 @@
 #include <pistache/http.h>
 #include <map>
 #include <shared_mutex>
+#include "AuthEvent.h"
 
 namespace oai {
 namespace udm {
@@ -53,6 +54,11 @@ class udm_app {
       const oai::udm::model::AuthenticationInfoRequest&
           authenticationInfoRequest,
       nlohmann::json& auth_info_response, Pistache::Http::Code& code);
+
+  void handle_confirm_auth(
+      const std::string& supi, const oai::udm::model::AuthEvent& authEvent,
+      nlohmann::json& confirm_response, std::string& location,
+      Pistache::Http::Code& code);
 
  private:
 };

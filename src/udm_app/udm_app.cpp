@@ -50,6 +50,7 @@
 #include "SequenceNumber.h"
 #include "PatchItem.h"
 #include "comUt.hpp"
+#include "sha256.hpp"
 
 using namespace oai::udm::app;
 using namespace oai::udm::model;
@@ -353,5 +354,100 @@ void udm_app::handle_generate_auth_data_request(
   // response.send(Pistache::Http::Code::Ok, AuthInfoResult.dump());
   auth_info_response = AuthInfoResult.dump();
   code               = Pistache::Http::Code::Ok;
+  return;
+}
+
+void udm_app::handle_confirm_auth(
+    const std::string& supi, const oai::udm::model::AuthEvent& authEvent,
+    nlohmann::json& confirm_response, std::string& location,
+    Pistache::Http::Code& code) {
+  std::string udr_ip =
+      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
+  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
+  std::string remoteUri;
+  std::string Method;
+  std::string msgBody;
+  std::string Response;
+  std::string Location;
+  std::string authEventId;
+
+  nlohmann::json j_ProblemDetails;
+  ProblemDetails m_ProblemDetails;
+
+  // UDR GET interface ----- get user info--------------------
+  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
+              supi + "/authentication-data/authentication-subscription";
+  Logger::udm_ueau().debug("GET Request:" + remoteUri);
+  Method = "GET";
+
+  Curl::curl_http_client(remoteUri, Method, "", Response);
+
+  nlohmann::json response_data = {};
+  try {
+    response_data = nlohmann::json::parse(Response.c_str());
+  } catch (nlohmann::json::exception& e) {  // error handling
+    Logger::udm_ueau().info("Could not get Json content from UDR response");
+
+    m_ProblemDetails.setCause("USER_NOT_FOUND");
+    m_ProblemDetails.setStatus(404);
+    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
+    to_json(j_ProblemDetails, m_ProblemDetails);
+
+    Logger::udm_ueau().error("User " + supi + " not found in Database");
+    Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
+    // response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
+    confirm_response = j_ProblemDetails.dump();
+    code             = Pistache::Http::Code::Not_Found;
+    return;
+  }
+
+  if (authEvent.isAuthRemovalInd()) {
+    // error handling
+    m_ProblemDetails.setStatus(400);
+    m_ProblemDetails.setDetail("authRemovalInd should be false");
+    to_json(j_ProblemDetails, m_ProblemDetails);
+
+    Logger::udm_ueau().error("authRemovalInd should be false");
+    Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
+    // response.send(Pistache::Http::Code::Bad_Request,
+    // j_ProblemDetails.dump());
+    confirm_response = j_ProblemDetails.dump();
+    code             = Pistache::Http::Code::Bad_Request;
+    return;
+  }
+
+  // UDR PUT interface ------- put authentication
+  // status------------------------------
+  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
+              supi + "/authentication-data/authentication-status";
+
+  Logger::udm_ueau().debug("PUT Request:" + remoteUri);
+  Method = "PUT";
+
+  nlohmann::json j_authEvent;
+  to_json(j_authEvent, authEvent);
+
+  msgBody = j_authEvent.dump();
+  Logger::udm_ueau().debug("PATCH Request body = " + msgBody);
+
+  Curl::curl_http_client(remoteUri, Method, msgBody, Response);
+
+  std::string hash_value = sha256(supi + authEvent.getServingNetworkName());
+  // Logger::udm_ueau().debug("\n\nauthEventId=" +
+  // hash_value.substr(0,hash_value.length()/2));
+  Logger::udm_ueau().debug("authEventId=" + hash_value);
+
+  authEventId = hash_value;  // Represents the authEvent Id per UE per serving
+                             // network assigned by the UDM during
+                             // ResultConfirmation service operation.
+  location = std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.sbi.addr4))) +
+             ":" + std::to_string(udm_cfg.sbi.port) + "/nudm-ueau/v1/" + supi +
+             "/auth-events/" + authEventId;
+
+  Logger::udm_ueau().info("Send 201 Created response to AUSF");
+  // response.headers().add<Pistache::Http::Header::Location>(Location);
+  // response.send(Pistache::Http::Code::Created, j_authEvent.dump());
+  confirm_response = j_authEvent.dump();
+  code             = Pistache::Http::Code::Created;
   return;
 }
