@@ -155,30 +155,24 @@ int udm_config::load(const std::string& config_file) {
 
 //------------------------------------------------------------------------------
 void udm_config::display() {
-  Logger::config().info(
-      "======================    UDM   =====================");
+  Logger::config().info("============== UDM =============");
   Logger::config().info("Configuration UDM:");
-  Logger::config().info(
-      "- Instance ...........................................: %d", instance);
-  Logger::config().info(
-      "- PID dir ............................................: %s",
-      pid_dir.c_str());
-  Logger::config().info(
-      "- UDM NAME............................................: %s",
-      udm_name.c_str());
+  Logger::config().info("- Instance................: %d", instance);
+  Logger::config().info("- PID dir.................: %s", pid_dir.c_str());
+  Logger::config().info("- UDM NAME................: %s", udm_name.c_str());
 
-  Logger::config().info("- SBI Networking:");
-  Logger::config().info("    iface ................: %s", sbi.if_name.c_str());
-  Logger::config().info("    ip ...................: %s", inet_ntoa(sbi.addr4));
-  Logger::config().info("    port .................: %d", sbi.port);
+  Logger::config().info("- SBI:");
+  Logger::config().info("    Iface name............: %s", sbi.if_name.c_str());
+  Logger::config().info("    IPv4 Addr.............: %s", inet_ntoa(sbi.addr4));
+  Logger::config().info("    Port..................: %d", sbi.port);
 
   Logger::config().info("- UDR:");
   Logger::config().info(
       "    IPv4 Addr.............: %s",
       inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr)));
-  Logger::config().info("    Port.................: %lu  ", udr_addr.port);
+  Logger::config().info("    Port..................: %lu  ", udr_addr.port);
   Logger::config().info(
-      "    API version..........: %s", udr_addr.api_version.c_str());
+      "    API version...........: %s", udr_addr.api_version.c_str());
 }
 
 //------------------------------------------------------------------------------
