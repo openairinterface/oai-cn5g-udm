@@ -31,6 +31,10 @@
 #define FILE_UDM_APP_HPP_SEEN
 
 #include <string>
+#include "AuthenticationInfoRequest.h"
+#include <pistache/http.h>
+#include <map>
+#include <shared_mutex>
 
 namespace oai {
 namespace udm {
@@ -44,6 +48,11 @@ class udm_app {
   void operator=(udm_app const&) = delete;
 
   virtual ~udm_app();
+  void handle_generate_auth_data_request(
+      const std::string& supiOrSuci,
+      const oai::udm::model::AuthenticationInfoRequest&
+          authenticationInfoRequest,
+      nlohmann::json& auth_info_response, Pistache::Http::Code& code);
 
  private:
 };

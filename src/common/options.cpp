@@ -28,6 +28,7 @@ std::string Options::m_libconfigcfg;
 bool Options::m_log_rot_file_log;
 bool Options::m_log_stdout;
 
+//------------------------------------------------------------------------------
 void Options::help() {
   std::cout << std::endl
             << "Usage:  UDM  [OPTIONS]..." << std::endl
@@ -43,6 +44,7 @@ void Options::help() {
             << std::endl;
 }
 
+//------------------------------------------------------------------------------
 bool Options::parse(int argc, char** argv) {
   bool ret = true;
 
@@ -51,10 +53,12 @@ bool Options::parse(int argc, char** argv) {
   return ret;
 }
 
+//------------------------------------------------------------------------------
 bool Options::validateOptions() {
   return ((options & libconfigcfg));
 }
 
+//------------------------------------------------------------------------------
 bool Options::parseInputOptions(int argc, char** argv) {
   int c;
   int option_index = 0;

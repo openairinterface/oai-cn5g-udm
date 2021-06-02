@@ -26,16 +26,17 @@
  */
 #include "comUt.hpp"
 
-void comUt::print_buffer(const std::string app, const std::string commit,
-                         uint8_t* buf, int len) {
+//------------------------------------------------------------------------------
+void comUt::print_buffer(
+    const std::string app, const std::string commit, uint8_t* buf, int len) {
   if (!app.compare("udm_ueau")) Logger::udm_ueau().debug(commit.c_str());
   for (int i = 0; i < len; i++) printf("%x ", buf[i]);
   printf("\n");
 }
 
 //------------------------------------------------------------------------------
-void comUt::print_buffer(const string app, const string commit,
-                         const uint8_t* buf, int len) {
+void comUt::print_buffer(
+    const string app, const string commit, const uint8_t* buf, int len) {
   if (!app.compare("udm_ueau")) cout << commit.c_str() << endl;
   Logger::udm_ueau().debug(commit.c_str());
 
@@ -43,6 +44,7 @@ void comUt::print_buffer(const string app, const string commit,
   printf("\n");
 }
 
+//------------------------------------------------------------------------------
 void comUt::hexStr2Byte(const char* src, unsigned char* dest, int len) {
   short i;
   unsigned char hBy, lBy;
