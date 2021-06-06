@@ -47,7 +47,9 @@ PEIUpdateApiImpl::PEIUpdateApiImpl(
 void PEIUpdateApiImpl::pei_update(
     const std::string& ueId, const PeiUpdateInfo& peiUpdateInfo,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "PEIUpdateApiImpl::pei_update API has not been implemented yet!\n");
 }
 
 }  // namespace api

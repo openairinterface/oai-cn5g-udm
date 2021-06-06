@@ -49,7 +49,10 @@ void AMFRegistrationForNon3GPPAccessApiImpl::non3_gpp_registration(
     const std::string& ueId,
     const AmfNon3GppAccessRegistration& amfNon3GppAccessRegistration,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "AMFRegistrationForNon3GPPAccessApiImpl::non3_gpp_registration API has "
+      "not been implemented yet!\n");
 }
 
 }  // namespace api

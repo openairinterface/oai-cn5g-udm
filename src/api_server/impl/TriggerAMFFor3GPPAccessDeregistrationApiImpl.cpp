@@ -47,7 +47,10 @@ TriggerAMFFor3GPPAccessDeregistrationApiImpl::
 void TriggerAMFFor3GPPAccessDeregistrationApiImpl::dereg_amf(
     const std::string& ueId, const AmfDeregInfo& amfDeregInfo,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "TriggerAMFFor3GPPAccessDeregistrationApiImpl::dereg_amf API has not "
+      "been implemented yet!\n");
 }
 
 }  // namespace api

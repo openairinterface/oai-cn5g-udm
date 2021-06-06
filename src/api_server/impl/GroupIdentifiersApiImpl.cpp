@@ -52,7 +52,10 @@ void GroupIdentifiersApiImpl::get_group_identifiers(
     const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
     const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "GroupIdentifiersApiImpl::get_group_identifiers API has not been "
+      "implemented yet!\n");
 }
 
 }  // namespace api

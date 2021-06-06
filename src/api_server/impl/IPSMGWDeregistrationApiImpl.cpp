@@ -47,7 +47,10 @@ IPSMGWDeregistrationApiImpl::IPSMGWDeregistrationApiImpl(
 
 void IPSMGWDeregistrationApiImpl::ip_sm_gw_deregistration(
     const std::string& ueId, Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "IPSMGWDeregistrationApiImpl::ip_sm_gw_deregistration API has not been "
+      "implemented yet!\n");
 }
 
 }  // namespace api

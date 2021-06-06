@@ -62,7 +62,8 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
     const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
     const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
-  // 1. populate remote uri for udp request
+  // Populate remote uri for udp request
+  // TODO: remove hardcoded path
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
   std::string udr_port   = std::to_string(udm_cfg.udr_addr.port);
@@ -75,10 +76,10 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
   std::string body("");
   std::string response_get;
   Logger::udm_sdm().debug("UDR: GET Request: " + remote_uri);
-  // 2. invoke curl to get response from udr
+  // Use curl to get response from UDR
   long http_code =
       udm_client::curl_http_client(remote_uri, method, body, response_get);
-  // 3. process response
+  // Process response
   nlohmann::json response_data_json = {};
   try {
     Logger::udm_sdm().debug("subscription-data: GET Response: " + response_get);
@@ -96,7 +97,7 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
     response.send(Pistache::Http::Code::Not_Found, json_problem_details.dump());
     return;
   }
-  Logger::udm_sdm().debug("http reponse code %d.\n", http_code);
+  Logger::udm_sdm().debug("HTTP reponse code %d.\n", http_code);
   response.send(
       static_cast<Pistache::Http::Code>(http_code), response_data_json.dump());
 }

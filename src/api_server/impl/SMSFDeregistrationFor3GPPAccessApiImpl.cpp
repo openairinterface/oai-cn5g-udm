@@ -48,7 +48,10 @@ SMSFDeregistrationFor3GPPAccessApiImpl::SMSFDeregistrationFor3GPPAccessApiImpl(
 void SMSFDeregistrationFor3GPPAccessApiImpl::_3_gpp_smsf_deregistration(
     const std::string& ueId, const Pistache::Optional<std::string>& smsfSetId,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "SMSFDeregistrationFor3GPPAccessApiImpl::_3_gpp_smsf_deregistration API "
+      "has not been implemented yet!\n");
 }
 
 }  // namespace api

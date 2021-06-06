@@ -48,7 +48,10 @@ void UEContextInSMSFDataRetrievalApiImpl::get_ue_ctx_in_smsf_data(
     const std::string& supi,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "UEContextInSMSFDataRetrievalApiImpl::get_ue_ctx_in_smsf_data API has "
+      "not been implemented yet!\n");
 }
 
 }  // namespace api

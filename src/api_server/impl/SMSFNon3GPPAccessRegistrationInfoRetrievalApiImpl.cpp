@@ -50,7 +50,10 @@ void SMSFNon3GPPAccessRegistrationInfoRetrievalApiImpl::
         const std::string& ueId,
         const Pistache::Optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "SMSFNon3GPPAccessRegistrationInfoRetrievalApiImpl::get_non3_gpp_smsf_"
+      "registration API has not been implemented yet!\n");
 }
 
 }  // namespace api

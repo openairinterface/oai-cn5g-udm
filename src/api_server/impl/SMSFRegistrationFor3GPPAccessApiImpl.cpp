@@ -48,7 +48,10 @@ SMSFRegistrationFor3GPPAccessApiImpl::SMSFRegistrationFor3GPPAccessApiImpl(
 void SMSFRegistrationFor3GPPAccessApiImpl::_3_gpp_smsf_registration(
     const std::string& ueId, const SmsfRegistration& smsfRegistration,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "SMSFRegistrationFor3GPPAccessApiImpl::_3_gpp_smsf_registration API has "
+      "not been implemented yet!\n");
 }
 
 }  // namespace api

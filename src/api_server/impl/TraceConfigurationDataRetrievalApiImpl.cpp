@@ -51,7 +51,10 @@ void TraceConfigurationDataRetrievalApiImpl::get_trace_config_data(
     const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
     const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "TraceConfigurationDataRetrievalApiImpl::get_trace_config_data API has "
+      "not been implemented yet!\n");
 }
 
 }  // namespace api

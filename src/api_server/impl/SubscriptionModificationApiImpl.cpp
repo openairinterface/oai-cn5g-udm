@@ -48,13 +48,17 @@ void SubscriptionModificationApiImpl::modify(
     const std::string& supi, const std::string& subscriptionId,
     const SdmSubsModification& sdmSubsModification,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok, "API has not been implemented yet!\n");
 }
 void SubscriptionModificationApiImpl::modify_shared_data_subs(
     const std::string& subscriptionId,
     const SdmSubsModification& sdmSubsModification,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "SubscriptionModificationApiImpl::modify_shared_data_subs API has not "
+      "been implemented yet!\n");
 }
 
 }  // namespace api

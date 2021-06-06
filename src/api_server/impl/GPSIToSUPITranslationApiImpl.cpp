@@ -51,7 +51,10 @@ void GPSIToSUPITranslationApiImpl::get_supi(
     const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
     const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "GPSIToSUPITranslationApiImpl::get_supi API has not been implemented "
+      "yet!\n");
 }
 
 }  // namespace api

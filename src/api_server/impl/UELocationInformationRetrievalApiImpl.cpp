@@ -51,7 +51,10 @@ void UELocationInformationRetrievalApiImpl::get_location_info(
     const std::string& ueId,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "UELocationInformationRetrievalApiImpl::get_location_info API has not "
+      "been implemented yet!\n");
 }
 
 }  // namespace api

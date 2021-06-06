@@ -53,7 +53,10 @@ void ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiImpl::
             amfNon3GppAccessRegistrationModification,
         const Pistache::Optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiImpl::update_non3_"
+      "gpp_registration API has not been implemented yet!\n");
 }
 
 }  // namespace api

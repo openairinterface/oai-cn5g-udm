@@ -49,7 +49,9 @@ void AMF3GppAccessRegistrationInfoRetrievalApiImpl::get3_gpp_registration(
     const std::string& ueId,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "get3_gpp_registration API has not been implemented yet!\n");
 }
 
 }  // namespace api

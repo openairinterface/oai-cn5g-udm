@@ -49,7 +49,10 @@ ProvidingAcknowledgementOfSteeringOfRoamingApiImpl::
 void ProvidingAcknowledgementOfSteeringOfRoamingApiImpl::sor_ack_info(
     const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "ProvidingAcknowledgementOfSteeringOfRoamingApiImpl::sor_ack_info API "
+      "has not been implemented yet!\n");
 }
 
 }  // namespace api

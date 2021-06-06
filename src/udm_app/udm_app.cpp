@@ -62,14 +62,20 @@ udm_client* udm_client_inst = nullptr;
 
 //------------------------------------------------------------------------------
 udm_app::udm_app(const std::string& config_file) {
-  // logger::udm_server().startup("Starting...");
-
-  // logger::udm_server().startup("Started");
+  Logger::udm_app().startup("Starting...");
+  try {
+    udm_client_inst = new udm_client();
+  } catch (std::exception& e) {
+    Logger::udm_app().error("Cannot create UDM APP: %s", e.what());
+    throw;
+  }
+  // TODO: Register to NRF
+  Logger::udm_app().startup("Started");
 }
 
 //------------------------------------------------------------------------------
 udm_app::~udm_app() {
-  // logger::udm_server().debug("Delete UDM_APP instance...");
+  Logger::udm_app().debug("Delete UDM APP instance...");
 }
 
 //------------------------------------------------------------------------------

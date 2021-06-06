@@ -49,7 +49,10 @@ void SMFDeregistrationApiImpl::smf_deregistration(
     const std::string& ueId, const int32_t& pduSessionId,
     const Pistache::Optional<std::string>& smfSetId,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "SMFDeregistrationApiImpl::smf_deregistration API has not been "
+      "implemented yet!\n");
 }
 
 }  // namespace api

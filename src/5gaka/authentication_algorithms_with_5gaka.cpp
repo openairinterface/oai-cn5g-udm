@@ -21,7 +21,7 @@
 
 /*! \file authentication_algorithms_with_5gaka.cpp
  \brief Based on https://github.com/OPENAIRINTERFACE/openair-hss
- \author  Keliang DU, Tien Thinh Nguyen
+ \author  Keliang DU
  \date 2020
  \email: contact@openairinterface.org
  */
@@ -379,7 +379,7 @@ void Authentication_5gaka::derive_knas(
   // memcpy (knas, &out[31 - 16 + 1], 16);
   for (int i = 0; i < 16; i++) knas[i] = out[16 + i];
   comUt::print_buffer("udm_ueau", "derive_knas knas", knas, 16);
-  // Logger::udm_ueau().debug("derive knas finished!");
+  Logger::udm_ueau().debug("derive knas finished!");
 
   return;
 }

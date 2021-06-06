@@ -53,7 +53,10 @@ void RetrievalOfMultipleDataSetsApiImpl::get_data_sets(
     const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
     const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "RetrievalOfMultipleDataSetsApiImpl::get_data_sets API has not been "
+      "implemented yet!\n");
 }
 
 }  // namespace api

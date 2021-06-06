@@ -46,7 +46,10 @@ TriggerPCSCFRestorationApiImpl::TriggerPCSCFRestorationApiImpl(
 void TriggerPCSCFRestorationApiImpl::trigger_pcscf_restoration(
     const TriggerRequest& triggerRequest,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "TriggerPCSCFRestorationApiImpl::trigger_pcscf_restoration API has not "
+      "been implemented yet!\n");
 }
 
 }  // namespace api

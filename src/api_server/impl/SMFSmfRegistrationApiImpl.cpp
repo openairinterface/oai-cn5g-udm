@@ -57,7 +57,10 @@ void SMFSmfRegistrationApiImpl::get_smf_registration(
     const Pistache::Optional<std::string>& dnn,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "SMFSmfRegistrationApiImpl::get_smf_registration API has not been "
+      "implemented yet!\n");
 }
 void SMFSmfRegistrationApiImpl::registration(
     const std::string& ueId, const int32_t& pduSessionId,

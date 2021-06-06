@@ -48,7 +48,10 @@ RetrieveSMFRegistrationApiImpl::RetrieveSMFRegistrationApiImpl(
 void RetrieveSMFRegistrationApiImpl::retrieve_smf_registration(
     const std::string& ueId, const int32_t& pduSessionId,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "RetrieveSMFRegistrationApiImpl::retrieve_smf_registration API has not "
+      "been implemented yet!\n");
 }
 
 }  // namespace api

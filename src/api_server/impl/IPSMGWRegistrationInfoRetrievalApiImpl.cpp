@@ -47,7 +47,10 @@ IPSMGWRegistrationInfoRetrievalApiImpl::IPSMGWRegistrationInfoRetrievalApiImpl(
 
 void IPSMGWRegistrationInfoRetrievalApiImpl::get_ip_sm_gw_registration(
     const std::string& ueId, Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(
+      Pistache::Http::Code::Ok,
+      "IPSMGWRegistrationInfoRetrievalApiImpl::get_ip_sm_gw_registration API "
+      "has not been implemented yet!\n");
 }
 
 }  // namespace api
