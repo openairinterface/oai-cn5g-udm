@@ -69,8 +69,8 @@ udm_client::~udm_client() {
 
 //------------------------------------------------------------------------------
 long udm_client::curl_http_client(
-    std::string remoteUri, std::string Method, std::string msgBody,
-    std::string& Response) {
+    std::string remoteUri, std::string method, std::string msgBody,
+    std::string& response) {
   Logger::udm_ueau().info("Send HTTP message with body %s", msgBody.c_str());
 
   uint32_t str_len = msgBody.length();
@@ -85,20 +85,20 @@ long udm_client::curl_http_client(
   if (curl) {
     CURLcode res               = {};
     struct curl_slist* headers = nullptr;
-    if (!Method.compare("POST") || !Method.compare("PUT") ||
-        !Method.compare("PATCH")) {
+    if (!method.compare("POST") || !method.compare("PUT") ||
+        !method.compare("PATCH")) {
       std::string content_type = "Content-Type: application/json";
       headers = curl_slist_append(headers, content_type.c_str());
       curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     }
     curl_easy_setopt(curl, CURLOPT_URL, remoteUri.c_str());
-    if (!Method.compare("POST"))
+    if (!method.compare("POST"))
       curl_easy_setopt(curl, CURLOPT_HTTPPOST, 1);
-    else if (!Method.compare("PUT"))
+    else if (!method.compare("PUT"))
       curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
-    else if (!Method.compare("DELETE"))
+    else if (!method.compare("DELETE"))
       curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
-    else if (!Method.compare("PATCH"))
+    else if (!method.compare("PATCH"))
       curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
     else
       curl_easy_setopt(curl, CURLOPT_HTTPGET, 1);
@@ -106,7 +106,7 @@ long udm_client::curl_http_client(
     curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1);
     curl_easy_setopt(curl, CURLOPT_INTERFACE, udm_cfg.sbi.if_name.c_str());
 
-    // Response information.
+    // response information.
     std::unique_ptr<std::string> httpData(new std::string());
     std::unique_ptr<std::string> httpHeaderData(new std::string());
 
@@ -114,8 +114,8 @@ long udm_client::curl_http_client(
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &callback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, httpData.get());
     curl_easy_setopt(curl, CURLOPT_HEADERDATA, httpHeaderData.get());
-    if (!Method.compare("POST") || !Method.compare("PUT") ||
-        !Method.compare("PATCH")) {
+    if (!method.compare("POST") || !method.compare("PUT") ||
+        !method.compare("PATCH")) {
       curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, msgBody.length());
       curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body_data);
     }
@@ -153,36 +153,7 @@ long udm_client::curl_http_client(
     }
 
     else {  // httpCode = 200 || httpCode = 201 || httpCode = 204
-      /*
-      //store location of the created context
-      std::string header_response = *httpHeaderData.get();
-      std::string CRLF = "\r\n";
-      std::size_t location_pos = header_response.find("Location");
-
-      if (location_pos != std::string::npos)
-      {
-        std::size_t crlf_pos = header_response.find(CRLF, location_pos);
-        if (crlf_pos != std::string::npos)
-        {
-          std::string location = header_response.substr(location_pos + 10,
-      crlf_pos - (location_pos + 10)); printf("Location of the created SMF
-      context: %s", location.c_str());
-
-        }
-      }
-
-      try
-      {
-        response_data = nlohmann::json::parse(response);
-      }
-      catch (nlohmann::json::exception &e)
-      {
-        printf("Could not get Json content from the response");
-        //Set the default Cause
-        response_data["error"]["cause"] = "504 Gateway Timeout";
-      }*/
-
-      Response = *httpData.get();
+      response = *httpData.get();
     }
 
     if (!is_response_ok) {

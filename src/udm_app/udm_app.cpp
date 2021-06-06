@@ -147,7 +147,6 @@ void udm_app::handle_generate_auth_data_request(
 
     Logger::udm_ueau().error("User " + supi + " not found in Database");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
-    // response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
     auth_info_response = j_ProblemDetails.dump();
     code               = Pistache::Http::Code::Not_Found;
     return;
@@ -159,7 +158,7 @@ void udm_app::handle_generate_auth_data_request(
     try {
       key_s = response_data.at("encPermanentKey");
       conv::hex_str_to_uint8(key_s.c_str(), key);
-      // comUt::print_buffer("udm_ueau", "Result For F1-Alg: key", key , 16);
+      comUt::print_buffer("udm_ueau", "Result For F1-Alg: key", key, 16);
 
       opc_s = response_data.at("encOpcKey");
       conv::hex_str_to_uint8(opc_s.c_str(), opc);
@@ -183,8 +182,6 @@ void udm_app::handle_generate_auth_data_request(
       Logger::udm_ueau().error(
           "Missing authentication parameter in UDR response");
       Logger::udm_ueau().info("Send 403 Forbidden response to AUSF");
-      // response.send(Pistache::Http::Code::Forbidden,
-      // j_ProblemDetails.dump());
       auth_info_response = j_ProblemDetails.dump();
       code               = Pistache::Http::Code::Forbidden;
       return;
@@ -202,8 +199,6 @@ void udm_app::handle_generate_auth_data_request(
         "database, method set = " +
         authMethod_s);
     Logger::udm_ueau().info("Send 501 Not_Implemented response to AUSF");
-    // response.send(
-    //    Pistache::Http::Code::Not_Implemented, j_ProblemDetails.dump());
     auth_info_response = j_ProblemDetails.dump();
     code               = Pistache::Http::Code::Not_Implemented;
 
@@ -211,8 +206,7 @@ void udm_app::handle_generate_auth_data_request(
   }
 
   if (authenticationInfoRequest.resynchronizationInfoIsSet()) {
-    // resync procedure
-    // ---------------------------------------------------------
+    // Resync procedure
     Logger::udm_ueau().info("Start resynchronization procedure");
     ResynchronizationInfo m_ResynchronizationInfo =
         authenticationInfoRequest.getResynchronizationInfo();
@@ -230,8 +224,8 @@ void udm_app::handle_generate_auth_data_request(
     if (r_sqn) {  // Not NULL (validate auts)
       Logger::udm_ueau().debug("Valid AUTS, generate new AV with SQNms");
 
-      // UDR PATCH interface ------- replace SQNhe with
-      // SQNms------------------------------
+      // UDR PATCH interface
+      // replace SQNhe with SQNms
       remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
                   supi + "/authentication-data/authentication-subscription";
       Logger::udm_ueau().debug("PATCH Request:" + remoteUri);
@@ -328,8 +322,8 @@ void udm_app::handle_generate_auth_data_request(
 
   Logger::udm_ueau().debug("new_sqn = " + new_sqn);
 
-  // UDR PATCH interface ------- increase
-  // sqn------------------------------------
+  // UDR PATCH interface
+  // Increase sqn
   remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
               supi + "/authentication-data/authentication-subscription";
   Logger::udm_ueau().debug("PATCH Request:" + remoteUri);
@@ -358,7 +352,6 @@ void udm_app::handle_generate_auth_data_request(
   udm_client::curl_http_client(remoteUri, Method, msgBody, Response);
 
   Logger::udm_ueau().info("Send 200 Ok response to AUSF");
-  // response.send(Pistache::Http::Code::Ok, AuthInfoResult.dump());
   auth_info_response = AuthInfoResult.dump();
   code               = Pistache::Http::Code::Ok;
   return;
@@ -382,7 +375,8 @@ void udm_app::handle_confirm_auth(
   nlohmann::json j_ProblemDetails;
   ProblemDetails m_ProblemDetails;
 
-  // UDR GET interface ----- get user info--------------------
+  // UDR GET interface
+  // get user info
   remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
               supi + "/authentication-data/authentication-subscription";
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
@@ -403,7 +397,6 @@ void udm_app::handle_confirm_auth(
 
     Logger::udm_ueau().error("User " + supi + " not found in Database");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
-    // response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
     confirm_response = j_ProblemDetails.dump();
     code             = Pistache::Http::Code::Not_Found;
     return;
@@ -417,15 +410,13 @@ void udm_app::handle_confirm_auth(
 
     Logger::udm_ueau().error("authRemovalInd should be false");
     Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
-    // response.send(Pistache::Http::Code::Bad_Request,
-    // j_ProblemDetails.dump());
     confirm_response = j_ProblemDetails.dump();
     code             = Pistache::Http::Code::Bad_Request;
     return;
   }
 
-  // UDR PUT interface ------- put authentication
-  // status------------------------------
+  // UDR PUT interface
+  // Put authentication status
   remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
               supi + "/authentication-data/authentication-status";
 
@@ -453,8 +444,6 @@ void udm_app::handle_confirm_auth(
              "/auth-events/" + authEventId;
 
   Logger::udm_ueau().info("Send 201 Created response to AUSF");
-  // response.headers().add<Pistache::Http::Header::Location>(Location);
-  // response.send(Pistache::Http::Code::Created, j_authEvent.dump());
   confirm_response = j_authEvent.dump();
   code             = Pistache::Http::Code::Created;
   return;
@@ -477,7 +466,8 @@ void udm_app::handle_delete_auth(
   nlohmann::json j_ProblemDetails;
   ProblemDetails m_ProblemDetails;
 
-  // UDR GET interface ----- get user info--------------------
+  // UDR GET interface
+  // get user info
   remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
               supi + "/authentication-data/authentication-subscription";
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
@@ -498,7 +488,6 @@ void udm_app::handle_delete_auth(
 
     Logger::udm_ueau().error("User " + supi + " not found in Database");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
-    // response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
     auth_response = j_ProblemDetails.dump();
     code          = Pistache::Http::Code::Not_Found;
 
@@ -513,8 +502,6 @@ void udm_app::handle_delete_auth(
 
     Logger::udm_ueau().error("authRemovalInd should be true");
     Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
-    // response.send(Pistache::Http::Code::Bad_Request,
-    // j_ProblemDetails.dump());
     auth_response = j_ProblemDetails.dump();
     code          = Pistache::Http::Code::Bad_Request;
     return;
@@ -526,8 +513,8 @@ void udm_app::handle_delete_auth(
   Logger::udm_ueau().debug("authEventId=" + hash_value);
 
   if (!hash_value.compare(authEventId)) {
-    // UDR DELETE interface ------- delete authentication
-    // status------------------------------
+    // UDR DELETE interface
+    // delete authentication status
     remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
                 supi + "/authentication-data/authentication-status";
 
@@ -540,13 +527,12 @@ void udm_app::handle_delete_auth(
     udm_client::curl_http_client(remoteUri, Method, "", Response);
 
     Logger::udm_ueau().info("Send 204 No_Content response to AUSF");
-    // response.send(Pistache::Http::Code::No_Content, "");
     auth_response = {};
     code          = Pistache::Http::Code::No_Content;
     return;
   } else {
     // error handling
-    // wrong autheventid
+    // wrong AuthEventId
     m_ProblemDetails.setCause("DATA_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
     m_ProblemDetails.setDetail("Wrong authEventId");
@@ -554,7 +540,6 @@ void udm_app::handle_delete_auth(
 
     Logger::udm_ueau().error("Wrong authEventId, should be = " + hash_value);
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
-    // response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
     auth_response = j_ProblemDetails.dump();
     code          = Pistache::Http::Code::Not_Found;
     return;
