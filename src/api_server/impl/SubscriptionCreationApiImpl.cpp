@@ -54,50 +54,13 @@ SubscriptionCreationApiImpl::SubscriptionCreationApiImpl(
 void SubscriptionCreationApiImpl::subscribe(
     const std::string& supi, const SdmSubscription& sdmSubscription,
     Pistache::Http::ResponseWriter& response) {
-  std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
-  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
-  std::string remoteUri;
-  std::string Method;
-  std::string msgBody;
-  std::string Response;
-  nlohmann::json j_ProblemDetails;
-  ProblemDetails m_ProblemDetails;
-
-  // UDR GET interface ----- get 3gpp_registration related
-  // info--------------------
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-              supi + "/context-data/sdm-subscriptions";
-  Logger::udm_uecm().debug("POST Request:" + remoteUri);
-  Method = "POST";
-
-  nlohmann::json sdmSubscription_j;
-  to_json(sdmSubscription_j, sdmSubscription);
-  long http_code;
-  http_code = udm_client::curl_http_client(
-      remoteUri, Method, sdmSubscription_j.dump(), Response);
-
   nlohmann::json response_data = {};
-  try {
-    Logger::udm_uecm().debug("POST Reponse:" + Response);
-    response_data = nlohmann::json::parse(Response.c_str());
+  Pistache::Http::Code code    = {};
 
-  } catch (nlohmann::json::exception& e) {  // error handling
-    Logger::udm_uecm().info("Could not get Json content from UDR response");
+  m_udm_app->handle_subscription_creation(
+      supi, sdmSubscription, response_data, code);
 
-    m_ProblemDetails.setCause("USER_NOT_FOUND");
-    m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
-    to_json(j_ProblemDetails, m_ProblemDetails);
-
-    Logger::udm_uecm().error("User " + supi + " not found in Database");
-    Logger::udm_uecm().info("Send 404 Not_Found response to client");
-    response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
-    return;
-  }
-  Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
-  response.send(
-      static_cast<Pistache::Http::Code>(http_code), sdmSubscription_j.dump());
+  response.send(code, response_data.dump());
 }
 
 }  // namespace api

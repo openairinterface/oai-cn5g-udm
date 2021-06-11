@@ -55,51 +55,13 @@ void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(
     const std::string& ueId,
     const Amf3GppAccessRegistration& amf3GppAccessRegistration,
     Pistache::Http::ResponseWriter& response) {
-  std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
-  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
-  std::string remoteUri;
-  std::string Method;
-  std::string msgBody;
-  std::string Response;
-  nlohmann::json j_ProblemDetails;
-  ProblemDetails m_ProblemDetails;
-
-  // UDR GET interface ----- get 3gpp_registration related
-  // info--------------------
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-              ueId + "/context-data/amf-3gpp-access";
-  Logger::udm_uecm().debug("PUT Request:" + remoteUri);
-  Method = "PUT";
-
-  nlohmann::json amf3GppAccessRegistration_j;
-  to_json(amf3GppAccessRegistration_j, amf3GppAccessRegistration);
-  long http_code;
-  http_code = udm_client::curl_http_client(
-      remoteUri, Method, amf3GppAccessRegistration_j.dump(), Response);
-
   nlohmann::json response_data = {};
-  try {
-    Logger::udm_uecm().debug("PUT Reponse:" + Response);
-    response_data = nlohmann::json::parse(Response.c_str());
+  Pistache::Http::Code code    = {};
+  std::string location;
 
-  } catch (nlohmann::json::exception& e) {  // error handling
-    Logger::udm_uecm().info("Could not get Json content from UDR response");
-
-    m_ProblemDetails.setCause("USER_NOT_FOUND");
-    m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + ueId + " not found in Database");
-    to_json(j_ProblemDetails, m_ProblemDetails);
-
-    Logger::udm_uecm().error("User " + ueId + " not found in Database");
-    Logger::udm_uecm().info("Send 404 Not_Found response to client");
-    response.send(Pistache::Http::Code::Not_Found, j_ProblemDetails.dump());
-    return;
-  }
-  Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
-  response.send(
-      static_cast<Pistache::Http::Code>(http_code),
-      amf3GppAccessRegistration_j.dump());
+  m_udm_app->handle_amf_registration_for_3gpp_access(
+      ueId, amf3GppAccessRegistration, response_data, code);
+  response.send(code, response_data.dump());
 }
 
 }  // namespace api
