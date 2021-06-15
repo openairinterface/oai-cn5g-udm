@@ -76,8 +76,8 @@ void SMFSmfRegistrationApiImpl::registration(
   nlohmann::json j_ProblemDetails;
   ProblemDetails m_ProblemDetails;
 
-  // UDR GET interface ----- get SmfRegistration related
-  // info--------------------
+  // UDR GET interface
+  // get SmfRegistration related info
   remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
               ueId + "/context-data/smf-registrations/" +
               std::to_string(pduSessionId);

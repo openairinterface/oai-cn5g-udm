@@ -37,8 +37,6 @@ namespace oai {
 namespace udm {
 namespace api {
 
-// using namespace oai::udm::model;
-
 SubscriptionDeletionApiImpl::SubscriptionDeletionApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
