@@ -64,7 +64,7 @@ void GenerateAuthDataApiImpl::generate_auth_data(
       supiOrSuci, authenticationInfoRequest, auth_info_response, code);
 
   Logger::udm_ueau().info("Send response to AUSF");
-  response.send(code, auth_info_response);
+  response.send(code, auth_info_response.dump().c_str());
 
   Logger::udm_ueau().info("Update sqn in Database");
 }

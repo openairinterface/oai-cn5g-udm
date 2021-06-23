@@ -69,8 +69,8 @@ udm_client::~udm_client() {
 
 //------------------------------------------------------------------------------
 long udm_client::curl_http_client(
-    std::string remoteUri, std::string method, std::string msgBody,
-    std::string& response) {
+    std::string remoteUri, std::string method, std::string& response,
+    std::string msgBody) {
   Logger::udm_ueau().info("Send HTTP message with body %s", msgBody.c_str());
 
   uint32_t str_len = msgBody.length();
@@ -123,7 +123,7 @@ long udm_client::curl_http_client(
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
 
     // get the response
-    std::string response           = *httpData.get();
+    response                       = *httpData.get();
     std::string json_data_response = "";
     std::string resMsg             = "";
     bool is_response_ok            = true;

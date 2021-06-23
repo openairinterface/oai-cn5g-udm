@@ -88,7 +88,7 @@ void SMFSmfRegistrationApiImpl::registration(
   to_json(smfRegistration_j, smfRegistration);
   long http_code;
   http_code = udm_client::curl_http_client(
-      remoteUri, Method, smfRegistration_j.dump(), Response);
+      remoteUri, Method, Response, smfRegistration_j.dump());
 
   nlohmann::json response_data = {};
   try {
