@@ -60,7 +60,7 @@ void SubscriptionCreationApiImpl::subscribe(
   m_udm_app->handle_subscription_creation(
       supi, sdmSubscription, response_data, code);
 
-  response.send(code, response_data.dump());
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace api

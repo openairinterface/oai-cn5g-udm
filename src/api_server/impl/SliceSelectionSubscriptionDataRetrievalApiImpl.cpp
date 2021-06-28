@@ -76,7 +76,7 @@ void SliceSelectionSubscriptionDataRetrievalApiImpl::get_nssai(
   m_udm_app->handle_slice_selection_subscription_data_retrieval(
       supi, response_data, code, supported_features_str, plmn_id);
 
-  response.send(code, response_data.dump());
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace api

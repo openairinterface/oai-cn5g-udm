@@ -65,7 +65,7 @@ void ConfirmAuthApiImpl::confirm_auth(
   }
 
   Logger::udm_ueau().info("Send response to AUSF");
-  response.send(code, confirm_response);
+  response.send(code, confirm_response.dump().c_str());
 }
 
 }  // namespace api

@@ -56,7 +56,7 @@ void DeleteAuthApiImpl::delete_auth(
       supi, authEventId, authEvent, auth_response, code);
 
   Logger::udm_ueau().info("Send response to AUSF");
-  response.send(code, auth_response);
+  response.send(code, auth_response.dump().c_str());
 }
 
 }  // namespace api
