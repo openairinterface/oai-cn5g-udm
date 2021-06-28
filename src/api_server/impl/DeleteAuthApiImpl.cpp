@@ -48,7 +48,7 @@ DeleteAuthApiImpl::DeleteAuthApiImpl(
 void DeleteAuthApiImpl::delete_auth(
     const std::string& supi, const std::string& authEventId,
     const AuthEvent& authEvent, Pistache::Http::ResponseWriter& response) {
-  Logger::udm_ueau().info("\n\nEntering delete_auth()");
+  Logger::udm_ueau().info("Handle delete_auth()");
 
   nlohmann::json auth_response = {};
   Pistache::Http::Code code    = {};

@@ -54,7 +54,7 @@ void GenerateAuthDataApiImpl::generate_auth_data(
     const std::string& supiOrSuci,
     const AuthenticationInfoRequest& authenticationInfoRequest,
     Pistache::Http::ResponseWriter& response) {
-  Logger::udm_ueau().info("\n\nEntering generate_auth_data()");
+  Logger::udm_ueau().info("Handle generate_auth_data()");
 
   std::string reponse_from_udr;
   nlohmann::json auth_info_response = {};
