@@ -61,7 +61,7 @@ void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(
 
   m_udm_app->handle_amf_registration_for_3gpp_access(
       ueId, amf3GppAccessRegistration, response_data, code);
-  response.send(code, response_data.dump());
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace api

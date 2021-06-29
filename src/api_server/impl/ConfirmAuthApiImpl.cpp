@@ -51,7 +51,7 @@ ConfirmAuthApiImpl::ConfirmAuthApiImpl(
 void ConfirmAuthApiImpl::confirm_auth(
     const std::string& supi, const AuthEvent& authEvent,
     Pistache::Http::ResponseWriter& response) {
-  Logger::udm_ueau().info("\n\nEntering confirm_auth()");
+  Logger::udm_ueau().info("Handle confirm_auth()");
 
   nlohmann::json confirm_response = {};
   Pistache::Http::Code code       = {};
@@ -65,7 +65,7 @@ void ConfirmAuthApiImpl::confirm_auth(
   }
 
   Logger::udm_ueau().info("Send response to AUSF");
-  response.send(code, confirm_response);
+  response.send(code, confirm_response.dump().c_str());
 }
 
 }  // namespace api

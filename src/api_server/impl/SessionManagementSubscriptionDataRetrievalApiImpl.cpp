@@ -76,7 +76,7 @@ void SessionManagementSubscriptionDataRetrievalApiImpl::get_sm_data(
 
   m_udm_app->handle_session_management_subscription_data_retrieval(
       supi, response_data, code, snssai, dnn_str);
-  response.send(code, response_data.dump());
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace api
