@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-CONFIG_DIR="/openair-ausf/etc"
+CONFIG_DIR="/openair-udm/etc"
 SBI_PORT=${SBI_PORT:-80}
 UDR_PORT=${UDM_PORT:-80}
 
