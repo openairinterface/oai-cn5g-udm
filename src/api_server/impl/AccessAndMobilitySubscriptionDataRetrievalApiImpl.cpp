@@ -72,7 +72,19 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
   m_udm_app->handle_access_mobility_subscription_data_retrieval(
       supi, response_data, code, plmn_id);
 
-  Logger::udm_sdm().debug("HTTP reponse code %d.\n", code);
+  // Set content type
+  if ((code == Pistache::Http::Code::Created) or
+      (code == Pistache::Http::Code::Accepted) or
+      (code == Pistache::Http::Code::Ok) or
+      (code == Pistache::Http::Code::No_Content)) {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+  } else {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/problem+json"));
+  }
+
+  Logger::udm_sdm().debug("HTTP response code %d.\n", code);
   response.send(code, response_data.dump());
 }
 

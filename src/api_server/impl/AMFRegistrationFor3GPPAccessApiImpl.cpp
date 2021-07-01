@@ -61,6 +61,19 @@ void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(
 
   m_udm_app->handle_amf_registration_for_3gpp_access(
       ueId, amf3GppAccessRegistration, response_data, code);
+
+  // Set content type
+  if ((code == Pistache::Http::Code::Created) or
+      (code == Pistache::Http::Code::Accepted) or
+      (code == Pistache::Http::Code::Ok) or
+      (code == Pistache::Http::Code::No_Content)) {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+  } else {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/problem+json"));
+  }
+
   response.send(code, response_data.dump().c_str());
 }
 

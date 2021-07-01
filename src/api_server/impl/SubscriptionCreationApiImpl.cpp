@@ -60,6 +60,18 @@ void SubscriptionCreationApiImpl::subscribe(
   m_udm_app->handle_subscription_creation(
       supi, sdmSubscription, response_data, code);
 
+  // Set content type
+  if ((code == Pistache::Http::Code::Created) or
+      (code == Pistache::Http::Code::Accepted) or
+      (code == Pistache::Http::Code::Ok) or
+      (code == Pistache::Http::Code::No_Content)) {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+  } else {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/problem+json"));
+  }
+
   response.send(code, response_data.dump().c_str());
 }
 

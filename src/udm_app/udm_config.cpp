@@ -51,8 +51,10 @@ using namespace libconfig;
 namespace config {
 
 //------------------------------------------------------------------------------
-udm_config::udm_config() {
-  // TODO:
+udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
+  udr_addr.ipv4_addr.s_addr = INADDR_ANY;
+  udr_addr.port             = 80;
+  udr_addr.api_version      = "v1";
 }
 
 //------------------------------------------------------------------------------
