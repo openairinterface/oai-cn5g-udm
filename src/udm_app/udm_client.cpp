@@ -85,20 +85,20 @@ long udm_client::curl_http_client(
   if (curl) {
     CURLcode res               = {};
     struct curl_slist* headers = nullptr;
-    if (!method.compare("POST") || !method.compare("PUT") ||
-        !method.compare("PATCH")) {
+    if ((method.compare("POST") == 0) or (method.compare("PUT") == 0) or
+        (method.compare("PATCH") == 0)) {
       std::string content_type = "Content-Type: application/json";
       headers = curl_slist_append(headers, content_type.c_str());
       curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     }
     curl_easy_setopt(curl, CURLOPT_URL, remoteUri.c_str());
-    if (!method.compare("POST"))
+    if (method.compare("POST") == 0)
       curl_easy_setopt(curl, CURLOPT_HTTPPOST, 1);
-    else if (!method.compare("PUT"))
+    else if (method.compare("PUT") == 0)
       curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
-    else if (!method.compare("DELETE"))
+    else if (method.compare("DELETE") == 0)
       curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
-    else if (!method.compare("PATCH"))
+    else if (method.compare("PATCH") == 0)
       curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
     else
       curl_easy_setopt(curl, CURLOPT_HTTPGET, 1);
@@ -114,8 +114,8 @@ long udm_client::curl_http_client(
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &callback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, httpData.get());
     curl_easy_setopt(curl, CURLOPT_HEADERDATA, httpHeaderData.get());
-    if (!method.compare("POST") || !method.compare("PUT") ||
-        !method.compare("PATCH")) {
+    if ((method.compare("POST") == 0) or (method.compare("PUT") == 0) or
+        (method.compare("PATCH") == 0)) {
       curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, msgBody.length());
       curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body_data);
     }
@@ -124,8 +124,8 @@ long udm_client::curl_http_client(
 
     // get the response
     response                       = *httpData.get();
-    std::string json_data_response = "";
-    std::string resMsg             = "";
+    std::string json_data_response = {};
+    std::string resMsg             = {};
     bool is_response_ok            = true;
     Logger::udm_ueau().info("Get response with httpcode (%d)", httpCode);
 
@@ -140,7 +140,9 @@ long udm_client::curl_http_client(
 
     nlohmann::json response_data = {};
 
-    if (httpCode != 200 && httpCode != 201 && httpCode != 204) {
+    if (httpCode != HTTP_RESPONSE_CODE_OK &&
+        httpCode != HTTP_RESPONSE_CODE_CREATED &&
+        httpCode != HTTP_RESPONSE_CODE_NO_CONTENT) {
       is_response_ok = false;
       if (response.size() < 1) {
         Logger::udm_ueau().info("There's no content in the response");
@@ -180,9 +182,9 @@ long udm_client::curl_http_client(
 
   if (body_data) {
     free(body_data);
-    body_data = NULL;
+    body_data = nullptr;
   }
-  fflush(stdout);
+  // fflush(stdout);
 
   return httpCode;
 }
