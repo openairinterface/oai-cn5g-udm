@@ -64,6 +64,18 @@ void ConfirmAuthApiImpl::confirm_auth(
     response.headers().add<Pistache::Http::Header::Location>(location);
   }
 
+  // Set content type
+  if ((code == Pistache::Http::Code::Created) or
+      (code == Pistache::Http::Code::Accepted) or
+      (code == Pistache::Http::Code::Ok) or
+      (code == Pistache::Http::Code::No_Content)) {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+  } else {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/problem+json"));
+  }
+
   Logger::udm_ueau().info("Send response to AUSF");
   response.send(code, confirm_response.dump().c_str());
 }

@@ -105,11 +105,21 @@ void SMFSmfRegistrationApiImpl::registration(
 
     Logger::udm_uecm().error("User " + ueId + " not found in Database");
     Logger::udm_uecm().info("Send 404 Not_Found response to client");
+
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/problem+json"));
+
     response.send(
         Pistache::Http::Code::Not_Found, j_ProblemDetails.dump().c_str());
     return;
   }
   Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
+
+  // Set content type
+
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
+
   response.send(
       static_cast<Pistache::Http::Code>(http_code),
       smfRegistration_j.dump().c_str());

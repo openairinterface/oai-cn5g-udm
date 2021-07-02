@@ -63,6 +63,18 @@ void GenerateAuthDataApiImpl::generate_auth_data(
   m_udm_app->handle_generate_auth_data_request(
       supiOrSuci, authenticationInfoRequest, auth_info_response, code);
 
+  // Set content type
+  if ((code == Pistache::Http::Code::Created) or
+      (code == Pistache::Http::Code::Accepted) or
+      (code == Pistache::Http::Code::Ok) or
+      (code == Pistache::Http::Code::No_Content)) {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+  } else {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/problem+json"));
+  }
+
   Logger::udm_ueau().info("Send response to AUSF");
   response.send(code, auth_info_response.dump().c_str());
 

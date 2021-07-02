@@ -55,6 +55,18 @@ void DeleteAuthApiImpl::delete_auth(
   m_udm_app->handle_delete_auth(
       supi, authEventId, authEvent, auth_response, code);
 
+  // Set content type
+  if ((code == Pistache::Http::Code::Created) or
+      (code == Pistache::Http::Code::Accepted) or
+      (code == Pistache::Http::Code::Ok) or
+      (code == Pistache::Http::Code::No_Content)) {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+  } else {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/problem+json"));
+  }
+
   Logger::udm_ueau().info("Send response to AUSF");
   response.send(code, auth_response.dump().c_str());
 }

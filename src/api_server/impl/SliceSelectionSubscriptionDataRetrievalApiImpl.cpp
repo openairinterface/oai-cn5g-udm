@@ -76,6 +76,18 @@ void SliceSelectionSubscriptionDataRetrievalApiImpl::get_nssai(
   m_udm_app->handle_slice_selection_subscription_data_retrieval(
       supi, response_data, code, supported_features_str, plmn_id);
 
+  // Set content type
+  if ((code == Pistache::Http::Code::Created) or
+      (code == Pistache::Http::Code::Accepted) or
+      (code == Pistache::Http::Code::Ok) or
+      (code == Pistache::Http::Code::No_Content)) {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+  } else {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/problem+json"));
+  }
+
   response.send(code, response_data.dump().c_str());
 }
 
