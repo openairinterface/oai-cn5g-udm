@@ -99,8 +99,8 @@ install_spdlog_from_git() {
       $SUDO rm -rf spdlog
     fi
 
-    git clone $GIT_URL
-    cd spdlog && git checkout master
+    git clone --depth=1 $GIT_URL
+    cd spdlog && git fetch --unshallow && git checkout master
     ret=$?;[[ $ret -ne 0 ]] && popd && return $ret
     # enable syslog, Useless (defined in UDM code)
     sed -i '/#define SPDLOG_ENABLE_SYSLOG/s/^\/\///g' include/spdlog/tweakme.h
