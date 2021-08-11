@@ -83,16 +83,17 @@ void udm_app::handle_generate_auth_data_request(
     const std::string& supiOrSuci,
     const oai::udm::model::AuthenticationInfoRequest& authenticationInfoRequest,
     nlohmann::json& auth_info_response, Pistache::Http::Code& code) {
+  Logger::udm_ueau().info("Handle Generate Auth Data Request");
   uint8_t rand[16] = {0};
   uint8_t opc[16]  = {0};
   uint8_t key[16]  = {0};
   uint8_t sqn[6]   = {0};
   uint8_t amf[2]   = {0};
 
-  uint8_t* r_sqn = NULL;     // for resync
-  std::string r_sqnms_s;     // for resync
-  uint8_t r_rand[16] = {0};  // for resync
-  uint8_t r_auts[14] = {0};  // for resync
+  uint8_t* r_sqn        = nullptr;  // for resync
+  std::string r_sqnms_s = {};       // for resync
+  uint8_t r_rand[16]    = {0};      // for resync
+  uint8_t r_auts[14]    = {0};      // for resync
 
   uint8_t mac_a[8]     = {0};
   uint8_t ck[16]       = {0};
@@ -241,8 +242,11 @@ void udm_app::handle_generate_auth_data_request(
       m_SequenceNumber.setLastIndexes(index);
       to_json(j_SequenceNumber, m_SequenceNumber);
 
-      nlohmann::json j_PatchItem;
-      PatchItem m_PatchItem;
+      Logger::udm_ueau().info(
+          "Sequence Number %s", j_SequenceNumber.dump().c_str());
+
+      nlohmann::json j_PatchItem = {};
+      PatchItem m_PatchItem      = {};
       m_PatchItem.setValue(j_SequenceNumber.dump());
       m_PatchItem.setOp("replace");
       m_PatchItem.setFrom("");
