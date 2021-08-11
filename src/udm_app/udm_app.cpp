@@ -83,16 +83,17 @@ void udm_app::handle_generate_auth_data_request(
     const std::string& supiOrSuci,
     const oai::udm::model::AuthenticationInfoRequest& authenticationInfoRequest,
     nlohmann::json& auth_info_response, Pistache::Http::Code& code) {
+  Logger::udm_ueau().info("Handle Generate Auth Data Request");
   uint8_t rand[16] = {0};
   uint8_t opc[16]  = {0};
   uint8_t key[16]  = {0};
   uint8_t sqn[6]   = {0};
   uint8_t amf[2]   = {0};
 
-  uint8_t* r_sqn = NULL;     // for resync
-  std::string r_sqnms_s;     // for resync
-  uint8_t r_rand[16] = {0};  // for resync
-  uint8_t r_auts[14] = {0};  // for resync
+  uint8_t* r_sqn        = nullptr;  // for resync
+  std::string r_sqnms_s = {};       // for resync
+  uint8_t r_rand[16]    = {0};      // for resync
+  uint8_t r_auts[14]    = {0};      // for resync
 
   uint8_t mac_a[8]     = {0};
   uint8_t ck[16]       = {0};
@@ -103,28 +104,28 @@ void udm_app::handle_generate_auth_data_request(
   uint8_t autn[16]     = {0};
   uint8_t kausf[32]    = {0};
 
-  std::string rand_s;
-  std::string autn_s;
-  std::string xresStar_s;
-  std::string kausf_s;
-  std::string sqn_s;
-  std::string amf_s;
-  std::string key_s;
-  std::string opc_s;
+  std::string rand_s     = {};
+  std::string autn_s     = {};
+  std::string xresStar_s = {};
+  std::string kausf_s    = {};
+  std::string sqn_s      = {};
+  std::string amf_s      = {};
+  std::string key_s      = {};
+  std::string opc_s      = {};
 
   std::string snn  = authenticationInfoRequest.getServingNetworkName();
   std::string supi = supiOrSuci;
 
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
-  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
-  std::string remoteUri;
-  std::string Method;
-  std::string msgBody;
-  std::string Response;
+  std::string udr_port  = std::to_string(udm_cfg.udr_addr.port);
+  std::string remoteUri = {};
+  std::string Method    = {};
+  std::string msgBody   = {};
+  std::string Response  = {};
 
-  nlohmann::json j_ProblemDetails;
-  ProblemDetails m_ProblemDetails;
+  nlohmann::json j_ProblemDetails = {};
+  ProblemDetails m_ProblemDetails = {};
 
   // UDR GET interface ----- get authentication related info--------------------
   remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
@@ -158,19 +159,19 @@ void udm_app::handle_generate_auth_data_request(
     try {
       key_s = response_data.at("encPermanentKey");
       conv::hex_str_to_uint8(key_s.c_str(), key);
-      comUt::print_buffer("udm_ueau", "Result For F1-Alg: key", key, 16);
+      comUt::print_buffer("udm_ueau", "Result For F1-Alg Key", key, 16);
 
       opc_s = response_data.at("encOpcKey");
       conv::hex_str_to_uint8(opc_s.c_str(), opc);
-      // comUt::print_buffer("udm_ueau", "Result For F1-Alg: opc", opc , 16);
+      comUt::print_buffer("udm_ueau", "Result For F1-Alg OPC", opc, 16);
 
       amf_s = response_data.at("authenticationManagementField");
       conv::hex_str_to_uint8(amf_s.c_str(), amf);
-      // comUt::print_buffer("udm_ueau", "Result For F1-Alg: amf", amf , 2);
+      comUt::print_buffer("udm_ueau", "Result For F1-Alg AMF", amf, 2);
 
       sqn_s = response_data["sequenceNumber"].at("sqn");
       conv::hex_str_to_uint8(sqn_s.c_str(), sqn);
-      // comUt::print_buffer("udm_ueau", "Result For F1-Alg: sqn", sqn , 6);
+      comUt::print_buffer("udm_ueau", "Result For F1-Alg SQN: ", sqn, 6);
     } catch (nlohmann::json::exception& e) {
       // error handling
       m_ProblemDetails.setCause("AUTHENTICATION_REJECTED");
@@ -213,8 +214,8 @@ void udm_app::handle_generate_auth_data_request(
     std::string r_rand_s = m_ResynchronizationInfo.getRand();
     std::string r_auts_s = m_ResynchronizationInfo.getAuts();
 
-    Logger::udm_ueau().debug("[resync] r_rand = " + r_rand_s);
-    Logger::udm_ueau().debug("[resync] r_auts = " + r_auts_s);
+    Logger::udm_ueau().info("[resync] r_rand = " + r_rand_s);
+    Logger::udm_ueau().info("[resync] r_auts = " + r_auts_s);
 
     conv::hex_str_to_uint8(r_rand_s.c_str(), r_rand);
     conv::hex_str_to_uint8(r_auts_s.c_str(), r_auts);
@@ -222,7 +223,7 @@ void udm_app::handle_generate_auth_data_request(
     r_sqn = Authentication_5gaka::sqn_ms_derive(opc, key, r_auts, r_rand, amf);
 
     if (r_sqn) {  // Not NULL (validate auts)
-      Logger::udm_ueau().debug("Valid AUTS, generate new AV with SQNms");
+      Logger::udm_ueau().info("Valid AUTS, generate new AV with SQNms");
 
       // UDR PATCH interface
       // replace SQNhe with SQNms
@@ -241,8 +242,11 @@ void udm_app::handle_generate_auth_data_request(
       m_SequenceNumber.setLastIndexes(index);
       to_json(j_SequenceNumber, m_SequenceNumber);
 
-      nlohmann::json j_PatchItem;
-      PatchItem m_PatchItem;
+      Logger::udm_ueau().info(
+          "Sequence Number %s", j_SequenceNumber.dump().c_str());
+
+      nlohmann::json j_PatchItem = {};
+      PatchItem m_PatchItem      = {};
       m_PatchItem.setValue(j_SequenceNumber.dump());
       m_PatchItem.setOp("replace");
       m_PatchItem.setFrom("");
@@ -250,7 +254,7 @@ void udm_app::handle_generate_auth_data_request(
       to_json(j_PatchItem, m_PatchItem);
 
       msgBody = "[" + j_PatchItem.dump() + "]";
-      Logger::udm_ueau().debug("PATCH Request body = " + msgBody);
+      Logger::udm_ueau().info("PATCH Request body: %s", msgBody.c_str());
 
       udm_client::curl_http_client(remoteUri, Method, Response, msgBody);
 
@@ -309,7 +313,7 @@ void udm_app::handle_generate_auth_data_request(
   // TODO: Separate into a new function
   // Do it after send ok to AUSF (to be verified)
 
-  // calculate new sqn----------------------------------------------------------
+  // Calculate new sqn----------------------------------------------------------
   unsigned long long sqn_value;
   std::stringstream s1;
   s1 << std::hex << sqn_s;
@@ -320,7 +324,7 @@ void udm_app::handle_generate_auth_data_request(
      << sqn_value;  // decimal value to hex string
   std::string new_sqn(s2.str());
 
-  Logger::udm_ueau().debug("new_sqn = " + new_sqn);
+  Logger::udm_ueau().info("new_sqn = " + new_sqn);
 
   // UDR PATCH interface
   // Increase sqn
@@ -347,11 +351,13 @@ void udm_app::handle_generate_auth_data_request(
   to_json(j_PatchItem, m_PatchItem);
 
   msgBody = "[" + j_PatchItem.dump() + "]";
-  // Logger::udm_ueau().debug("PATCH Request body = " + msgBody);
+  Logger::udm_ueau().info(
+      "Update UDR with PATCH message, body:  %s", msgBody.c_str());
 
   udm_client::curl_http_client(remoteUri, Method, Response, msgBody);
 
   Logger::udm_ueau().info("Send 200 Ok response to AUSF");
+  Logger::udm_ueau().info("AuthInfoResult %s", AuthInfoResult.dump().c_str());
   auth_info_response = AuthInfoResult;
   code               = Pistache::Http::Code::Ok;
   return;
