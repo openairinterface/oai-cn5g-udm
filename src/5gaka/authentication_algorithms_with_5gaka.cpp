@@ -505,8 +505,8 @@ uint8_t* Authentication_5gaka::sqn_ms_derive(
   uint8_t* mac_s                       = NULL;
   uint8_t mac_s_computed[MAC_S_LENGTH] = {0};
   uint8_t* sqn_ms                      = NULL;
-  // uint8_t amf[2] = {0, 0};
-  int i = 0;
+  uint8_t amf_tmp[2]                   = {0, 0};
+  int i                                = 0;
 
   conc_sqn_ms = auts;
   mac_s       = &auts[6];
@@ -532,7 +532,7 @@ uint8_t* Authentication_5gaka::sqn_ms_derive(
   comUt::print_buffer("udm_ueau", "sqn_ms_derive() SQN_MS : ", sqn_ms, 6);
   comUt::print_buffer("udm_ueau", "sqn_ms_derive() MAC_S  : ", mac_s, 8);
 
-  f1star(opc, key, rand_p, sqn_ms, amf, mac_s_computed);
+  f1star(opc, key, rand_p, sqn_ms, amf_tmp, mac_s_computed);
   comUt::print_buffer("udm_ueau", "MAC_S +: ", mac_s_computed, 8);
 
   if (memcmp(mac_s_computed, mac_s, 8) != 0) {
