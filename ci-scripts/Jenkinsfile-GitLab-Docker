@@ -66,8 +66,8 @@ pipeline {
       "Build U18 UDM Image",
       "Build RHEL8 UDM Image",
       "Static Code Analysis",
-      "Code Formatting Checker" //,
-      //"Test with DsTester"
+      "Code Formatting Checker",
+      "Test with DsTester on Docker environment"
     ])
 
   }
@@ -121,16 +121,14 @@ pipeline {
         script {
           sh "git clean -x -d -f > /dev/null 2>&1"
           if ("MERGE".equals(env.gitlabActionType)) {
-            // Need a public repo
-            //gitlabMergeRequestLink = sh "curl --silent \"https://gitlab.eurecom.fr/api/v4/projects/oai%2Fcn5g%2Foai-cn5g-udm/merge_requests/${env.gitlabMergeRequestIid}\" | jq .web_url | sed 's#\"##g'"
+            gitlabMergeRequestLink = sh returnStdout: true, script: "curl --silent 'https://gitlab.eurecom.fr/api/v4/projects/oai%2Fcn5g%2Foai-cn5g-udm/merge_requests/${env.gitlabMergeRequestIid}' | jq .web_url | sed 's#\"##g'"
+            gitlabMergeRequestLink = gitlabMergeRequestLink.trim()
             echo "========= THIS IS A MERGE REQUEST =========="
             echo "MR ID       is ${env.gitlabMergeRequestIid}"
             //echo "MR LINK     is ${gitlabMergeRequestLink}"
             echo "MR TITLE    is ${env.gitlabMergeRequestTitle}"
             gitCommitAuthorEmailAddr = env.gitlabUserEmail
             echo "GitLab Usermail is ${gitCommitAuthorEmailAddr}"
-            // Need a public repo
-            //sh "git fetch --prune --unshallow"
             shortenShaOne = sh returnStdout: true, script: 'git log -1 --pretty=format:"%h" ' + env.gitlabMergeRequestLastCommit
             shortenShaOne = shortenShaOne.trim()
             sh "./ci-scripts/doGitLabMerge.sh --src-branch ${env.gitlabSourceBranch} --src-commit ${env.gitlabMergeRequestLastCommit} --target-branch ${env.gitlabTargetBranch} --target-commit ${GIT_COMMIT}"
@@ -341,6 +339,40 @@ pipeline {
         }
       }
     }
+    stage('Testing whole 5g Core Network Functions') {
+      parallel {
+        stage ('Testing in CN-5G-FED Docker environment') {
+          steps {
+            script {
+              gitlabCommitStatus(name: "Test with DsTester on Docker environment") {
+                localStatus = build job: params.CN5G_FED_PipelineName,
+                  parameters: [
+                    string(name: 'UDM_TAG', value: String.valueOf(udm_tag)),
+                    string(name: 'UDM_BRANCH', value: String.valueOf(udm_branch))
+                  ], propagate: false
+                localResult = localStatus.getResult()
+
+                if (localStatus.resultIsBetterOrEqualTo('SUCCESS')) {
+                  echo "Docker Federation Test Job is OK"
+                } else {
+                  echo "Docker Federation Test Job is KO"
+                  sh "ci-scripts/fail.sh"
+                }
+              }
+            }
+          }
+          post {
+            always {
+              script {
+                copyArtifacts(projectName: params.CN5G_FED_PipelineName,
+                              filter: '*_results_oai_cn5g.html',
+                              selector: lastCompleted())
+              }
+            }
+          }
+        }
+      }
+    }
   }
   post {
     success {
@@ -408,6 +440,10 @@ pipeline {
             sh "sed -i -e 's#TEMPLATE_MERGE_REQUEST_LINK#${gitlabMergeRequestLink}#g' test_results_oai_udm.html"
             sh "sed -i -e 's#TEMPLATE_MERGE_REQUEST_TEMPLATE#${env.gitlabMergeRequestTitle}#' test_results_oai_udm.html"
           }
+          if (fileExists('test_results_oai_cn5g.html')) {
+            sh "sed -i -e 's#TEMPLATE_MERGE_REQUEST_LINK#${gitlabMergeRequestLink}#g' *_results_oai_cn5g.html"
+            sh "sed -i -e 's#TEMPLATE_MERGE_REQUEST_TEMPLATE#${env.gitlabMergeRequestTitle}#' *_results_oai_cn5g.html"
+          }
         } else {
           sh "python3 ci-scripts/generateHtmlReport.py --job_name=${JOB_NAME} --job_id=${BUILD_ID} --job_url=${BUILD_URL} --git_url=${GIT_URL} --git_src_branch=${GIT_BRANCH} --git_src_commit=${GIT_COMMIT}"
         }
@@ -415,6 +451,10 @@ pipeline {
         if (fileExists('test_results_oai_udm.html')) {
           sh "sed -i -e 's#TEMPLATE_TIME#${JOB_TIMESTAMP}#' test_results_oai_udm.html"
           archiveArtifacts artifacts: 'test_results_oai_udm.html'
+        }
+        if (fileExists('test_results_oai_cn5g.html')) {
+          sh "sed -i -e 's#TEMPLATE_TIME#${JOB_TIMESTAMP}#' *_results_oai_cn5g.html"
+          archiveArtifacts artifacts: '*_results_oai_cn5g.html'
         }
 
         // Sending email to commiter
