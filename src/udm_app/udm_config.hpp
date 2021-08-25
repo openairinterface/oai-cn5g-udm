@@ -61,6 +61,10 @@
 #define UDM_CONFIG_STRING_UDR_IPV4_ADDRESS "IPV4_ADDRESS"
 #define UDM_CONFIG_STRING_UDR_PORT "PORT"
 
+#define UDM_CONFIG_STRING_SUPPORT_FEATURES "SUPPORT_FEATURES"
+#define UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_FQDN_DNS "USE_FQDN_DNS"
+#define UDM_CONFIG_STRING_FQDN_DNS "FQDN"
+
 using namespace libconfig;
 
 namespace config {
@@ -92,7 +96,10 @@ class udm_config {
     struct in_addr ipv4_addr;
     unsigned int port;
     std::string api_version;
+    std::string fqdn;
   } udr_addr;
+
+  bool use_fqdn_dns;
 };
 
 }  // namespace config

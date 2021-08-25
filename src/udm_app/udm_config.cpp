@@ -33,6 +33,7 @@
 
 #include "if.hpp"
 #include "logger.hpp"
+#include "fqdn.hpp"
 #include "string.hpp"
 
 extern "C" {
@@ -55,6 +56,8 @@ udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
   udr_addr.ipv4_addr.s_addr = INADDR_ANY;
   udr_addr.port             = 80;
   udr_addr.api_version      = "v1";
+  udr_addr.fqdn             = {};
+  use_fqdn_dns              = false;
 }
 
 //------------------------------------------------------------------------------
@@ -86,7 +89,7 @@ int udm_config::load(const std::string& config_file) {
     const Setting& udm_cfg = root[UDM_CONFIG_STRING_UDM_CONFIG];
   } catch (const SettingNotFoundException& nfex) {
     Logger::config().error("%s : %s", nfex.what(), nfex.getPath());
-    return -1;
+    return RETURNerror;
   }
   const Setting& udm_cfg = root[UDM_CONFIG_STRING_UDM_CONFIG];
   try {
@@ -119,34 +122,74 @@ int udm_config::load(const std::string& config_file) {
   } catch (const SettingNotFoundException& nfex) {
     Logger::config().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
-    return -1;
+    return RETURNerror;
+  }
+
+  // Support features
+  try {
+    const Setting& support_features =
+        udm_cfg[UDM_CONFIG_STRING_SUPPORT_FEATURES];
+    std::string opt = {};
+
+    support_features.lookupValue(
+        UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_FQDN_DNS, opt);
+    if (boost::iequals(opt, "yes")) {
+      use_fqdn_dns = true;
+    } else {
+      use_fqdn_dns = false;
+    }
+
+  } catch (const SettingNotFoundException& nfex) {
+    Logger::udm_app().error(
+        "%s : %s, using defaults", nfex.what(), nfex.getPath());
+    return RETURNerror;
   }
 
   try {
     std::string astring;
 
     // UDR
-    const Setting& udr_cfg = udm_cfg[UDM_CONFIG_STRING_UDR];
-    struct in_addr udr_ipv4_addr;
-    unsigned int udr_port = 0;
-    std::string udr_api_version;
-    udr_cfg.lookupValue(UDM_CONFIG_STRING_UDR_IPV4_ADDRESS, astring);
-    IPV4_STR_ADDR_TO_INADDR(
-        util::trim(astring).c_str(), udr_ipv4_addr,
-        "BAD IPv4 ADDRESS FORMAT FOR UDR !");
-    udr_addr.ipv4_addr = udr_ipv4_addr;
-    if (!(udr_cfg.lookupValue(UDM_CONFIG_STRING_UDR_PORT, udr_port))) {
-      Logger::udm_app().error(UDM_CONFIG_STRING_UDR_PORT "failed");
-      throw(UDM_CONFIG_STRING_UDR_PORT "failed");
-    }
-    udr_addr.port = udr_port;
+    const Setting& udr_cfg       = udm_cfg[UDM_CONFIG_STRING_UDR];
+    struct in_addr udr_ipv4_addr = {};
+    unsigned int udr_port        = 0;
+    std::string udr_api_version  = {};
 
-    if (!(udr_cfg.lookupValue(
-            UDM_CONFIG_STRING_API_VERSION, udr_api_version))) {
-      Logger::udm_app().error(UDM_CONFIG_STRING_API_VERSION "failed");
-      throw(UDM_CONFIG_STRING_API_VERSION "failed");
+    if (!use_fqdn_dns) {
+      udr_cfg.lookupValue(UDM_CONFIG_STRING_UDR_IPV4_ADDRESS, astring);
+      IPV4_STR_ADDR_TO_INADDR(
+          util::trim(astring).c_str(), udr_ipv4_addr,
+          "BAD IPv4 ADDRESS FORMAT FOR UDR !");
+      udr_addr.ipv4_addr = udr_ipv4_addr;
+      if (!(udr_cfg.lookupValue(UDM_CONFIG_STRING_UDR_PORT, udr_port))) {
+        Logger::udm_app().error(UDM_CONFIG_STRING_UDR_PORT "failed");
+        throw(UDM_CONFIG_STRING_UDR_PORT "failed");
+      }
+      udr_addr.port = udr_port;
+
+      if (!(udr_cfg.lookupValue(
+              UDM_CONFIG_STRING_API_VERSION, udr_api_version))) {
+        Logger::udm_app().error(UDM_CONFIG_STRING_API_VERSION "failed");
+        throw(UDM_CONFIG_STRING_API_VERSION "failed");
+      }
+      udr_addr.api_version = udr_api_version;
+    } else {
+      udr_cfg.lookupValue(UDM_CONFIG_STRING_FQDN_DNS, astring);
+      uint8_t addr_type   = {0};
+      std::string address = {};
+      fqdn::resolve(astring, address, udr_port, addr_type);
+      if (addr_type != 0) {  // IPv6
+        // TODO:
+        throw("DO NOT SUPPORT IPV6 ADDR FOR UDR!");
+      } else {  // IPv4
+        IPV4_STR_ADDR_TO_INADDR(
+            util::trim(address).c_str(), udr_ipv4_addr,
+            "BAD IPv4 ADDRESS FORMAT FOR UDR !");
+        udr_addr.ipv4_addr   = udr_ipv4_addr;
+        udr_addr.port        = udr_port;
+        udr_addr.api_version = "v1";  // TODO: to get API version from DNS
+        udr_addr.fqdn        = astring;
+      }
     }
-    udr_addr.api_version = udr_api_version;
 
   } catch (const SettingNotFoundException& nfex) {
     Logger::udm_app().error("%s : %s", nfex.what(), nfex.getPath());
@@ -160,8 +203,8 @@ void udm_config::display() {
   Logger::config().info("============== UDM =============");
   Logger::config().info("Configuration UDM:");
   Logger::config().info("- Instance................: %d", instance);
-  Logger::config().info("- PID dir.................: %s", pid_dir.c_str());
-  Logger::config().info("- UDM NAME................: %s", udm_name.c_str());
+  Logger::config().info("- PID Dir.................: %s", pid_dir.c_str());
+  Logger::config().info("- UDM name................: %s", udm_name.c_str());
 
   Logger::config().info("- SBI:");
   Logger::config().info("    Iface name............: %s", sbi.if_name.c_str());
@@ -175,6 +218,9 @@ void udm_config::display() {
   Logger::config().info("    Port..................: %lu  ", udr_addr.port);
   Logger::config().info(
       "    API version...........: %s", udr_addr.api_version.c_str());
+  if (use_fqdn_dns)
+    Logger::config().info(
+        "    FQDN..................: %s", udr_addr.fqdn.c_str());
 }
 
 //------------------------------------------------------------------------------
