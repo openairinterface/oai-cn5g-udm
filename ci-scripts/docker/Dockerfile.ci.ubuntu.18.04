@@ -53,6 +53,7 @@ RUN apt-get update && \
       tzdata \
       bc \
       tshark \
+      perl \
       libasan4 \
       libpsl5 \
       librtmp1 \
