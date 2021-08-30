@@ -6,6 +6,11 @@ CONFIG_DIR="/openair-udm/etc"
 SBI_PORT=${SBI_PORT:-80}
 UDR_PORT=${UDM_PORT:-80}
 
+if [[ ${USE_FQDN_DNS} == "yes" ]];then
+    UDR_IP_ADDRESS=${UDR_IP_ADDRESS:-0.0.0.0}
+fi
+
+
 for c in ${CONFIG_DIR}/*.conf; do
     # grep variable names (format: ${VAR}) from template to be rendered
     VARS=$(grep -oP '@[a-zA-Z0-9_]+@' ${c} | sort | uniq | xargs)

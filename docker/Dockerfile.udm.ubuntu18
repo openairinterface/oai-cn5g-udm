@@ -38,6 +38,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
       psmisc \
+      software-properties-common \
       git && \
     rm -rf /var/lib/apt/lists/*
 
@@ -72,6 +73,7 @@ RUN apt-get update && \
       tzdata \
       bc \
       tshark \
+      perl \
       libasan4 \
       libpsl5 \
       librtmp1 \
@@ -89,6 +91,7 @@ COPY --from=oai-udm-builder /openair-udm/scripts/entrypoint.sh .
 
 COPY --from=oai-udm-builder /usr/local/lib/libpistache.so /usr/local/lib/
 COPY --from=oai-udm-builder /usr/lib/x86_64-linux-gnu/libcurl-gnutls.so.4 /usr/local/lib/
+COPY --from=oai-udm-builder /usr/lib/libboost_system.so.1.67.0 /usr/local/lib/
 
 RUN ldconfig
 
