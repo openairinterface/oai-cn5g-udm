@@ -200,6 +200,8 @@ int udm_config::load(const std::string& config_file) {
 
 //------------------------------------------------------------------------------
 void udm_config::display() {
+  Logger::config().info(
+      "==== OAI-CN5G %s v%s ====", PACKAGE_NAME, PACKAGE_VERSION);
   Logger::config().info("============== UDM =============");
   Logger::config().info("Configuration UDM:");
   Logger::config().info("- Instance................: %d", instance);
