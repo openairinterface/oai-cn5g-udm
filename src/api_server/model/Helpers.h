@@ -44,10 +44,12 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "Snssai.h"
+#include "PlmnId.h"
+using namespace oai::udm::model;
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace helpers {
 
 std::string toStringValue(const std::string& value);
@@ -63,6 +65,10 @@ bool fromStringValue(const std::string& inStr, int64_t& value);
 bool fromStringValue(const std::string& inStr, bool& value);
 bool fromStringValue(const std::string& inStr, float& value);
 bool fromStringValue(const std::string& inStr, double& value);
+
+bool fromStringValue(const std::string& inStr, oai::udm::model::PlmnId& value);
+bool fromStringValue(const std::string& inStr, oai::udm::model::Snssai& value);
+
 template<typename T>
 bool fromStringValue(
     const std::vector<std::string>& inStr, std::vector<T>& value) {
@@ -91,8 +97,7 @@ bool fromStringValue(
 }
 
 }  // namespace helpers
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai
 
 #endif  // Helpers_H_

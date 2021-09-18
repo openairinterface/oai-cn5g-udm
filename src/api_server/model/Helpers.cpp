@@ -32,9 +32,8 @@
  */
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
+namespace oai {
+namespace udm {
 namespace helpers {
 
 std::string toStringValue(const std::string& value) {
@@ -109,7 +108,15 @@ bool fromStringValue(const std::string& inStr, double& value) {
   return true;
 }
 
+bool fromStringValue(const std::string& inStr, oai::udm::model::PlmnId& value) {
+  // TODO
+  return true;
+}
+bool fromStringValue(const std::string& inStr, oai::udm::model::Snssai& value) {
+  // TODO
+  return true;
+}
+
 }  // namespace helpers
-}  // namespace server
-}  // namespace openapitools
-}  // namespace org
+}  // namespace udm
+}  // namespace oai

@@ -646,15 +646,15 @@ void udm_app::handle_amf_registration_for_3gpp_access(
 //------------------------------------------------------------------------------
 void udm_app::handle_session_management_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data,
-    Pistache::Http::Code& code, oai::udm::model::Snssai snssai,
-    std::string dnn) {
+    Pistache::Http::Code& code, oai::udm::model::Snssai snssai, std::string dnn,
+    oai::udm::model::PlmnId plmn_id) {
   // 1. populate remote uri for udp request
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
-  std::string udr_port   = std::to_string(udm_cfg.udr_addr.port);
-  std::string remote_uri = udr_ip + ":" + udr_port +
-                           "/nudr-dr/v2/subscription-data/" + supi +
-                           "/456789/provisioned-data/sm-data";
+  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
+  std::string remote_uri =
+      udr_ip + ":" + udr_port + "/nudr-dr/" + udm_cfg.udr_addr.api_version +
+      "/subscription-data/" + supi + "/456789/provisioned-data/sm-data";
 
   std::string body("");
   std::string response_get;

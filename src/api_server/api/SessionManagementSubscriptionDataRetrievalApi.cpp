@@ -39,7 +39,7 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
 
 SessionManagementSubscriptionDataRetrievalApi::
@@ -88,13 +88,13 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
   */
   auto singleNssaiQuery = request.query().get("single-nssai");
   Pistache::Optional<Snssai> singleNssai;
-  /*    if(!singleNssaiQuery.isEmpty()){
-          Snssai value;
-          if(fromStringValue(singleNssaiQuery.get(), value)){
-              singleNssai = Pistache::Some(value);
-          }
-      }
-  */
+  if (!singleNssaiQuery.isEmpty()) {
+    Snssai value;
+    if (fromStringValue(singleNssaiQuery.get(), value)) {
+      singleNssai = Pistache::Some(value);
+    }
+  }
+
   auto dnnQuery = request.query().get("dnn");
   Pistache::Optional<std::string> dnn;
   if (!dnnQuery.isEmpty()) {
@@ -103,19 +103,16 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
       dnn = Pistache::Some(value);
     }
   }
-  /*
-   * TODO:
 
   auto plmnIdQuery = request.query().get("plmn-id");
   Pistache::Optional<PlmnId> plmnId;
-  if(!plmnIdQuery.isEmpty()){
-      PlmnId value;
-      if(fromStringValue(plmnIdQuery.get(), value)){
-          plmnId = Pistache::Some(value);
-      }
+  if (!plmnIdQuery.isEmpty()) {
+    PlmnId value;
+    if (fromStringValue(plmnIdQuery.get(), value)) {
+      plmnId = Pistache::Some(value);
+    }
   }
 
-  */
   /*
    * TODO:
 
@@ -126,7 +123,7 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
   try {
     // this->get_sm_data(supi, supportedFeatures, singleNssai, dnn, plmnId,
     // ifNoneMatch, ifModifiedSince, response);
-    this->get_sm_data(supi, singleNssai, dnn, response);
+    this->get_sm_data(supi, singleNssai, dnn, plmnId, response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());

@@ -39,7 +39,7 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
 
 GroupIdentifiersApi::GroupIdentifiersApi(

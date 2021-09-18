@@ -59,6 +59,7 @@ SessionManagementSubscriptionDataRetrievalApiImpl::
 void SessionManagementSubscriptionDataRetrievalApiImpl::get_sm_data(
     const std::string& supi, const Pistache::Optional<Snssai>& singleNssai,
     const Pistache::Optional<std::string>& dnn,
+    const Pistache::Optional<PlmnId>& plmnId,
     Pistache::Http::ResponseWriter& response) {
   Snssai snssai = {};
   if (!singleNssai.isEmpty()) {
@@ -70,12 +71,17 @@ void SessionManagementSubscriptionDataRetrievalApiImpl::get_sm_data(
     dnn_str = dnn.get();
   }
 
+  PlmnId plmn_id = {};
+  if (!plmnId.isEmpty()) {
+    plmn_id = plmnId.get();
+  }
+
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  std::string location;
+  std::string location         = {};
 
   m_udm_app->handle_session_management_subscription_data_retrieval(
-      supi, response_data, code, snssai, dnn_str);
+      supi, response_data, code, snssai, dnn_str, plmn_id);
 
   // Set content type
   if ((code == Pistache::Http::Code::Created) or

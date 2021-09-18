@@ -37,7 +37,7 @@
 
 namespace oai::udm::api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
 
 UECMRegistrationInfoRetrievalApi::UECMRegistrationInfoRetrievalApi(

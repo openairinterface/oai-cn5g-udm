@@ -35,6 +35,7 @@
 #include "PlmnId.h"
 #include "Amf3GppAccessRegistration.h"
 #include "Snssai.h"
+#include "PlmnId.h"
 #include "SdmSubscription.h"
 #include <pistache/http.h>
 #include <map>
@@ -82,7 +83,7 @@ class udm_app {
   void handle_session_management_subscription_data_retrieval(
       const std::string& supi, nlohmann::json& response_data,
       Pistache::Http::Code& code, oai::udm::model::Snssai snssai = {},
-      std::string dnn = {});
+      std::string dnn = {}, oai::udm::model::PlmnId plmn_id = {});
 
   void handle_slice_selection_subscription_data_retrieval(
       const std::string& supi, nlohmann::json& response_data,
