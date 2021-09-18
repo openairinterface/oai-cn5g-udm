@@ -109,11 +109,13 @@ bool fromStringValue(const std::string& inStr, double& value) {
 }
 
 bool fromStringValue(const std::string& inStr, oai::udm::model::PlmnId& value) {
-  // TODO
+  nlohmann::json json_value = nlohmann::json::parse(inStr);
+  from_json(json_value, value);
   return true;
 }
 bool fromStringValue(const std::string& inStr, oai::udm::model::Snssai& value) {
-  // TODO
+  nlohmann::json json_value = nlohmann::json::parse(inStr);
+  from_json(json_value, value);
   return true;
 }
 

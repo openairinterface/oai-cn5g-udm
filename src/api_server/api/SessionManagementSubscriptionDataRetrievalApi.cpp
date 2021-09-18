@@ -32,7 +32,7 @@
  */
 
 #include "SessionManagementSubscriptionDataRetrievalApi.h"
-
+#include "logger.hpp"
 #include "Helpers.h"
 
 namespace oai {
@@ -89,8 +89,12 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
   auto singleNssaiQuery = request.query().get("single-nssai");
   Pistache::Optional<Snssai> singleNssai;
   if (!singleNssaiQuery.isEmpty()) {
+    Logger::udm_sdm().debug(
+        "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
     Snssai value;
     if (fromStringValue(singleNssaiQuery.get(), value)) {
+      Logger::udm_sdm().debug(
+          "SNSSAI SST %d, SD %s", value.getSst(), value.getSd().c_str());
       singleNssai = Pistache::Some(value);
     }
   }
@@ -98,8 +102,11 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
   auto dnnQuery = request.query().get("dnn");
   Pistache::Optional<std::string> dnn;
   if (!dnnQuery.isEmpty()) {
+    Logger::udm_sdm().debug("dnnQuery: %s", dnnQuery.get().c_str());
     std::string value;
     if (fromStringValue(dnnQuery.get(), value)) {
+      Logger::udm_sdm().debug("DNN: %s", value.c_str());
+
       dnn = Pistache::Some(value);
     }
   }
@@ -107,8 +114,12 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
   auto plmnIdQuery = request.query().get("plmn-id");
   Pistache::Optional<PlmnId> plmnId;
   if (!plmnIdQuery.isEmpty()) {
+    Logger::udm_sdm().debug("plmnIdQuery: %s", plmnIdQuery.get().c_str());
     PlmnId value;
     if (fromStringValue(plmnIdQuery.get(), value)) {
+      Logger::udm_sdm().debug(
+          "PLMN MCC %s, MNC %s", value.getMcc().c_str(),
+          value.getMnc().c_str());
       plmnId = Pistache::Some(value);
     }
   }
