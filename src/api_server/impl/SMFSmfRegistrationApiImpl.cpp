@@ -36,6 +36,7 @@
 #include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
+#include "udm.h"
 
 extern oai::udm::config::udm_config udm_cfg;
 
@@ -76,9 +77,10 @@ void SMFSmfRegistrationApiImpl::registration(
   nlohmann::json j_ProblemDetails;
   ProblemDetails m_ProblemDetails;
 
+  // TODO: to move it to UDM_APP
   // UDR GET interface
   // get SmfRegistration related info
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/" +
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
               udm_cfg.udr_addr.api_version + "/subscription-data/" + ueId +
               "/context-data/smf-registrations/" + std::to_string(pduSessionId);
   Logger::udm_uecm().debug("PUT Request:" + remoteUri);

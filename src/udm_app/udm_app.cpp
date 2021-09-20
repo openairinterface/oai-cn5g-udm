@@ -50,6 +50,7 @@
 #include "PatchItem.h"
 #include "comUt.hpp"
 #include "sha256.hpp"
+#include "udm.h"
 
 using namespace oai::udm::app;
 using namespace oai::udm::model;
@@ -128,9 +129,9 @@ void udm_app::handle_generate_auth_data_request(
   ProblemDetails m_ProblemDetails = {};
 
   // UDR GET interface ----- get authentication related info--------------------
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/" +
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-              "/authentication-data/authentication-subscription";
+              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
   Method = "GET";
 
@@ -228,9 +229,9 @@ void udm_app::handle_generate_auth_data_request(
 
       // UDR PATCH interface
       // replace SQNhe with SQNms
-      remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/" +
+      remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
                   udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-                  "/authentication-data/authentication-subscription";
+                  NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
       Logger::udm_ueau().debug("PATCH Request:" + remoteUri);
       Method = "PATCH";
 
@@ -330,9 +331,9 @@ void udm_app::handle_generate_auth_data_request(
 
   // UDR PATCH interface
   // Increase sqn
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/" +
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-              "/authentication-data/authentication-subscription";
+              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
   Logger::udm_ueau().debug("PATCH Request:" + remoteUri);
   Method = "PATCH";
 
@@ -386,9 +387,9 @@ void udm_app::handle_confirm_auth(
 
   // UDR GET interface
   // get user info
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/" +
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-              "/authentication-data/authentication-subscription";
+              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
   Method = "GET";
 
@@ -427,7 +428,7 @@ void udm_app::handle_confirm_auth(
 
   // UDR PUT interface
   // Put authentication status
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/" +
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
               "/authentication-data/authentication-status";
 
@@ -480,9 +481,9 @@ void udm_app::handle_delete_auth(
 
   // UDR GET interface
   // get user info
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/" +
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-              "/authentication-data/authentication-subscription";
+              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
   Method = "GET";
 
@@ -528,7 +529,7 @@ void udm_app::handle_delete_auth(
   if (!hash_value.compare(authEventId)) {
     // UDR DELETE interface
     // delete authentication status
-    remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/" +
+    remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
                 udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
                 "/authentication-data/authentication-status";
 
@@ -570,9 +571,9 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
   std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
   std::string remote_uri =
-      udr_ip + ":" + udr_port + "/nudr-dr/" + udm_cfg.udr_addr.api_version +
-      "/subscription-data/" + supi + "/" + plmn_id.getMcc() + plmn_id.getMnc() +
-      "/provisioned-data/am-data";
+      udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+      udm_cfg.udr_addr.api_version + "/subscription-data/" + supi + "/" +
+      plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/am-data";
 
   std::string method("GET");
   std::string body("");
@@ -616,7 +617,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   // get 3gpp_registration related info
   remoteUri =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr))) +
-      ":" + std::to_string(udm_cfg.udr_addr.port) + "/nudr-dr/" +
+      ":" + std::to_string(udm_cfg.udr_addr.port) + NUDR_DATA_REPOSITORY +
       udm_cfg.udr_addr.api_version + "/subscription-data/" + ue_id +
       "/context-data/amf-3gpp-access";
   Logger::udm_uecm().debug("PUT Request:" + remoteUri);
@@ -664,7 +665,7 @@ void udm_app::handle_session_management_subscription_data_retrieval(
   std::string serving_plmn_id =
       plmn_id.getMcc() +
       plmn_id.getMnc();  // TODO: get serving PLMN when plmn_is is not present
-  std::string remote_uri = udr_ip + ":" + udr_port + "/nudr-dr/" +
+  std::string remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
                            udm_cfg.udr_addr.api_version +
                            "/subscription-data/" + supi + "/" +
                            serving_plmn_id + "/provisioned-data/sm-data";
@@ -725,9 +726,9 @@ void udm_app::handle_slice_selection_subscription_data_retrieval(
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
   std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
   std::string remote_uri =
-      udr_ip + ":" + udr_port + "/nudr-dr/" + udm_cfg.udr_addr.api_version +
-      "/subscription-data/" + supi + "/" + plmn_id.getMcc() + plmn_id.getMnc() +
-      "/provisioned-data/sm-data";
+      udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+      udm_cfg.udr_addr.api_version + "/subscription-data/" + supi + "/" +
+      plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/sm-data";
   std::string body("");
   std::string response_get;
   Logger::udm_sdm().debug("UDR: GET Request: " + remote_uri);
@@ -775,11 +776,12 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
   // 1. populate remote uri for udp request
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
-  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
-  std::string remote_uri =
-      udr_ip + ":" + udr_port + "/nudr-dr/" + udm_cfg.udr_addr.api_version +
-      "/subscription-data/" + supi + "/" + plmn_id.getMcc() + plmn_id.getMnc() +
-      "/provisioned-data/smf-selection-subscription-data";
+  std::string udr_port   = std::to_string(udm_cfg.udr_addr.port);
+  std::string remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+                           udm_cfg.udr_addr.api_version +
+                           "/subscription-data/" + supi + "/" +
+                           plmn_id.getMcc() + plmn_id.getMnc() +
+                           "/provisioned-data/smf-selection-subscription-data";
 
   std::string body("");
   std::string response_get;
@@ -827,7 +829,7 @@ void udm_app::handle_subscription_creation(
 
   // UDR GET interface
   // get 3gpp_registration related info
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/" +
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
               "/context-data/sdm-subscriptions";
   Logger::udm_uecm().debug("POST Request:" + remoteUri);
