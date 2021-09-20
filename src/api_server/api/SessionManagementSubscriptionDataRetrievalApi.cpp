@@ -71,6 +71,9 @@ void SessionManagementSubscriptionDataRetrievalApi::setupRoutes() {
 void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  Logger::udm_sdm().debug(
+      "Received a SessionManagementSubscriptionDataRetrieval query");
+
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
 
@@ -106,7 +109,6 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
     std::string value;
     if (fromStringValue(dnnQuery.get(), value)) {
       Logger::udm_sdm().debug("DNN: %s", value.c_str());
-
       dnn = Pistache::Some(value);
     }
   }
