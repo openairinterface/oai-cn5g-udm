@@ -34,6 +34,9 @@
 #include "SubscriptionCreationForSharedDataApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
@@ -41,6 +44,7 @@ namespace api {
 
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 SubscriptionCreationForSharedDataApi::SubscriptionCreationForSharedDataApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -55,7 +59,7 @@ void SubscriptionCreationForSharedDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/shared-data-subscriptions",
+      *router, base + udm_cfg.sbi.api_version + "/shared-data-subscriptions",
       Routes::bind(
           &SubscriptionCreationForSharedDataApi::
               subscribe_to_shared_data_handler,

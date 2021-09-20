@@ -34,11 +34,15 @@
 #include "IPSMGWDeregistrationApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 IPSMGWDeregistrationApi::IPSMGWDeregistrationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -53,7 +57,7 @@ void IPSMGWDeregistrationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(
-      *router, base + "/:ueId/registrations/ip-sm-gw",
+      *router, base + udm_cfg.sbi.api_version + "/:ueId/registrations/ip-sm-gw",
       Routes::bind(
           &IPSMGWDeregistrationApi::ip_sm_gw_deregistration_handler, this));
 

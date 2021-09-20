@@ -46,9 +46,6 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <memory>
-
-#include "ProblemDetails.h"
 #include "SdmSubscription.h"
 #include "udm_app.hpp"
 

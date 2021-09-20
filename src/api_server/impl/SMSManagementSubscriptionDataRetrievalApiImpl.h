@@ -46,11 +46,7 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <memory>
-#include <string>
-
 #include "PlmnId.h"
-#include "ProblemDetails.h"
 #include "SmsManagementSubscriptionData.h"
 #include "udm_app.hpp"
 

@@ -34,11 +34,15 @@
 #include "AMFRegistrationFor3GPPAccessApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 AMFRegistrationFor3GPPAccessApi::AMFRegistrationFor3GPPAccessApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -53,7 +57,8 @@ void AMFRegistrationFor3GPPAccessApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + "/:ueId/registrations/amf-3gpp-access",
+      *router,
+      base + udm_cfg.sbi.api_version + "/:ueId/registrations/amf-3gpp-access",
       Routes::bind(
           &AMFRegistrationFor3GPPAccessApi::xg_3gpp_registration_handler,
           this));

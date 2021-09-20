@@ -40,8 +40,7 @@
 #include "logger.hpp"
 #include "udm_config.hpp"
 
-using namespace oai::udm::config;
-extern udm_config udm_cfg;
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
@@ -49,6 +48,7 @@ namespace api {
 
 using namespace oai::udm::model;
 using namespace oai::udm::app;
+using namespace oai::udm::config;
 
 SessionManagementSubscriptionDataRetrievalApiImpl::
     SessionManagementSubscriptionDataRetrievalApiImpl(

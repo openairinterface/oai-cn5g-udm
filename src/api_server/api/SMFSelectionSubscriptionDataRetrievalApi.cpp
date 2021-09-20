@@ -35,6 +35,9 @@
 
 #include "Helpers.h"
 #include "conversions.hpp"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
@@ -42,6 +45,7 @@ namespace api {
 
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 SMFSelectionSubscriptionDataRetrievalApi::
     SMFSelectionSubscriptionDataRetrievalApi(
@@ -57,7 +61,7 @@ void SMFSelectionSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/:supi/smf-select-data",
+      *router, base + udm_cfg.sbi.api_version + "/:supi/smf-select-data",
       Routes::bind(
           &SMFSelectionSubscriptionDataRetrievalApi::get_smf_sel_data_handler,
           this));

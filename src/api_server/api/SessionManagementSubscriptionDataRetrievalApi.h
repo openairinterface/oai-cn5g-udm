@@ -64,7 +64,7 @@ class SessionManagementSubscriptionDataRetrievalApi {
   virtual ~SessionManagementSubscriptionDataRetrievalApi() {}
   void init();
 
-  const std::string base = "/nudm-sdm/v2";
+  const std::string base = "/nudm-sdm/";
 
  private:
   void setupRoutes();
@@ -103,7 +103,8 @@ class SessionManagementSubscriptionDataRetrievalApi {
   // &ifModifiedSince, Pistache::Http::ResponseWriter &response) = 0;
   virtual void get_sm_data(
       const std::string& supi, const Pistache::Optional<Snssai>& singleNssai,
-      const Pistache::Optional<std::string>& dnn, const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<PlmnId>& plmnId,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

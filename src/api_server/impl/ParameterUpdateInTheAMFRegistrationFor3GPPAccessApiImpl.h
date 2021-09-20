@@ -46,12 +46,7 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <memory>
-#include <string>
-
 #include "Amf3GppAccessRegistrationModification.h"
-#include "PatchResult.h"
-#include "ProblemDetails.h"
 #include "udm_app.hpp"
 
 namespace oai {

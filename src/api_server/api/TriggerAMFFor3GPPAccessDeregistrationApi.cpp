@@ -34,11 +34,15 @@
 #include "TriggerAMFFor3GPPAccessDeregistrationApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 TriggerAMFFor3GPPAccessDeregistrationApi::
     TriggerAMFFor3GPPAccessDeregistrationApi(
@@ -54,7 +58,9 @@ void TriggerAMFFor3GPPAccessDeregistrationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/:ueId/registrations/amf-3gpp-access/dereg-amf",
+      *router,
+      base + udm_cfg.sbi.api_version +
+          "/:ueId/registrations/amf-3gpp-access/dereg-amf",
       Routes::bind(
           &TriggerAMFFor3GPPAccessDeregistrationApi::dereg_amf_handler, this));
 

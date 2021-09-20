@@ -34,14 +34,17 @@
 #include "SMFSmfRegistrationApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
 using namespace oai::udm::helpers;
-
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 SMFSmfRegistrationApi::SMFSmfRegistrationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -56,10 +59,13 @@ void SMFSmfRegistrationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/:ueId/registrations/smf-registrations",
+      *router,
+      base + udm_cfg.sbi.api_version + "/:ueId/registrations/smf-registrations",
       Routes::bind(&SMFSmfRegistrationApi::get_smf_registration_handler, this));
   Routes::Put(
-      *router, base + "/:ueId/registrations/smf-registrations/:pduSessionId",
+      *router,
+      base + udm_cfg.sbi.api_version +
+          "/:ueId/registrations/smf-registrations/:pduSessionId",
       Routes::bind(&SMFSmfRegistrationApi::registration_handler, this));
 
   // Default handler, called when a route is not found

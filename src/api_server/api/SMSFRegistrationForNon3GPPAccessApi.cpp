@@ -34,11 +34,15 @@
 #include "SMSFRegistrationForNon3GPPAccessApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 SMSFRegistrationForNon3GPPAccessApi::SMSFRegistrationForNon3GPPAccessApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -53,7 +57,9 @@ void SMSFRegistrationForNon3GPPAccessApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + "/:ueId/registrations/smsf-non-3gpp-access",
+      *router,
+      base + udm_cfg.sbi.api_version +
+          "/:ueId/registrations/smsf-non-3gpp-access",
       Routes::bind(
           &SMSFRegistrationForNon3GPPAccessApi::
               non3_gpp_smsf_registration_handler,

@@ -46,10 +46,6 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <memory>
-#include <string>
-
-#include "ProblemDetails.h"
 #include "SmfRegistration.h"
 #include "SmfRegistrationInfo.h"
 #include "Snssai.h"

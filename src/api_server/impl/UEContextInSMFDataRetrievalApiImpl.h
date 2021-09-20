@@ -46,10 +46,6 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <memory>
-#include <string>
-
-#include "ProblemDetails.h"
 #include "UeContextInSmfData.h"
 #include "udm_app.hpp"
 

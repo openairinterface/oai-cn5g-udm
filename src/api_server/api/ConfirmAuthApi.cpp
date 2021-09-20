@@ -34,6 +34,9 @@
 #include "ConfirmAuthApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
@@ -41,6 +44,7 @@ namespace api {
 
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 ConfirmAuthApi::ConfirmAuthApi(std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
@@ -54,7 +58,7 @@ void ConfirmAuthApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/:supi/auth-events",
+      *router, base + udm_cfg.sbi.api_version + "/:supi/auth-events",
       Routes::bind(&ConfirmAuthApi::confirm_auth_handler, this));
 
   // Default handler, called when a route is not found

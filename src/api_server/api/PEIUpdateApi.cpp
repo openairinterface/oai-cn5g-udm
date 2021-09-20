@@ -34,11 +34,15 @@
 #include "PEIUpdateApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 PEIUpdateApi::PEIUpdateApi(std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
@@ -52,7 +56,9 @@ void PEIUpdateApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/:ueId/registrations/amf-3gpp-access/pei-update",
+      *router,
+      base + udm_cfg.sbi.api_version +
+          "/:ueId/registrations/amf-3gpp-access/pei-update",
       Routes::bind(&PEIUpdateApi::pei_update_handler, this));
 
   // Default handler, called when a route is not found

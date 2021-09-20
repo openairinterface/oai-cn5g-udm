@@ -34,11 +34,15 @@
 #include "SMSF3GPPAccessRegistrationInfoRetrievalApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 SMSF3GPPAccessRegistrationInfoRetrievalApi::
     SMSF3GPPAccessRegistrationInfoRetrievalApi(
@@ -54,7 +58,8 @@ void SMSF3GPPAccessRegistrationInfoRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/:ueId/registrations/smsf-3gpp-access",
+      *router,
+      base + udm_cfg.sbi.api_version + "/:ueId/registrations/smsf-3gpp-access",
       Routes::bind(
           &SMSF3GPPAccessRegistrationInfoRetrievalApi::
               get3_gpp_smsf_registration_handler,

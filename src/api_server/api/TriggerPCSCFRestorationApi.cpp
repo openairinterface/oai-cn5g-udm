@@ -34,11 +34,15 @@
 #include "TriggerPCSCFRestorationApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 TriggerPCSCFRestorationApi::TriggerPCSCFRestorationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -53,7 +57,7 @@ void TriggerPCSCFRestorationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/restore-pcscf",
+      *router, base + udm_cfg.sbi.api_version + "/restore-pcscf",
       Routes::bind(
           &TriggerPCSCFRestorationApi::trigger_pcscf_restoration_handler,
           this));
