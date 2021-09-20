@@ -38,8 +38,8 @@
 #include "udm_app.hpp"
 #include "udm_config.hpp"
 
-using namespace config;
-extern config::udm_config udm_cfg;
+using namespace oai::udm::config;
+extern udm_config udm_cfg;
 
 namespace oai {
 namespace udm {

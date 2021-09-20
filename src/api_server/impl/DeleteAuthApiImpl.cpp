@@ -33,7 +33,7 @@
 
 #include "DeleteAuthApiImpl.h"
 
-using namespace config;
+using namespace oai::udm::config;
 extern udm_config udm_cfg;
 using namespace oai::udm::model;
 namespace oai {

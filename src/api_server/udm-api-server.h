@@ -74,7 +74,7 @@
 using namespace oai::udm::app;
 using namespace oai::udm::api;
 using namespace oai::udm::model;
-using namespace config;
+using namespace oai::udm::config;
 
 class UDMApiServer {
  public:

@@ -33,10 +33,9 @@
 #include "udm_config.hpp"
 
 using namespace oai::udm::app;
+using namespace oai::udm::config;
 using namespace util;
 using namespace std;
-
-using namespace config;
 
 udm_config udm_cfg;
 udm_app* udm_app_inst    = nullptr;

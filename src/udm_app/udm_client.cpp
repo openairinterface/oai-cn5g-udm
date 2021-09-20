@@ -47,7 +47,7 @@ using json = nlohmann::json;
 
 extern udm_client* udm_client_inst;
 
-using namespace config;
+using namespace oai::udm::config;
 extern udm_config udm_cfg;
 
 //------------------------------------------------------------------------------

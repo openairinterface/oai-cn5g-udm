@@ -54,7 +54,7 @@
 using namespace oai::udm::app;
 using namespace oai::udm::model;
 using namespace std::chrono;
-using namespace config;
+using namespace oai::udm::config;
 
 extern udm_app* udm_app_inst;
 extern udm_config udm_cfg;

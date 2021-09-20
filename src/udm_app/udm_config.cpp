@@ -49,7 +49,7 @@ extern "C" {
 
 using namespace libconfig;
 
-namespace config {
+namespace oai::udm::config {
 
 //------------------------------------------------------------------------------
 udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
@@ -267,8 +267,14 @@ int udm_config::load_interface(
           0xFFFFFFFF << (32 - std::stoi(util::trim(words.at(1)))));
     }
     if_cfg.lookupValue(UDM_CONFIG_STRING_PORT, cfg.port);
+
+    // SBI API VERSION
+    if (!(if_cfg.lookupValue(UDM_CONFIG_STRING_API_VERSION, cfg.api_version))) {
+      Logger::config().error(UDM_CONFIG_STRING_API_VERSION "failed");
+      throw(UDM_CONFIG_STRING_API_VERSION "failed");
+    }
   }
   return RETURNok;
 }
 
-}  // namespace config
+}  // namespace oai::udm::config

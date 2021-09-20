@@ -74,7 +74,7 @@ void setUpUnixSignals(std::vector<int> quitSignals) {
 #endif
 
 using namespace oai::udm::api;
-using namespace config;
+using namespace oai::udm::config;
 using namespace oai::udm::model;
 
 //------------------------------------------------------------------------------

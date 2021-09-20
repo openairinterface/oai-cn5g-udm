@@ -34,7 +34,7 @@
 
 #include "ConfirmAuthApiImpl.h"
 
-using namespace config;
+using namespace oai::udm::config;
 extern udm_config udm_cfg;
 namespace oai {
 namespace udm {
