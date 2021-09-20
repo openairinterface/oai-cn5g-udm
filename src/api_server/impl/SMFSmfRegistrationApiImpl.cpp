@@ -94,11 +94,11 @@ void SMFSmfRegistrationApiImpl::registration(
 
   nlohmann::json response_data = {};
   try {
-    Logger::udm_uecm().debug("PUT Reponse:" + Response);
+    Logger::udm_uecm().debug("PUT Response:" + Response);
     response_data = nlohmann::json::parse(Response.c_str());
 
   } catch (nlohmann::json::exception& e) {  // error handling
-    Logger::udm_uecm().info("Could not get Json content from UDR response");
+    Logger::udm_uecm().info("Could not get JSON content from UDR response");
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
@@ -115,7 +115,7 @@ void SMFSmfRegistrationApiImpl::registration(
         Pistache::Http::Code::Not_Found, j_ProblemDetails.dump().c_str());
     return;
   }
-  Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
+  Logger::udm_uecm().debug("HTTP Response code %d", http_code);
 
   // Set content type
 

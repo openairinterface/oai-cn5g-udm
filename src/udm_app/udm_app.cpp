@@ -629,7 +629,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
       remoteUri, "PUT", response, amf_registration_json.dump());
 
   try {
-    Logger::udm_uecm().debug("PUT Reponse:" + response);
+    Logger::udm_uecm().debug("PUT Response:" + response);
     response_data = nlohmann::json::parse(response.c_str());
 
   } catch (nlohmann::json::exception& e) {  // error handling
@@ -646,7 +646,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     code          = Pistache::Http::Code::Not_Found;
     return;
   }
-  Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
+  Logger::udm_uecm().debug("HTTP response code %d", http_code);
 
   response_data = amf_registration_json;
   code          = static_cast<Pistache::Http::Code>(http_code);
@@ -763,7 +763,7 @@ void udm_app::handle_slice_selection_subscription_data_retrieval(
 
     return;
   }
-  Logger::udm_sdm().debug("http reponse code %d.\n", http_code);
+  Logger::udm_sdm().debug("HTTP response code %d", http_code);
   response_data = return_response_data_json;
   code          = static_cast<Pistache::Http::Code>(http_code);
 }
@@ -808,7 +808,7 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
     return;
   }
 
-  Logger::udm_sdm().debug("http reponse code %d.\n", http_code);
+  Logger::udm_sdm().debug("HTTP response code %d", http_code);
   code = static_cast<Pistache::Http::Code>(http_code);
 }
 
@@ -842,11 +842,11 @@ void udm_app::handle_subscription_creation(
 
   nlohmann::json response_data_json = {};
   try {
-    Logger::udm_uecm().debug("POST Reponse:" + Response);
+    Logger::udm_uecm().debug("POST Response:" + Response);
     response_data_json = nlohmann::json::parse(Response.c_str());
 
   } catch (nlohmann::json::exception& e) {  // error handling
-    Logger::udm_uecm().info("Could not get Json content from UDR response");
+    Logger::udm_uecm().info("Could not get JSON content from UDR response");
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
@@ -859,7 +859,7 @@ void udm_app::handle_subscription_creation(
     code          = Pistache::Http::Code::Not_Found;
     return;
   }
-  Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
+  Logger::udm_uecm().debug("HTTP response code %d", http_code);
   code          = static_cast<Pistache::Http::Code>(http_code);
   response_data = sdmSubscription_j;  // to be verified
 }
