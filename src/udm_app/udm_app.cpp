@@ -673,8 +673,8 @@ void udm_app::handle_session_management_subscription_data_retrieval(
   std::string query_str = {};
 
   if (snssai.getSst() > 0) {
-    query_str += "?single-nssai=\\{\"sst\":" + std::to_string(snssai.getSst()) +
-                 ",\"sd\":\"" + snssai.getSd() + "\"\\}";
+    query_str += "?single-nssai={\"sst\":" + std::to_string(snssai.getSst()) +
+                 ",\"sd\":\"" + snssai.getSd() + "\"}";
     if (!dnn.empty()) {
       query_str += "&dnn=" + dnn;
     }
