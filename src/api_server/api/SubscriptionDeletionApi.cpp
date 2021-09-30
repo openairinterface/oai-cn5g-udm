@@ -34,13 +34,17 @@
 #include "SubscriptionDeletionApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 // using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 SubscriptionDeletionApi::SubscriptionDeletionApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -55,7 +59,9 @@ void SubscriptionDeletionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(
-      *router, base + "/:supi/sdm-subscriptions/:subscriptionId",
+      *router,
+      base + udm_cfg.sbi.api_version +
+          "/:supi/sdm-subscriptions/:subscriptionId",
       Routes::bind(&SubscriptionDeletionApi::unsubscribe_handler, this));
 
   // Default handler, called when a route is not found

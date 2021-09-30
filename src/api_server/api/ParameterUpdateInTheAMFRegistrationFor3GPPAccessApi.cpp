@@ -34,11 +34,15 @@
 #include "ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::
     ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi(
@@ -54,7 +58,8 @@ void ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Patch(
-      *router, base + "/:ueId/registrations/amf-3gpp-access",
+      *router,
+      base + udm_cfg.sbi.api_version + "/:ueId/registrations/amf-3gpp-access",
       Routes::bind(
           &ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::
               update3_gpp_registration_handler,

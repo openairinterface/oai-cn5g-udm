@@ -32,18 +32,14 @@
  */
 
 #include "GenerateAuthDataApiImpl.h"
+#include "logger.hpp"
 
-#include <iomanip>
-#include <sstream>
-
-#include "comUt.hpp"
-
-using namespace config;
-extern udm_config udm_cfg;
-using namespace oai::udm::model;
 namespace oai {
 namespace udm {
 namespace api {
+
+using namespace oai::udm::config;
+using namespace oai::udm::model;
 
 GenerateAuthDataApiImpl::GenerateAuthDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,

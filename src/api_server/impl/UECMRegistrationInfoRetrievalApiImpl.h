@@ -46,10 +46,6 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <memory>
-#include <string>
-
-#include "ProblemDetails.h"
 #include "RegistrationDataSetName.h"
 #include "RegistrationDataSets.h"
 #include "Snssai.h"

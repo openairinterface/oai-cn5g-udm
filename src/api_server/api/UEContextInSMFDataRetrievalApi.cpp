@@ -34,13 +34,17 @@
 #include "UEContextInSMFDataRetrievalApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 UEContextInSMFDataRetrievalApi::UEContextInSMFDataRetrievalApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -55,7 +59,7 @@ void UEContextInSMFDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/:supi/ue-context-in-smf-data",
+      *router, base + udm_cfg.sbi.api_version + "/:supi/ue-context-in-smf-data",
       Routes::bind(
           &UEContextInSMFDataRetrievalApi::get_ue_ctx_in_smf_data_handler,
           this));

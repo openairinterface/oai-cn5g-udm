@@ -33,9 +33,8 @@
  */
 
 #include "ConfirmAuthApiImpl.h"
+#include "logger.hpp"
 
-using namespace config;
-extern udm_config udm_cfg;
 namespace oai {
 namespace udm {
 namespace api {

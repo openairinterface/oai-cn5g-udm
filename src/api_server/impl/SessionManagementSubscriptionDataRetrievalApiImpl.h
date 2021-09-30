@@ -46,11 +46,7 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <memory>
-#include <string>
-
 #include "PlmnId.h"
-#include "ProblemDetails.h"
 #include "SessionManagementSubscriptionData.h"
 #include "Snssai.h"
 #include "udm_app.hpp"
@@ -80,6 +76,7 @@ class SessionManagementSubscriptionDataRetrievalApiImpl
   void get_sm_data(
       const std::string& supi, const Pistache::Optional<Snssai>& singleNssai,
       const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<PlmnId>& plmnId,
       Pistache::Http::ResponseWriter& response);
 
  private:

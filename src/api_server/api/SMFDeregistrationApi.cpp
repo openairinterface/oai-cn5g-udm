@@ -34,11 +34,15 @@
 #include "SMFDeregistrationApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 SMFDeregistrationApi::SMFDeregistrationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -53,7 +57,9 @@ void SMFDeregistrationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(
-      *router, base + "/:ueId/registrations/smf-registrations/:pduSessionId",
+      *router,
+      base + udm_cfg.sbi.api_version +
+          "/:ueId/registrations/smf-registrations/:pduSessionId",
       Routes::bind(&SMFDeregistrationApi::smf_deregistration_handler, this));
 
   // Default handler, called when a route is not found

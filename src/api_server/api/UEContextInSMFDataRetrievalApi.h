@@ -61,7 +61,7 @@ class UEContextInSMFDataRetrievalApi {
   virtual ~UEContextInSMFDataRetrievalApi() {}
   void init();
 
-  const std::string base = "/nudm-sdm/v2";
+  const std::string base = "/nudm-sdm/";
 
  private:
   void setupRoutes();

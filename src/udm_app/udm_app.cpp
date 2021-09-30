@@ -50,11 +50,12 @@
 #include "PatchItem.h"
 #include "comUt.hpp"
 #include "sha256.hpp"
+#include "udm.h"
 
 using namespace oai::udm::app;
 using namespace oai::udm::model;
 using namespace std::chrono;
-using namespace config;
+using namespace oai::udm::config;
 
 extern udm_app* udm_app_inst;
 extern udm_config udm_cfg;
@@ -128,8 +129,9 @@ void udm_app::handle_generate_auth_data_request(
   ProblemDetails m_ProblemDetails = {};
 
   // UDR GET interface ----- get authentication related info--------------------
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-              supi + "/authentication-data/authentication-subscription";
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
   Method = "GET";
 
@@ -143,10 +145,10 @@ void udm_app::handle_generate_auth_data_request(
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
+    m_ProblemDetails.setDetail("User " + supi + " not found");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_ueau().error("User " + supi + " not found in Database");
+    Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_info_response = j_ProblemDetails;
     code               = Pistache::Http::Code::Not_Found;
@@ -227,8 +229,9 @@ void udm_app::handle_generate_auth_data_request(
 
       // UDR PATCH interface
       // replace SQNhe with SQNms
-      remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-                  supi + "/authentication-data/authentication-subscription";
+      remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+                  udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+                  NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
       Logger::udm_ueau().debug("PATCH Request:" + remoteUri);
       Method = "PATCH";
 
@@ -328,8 +331,9 @@ void udm_app::handle_generate_auth_data_request(
 
   // UDR PATCH interface
   // Increase sqn
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-              supi + "/authentication-data/authentication-subscription";
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
   Logger::udm_ueau().debug("PATCH Request:" + remoteUri);
   Method = "PATCH";
 
@@ -383,8 +387,9 @@ void udm_app::handle_confirm_auth(
 
   // UDR GET interface
   // get user info
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-              supi + "/authentication-data/authentication-subscription";
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
   Method = "GET";
 
@@ -398,10 +403,10 @@ void udm_app::handle_confirm_auth(
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
+    m_ProblemDetails.setDetail("User " + supi + " not found");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_ueau().error("User " + supi + " not found in Database");
+    Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     confirm_response = j_ProblemDetails;
     code             = Pistache::Http::Code::Not_Found;
@@ -423,8 +428,9 @@ void udm_app::handle_confirm_auth(
 
   // UDR PUT interface
   // Put authentication status
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-              supi + "/authentication-data/authentication-status";
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+              "/authentication-data/authentication-status";
 
   Logger::udm_ueau().debug("PUT Request:" + remoteUri);
   Method = "PUT";
@@ -446,8 +452,9 @@ void udm_app::handle_confirm_auth(
                              // network assigned by the UDM during
                              // ResultConfirmation service operation.
   location = std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.sbi.addr4))) +
-             ":" + std::to_string(udm_cfg.sbi.port) + "/nudm-ueau/v1/" + supi +
-             "/auth-events/" + authEventId;
+             ":" + std::to_string(udm_cfg.sbi.port) + "/nudm-ueau/" +
+             udm_cfg.sbi.api_version + "/" + supi + "/auth-events/" +
+             authEventId;
 
   Logger::udm_ueau().info("Send 201 Created response to AUSF");
   confirm_response = j_authEvent;
@@ -474,8 +481,9 @@ void udm_app::handle_delete_auth(
 
   // UDR GET interface
   // get user info
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-              supi + "/authentication-data/authentication-subscription";
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
   Logger::udm_ueau().debug("GET Request:" + remoteUri);
   Method = "GET";
 
@@ -489,10 +497,10 @@ void udm_app::handle_delete_auth(
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
+    m_ProblemDetails.setDetail("User " + supi + " not found");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_ueau().error("User " + supi + " not found in Database");
+    Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_response = j_ProblemDetails;
     code          = Pistache::Http::Code::Not_Found;
@@ -521,8 +529,9 @@ void udm_app::handle_delete_auth(
   if (!hash_value.compare(authEventId)) {
     // UDR DELETE interface
     // delete authentication status
-    remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-                supi + "/authentication-data/authentication-status";
+    remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+                udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+                "/authentication-data/authentication-status";
 
     Logger::udm_ueau().debug("DELETE Request:" + remoteUri);
     Method = "DELETE";
@@ -562,7 +571,8 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
   std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
   std::string remote_uri =
-      udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" + supi + "/" +
+      udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+      udm_cfg.udr_addr.api_version + "/subscription-data/" + supi + "/" +
       plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/am-data";
 
   std::string method("GET");
@@ -580,9 +590,9 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
     nlohmann::json json_problem_details;
     problem_details.setCause("USER_NOT_FOUND");
     problem_details.setStatus(404);
-    problem_details.setDetail("User " + supi + " not found in Database");
+    problem_details.setDetail("User " + supi + " not found");
     to_json(json_problem_details, problem_details);
-    Logger::udm_sdm().error("User " + supi + " not found in Database");
+    Logger::udm_sdm().error("User " + supi + " not found");
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
 
     response_data = json_problem_details;
@@ -607,8 +617,8 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   // get 3gpp_registration related info
   remoteUri =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr))) +
-      ":" + std::to_string(udm_cfg.udr_addr.port) +
-      "/nudr-dr/v2/subscription-data/" + ue_id +
+      ":" + std::to_string(udm_cfg.udr_addr.port) + NUDR_DATA_REPOSITORY +
+      udm_cfg.udr_addr.api_version + "/subscription-data/" + ue_id +
       "/context-data/amf-3gpp-access";
   Logger::udm_uecm().debug("PUT Request:" + remoteUri);
 
@@ -619,7 +629,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
       remoteUri, "PUT", response, amf_registration_json.dump());
 
   try {
-    Logger::udm_uecm().debug("PUT Reponse:" + response);
+    Logger::udm_uecm().debug("PUT Response:" + response);
     response_data = nlohmann::json::parse(response.c_str());
 
   } catch (nlohmann::json::exception& e) {  // error handling
@@ -627,16 +637,16 @@ void udm_app::handle_amf_registration_for_3gpp_access(
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + ue_id + " not found in Database");
+    m_ProblemDetails.setDetail("User " + ue_id + " not found");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_uecm().error("User " + ue_id + " not found in Database");
+    Logger::udm_uecm().error("User " + ue_id + " not found");
     Logger::udm_uecm().info("Send 404 Not_Found response to client");
     response_data = j_ProblemDetails;
     code          = Pistache::Http::Code::Not_Found;
     return;
   }
-  Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
+  Logger::udm_uecm().debug("HTTP response code %d", http_code);
 
   response_data = amf_registration_json;
   code          = static_cast<Pistache::Http::Code>(http_code);
@@ -646,42 +656,62 @@ void udm_app::handle_amf_registration_for_3gpp_access(
 //------------------------------------------------------------------------------
 void udm_app::handle_session_management_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data,
-    Pistache::Http::Code& code, oai::udm::model::Snssai snssai,
-    std::string dnn) {
-  // 1. populate remote uri for udp request
+    Pistache::Http::Code& code, oai::udm::model::Snssai snssai, std::string dnn,
+    oai::udm::model::PlmnId plmn_id) {
+  // UDR's URL
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
-  std::string udr_port   = std::to_string(udm_cfg.udr_addr.port);
-  std::string remote_uri = udr_ip + ":" + udr_port +
-                           "/nudr-dr/v2/subscription-data/" + supi +
-                           "/456789/provisioned-data/sm-data";
+  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
+  std::string serving_plmn_id =
+      plmn_id.getMcc() +
+      plmn_id.getMnc();  // TODO: get serving PLMN when plmn_is is not present
+  std::string remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+                           udm_cfg.udr_addr.api_version +
+                           "/subscription-data/" + supi + "/" +
+                           serving_plmn_id + "/provisioned-data/sm-data";
 
-  std::string body("");
-  std::string response_get;
-  Logger::udm_sdm().debug("UDR: GET Request: " + remote_uri);
-  // 2. invoke curl to get response from udr
+  std::string query_str = {};
+
+  if (snssai.getSst() > 0) {
+    query_str += "?single-nssai={\"sst\":" + std::to_string(snssai.getSst()) +
+                 ",\"sd\":\"" + snssai.getSd() + "\"}";
+    if (!dnn.empty()) {
+      query_str += "&dnn=" + dnn;
+    }
+  } else if (!dnn.empty()) {
+    query_str += "?dnn=" + dnn;
+  }
+
+  // URI with Optional SNSSAI/DNN
+  remote_uri += query_str;
+
+  std::string response_str = {};
+  Logger::udm_sdm().debug("Request URI: " + remote_uri);
+
+  // Send curl to UDM
   long http_code =
-      udm_client::curl_http_client(remote_uri, "GET", response_get, body);
-  // 3. process response
+      udm_client::curl_http_client(remote_uri, "GET", response_str);
 
+  Logger::udm_sdm().debug("HTTP response code %d", http_code);
+
+  // Process response
   try {
-    Logger::udm_sdm().debug("subscription-data: GET Response: " + response_get);
-    response_data = nlohmann::json::parse(response_get.c_str());
+    Logger::udm_sdm().debug("Response: " + response_str);
+    response_data = nlohmann::json::parse(response_str.c_str());
   } catch (nlohmann::json::exception& e) {
-    Logger::udm_sdm().info("Could not get json content from UDR response");
-    ProblemDetails problem_details;
-    nlohmann::json json_problem_details;
+    Logger::udm_sdm().info("Could not get JSON content from UDR response");
+    ProblemDetails problem_details      = {};
+    nlohmann::json json_problem_details = {};
     problem_details.setCause("USER_NOT_FOUND");
     problem_details.setStatus(404);
-    problem_details.setDetail("User " + supi + " not found in Database");
+    problem_details.setDetail("User " + supi + " not found");
     to_json(json_problem_details, problem_details);
-    Logger::udm_sdm().error("User " + supi + " not found in Database");
-    Logger::udm_sdm().info("Send 404 Not_Found response to client");
+    Logger::udm_sdm().error("User " + supi + " not found");
     response_data = json_problem_details;
     code          = Pistache::Http::Code::Not_Found;
     return;
   }
-  Logger::udm_sdm().debug("http reponse code %d.\n", http_code);
+
   code = static_cast<Pistache::Http::Code>(http_code);
   return;
 }
@@ -696,7 +726,8 @@ void udm_app::handle_slice_selection_subscription_data_retrieval(
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
   std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
   std::string remote_uri =
-      udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" + supi + "/" +
+      udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+      udm_cfg.udr_addr.api_version + "/subscription-data/" + supi + "/" +
       plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/sm-data";
   std::string body("");
   std::string response_get;
@@ -723,16 +754,16 @@ void udm_app::handle_slice_selection_subscription_data_retrieval(
     nlohmann::json json_problem_details;
     problem_details.setCause("USER_NOT_FOUND");
     problem_details.setStatus(404);
-    problem_details.setDetail("User " + supi + " not found in Database");
+    problem_details.setDetail("User " + supi + " not found");
     to_json(json_problem_details, problem_details);
-    Logger::udm_sdm().error("User " + supi + " not found in Database");
+    Logger::udm_sdm().error("User " + supi + " not found");
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
     response_data = json_problem_details;
     code          = Pistache::Http::Code::Not_Found;
 
     return;
   }
-  Logger::udm_sdm().debug("http reponse code %d.\n", http_code);
+  Logger::udm_sdm().debug("HTTP response code %d", http_code);
   response_data = return_response_data_json;
   code          = static_cast<Pistache::Http::Code>(http_code);
 }
@@ -746,8 +777,9 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
   std::string udr_port   = std::to_string(udm_cfg.udr_addr.port);
-  std::string remote_uri = udr_ip + ":" + udr_port +
-                           "/nudr-dr/v2/subscription-data/" + supi + "/" +
+  std::string remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+                           udm_cfg.udr_addr.api_version +
+                           "/subscription-data/" + supi + "/" +
                            plmn_id.getMcc() + plmn_id.getMnc() +
                            "/provisioned-data/smf-selection-subscription-data";
 
@@ -767,16 +799,16 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
     nlohmann::json json_problem_details;
     problem_details.setCause("USER_NOT_FOUND");
     problem_details.setStatus(404);
-    problem_details.setDetail("User " + supi + " not found in Database");
+    problem_details.setDetail("User " + supi + " not found");
     to_json(json_problem_details, problem_details);
-    Logger::udm_sdm().error("User " + supi + " not found in Database");
+    Logger::udm_sdm().error("User " + supi + " not found");
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
     response_data = json_problem_details;
     code          = Pistache::Http::Code::Not_Found;
     return;
   }
 
-  Logger::udm_sdm().debug("http reponse code %d.\n", http_code);
+  Logger::udm_sdm().debug("HTTP response code %d", http_code);
   code = static_cast<Pistache::Http::Code>(http_code);
 }
 
@@ -797,8 +829,9 @@ void udm_app::handle_subscription_creation(
 
   // UDR GET interface
   // get 3gpp_registration related info
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-              supi + "/context-data/sdm-subscriptions";
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+              "/context-data/sdm-subscriptions";
   Logger::udm_uecm().debug("POST Request:" + remoteUri);
 
   nlohmann::json sdmSubscription_j;
@@ -809,24 +842,24 @@ void udm_app::handle_subscription_creation(
 
   nlohmann::json response_data_json = {};
   try {
-    Logger::udm_uecm().debug("POST Reponse:" + Response);
+    Logger::udm_uecm().debug("POST Response:" + Response);
     response_data_json = nlohmann::json::parse(Response.c_str());
 
   } catch (nlohmann::json::exception& e) {  // error handling
-    Logger::udm_uecm().info("Could not get Json content from UDR response");
+    Logger::udm_uecm().info("Could not get JSON content from UDR response");
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
+    m_ProblemDetails.setDetail("User " + supi + " not found");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_uecm().error("User " + supi + " not found in Database");
+    Logger::udm_uecm().error("User " + supi + " not found");
     Logger::udm_uecm().info("Send 404 Not_Found response to client");
     response_data = j_ProblemDetails;
     code          = Pistache::Http::Code::Not_Found;
     return;
   }
-  Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
+  Logger::udm_uecm().debug("HTTP response code %d", http_code);
   code          = static_cast<Pistache::Http::Code>(http_code);
   response_data = sdmSubscription_j;  // to be verified
 }

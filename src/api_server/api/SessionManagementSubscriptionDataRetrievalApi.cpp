@@ -32,15 +32,19 @@
  */
 
 #include "SessionManagementSubscriptionDataRetrievalApi.h"
-
+#include "logger.hpp"
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 SessionManagementSubscriptionDataRetrievalApi::
     SessionManagementSubscriptionDataRetrievalApi(
@@ -56,7 +60,7 @@ void SessionManagementSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/:supi/sm-data",
+      *router, base + udm_cfg.sbi.api_version + "/:supi/sm-data",
       Routes::bind(
           &SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler,
           this));
@@ -71,6 +75,9 @@ void SessionManagementSubscriptionDataRetrievalApi::setupRoutes() {
 void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  Logger::udm_sdm().debug(
+      "Received a SessionManagementSubscriptionDataRetrieval query");
+
   // Getting the path params
   auto supi = request.param(":supi").as<std::string>();
 
@@ -88,34 +95,41 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
   */
   auto singleNssaiQuery = request.query().get("single-nssai");
   Pistache::Optional<Snssai> singleNssai;
-  /*    if(!singleNssaiQuery.isEmpty()){
-          Snssai value;
-          if(fromStringValue(singleNssaiQuery.get(), value)){
-              singleNssai = Pistache::Some(value);
-          }
-      }
-  */
+  if (!singleNssaiQuery.isEmpty()) {
+    Logger::udm_sdm().debug(
+        "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
+    Snssai value;
+    if (fromStringValue(singleNssaiQuery.get(), value)) {
+      Logger::udm_sdm().debug(
+          "SNSSAI SST %d, SD %s", value.getSst(), value.getSd().c_str());
+      singleNssai = Pistache::Some(value);
+    }
+  }
+
   auto dnnQuery = request.query().get("dnn");
   Pistache::Optional<std::string> dnn;
   if (!dnnQuery.isEmpty()) {
+    Logger::udm_sdm().debug("dnnQuery: %s", dnnQuery.get().c_str());
     std::string value;
     if (fromStringValue(dnnQuery.get(), value)) {
+      Logger::udm_sdm().debug("DNN: %s", value.c_str());
       dnn = Pistache::Some(value);
     }
   }
-  /*
-   * TODO:
 
   auto plmnIdQuery = request.query().get("plmn-id");
   Pistache::Optional<PlmnId> plmnId;
-  if(!plmnIdQuery.isEmpty()){
-      PlmnId value;
-      if(fromStringValue(plmnIdQuery.get(), value)){
-          plmnId = Pistache::Some(value);
-      }
+  if (!plmnIdQuery.isEmpty()) {
+    Logger::udm_sdm().debug("plmnIdQuery: %s", plmnIdQuery.get().c_str());
+    PlmnId value;
+    if (fromStringValue(plmnIdQuery.get(), value)) {
+      Logger::udm_sdm().debug(
+          "PLMN MCC %s, MNC %s", value.getMcc().c_str(),
+          value.getMnc().c_str());
+      plmnId = Pistache::Some(value);
+    }
   }
 
-  */
   /*
    * TODO:
 
@@ -126,7 +140,7 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
   try {
     // this->get_sm_data(supi, supportedFeatures, singleNssai, dnn, plmnId,
     // ifNoneMatch, ifModifiedSince, response);
-    this->get_sm_data(supi, singleNssai, dnn, response);
+    this->get_sm_data(supi, singleNssai, dnn, plmnId, response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());

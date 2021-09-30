@@ -36,9 +36,9 @@
 #include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
+#include "udm.h"
 
-using namespace config;
-extern config::udm_config udm_cfg;
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
@@ -46,6 +46,7 @@ namespace api {
 
 using namespace oai::udm::model;
 using namespace oai::udm::app;
+using namespace oai::udm::config;
 
 SMFSmfRegistrationApiImpl::SMFSmfRegistrationApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
@@ -76,11 +77,12 @@ void SMFSmfRegistrationApiImpl::registration(
   nlohmann::json j_ProblemDetails;
   ProblemDetails m_ProblemDetails;
 
+  // TODO: to move it to UDM_APP
   // UDR GET interface
   // get SmfRegistration related info
-  remoteUri = udr_ip + ":" + udr_port + "/nudr-dr/v2/subscription-data/" +
-              ueId + "/context-data/smf-registrations/" +
-              std::to_string(pduSessionId);
+  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+              udm_cfg.udr_addr.api_version + "/subscription-data/" + ueId +
+              "/context-data/smf-registrations/" + std::to_string(pduSessionId);
   Logger::udm_uecm().debug("PUT Request:" + remoteUri);
   Method = "PUT";
 
@@ -92,11 +94,11 @@ void SMFSmfRegistrationApiImpl::registration(
 
   nlohmann::json response_data = {};
   try {
-    Logger::udm_uecm().debug("PUT Reponse:" + Response);
+    Logger::udm_uecm().debug("PUT Response:" + Response);
     response_data = nlohmann::json::parse(Response.c_str());
 
   } catch (nlohmann::json::exception& e) {  // error handling
-    Logger::udm_uecm().info("Could not get Json content from UDR response");
+    Logger::udm_uecm().info("Could not get JSON content from UDR response");
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
@@ -113,7 +115,7 @@ void SMFSmfRegistrationApiImpl::registration(
         Pistache::Http::Code::Not_Found, j_ProblemDetails.dump().c_str());
     return;
   }
-  Logger::udm_uecm().debug("http reponse code %d. \n", http_code);
+  Logger::udm_uecm().debug("HTTP Response code %d", http_code);
 
   // Set content type
 

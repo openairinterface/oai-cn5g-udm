@@ -35,12 +35,16 @@
 
 #include "Helpers.h"
 #include "conversions.hpp"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::config;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
 
 AccessAndMobilitySubscriptionDataRetrievalApi::
@@ -57,7 +61,7 @@ void AccessAndMobilitySubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/:supi/am-data",
+      *router, base + udm_cfg.sbi.api_version + "/:supi/am-data",
       Routes::bind(
           &AccessAndMobilitySubscriptionDataRetrievalApi::get_am_data_handler,
           this));

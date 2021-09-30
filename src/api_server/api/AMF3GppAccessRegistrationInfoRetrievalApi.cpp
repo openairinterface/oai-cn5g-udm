@@ -34,13 +34,17 @@
 #include "AMF3GppAccessRegistrationInfoRetrievalApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 AMF3GppAccessRegistrationInfoRetrievalApi::
     AMF3GppAccessRegistrationInfoRetrievalApi(
@@ -56,7 +60,8 @@ void AMF3GppAccessRegistrationInfoRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/:ueId/registrations/amf-3gpp-access",
+      *router,
+      base + udm_cfg.sbi.api_version + "/:ueId/registrations/amf-3gpp-access",
       Routes::bind(
           &AMF3GppAccessRegistrationInfoRetrievalApi::
               get3_gpp_registration_handler,

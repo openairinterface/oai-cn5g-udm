@@ -34,13 +34,17 @@
 #include "GPSIToSUPITranslationApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 GPSIToSUPITranslationApi::GPSIToSUPITranslationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -55,7 +59,7 @@ void GPSIToSUPITranslationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/:gpsi/id-translation-result",
+      *router, base + udm_cfg.sbi.api_version + "/:gpsi/id-translation-result",
       Routes::bind(&GPSIToSUPITranslationApi::get_supi_handler, this));
 
   // Default handler, called when a route is not found

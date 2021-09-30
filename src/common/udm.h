@@ -77,6 +77,9 @@ typedef uint32_t evsub_id_t;
 #define UNASSIGNED_EVSUB_ID ((evsub_id_t) 0x00000000)
 
 #define NAUSF_NFM_NF_INSTANCE "/nf-instances/"
+#define NUDR_DATA_REPOSITORY "/nudr-dr/"
+#define NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT                              \
+  "/authentication-data/authentication-subscription"
 
 #define NF_CURL_TIMEOUT_MS 1000L
 

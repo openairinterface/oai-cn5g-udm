@@ -34,13 +34,17 @@
 #include "RetrievalOfSharedDataApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 RetrievalOfSharedDataApi::RetrievalOfSharedDataApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -55,7 +59,7 @@ void RetrievalOfSharedDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/shared-data",
+      *router, base + udm_cfg.sbi.api_version + "/shared-data",
       Routes::bind(&RetrievalOfSharedDataApi::get_shared_data_handler, this));
 
   // Default handler, called when a route is not found

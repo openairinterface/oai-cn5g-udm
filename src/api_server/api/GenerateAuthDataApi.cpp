@@ -34,13 +34,17 @@
 #include "GenerateAuthDataApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 GenerateAuthDataApi::GenerateAuthDataApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -55,7 +59,9 @@ void GenerateAuthDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/:supiOrSuci/security-information/generate-auth-data",
+      *router,
+      base + udm_cfg.sbi.api_version +
+          "/:supiOrSuci/security-information/generate-auth-data",
       Routes::bind(&GenerateAuthDataApi::generate_auth_data_handler, this));
 
   // Default handler, called when a route is not found

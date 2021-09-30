@@ -49,7 +49,7 @@ extern "C" {
 
 using namespace libconfig;
 
-namespace config {
+namespace oai::udm::config {
 
 //------------------------------------------------------------------------------
 udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
@@ -184,10 +184,17 @@ int udm_config::load(const std::string& config_file) {
         IPV4_STR_ADDR_TO_INADDR(
             util::trim(address).c_str(), udr_ipv4_addr,
             "BAD IPv4 ADDRESS FORMAT FOR UDR !");
-        udr_addr.ipv4_addr   = udr_ipv4_addr;
-        udr_addr.port        = udr_port;
-        udr_addr.api_version = "v1";  // TODO: to get API version from DNS
-        udr_addr.fqdn        = astring;
+        udr_addr.ipv4_addr          = udr_ipv4_addr;
+        udr_addr.port               = udr_port;
+        std::string udr_api_version = {};
+        if (!(udr_cfg.lookupValue(
+                UDM_CONFIG_STRING_API_VERSION, udr_api_version))) {
+          Logger::udm_app().error(UDM_CONFIG_STRING_API_VERSION "failed");
+          throw(UDM_CONFIG_STRING_API_VERSION "failed");
+        }
+        udr_addr.api_version =
+            udr_api_version;  // TODO: to get API version from DNS
+        udr_addr.fqdn = astring;
       }
     }
 
@@ -267,8 +274,14 @@ int udm_config::load_interface(
           0xFFFFFFFF << (32 - std::stoi(util::trim(words.at(1)))));
     }
     if_cfg.lookupValue(UDM_CONFIG_STRING_PORT, cfg.port);
+
+    // SBI API VERSION
+    if (!(if_cfg.lookupValue(UDM_CONFIG_STRING_API_VERSION, cfg.api_version))) {
+      Logger::config().error(UDM_CONFIG_STRING_API_VERSION "failed");
+      throw(UDM_CONFIG_STRING_API_VERSION "failed");
+    }
   }
   return RETURNok;
 }
 
-}  // namespace config
+}  // namespace oai::udm::config

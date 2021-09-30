@@ -34,13 +34,17 @@
 #include "DeleteAuthApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 DeleteAuthApi::DeleteAuthApi(std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
@@ -54,7 +58,8 @@ void DeleteAuthApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + "/:supi/auth-events/:authEventId",
+      *router,
+      base + udm_cfg.sbi.api_version + "/:supi/auth-events/:authEventId",
       Routes::bind(&DeleteAuthApi::delete_auth_handler, this));
 
   // Default handler, called when a route is not found

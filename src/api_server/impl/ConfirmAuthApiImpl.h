@@ -43,18 +43,10 @@
 #include <ConfirmAuthApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <memory>
-#include <string>
-
 #include "AuthEvent.h"
-#include "ProblemDetails.h"
-#include "logger.hpp"
-#include "sha256.hpp"
 #include "udm_app.hpp"
-#include "udm_config.hpp"
 
 namespace oai {
 namespace udm {

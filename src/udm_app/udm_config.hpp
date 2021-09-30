@@ -67,7 +67,7 @@
 
 using namespace libconfig;
 
-namespace config {
+namespace oai::udm::config {
 
 typedef struct interface_cfg_s {
   std::string if_name;
@@ -76,6 +76,7 @@ typedef struct interface_cfg_s {
   struct in6_addr addr6;
   unsigned int mtu;
   unsigned int port;
+  std::string api_version;
 } interface_cfg_t;
 
 class udm_config {
@@ -102,6 +103,6 @@ class udm_config {
   bool use_fqdn_dns;
 };
 
-}  // namespace config
+}  // namespace oai::udm::config
 
 #endif

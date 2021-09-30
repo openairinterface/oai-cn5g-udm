@@ -63,7 +63,7 @@ class SMFSmfRegistrationApi {
   virtual ~SMFSmfRegistrationApi() {}
   void init();
 
-  const std::string base = "/nudm-uecm/v1";
+  const std::string base = "/nudm-uecm/";
 
  private:
   void setupRoutes();

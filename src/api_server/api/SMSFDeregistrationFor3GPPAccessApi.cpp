@@ -34,13 +34,17 @@
 #include "SMSFDeregistrationFor3GPPAccessApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 SMSFDeregistrationFor3GPPAccessApi::SMSFDeregistrationFor3GPPAccessApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -55,7 +59,8 @@ void SMSFDeregistrationFor3GPPAccessApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(
-      *router, base + "/:ueId/registrations/smsf-3gpp-access",
+      *router,
+      base + udm_cfg.sbi.api_version + "/:ueId/registrations/smsf-3gpp-access",
       Routes::bind(
           &SMSFDeregistrationFor3GPPAccessApi::
               _3_gpp_smsf_deregistration_handler,

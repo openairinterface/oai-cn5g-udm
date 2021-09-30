@@ -61,7 +61,7 @@ class DeleteAuthApi {
   virtual ~DeleteAuthApi() {}
   void init();
 
-  const std::string base = "/nudm-ueau/v1";
+  const std::string base = "/nudm-ueau/";
 
  private:
   void setupRoutes();

@@ -34,13 +34,17 @@
 #include "SubscriptionModificationApi.h"
 
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai {
 namespace udm {
 namespace api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udm::helpers;
 using namespace oai::udm::model;
+using namespace oai::udm::config;
 
 SubscriptionModificationApi::SubscriptionModificationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -55,10 +59,14 @@ void SubscriptionModificationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Patch(
-      *router, base + "/:supi/sdm-subscriptions/:subscriptionId",
+      *router,
+      base + udm_cfg.sbi.api_version +
+          "/:supi/sdm-subscriptions/:subscriptionId",
       Routes::bind(&SubscriptionModificationApi::modify_handler, this));
   Routes::Patch(
-      *router, base + "/shared-data-subscriptions/:subscriptionId",
+      *router,
+      base + udm_cfg.sbi.api_version +
+          "/shared-data-subscriptions/:subscriptionId",
       Routes::bind(
           &SubscriptionModificationApi::modify_shared_data_subs_handler, this));
 

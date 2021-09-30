@@ -46,20 +46,9 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
-#include <memory>
-#include <string>
-
 #include "AuthenticationInfoRequest.h"
 #include "AuthenticationInfoResult.h"
-#include "PatchItem.h"
-#include "ProblemDetails.h"
-#include "SequenceNumber.h"
-#include "String2Value.hpp"
-#include "authentication_algorithms_with_5gaka.hpp"
-#include "conversions.hpp"
-#include "logger.hpp"
 #include "udm_app.hpp"
-#include "udm_config.hpp"
 
 namespace oai {
 namespace udm {
