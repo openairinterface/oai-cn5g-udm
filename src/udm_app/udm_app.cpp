@@ -145,10 +145,10 @@ void udm_app::handle_generate_auth_data_request(
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
+    m_ProblemDetails.setDetail("User " + supi + " not found");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_ueau().error("User " + supi + " not found in Database");
+    Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_info_response = j_ProblemDetails;
     code               = Pistache::Http::Code::Not_Found;
@@ -403,10 +403,10 @@ void udm_app::handle_confirm_auth(
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
+    m_ProblemDetails.setDetail("User " + supi + " not found");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_ueau().error("User " + supi + " not found in Database");
+    Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     confirm_response = j_ProblemDetails;
     code             = Pistache::Http::Code::Not_Found;
@@ -497,10 +497,10 @@ void udm_app::handle_delete_auth(
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
+    m_ProblemDetails.setDetail("User " + supi + " not found");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_ueau().error("User " + supi + " not found in Database");
+    Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_response = j_ProblemDetails;
     code          = Pistache::Http::Code::Not_Found;
@@ -590,9 +590,9 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
     nlohmann::json json_problem_details;
     problem_details.setCause("USER_NOT_FOUND");
     problem_details.setStatus(404);
-    problem_details.setDetail("User " + supi + " not found in Database");
+    problem_details.setDetail("User " + supi + " not found");
     to_json(json_problem_details, problem_details);
-    Logger::udm_sdm().error("User " + supi + " not found in Database");
+    Logger::udm_sdm().error("User " + supi + " not found");
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
 
     response_data = json_problem_details;
@@ -637,10 +637,10 @@ void udm_app::handle_amf_registration_for_3gpp_access(
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + ue_id + " not found in Database");
+    m_ProblemDetails.setDetail("User " + ue_id + " not found");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_uecm().error("User " + ue_id + " not found in Database");
+    Logger::udm_uecm().error("User " + ue_id + " not found");
     Logger::udm_uecm().info("Send 404 Not_Found response to client");
     response_data = j_ProblemDetails;
     code          = Pistache::Http::Code::Not_Found;
@@ -754,9 +754,9 @@ void udm_app::handle_slice_selection_subscription_data_retrieval(
     nlohmann::json json_problem_details;
     problem_details.setCause("USER_NOT_FOUND");
     problem_details.setStatus(404);
-    problem_details.setDetail("User " + supi + " not found in Database");
+    problem_details.setDetail("User " + supi + " not found");
     to_json(json_problem_details, problem_details);
-    Logger::udm_sdm().error("User " + supi + " not found in Database");
+    Logger::udm_sdm().error("User " + supi + " not found");
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
     response_data = json_problem_details;
     code          = Pistache::Http::Code::Not_Found;
@@ -799,9 +799,9 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
     nlohmann::json json_problem_details;
     problem_details.setCause("USER_NOT_FOUND");
     problem_details.setStatus(404);
-    problem_details.setDetail("User " + supi + " not found in Database");
+    problem_details.setDetail("User " + supi + " not found");
     to_json(json_problem_details, problem_details);
-    Logger::udm_sdm().error("User " + supi + " not found in Database");
+    Logger::udm_sdm().error("User " + supi + " not found");
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
     response_data = json_problem_details;
     code          = Pistache::Http::Code::Not_Found;
@@ -850,10 +850,10 @@ void udm_app::handle_subscription_creation(
 
     m_ProblemDetails.setCause("USER_NOT_FOUND");
     m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found in Database");
+    m_ProblemDetails.setDetail("User " + supi + " not found");
     to_json(j_ProblemDetails, m_ProblemDetails);
 
-    Logger::udm_uecm().error("User " + supi + " not found in Database");
+    Logger::udm_uecm().error("User " + supi + " not found");
     Logger::udm_uecm().info("Send 404 Not_Found response to client");
     response_data = j_ProblemDetails;
     code          = Pistache::Http::Code::Not_Found;
