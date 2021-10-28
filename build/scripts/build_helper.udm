@@ -438,8 +438,8 @@ check_install_udm_deps() {
   install_nlohmann_from_git $1 $2
   ret=$?;[[ $ret -ne 0 ]] && return $ret
 
-  #install_nghttp2_from_git $1 $2
-  #ret=$?;[[ $ret -ne 0 ]] && return $ret
+  install_nghttp2_from_git $1 $2
+  ret=$?;[[ $ret -ne 0 ]] && return $ret
   
   $SUDO ldconfig  
   return 0

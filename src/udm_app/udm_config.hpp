@@ -51,6 +51,7 @@
 
 #define UDM_CONFIG_STRING_INTERFACES "INTERFACES"
 #define UDM_CONFIG_STRING_INTERFACE_SBI_UDM "SBI"
+#define UDM_CONFIG_STRING_SBI_HTTP2_PORT "HTTP2_PORT"
 #define UDM_CONFIG_STRING_INTERFACE_NAME "INTERFACE_NAME"
 #define UDM_CONFIG_STRING_IPV4_ADDRESS "IPV4_ADDRESS"
 #define UDM_CONFIG_STRING_PORT "PORT"
@@ -92,6 +93,8 @@ class udm_config {
   std::string udm_name;
 
   interface_cfg_t sbi;
+  unsigned int sbi_http2_port;
+  std::string sbi_api_version;
 
   struct {
     struct in_addr ipv4_addr;

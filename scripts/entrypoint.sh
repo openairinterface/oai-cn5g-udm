@@ -5,6 +5,8 @@ set -euo pipefail
 CONFIG_DIR="/openair-udm/etc"
 SBI_PORT=${SBI_PORT:-80}
 UDR_PORT=${UDM_PORT:-80}
+SBI_HTTP2_PORT=${SBI_HTTP2_PORT:-8080}
+SBI_API_VERSION=${SBI_API_VERSION:-v1}
 
 if [[ ${USE_FQDN_DNS} == "yes" ]];then
     UDR_IP_ADDRESS=${UDR_IP_ADDRESS:-0.0.0.0}

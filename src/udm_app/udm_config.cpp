@@ -119,6 +119,19 @@ int udm_config::load(const std::string& config_file) {
         new_if_cfg[UDM_CONFIG_STRING_INTERFACE_SBI_UDM];
     load_interface(sbi_udm_cfg, sbi);
 
+    // HTTP2 port
+    if (!(sbi_udm_cfg.lookupValue(
+            UDM_CONFIG_STRING_SBI_HTTP2_PORT, sbi_http2_port))) {
+      Logger::config().error(UDM_CONFIG_STRING_SBI_HTTP2_PORT "failed");
+      throw(UDM_CONFIG_STRING_SBI_HTTP2_PORT " failed");
+    }
+
+    // API Version
+    if (!(sbi_udm_cfg.lookupValue(
+            UDM_CONFIG_STRING_API_VERSION, sbi_api_version))) {
+      Logger::config().error(UDM_CONFIG_STRING_API_VERSION " failed");
+      throw(UDM_CONFIG_STRING_API_VERSION " failed");
+    }
   } catch (const SettingNotFoundException& nfex) {
     Logger::config().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
@@ -218,7 +231,10 @@ void udm_config::display() {
   Logger::config().info("- SBI:");
   Logger::config().info("    Iface name............: %s", sbi.if_name.c_str());
   Logger::config().info("    IPv4 Addr.............: %s", inet_ntoa(sbi.addr4));
-  Logger::config().info("    Port..................: %d", sbi.port);
+  Logger::config().info("    HTTP1 Port ...........: %d", sbi.port);
+  Logger::config().info("    HTTP2 Port............: %d", sbi_http2_port);
+  Logger::config().info(
+      "    API Version...........: %s", sbi_api_version.c_str());
 
   Logger::config().info("- UDR:");
   Logger::config().info(
