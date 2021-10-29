@@ -81,6 +81,8 @@ typedef uint32_t evsub_id_t;
 #define NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT                              \
   "/authentication-data/authentication-subscription"
 
+#define NUDM_SDM_BASE "/nudm-sdm/"
+
 #define NF_CURL_TIMEOUT_MS 1000L
 
 #define MAX_WAIT_MSECS 20000  // 1 second

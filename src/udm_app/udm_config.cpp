@@ -58,6 +58,7 @@ udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
   udr_addr.api_version      = "v1";
   udr_addr.fqdn             = {};
   use_fqdn_dns              = false;
+  use_http2                 = false;
 }
 
 //------------------------------------------------------------------------------
@@ -125,13 +126,6 @@ int udm_config::load(const std::string& config_file) {
       Logger::config().error(UDM_CONFIG_STRING_SBI_HTTP2_PORT "failed");
       throw(UDM_CONFIG_STRING_SBI_HTTP2_PORT " failed");
     }
-
-    // API Version
-    if (!(sbi_udm_cfg.lookupValue(
-            UDM_CONFIG_STRING_API_VERSION, sbi_api_version))) {
-      Logger::config().error(UDM_CONFIG_STRING_API_VERSION " failed");
-      throw(UDM_CONFIG_STRING_API_VERSION " failed");
-    }
   } catch (const SettingNotFoundException& nfex) {
     Logger::config().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
@@ -152,6 +146,13 @@ int udm_config::load(const std::string& config_file) {
       use_fqdn_dns = false;
     }
 
+    support_features.lookupValue(
+        UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2, opt);
+    if (boost::iequals(opt, "yes")) {
+      use_http2 = true;
+    } else {
+      use_http2 = false;
+    }
   } catch (const SettingNotFoundException& nfex) {
     Logger::udm_app().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
@@ -234,7 +235,12 @@ void udm_config::display() {
   Logger::config().info("    HTTP1 Port ...........: %d", sbi.port);
   Logger::config().info("    HTTP2 Port............: %d", sbi_http2_port);
   Logger::config().info(
-      "    API Version...........: %s", sbi_api_version.c_str());
+      "    Api Version...........: %s", sbi.api_version.c_str());
+  Logger::config().info("- Supported Features:");
+  Logger::config().info(
+      "    Use FQDN ..............: %s", use_fqdn_dns ? "Yes" : "No");
+  Logger::config().info(
+      "    Use HTTP2..............: %s", use_http2 ? "Yes" : "No");
 
   Logger::config().info("- UDR:");
   Logger::config().info(

@@ -82,6 +82,9 @@ long udm_client::curl_http_client(
   CURL* curl    = curl_easy_init();
   long httpCode = {0};
 
+  uint8_t http_version = 1;
+  if (udm_cfg.use_http2) http_version = 2;
+
   if (curl) {
     CURLcode res               = {};
     struct curl_slist* headers = nullptr;
@@ -105,6 +108,15 @@ long udm_client::curl_http_client(
     curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, NF_CURL_TIMEOUT_MS);
     curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1);
     curl_easy_setopt(curl, CURLOPT_INTERFACE, udm_cfg.sbi.if_name.c_str());
+
+    if (http_version == 2) {
+      curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+      // we use a self-signed test server, skip verification during debugging
+      curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+      curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+      curl_easy_setopt(
+          curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE);
+    }
 
     // response information.
     std::unique_ptr<std::string> httpData(new std::string());

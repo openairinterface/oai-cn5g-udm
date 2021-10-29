@@ -29,6 +29,7 @@
 #include "pistache/http.h"
 #include "pistache/router.h"
 #include "udm-api-server.h"
+#include "udm-http2-server.h"
 #include "udm_app.hpp"
 #include "udm_config.hpp"
 
@@ -38,9 +39,9 @@ using namespace util;
 using namespace std;
 
 udm_config udm_cfg;
-udm_app* udm_app_inst    = nullptr;
-UDMApiServer* api_server = nullptr;
-#include "udm_config.hpp"
+udm_app* udm_app_inst              = nullptr;
+UDMApiServer* api_server           = nullptr;
+udm_http2_server* udm_api_server_2 = nullptr;
 
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
@@ -108,7 +109,14 @@ int main(int argc, char** argv) {
   api_server = new UDMApiServer(addr, udm_app_inst);
   api_server->init(2);
   std::thread udm_manager(&UDMApiServer::start, api_server);
+
+  // UDM NGHTTP API server (HTTP2)
+  udm_api_server_2 = new udm_http2_server(
+      conv::toString(udm_cfg.sbi.addr4), udm_cfg.sbi_http2_port, udm_app_inst);
+  std::thread udm_http2_manager(&udm_http2_server::start, udm_api_server_2);
+
   udm_manager.join();
+  udm_http2_manager.join();
 
   FILE* fp             = NULL;
   std::string filename = fmt::format("/tmp/udm_{}.status", getpid());

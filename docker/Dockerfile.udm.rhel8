@@ -96,6 +96,9 @@ COPY --from=oai-udm-builder /openair-udm/build/udm/build/udm oai_udm
 COPY --from=oai-udm-builder /openair-udm/scripts/entrypoint.sh .
 
 WORKDIR /usr/local/lib64
+COPY --from=oai-udm-builder /usr/local/lib/libnghttp2_asio.so .
+COPY --from=oai-udm-builder /usr/lib64/libboost_chrono.so.1.66.0 .
+COPY --from=oai-udm-builder /usr/local/lib/libnghttp2_asio.so.1 .
 COPY --from=oai-udm-builder /usr/local/lib64/libpistache.so.0 .
 COPY --from=oai-udm-builder /lib64/libboost_system.so.1.66.0 .
 COPY --from=oai-udm-builder /lib64/libboost_thread.so.1.66.0 .
