@@ -54,11 +54,12 @@ void ConfirmAuthApiImpl::confirm_auth(
 
   nlohmann::json confirm_response = {};
   Pistache::Http::Code code       = {};
+  long http_code                  = 0;
   std::string location;
 
   m_udm_app->handle_confirm_auth(
-      supi, authEvent, confirm_response, location, code);
-
+      supi, authEvent, confirm_response, location, http_code);
+  code = static_cast<Pistache::Http::Code>(http_code);
   if (code == Pistache::Http::Code::Created) {
     response.headers().add<Pistache::Http::Header::Location>(location);
   }

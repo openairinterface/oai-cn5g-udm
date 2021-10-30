@@ -55,9 +55,12 @@ void GenerateAuthDataApiImpl::generate_auth_data(
   std::string reponse_from_udr;
   nlohmann::json auth_info_response = {};
   Pistache::Http::Code code         = {};
+  long http_code                    = 0;
 
   m_udm_app->handle_generate_auth_data_request(
-      supiOrSuci, authenticationInfoRequest, auth_info_response, code);
+      supiOrSuci, authenticationInfoRequest, auth_info_response, http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
 
   // Set content type
   if ((code == Pistache::Http::Code::Created) or

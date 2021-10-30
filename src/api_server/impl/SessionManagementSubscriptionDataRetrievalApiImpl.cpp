@@ -79,9 +79,12 @@ void SessionManagementSubscriptionDataRetrievalApiImpl::get_sm_data(
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
   std::string location         = {};
+  long http_code               = 0;
 
   m_udm_app->handle_session_management_subscription_data_retrieval(
-      supi, response_data, code, snssai, dnn_str, plmn_id);
+      supi, response_data, http_code, snssai, dnn_str, plmn_id);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
 
   // Set content type
   if ((code == Pistache::Http::Code::Created) or

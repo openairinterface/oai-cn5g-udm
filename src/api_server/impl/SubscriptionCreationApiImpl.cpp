@@ -55,10 +55,13 @@ void SubscriptionCreationApiImpl::subscribe(
     const std::string& supi, const SdmSubscription& sdmSubscription,
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
+  long http_code               = {};
   Pistache::Http::Code code    = {};
 
   m_udm_app->handle_subscription_creation(
-      supi, sdmSubscription, response_data, code);
+      supi, sdmSubscription, response_data, http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
 
   // Set content type
   if ((code == Pistache::Http::Code::Created) or

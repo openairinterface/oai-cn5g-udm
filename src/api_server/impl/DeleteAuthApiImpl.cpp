@@ -53,8 +53,12 @@ void DeleteAuthApiImpl::delete_auth(
 
   nlohmann::json auth_response = {};
   Pistache::Http::Code code    = {};
+  long http_code               = 0;
+
   m_udm_app->handle_delete_auth(
-      supi, authEventId, authEvent, auth_response, code);
+      supi, authEventId, authEvent, auth_response, http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
 
   // Set content type
   if ((code == Pistache::Http::Code::Created) or

@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-CONFIG_DIR="/oai-cn5g-udm/etc"
+CONFIG_DIR="/openair-udm/etc"
 SBI_PORT=${SBI_PORT:-80}
 UDR_PORT=${UDM_PORT:-80}
 SBI_HTTP2_PORT=${SBI_HTTP2_PORT:-8080}

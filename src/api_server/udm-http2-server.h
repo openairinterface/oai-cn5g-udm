@@ -51,17 +51,17 @@ class udm_http2_server {
   void start();
   void init(size_t thr) {}
 
-  void generate_auth_data_request(
+  void generate_auth_data_request_handler(
       const std::string& supiOrSuci,
       const oai::udm::model::AuthenticationInfoRequest&
           authenticationInfoRequest,
       const response& response);
 
-  void confirm_auth(
+  void confirm_auth_handler(
       const std::string& supi, const oai::udm::model::AuthEvent& authEvent,
       const response& response);
 
-  void delete_auth(
+  void delete_auth_handler(
       const std::string& supi, const std::string& authEventId,
       const oai::udm::model::AuthEvent& authEvent, const response& response);
 
@@ -78,17 +78,15 @@ class udm_http2_server {
   void session_management_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
       oai::udm::model::Snssai snssai = {}, std::string dnn = {},
-      oai::udm::model::PlmnId plmn_id = {});
+      oai::udm::model::PlmnId PlmnId = {});
 
   void slice_selection_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      std::string supported_features  = {},
-      oai::udm::model::PlmnId plmn_id = {});
+      std::string supported_features = {}, oai::udm::model::PlmnId PlmnId = {});
 
   void smf_selection_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      std::string supported_features  = {},
-      oai::udm::model::PlmnId plmn_id = {});
+      std::string supported_features = {}, oai::udm::model::PlmnId PlmnId = {});
 
   void subscription_creation_handler(
       const std::string& supi,
