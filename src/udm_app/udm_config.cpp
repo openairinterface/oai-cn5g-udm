@@ -198,7 +198,12 @@ int udm_config::load(const std::string& config_file) {
         IPV4_STR_ADDR_TO_INADDR(
             util::trim(address).c_str(), udr_ipv4_addr,
             "BAD IPv4 ADDRESS FORMAT FOR UDR !");
-        udr_addr.ipv4_addr          = udr_ipv4_addr;
+        udr_addr.ipv4_addr = udr_ipv4_addr;
+        // We hardcode udr port from config for the moment
+        if (!(udr_cfg.lookupValue(UDM_CONFIG_STRING_UDR_PORT, udr_port))) {
+          Logger::udm_app().error(UDM_CONFIG_STRING_UDR_PORT "failed");
+          throw(UDM_CONFIG_STRING_UDR_PORT "failed");
+        }
         udr_addr.port               = udr_port;
         std::string udr_api_version = {};
         if (!(udr_cfg.lookupValue(
