@@ -36,7 +36,6 @@ RUN cp -Rf /openair-udm-ext-ref /openair-udm/build/ext
 
 # Building UDM
 WORKDIR /openair-udm/build/scripts
-RUN ./build_udm --install-deps --force
 RUN ./build_udm --clean --Verbose --build-type Release --jobs
 
 #---------------------------------------------------------------------
