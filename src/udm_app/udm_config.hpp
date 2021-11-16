@@ -51,6 +51,7 @@
 
 #define UDM_CONFIG_STRING_INTERFACES "INTERFACES"
 #define UDM_CONFIG_STRING_INTERFACE_SBI_UDM "SBI"
+#define UDM_CONFIG_STRING_SBI_HTTP2_PORT "HTTP2_PORT"
 #define UDM_CONFIG_STRING_INTERFACE_NAME "INTERFACE_NAME"
 #define UDM_CONFIG_STRING_IPV4_ADDRESS "IPV4_ADDRESS"
 #define UDM_CONFIG_STRING_PORT "PORT"
@@ -63,6 +64,7 @@
 
 #define UDM_CONFIG_STRING_SUPPORT_FEATURES "SUPPORT_FEATURES"
 #define UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_FQDN_DNS "USE_FQDN_DNS"
+#define UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2 "USE_HTTP2"
 #define UDM_CONFIG_STRING_FQDN_DNS "FQDN"
 
 using namespace libconfig;
@@ -92,6 +94,7 @@ class udm_config {
   std::string udm_name;
 
   interface_cfg_t sbi;
+  unsigned int sbi_http2_port;
 
   struct {
     struct in_addr ipv4_addr;
@@ -101,6 +104,7 @@ class udm_config {
   } udr_addr;
 
   bool use_fqdn_dns;
+  bool use_http2;
 };
 
 }  // namespace oai::udm::config

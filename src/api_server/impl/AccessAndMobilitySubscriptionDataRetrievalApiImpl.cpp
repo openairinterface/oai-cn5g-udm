@@ -69,8 +69,11 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
 
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
+  long http_code               = 0;
+
   m_udm_app->handle_access_mobility_subscription_data_retrieval(
-      supi, response_data, code, plmn_id);
+      supi, response_data, http_code, plmn_id);
+  code = static_cast<Pistache::Http::Code>(http_code);
 
   // Set content type
   if ((code == Pistache::Http::Code::Created) or

@@ -34,6 +34,7 @@ include_directories(${SRC_TOP_DIR}/../build/ext/spdlog/include)
 
 file(GLOB UDM_API_SERVER_src_files
     ${UDM_API_SERVER_DIR}/udm-api-server.cpp
+    ${UDM_API_SERVER_DIR}/udm-http2-server.cpp
     ${UDM_API_SERVER_DIR}/model/*.cpp
     ${UDM_API_SERVER_DIR}/api/*.cpp
     ${UDM_API_SERVER_DIR}/impl/*.cpp

@@ -39,5 +39,7 @@ std::string& ltrim(std::string& s);
 std::string& rtrim(std::string& s);
 // trim from both ends
 std::string& trim(std::string& s);
+// extract query param from given querystring
+std::string get_query_param(std::string querystring, std::string param);
 }  // namespace util
 #endif

@@ -58,47 +58,46 @@ class udm_app {
       const std::string& supiOrSuci,
       const oai::udm::model::AuthenticationInfoRequest&
           authenticationInfoRequest,
-      nlohmann::json& auth_info_response, Pistache::Http::Code& code);
+      nlohmann::json& auth_info_response, long& code);
 
   void handle_confirm_auth(
       const std::string& supi, const oai::udm::model::AuthEvent& authEvent,
-      nlohmann::json& confirm_response, std::string& location,
-      Pistache::Http::Code& code);
+      nlohmann::json& confirm_response, std::string& location, long& code);
 
   void handle_delete_auth(
       const std::string& supi, const std::string& authEventId,
       const oai::udm::model::AuthEvent& authEvent,
-      nlohmann::json& auth_response, Pistache::Http::Code& code);
+      nlohmann::json& auth_response, long& code);
 
   void handle_access_mobility_subscription_data_retrieval(
-      const std::string& supi, nlohmann::json& response_data,
-      Pistache::Http::Code& code, oai::udm::model::PlmnId PlmnId = {});
+      const std::string& supi, nlohmann::json& response_data, long& code,
+      oai::udm::model::PlmnId PlmnId = {});
 
   void handle_amf_registration_for_3gpp_access(
       const std::string& ue_id,
       const oai::udm::model::Amf3GppAccessRegistration&
           amf_3gpp_access_registration,
-      nlohmann::json& response_data, Pistache::Http::Code& code);
+      nlohmann::json& response_data, long& code);
 
   void handle_session_management_subscription_data_retrieval(
-      const std::string& supi, nlohmann::json& response_data,
-      Pistache::Http::Code& code, oai::udm::model::Snssai snssai = {},
-      std::string dnn = {}, oai::udm::model::PlmnId plmn_id = {});
+      const std::string& supi, nlohmann::json& response_data, long& code,
+      oai::udm::model::Snssai snssai = {}, std::string dnn = {},
+      oai::udm::model::PlmnId plmn_id = {});
 
   void handle_slice_selection_subscription_data_retrieval(
-      const std::string& supi, nlohmann::json& response_data,
-      Pistache::Http::Code& code, std::string supported_features = {},
+      const std::string& supi, nlohmann::json& response_data, long& code,
+      std::string supported_features  = {},
       oai::udm::model::PlmnId plmn_id = {});
 
   void handle_smf_selection_subscription_data_retrieval(
-      const std::string& supi, nlohmann::json& response_data,
-      Pistache::Http::Code& code, std::string supported_features = {},
+      const std::string& supi, nlohmann::json& response_data, long& code,
+      std::string supported_features  = {},
       oai::udm::model::PlmnId plmn_id = {});
 
   void handle_subscription_creation(
       const std::string& supi,
       const oai::udm::model::SdmSubscription& sdmSubscription,
-      nlohmann::json& response_data, Pistache::Http::Code& code);
+      nlohmann::json& response_data, long& code);
 
  private:
 };

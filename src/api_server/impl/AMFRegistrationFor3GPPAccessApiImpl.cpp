@@ -58,9 +58,12 @@ void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
   std::string location;
+  long http_code = 0;
 
   m_udm_app->handle_amf_registration_for_3gpp_access(
-      ueId, amf3GppAccessRegistration, response_data, code);
+      ueId, amf3GppAccessRegistration, response_data, http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
 
   // Set content type
   if ((code == Pistache::Http::Code::Created) or

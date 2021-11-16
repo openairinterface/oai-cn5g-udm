@@ -58,6 +58,7 @@ udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
   udr_addr.api_version      = "v1";
   udr_addr.fqdn             = {};
   use_fqdn_dns              = false;
+  use_http2                 = false;
 }
 
 //------------------------------------------------------------------------------
@@ -119,6 +120,12 @@ int udm_config::load(const std::string& config_file) {
         new_if_cfg[UDM_CONFIG_STRING_INTERFACE_SBI_UDM];
     load_interface(sbi_udm_cfg, sbi);
 
+    // HTTP2 port
+    if (!(sbi_udm_cfg.lookupValue(
+            UDM_CONFIG_STRING_SBI_HTTP2_PORT, sbi_http2_port))) {
+      Logger::config().error(UDM_CONFIG_STRING_SBI_HTTP2_PORT "failed");
+      throw(UDM_CONFIG_STRING_SBI_HTTP2_PORT " failed");
+    }
   } catch (const SettingNotFoundException& nfex) {
     Logger::config().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
@@ -139,6 +146,13 @@ int udm_config::load(const std::string& config_file) {
       use_fqdn_dns = false;
     }
 
+    support_features.lookupValue(
+        UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2, opt);
+    if (boost::iequals(opt, "yes")) {
+      use_http2 = true;
+    } else {
+      use_http2 = false;
+    }
   } catch (const SettingNotFoundException& nfex) {
     Logger::udm_app().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
@@ -184,7 +198,12 @@ int udm_config::load(const std::string& config_file) {
         IPV4_STR_ADDR_TO_INADDR(
             util::trim(address).c_str(), udr_ipv4_addr,
             "BAD IPv4 ADDRESS FORMAT FOR UDR !");
-        udr_addr.ipv4_addr          = udr_ipv4_addr;
+        udr_addr.ipv4_addr = udr_ipv4_addr;
+        // We hardcode udr port from config for the moment
+        if (!(udr_cfg.lookupValue(UDM_CONFIG_STRING_UDR_PORT, udr_port))) {
+          Logger::udm_app().error(UDM_CONFIG_STRING_UDR_PORT "failed");
+          throw(UDM_CONFIG_STRING_UDR_PORT "failed");
+        }
         udr_addr.port               = udr_port;
         std::string udr_api_version = {};
         if (!(udr_cfg.lookupValue(
@@ -218,7 +237,15 @@ void udm_config::display() {
   Logger::config().info("- SBI:");
   Logger::config().info("    Iface name............: %s", sbi.if_name.c_str());
   Logger::config().info("    IPv4 Addr.............: %s", inet_ntoa(sbi.addr4));
-  Logger::config().info("    Port..................: %d", sbi.port);
+  Logger::config().info("    HTTP1 Port ...........: %d", sbi.port);
+  Logger::config().info("    HTTP2 Port............: %d", sbi_http2_port);
+  Logger::config().info(
+      "    Api Version...........: %s", sbi.api_version.c_str());
+  Logger::config().info("- Supported Features:");
+  Logger::config().info(
+      "    Use FQDN ..............: %s", use_fqdn_dns ? "Yes" : "No");
+  Logger::config().info(
+      "    Use HTTP2..............: %s", use_http2 ? "Yes" : "No");
 
   Logger::config().info("- UDR:");
   Logger::config().info(
