@@ -51,6 +51,12 @@ using namespace oai::udm::model;
 namespace oai {
 namespace udm {
 namespace helpers {
+class ValidationException : public std::runtime_error {
+ public:
+  explicit ValidationException(const std::string& what)
+      : std::runtime_error(what) {}
+  ~ValidationException() override = default;
+};
 
 std::string toStringValue(const std::string& value);
 std::string toStringValue(const int32_t& value);
