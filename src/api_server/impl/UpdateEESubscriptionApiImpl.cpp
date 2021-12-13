@@ -32,6 +32,7 @@
  */
 
 #include "UpdateEESubscriptionApiImpl.h"
+#include "logger.hpp"
 
 namespace oai {
 namespace udm {
@@ -40,7 +41,8 @@ namespace api {
 using namespace oai::udm::model;
 
 UpdateEESubscriptionApiImpl::UpdateEESubscriptionApiImpl(
-    const std::shared_ptr<Pistache::Rest::Router>& rtr)
+    const std::shared_ptr<Pistache::Rest::Router>& rtr, udm_app* udm_app_inst,
+    std::string address)
     : UpdateEESubscriptionApi(rtr) {}
 
 void UpdateEESubscriptionApiImpl::update_ee_subscription(
@@ -48,7 +50,19 @@ void UpdateEESubscriptionApiImpl::update_ee_subscription(
     const std::vector<PatchItem>& patchItem,
     const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  Logger::udm_ee().info("Handle Update EE Subscription");
+
+  Pistache::Http::Code code = {};
+  long http_code            = 0;
+  nlohmann::json json_data  = {};
+
+  m_udm_app->handle_update_ee_subscription(
+      ueIdentity, subscriptionId, patchItem, http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
+
+  Logger::udm_ee().info("Send response to NF");
+  response.send(code, json_data.dump().c_str());
 }
 
 }  // namespace api

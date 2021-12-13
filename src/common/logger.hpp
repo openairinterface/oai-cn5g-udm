@@ -86,6 +86,7 @@ class Logger {
   static _Logger& system() { return *singleton().m_system; }
   static _Logger& udm_ueau() { return *singleton().m_udm_ueau; }
   static _Logger& udm_uecm() { return *singleton().m_udm_uecm; }
+  static _Logger& udm_ee() { return *singleton().m_udm_ee; }
   static _Logger& udm_sdm() { return *singleton().m_udm_sdm; }
   static _Logger& udm_server() { return *singleton().m_udm_server; }
   static _Logger& udm_app() { return *singleton().m_udm_app; }
@@ -110,6 +111,7 @@ class Logger {
   _Logger* m_system;
   _Logger* m_udm_ueau;
   _Logger* m_udm_uecm;
+  _Logger* m_udm_ee;
   _Logger* m_udm_sdm;
   _Logger* m_udm_server;
   _Logger* m_udm_app;

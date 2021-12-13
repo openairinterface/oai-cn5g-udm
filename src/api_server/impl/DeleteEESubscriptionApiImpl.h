@@ -49,22 +49,29 @@
 #include <DeleteEESubscriptionApi.h>
 
 #include "ProblemDetails.h"
+#include "udm_app.hpp"
 #include <string>
 
 namespace oai::udm::api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class DeleteEESubscriptionApiImpl
     : public oai::udm::api::DeleteEESubscriptionApi {
  public:
   explicit DeleteEESubscriptionApiImpl(
-      const std::shared_ptr<Pistache::Rest::Router>& rtr);
+      const std::shared_ptr<Pistache::Rest::Router>& rtr, udm_app* udm_app_inst,
+      std::string address);
   ~DeleteEESubscriptionApiImpl() override = default;
 
   void delete_ee_subscription(
       const std::string& ueIdentity, const std::string& subscriptionId,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace oai::udm::api

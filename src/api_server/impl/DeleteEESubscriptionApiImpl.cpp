@@ -32,7 +32,7 @@
  */
 
 #include "DeleteEESubscriptionApiImpl.h"
-
+#include "logger.hpp"
 namespace oai {
 namespace udm {
 namespace api {
@@ -40,13 +40,34 @@ namespace api {
 using namespace oai::udm::model;
 
 DeleteEESubscriptionApiImpl::DeleteEESubscriptionApiImpl(
-    const std::shared_ptr<Pistache::Rest::Router>& rtr)
+    const std::shared_ptr<Pistache::Rest::Router>& rtr, udm_app* udm_app_inst,
+    std::string address)
     : DeleteEESubscriptionApi(rtr) {}
 
 void DeleteEESubscriptionApiImpl::delete_ee_subscription(
     const std::string& ueIdentity, const std::string& subscriptionId,
     Pistache::Http::ResponseWriter& response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  Logger::udm_ee().info("Handle Delete EE Subscription");
+
+  Pistache::Http::Code code     = {};
+  long http_code                = 0;
+  nlohmann::json json_data      = {};
+  ProblemDetails problemDetails = {};
+
+  m_udm_app->handle_delete_ee_subscription(
+      ueIdentity, subscriptionId, problemDetails, http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
+
+  Logger::udm_ee().info("Send response to NF");
+  if (code == Pistache::Http::Code::No_Content) {
+    response.send(code);
+  } else {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/problem+json"));
+    to_json(json_data, problemDetails);
+    response.send(code, json_data.dump().c_str());
+  }
 }
 
 }  // namespace api

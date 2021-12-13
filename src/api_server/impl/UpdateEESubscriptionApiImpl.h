@@ -51,18 +51,21 @@
 #include "PatchItem.h"
 #include "PatchResult.h"
 #include "ProblemDetails.h"
+#include "udm_app.hpp"
 #include <string>
 #include <vector>
 
 namespace oai::udm::api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class UpdateEESubscriptionApiImpl
     : public oai::udm::api::UpdateEESubscriptionApi {
  public:
   explicit UpdateEESubscriptionApiImpl(
-      const std::shared_ptr<Pistache::Rest::Router>& rtr);
+      const std::shared_ptr<Pistache::Rest::Router>& rtr, udm_app* udm_app_inst,
+      std::string address);
   ~UpdateEESubscriptionApiImpl() override = default;
 
   void update_ee_subscription(
@@ -70,6 +73,10 @@ class UpdateEESubscriptionApiImpl
       const std::vector<PatchItem>& patchItem,
       const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace oai::udm::api

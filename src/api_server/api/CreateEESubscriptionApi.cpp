@@ -33,13 +33,17 @@
 
 #include "CreateEESubscriptionApi.h"
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
+using namespace oai::udm::config;
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
 
-const std::string CreateEESubscriptionApi::base = "/nudm-ee/v1";
+const std::string CreateEESubscriptionApi::base = "/nudm-ee/";
 
 CreateEESubscriptionApi::CreateEESubscriptionApi(
     const std::shared_ptr<Pistache::Rest::Router>& rtr)
@@ -53,7 +57,8 @@ void CreateEESubscriptionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/:ueIdentity/ee-subscriptions",
+      *router,
+      base + udm_cfg.udr_addr.api_version + "/:ueIdentity/ee-subscriptions",
       Routes::bind(
           &CreateEESubscriptionApi::create_ee_subscription_handler, this));
 

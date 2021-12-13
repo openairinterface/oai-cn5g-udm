@@ -33,13 +33,16 @@
 
 #include "DeleteEESubscriptionApi.h"
 #include "Helpers.h"
+#include "udm_config.hpp"
+
+extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
-
+using namespace oai::udm::config;
 using namespace oai::udm::helpers;
 using namespace oai::udm::model;
 
-const std::string DeleteEESubscriptionApi::base = "/nudm-ee/v1";
+const std::string DeleteEESubscriptionApi::base = "/nudm-ee/";
 
 DeleteEESubscriptionApi::DeleteEESubscriptionApi(
     const std::shared_ptr<Pistache::Rest::Router>& rtr)
@@ -53,7 +56,9 @@ void DeleteEESubscriptionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(
-      *router, base + "/:ueIdentity/ee-subscriptions/:subscriptionId",
+      *router,
+      base + udm_cfg.udr_addr.api_version +
+          "/:ueIdentity/ee-subscriptions/:subscriptionId",
       Routes::bind(
           &DeleteEESubscriptionApi::delete_ee_subscription_handler, this));
 

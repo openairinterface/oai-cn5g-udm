@@ -45,28 +45,34 @@
 #include <pistache/router.h>
 #include <memory>
 #include <optional>
-
+#include <string>
 #include <CreateEESubscriptionApi.h>
 
 #include "CreatedEeSubscription.h"
 #include "EeSubscription.h"
 #include "ProblemDetails.h"
-#include <string>
+#include "udm_app.hpp"
 
 namespace oai::udm::api {
 
 using namespace oai::udm::model;
+using namespace oai::udm::app;
 
 class CreateEESubscriptionApiImpl
     : public oai::udm::api::CreateEESubscriptionApi {
  public:
   explicit CreateEESubscriptionApiImpl(
-      const std::shared_ptr<Pistache::Rest::Router>& rtr);
+      const std::shared_ptr<Pistache::Rest::Router>& rtr, udm_app* udm_app_inst,
+      std::string address);
   ~CreateEESubscriptionApiImpl() override = default;
 
   void create_ee_subscription(
       const std::string& ueIdentity, const EeSubscription& eeSubscription,
       Pistache::Http::ResponseWriter& response);
+
+ private:
+  udm_app* m_udm_app;
+  std::string m_address;
 };
 
 }  // namespace oai::udm::api

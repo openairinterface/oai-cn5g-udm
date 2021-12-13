@@ -41,6 +41,10 @@
 #include <map>
 #include <shared_mutex>
 #include "AuthEvent.h"
+#include "EeSubscription.h"
+#include "CreatedEeSubscription.h"
+#include "PatchItem.h"
+#include "ProblemDetails.h"
 
 namespace oai {
 namespace udm {
@@ -98,6 +102,19 @@ class udm_app {
       const std::string& supi,
       const oai::udm::model::SdmSubscription& sdmSubscription,
       nlohmann::json& response_data, long& code);
+
+  void handle_create_ee_subscription(
+      const std::string& ueIdentity,
+      const oai::udm::model::EeSubscription& eeSubscription,
+      oai::udm::model::CreatedEeSubscription& createdSub, long& code);
+
+  void handle_delete_ee_subscription(
+      const std::string& ueIdentity, const std::string& subscriptionId,
+      oai::udm::model::ProblemDetails& problemDetails, long& code);
+
+  void handle_update_ee_subscription(
+      const std::string& ueIdentity, const std::string& subscriptionId,
+      const std::vector<oai::udm::model::PatchItem>& patchItem, long& code);
 
  private:
 };

@@ -864,3 +864,19 @@ void udm_app::handle_subscription_creation(
   Logger::udm_uecm().debug("HTTP response code %d", http_code);
   response_data = sdmSubscription_j;  // to be verified
 }
+
+//------------------------------------------------------------------------------
+void udm_app::handle_create_ee_subscription(
+    const std::string& ueIdentity,
+    const oai::udm::model::EeSubscription& eeSubscription,
+    oai::udm::model::CreatedEeSubscription& createdSub, long& code) {}
+
+//------------------------------------------------------------------------------
+void udm_app::handle_delete_ee_subscription(
+    const std::string& ueIdentity, const std::string& subscriptionId,
+    oai::udm::model::ProblemDetails& problemDetails, long& code) {}
+
+//------------------------------------------------------------------------------
+void udm_app::handle_update_ee_subscription(
+    const std::string& ueIdentity, const std::string& subscriptionId,
+    const std::vector<oai::udm::model::PatchItem>& patchItem, long& code) {}
