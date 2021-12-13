@@ -114,7 +114,8 @@ class udm_app {
 
   void handle_update_ee_subscription(
       const std::string& ueIdentity, const std::string& subscriptionId,
-      const std::vector<oai::udm::model::PatchItem>& patchItem, long& code);
+      const std::vector<oai::udm::model::PatchItem>& patchItem,
+      oai::udm::model::ProblemDetails& problemDetails, long& code);
 
  private:
 };

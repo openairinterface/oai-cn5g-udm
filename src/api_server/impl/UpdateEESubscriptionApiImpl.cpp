@@ -33,6 +33,7 @@
 
 #include "UpdateEESubscriptionApiImpl.h"
 #include "logger.hpp"
+#include "ProblemDetails.h"
 
 namespace oai {
 namespace udm {
@@ -52,17 +53,25 @@ void UpdateEESubscriptionApiImpl::update_ee_subscription(
     Pistache::Http::ResponseWriter& response) {
   Logger::udm_ee().info("Handle Update EE Subscription");
 
-  Pistache::Http::Code code = {};
-  long http_code            = 0;
-  nlohmann::json json_data  = {};
+  Pistache::Http::Code code     = {};
+  long http_code                = 0;
+  nlohmann::json json_data      = {};
+  ProblemDetails problemDetails = {};
 
   m_udm_app->handle_update_ee_subscription(
-      ueIdentity, subscriptionId, patchItem, http_code);
+      ueIdentity, subscriptionId, patchItem, problemDetails, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
 
   Logger::udm_ee().info("Send response to NF");
-  response.send(code, json_data.dump().c_str());
+  if (code == Pistache::Http::Code::No_Content) {
+    response.send(code);
+  } else {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/problem+json"));
+    to_json(json_data, problemDetails);
+    response.send(code, json_data.dump().c_str());
+  }
 }
 
 }  // namespace api
