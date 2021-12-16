@@ -45,6 +45,8 @@
 #include "CreatedEeSubscription.h"
 #include "PatchItem.h"
 #include "ProblemDetails.h"
+#include "uint_generator.hpp"
+#include "udm.h"
 
 namespace oai {
 namespace udm {
@@ -103,7 +105,7 @@ class udm_app {
       const oai::udm::model::SdmSubscription& sdmSubscription,
       nlohmann::json& response_data, long& code);
 
-  void handle_create_ee_subscription(
+  evsub_id_t handle_create_ee_subscription(
       const std::string& ueIdentity,
       const oai::udm::model::EeSubscription& eeSubscription,
       oai::udm::model::CreatedEeSubscription& createdSub, long& code);
@@ -117,7 +119,29 @@ class udm_app {
       const std::vector<oai::udm::model::PatchItem>& patchItem,
       oai::udm::model::ProblemDetails& problemDetails, long& code);
 
+  evsub_id_t generate_ev_subscription_id();
+
+  /*
+   * Add an Event Subscription to the list
+   * @param [const evsub_id_t&] sub_id: Subscription ID
+   * @param [std::string] ue_id: UE's identity
+   * @param [std::shared_ptr<oai::udm::model::CreatedEeSubscription>] ces: a
+   * shared pointer stored information of the created subscription
+   * @return void
+   */
+  void add_event_subscription(
+      const evsub_id_t& sub_id, const std::string& ue_id,
+      std::shared_ptr<oai::udm::model::CreatedEeSubscription>& ces);
+
+  bool delete_event_subscription(
+      const std::string& subscription_id, const std::string& ue_id);
+
  private:
+  util::uint_generator<uint32_t> evsub_id_generator;
+  std::map<evsub_id_t, std::shared_ptr<oai::udm::model::CreatedEeSubscription>>
+      udm_event_subscriptions;
+  std::map<std::string, std::vector<evsub_id_t>> udm_event_subscriptions_per_ue;
+  mutable std::shared_mutex m_mutex_udm_event_subscriptions;
 };
 }  // namespace app
 }  // namespace udm

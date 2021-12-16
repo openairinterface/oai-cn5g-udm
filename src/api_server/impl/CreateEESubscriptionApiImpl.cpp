@@ -33,6 +33,7 @@
 
 #include "CreateEESubscriptionApiImpl.h"
 #include "logger.hpp"
+#include "udm.h"
 
 namespace oai {
 namespace udm {
@@ -55,8 +56,7 @@ void CreateEESubscriptionApiImpl::create_ee_subscription(
   CreatedEeSubscription createdSub = {};
   nlohmann::json json_data         = {};
 
-  // evsub_id_t sub_id =
-  m_udm_app->handle_create_ee_subscription(
+  evsub_id_t sub_id = m_udm_app->handle_create_ee_subscription(
       ueIdentity, eeSubscription, createdSub, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);

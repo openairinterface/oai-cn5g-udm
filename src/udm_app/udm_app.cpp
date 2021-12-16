@@ -866,18 +866,100 @@ void udm_app::handle_subscription_creation(
 }
 
 //------------------------------------------------------------------------------
-void udm_app::handle_create_ee_subscription(
+evsub_id_t udm_app::handle_create_ee_subscription(
     const std::string& ueIdentity,
     const oai::udm::model::EeSubscription& eeSubscription,
-    oai::udm::model::CreatedEeSubscription& createdSub, long& code) {}
+    oai::udm::model::CreatedEeSubscription& createdSub, long& code) {
+  Logger::udm_ee().info("Handle Create EE Subscription");
+
+  // Generate a subscription ID Id and store the corresponding information in a
+  // map (subscription id, info)
+  evsub_id_t evsub_id = generate_ev_subscription_id();
+
+  oai::udm::model::EeSubscription es = eeSubscription;
+  // TODO: Update Subscription
+
+  // MonitoringConfiguration
+
+  es.setSubscriptionId(std::to_string(evsub_id));
+  std::shared_ptr<CreatedEeSubscription> ces =
+      std::make_shared<CreatedEeSubscription>(createdSub);
+  ces->setEeSubscription(es);
+
+  if (!ueIdentity.empty()) {
+    ces->setNumberOfUes(1);
+  } else {
+    // TODO: For group of UEs
+  }
+  // TODO: MonitoringReport
+
+  add_event_subscription(evsub_id, ueIdentity, ces);
+  code = HTTP_RESPONSE_CODE_CREATED;
+
+  return evsub_id;
+}
 
 //------------------------------------------------------------------------------
 void udm_app::handle_delete_ee_subscription(
     const std::string& ueIdentity, const std::string& subscriptionId,
-    oai::udm::model::ProblemDetails& problemDetails, long& code) {}
+    oai::udm::model::ProblemDetails& problemDetails, long& code) {
+  Logger::udm_ee().info("Handle Delete EE Subscription");
+
+  if (!delete_event_subscription(subscriptionId, ueIdentity)) {
+    // Set ProblemDetails
+    // Code
+    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+  }
+  code = HTTP_RESPONSE_CODE_NO_CONTENT;
+  return;
+}
 
 //------------------------------------------------------------------------------
 void udm_app::handle_update_ee_subscription(
     const std::string& ueIdentity, const std::string& subscriptionId,
     const std::vector<oai::udm::model::PatchItem>& patchItem,
-    oai::udm::model::ProblemDetails& problemDetails, long& code) {}
+    oai::udm::model::ProblemDetails& problemDetails, long& code) {
+  Logger::udm_ee().info("Handle Update EE Subscription");
+  // TODO:
+}
+
+//------------------------------------------------------------------------------
+evsub_id_t udm_app::generate_ev_subscription_id() {
+  return evsub_id_generator.get_uid();
+}
+
+//------------------------------------------------------------------------------
+void udm_app::add_event_subscription(
+    const evsub_id_t& sub_id, const std::string& ue_id,
+    std::shared_ptr<oai::udm::model::CreatedEeSubscription>& ces) {
+  std::unique_lock lock(m_mutex_udm_event_subscriptions);
+  udm_event_subscriptions[sub_id] = ces;
+  std::vector<evsub_id_t> ev_subs;
+
+  if (udm_event_subscriptions_per_ue.count(ue_id) > 0) {
+    ev_subs = udm_event_subscriptions_per_ue.at(ue_id);
+  }
+  ev_subs.push_back(sub_id);
+  udm_event_subscriptions_per_ue[ue_id] = ev_subs;
+  return;
+}
+
+//------------------------------------------------------------------------------
+bool udm_app::delete_event_subscription(
+    const std::string& subscription_id, const std::string& ue_id) {
+  std::unique_lock lock(m_mutex_udm_event_subscriptions);
+  bool result = true;
+  /*	  if (udm_event_subscriptions.count(sub_id)) {
+                    udm_event_subscriptions.erase(sub_id);
+            } else {
+                    result = false;
+            }
+
+            if (udm_event_subscriptions_per_ue.count(ue_id) > 0) {
+                    udm_event_subscriptions_per_ue.erase(ue_id);
+        } else {
+            result = false;
+        }
+  */
+  return result;
+}
