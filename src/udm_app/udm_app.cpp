@@ -51,6 +51,7 @@
 #include "comUt.hpp"
 #include "sha256.hpp"
 #include "udm.h"
+#include "api_conversions.hpp"
 
 using namespace oai::udm::app;
 using namespace oai::udm::model;
@@ -921,6 +922,64 @@ void udm_app::handle_update_ee_subscription(
     oai::udm::model::ProblemDetails& problemDetails, long& code) {
   Logger::udm_ee().info("Handle Update EE Subscription");
   // TODO:
+  bool op_success = false;
+
+  for (auto p : patchItem) {
+    patch_op_type_t op = util::api_conv::string_to_patch_operation(p.getOp());
+    // Verify Path
+    if ((p.getPath().substr(0, 1).compare("/") != 0) or
+        (p.getPath().length() < 2)) {
+      Logger::udm_ee().warn(
+          "Bad value for operation path: %s ", p.getPath().c_str());
+      code = HTTP_RESPONSE_CODE_BAD_REQUEST;
+      // problem_details.setCause(
+      //    protocol_application_error_e2str[MANDATORY_IE_INCORRECT]);
+      return;
+    }
+
+    std::string path = p.getPath().substr(1);
+
+    switch (op) {
+      case PATCH_OP_REPLACE: {
+        if (replace_ee_subscription(path, p.getValue())) {
+          // update_nf_profile(nf_instance_id, sn);
+          code = HTTP_RESPONSE_CODE_OK;
+        } else {
+          op_success = false;
+        }
+      } break;
+
+      case PATCH_OP_ADD: {
+        if (add_ee_subscription(path, p.getValue())) {
+          // update_nf_profile(nf_instance_id, sn);
+          code = HTTP_RESPONSE_CODE_OK;
+        } else {
+          op_success = false;
+        }
+      } break;
+
+      case PATCH_OP_REMOVE: {
+        if (remove_ee_subscription(path)) {
+          // update_nf_profile(nf_instance_id, sn);
+          code = HTTP_RESPONSE_CODE_OK;
+        } else {
+          op_success = false;
+        }
+      } break;
+
+      default: {
+        Logger::udm_ee().warn("Requested operation is not valid!");
+        op_success = false;
+      }
+    }
+
+    if (!op_success) {
+      code = HTTP_RESPONSE_CODE_BAD_REQUEST;
+      // problem_details.setCause(
+      //    protocol_application_error_e2str[MANDATORY_IE_INCORRECT]);
+    } else {
+    }
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -948,18 +1007,38 @@ void udm_app::add_event_subscription(
 bool udm_app::delete_event_subscription(
     const std::string& subscription_id, const std::string& ue_id) {
   std::unique_lock lock(m_mutex_udm_event_subscriptions);
-  bool result = true;
-  /*	  if (udm_event_subscriptions.count(sub_id)) {
-                    udm_event_subscriptions.erase(sub_id);
-            } else {
-                    result = false;
-            }
+  bool result     = true;
+  uint32_t sub_id = 0;
+  try {
+    sub_id = std::stoul(subscription_id);
+  } catch (std::exception e) {
+    Logger::udm_ee().warn(
+        "Bad value for subscription id %s ", subscription_id.c_str());
+    return false;
+  }
 
-            if (udm_event_subscriptions_per_ue.count(ue_id) > 0) {
-                    udm_event_subscriptions_per_ue.erase(ue_id);
-        } else {
-            result = false;
-        }
-  */
+  if (udm_event_subscriptions.count(sub_id)) {
+    udm_event_subscriptions.erase(sub_id);
+  } else {
+    result = false;
+  }
+
+  if (udm_event_subscriptions_per_ue.count(ue_id) > 0) {
+    udm_event_subscriptions_per_ue.erase(ue_id);
+  } else {
+    result = false;
+  }
+
   return result;
 }
+
+//------------------------------------------------------------------------------
+bool udm_app::replace_ee_subscription(
+    const std::string& path, const std::string& value) {}
+
+//------------------------------------------------------------------------------
+bool udm_app::add_ee_subscription(
+    const std::string& path, const std::string& value) {}
+
+//------------------------------------------------------------------------------
+bool udm_app::remove_ee_subscription(const std::string& path) {}
