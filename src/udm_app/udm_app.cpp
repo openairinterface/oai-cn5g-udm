@@ -52,6 +52,7 @@
 #include "sha256.hpp"
 #include "udm.h"
 #include "api_conversions.hpp"
+#include "3gpp_29.500.h"
 
 using namespace oai::udm::app;
 using namespace oai::udm::model;
@@ -932,8 +933,8 @@ void udm_app::handle_update_ee_subscription(
       Logger::udm_ee().warn(
           "Bad value for operation path: %s ", p.getPath().c_str());
       code = HTTP_RESPONSE_CODE_BAD_REQUEST;
-      // problem_details.setCause(
-      //    protocol_application_error_e2str[MANDATORY_IE_INCORRECT]);
+      problemDetails.setCause(
+          protocol_application_error_e2str[MANDATORY_IE_INCORRECT]);
       return;
     }
 
@@ -942,7 +943,6 @@ void udm_app::handle_update_ee_subscription(
     switch (op) {
       case PATCH_OP_REPLACE: {
         if (replace_ee_subscription(path, p.getValue())) {
-          // update_nf_profile(nf_instance_id, sn);
           code = HTTP_RESPONSE_CODE_OK;
         } else {
           op_success = false;
@@ -951,7 +951,6 @@ void udm_app::handle_update_ee_subscription(
 
       case PATCH_OP_ADD: {
         if (add_ee_subscription(path, p.getValue())) {
-          // update_nf_profile(nf_instance_id, sn);
           code = HTTP_RESPONSE_CODE_OK;
         } else {
           op_success = false;
@@ -960,7 +959,6 @@ void udm_app::handle_update_ee_subscription(
 
       case PATCH_OP_REMOVE: {
         if (remove_ee_subscription(path)) {
-          // update_nf_profile(nf_instance_id, sn);
           code = HTTP_RESPONSE_CODE_OK;
         } else {
           op_success = false;
@@ -975,8 +973,8 @@ void udm_app::handle_update_ee_subscription(
 
     if (!op_success) {
       code = HTTP_RESPONSE_CODE_BAD_REQUEST;
-      // problem_details.setCause(
-      //    protocol_application_error_e2str[MANDATORY_IE_INCORRECT]);
+      problemDetails.setCause(
+          protocol_application_error_e2str[INVALID_QUERY_PARAM]);  // TODO:
     } else {
     }
   }
@@ -1034,11 +1032,25 @@ bool udm_app::delete_event_subscription(
 
 //------------------------------------------------------------------------------
 bool udm_app::replace_ee_subscription(
-    const std::string& path, const std::string& value) {}
+    const std::string& path, const std::string& value) {
+  Logger::udm_ee().debug(
+      "Replace member %s with new value %s", path.c_str(), value.c_str());
+  // TODO:
+
+  return false;
+}
 
 //------------------------------------------------------------------------------
 bool udm_app::add_ee_subscription(
-    const std::string& path, const std::string& value) {}
+    const std::string& path, const std::string& value) {
+  Logger::udm_ee().debug(
+      "Add member %s with value %s", path.c_str(), value.c_str());
+  // TODO:
+}
 
 //------------------------------------------------------------------------------
-bool udm_app::remove_ee_subscription(const std::string& path) {}
+bool udm_app::remove_ee_subscription(const std::string& path) {
+  Logger::udm_ee().debug(
+      "Remove member %s with value %s", path.c_str(), value.c_str());
+  // TODO:
+}
