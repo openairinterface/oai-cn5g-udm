@@ -136,10 +136,11 @@ class udm_app {
   bool delete_event_subscription(
       const std::string& subscription_id, const std::string& ue_id);
 
-  bool replace_ee_subscription(
+  bool replace_ee_subscription_item(
       const std::string& path, const std::string& value);
-  bool add_ee_subscription(const std::string& path, const std::string& value);
-  bool remove_ee_subscription(const std::string& path);
+  bool add_ee_subscription_item(
+      const std::string& path, const std::string& value);
+  bool remove_ee_subscription_item(const std::string& path);
 
  private:
   util::uint_generator<uint32_t> evsub_id_generator;

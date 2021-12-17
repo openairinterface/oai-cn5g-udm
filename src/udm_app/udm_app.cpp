@@ -942,7 +942,7 @@ void udm_app::handle_update_ee_subscription(
 
     switch (op) {
       case PATCH_OP_REPLACE: {
-        if (replace_ee_subscription(path, p.getValue())) {
+        if (replace_ee_subscription_item(path, p.getValue())) {
           code = HTTP_RESPONSE_CODE_OK;
         } else {
           op_success = false;
@@ -950,7 +950,7 @@ void udm_app::handle_update_ee_subscription(
       } break;
 
       case PATCH_OP_ADD: {
-        if (add_ee_subscription(path, p.getValue())) {
+        if (add_ee_subscription_item(path, p.getValue())) {
           code = HTTP_RESPONSE_CODE_OK;
         } else {
           op_success = false;
@@ -958,7 +958,7 @@ void udm_app::handle_update_ee_subscription(
       } break;
 
       case PATCH_OP_REMOVE: {
-        if (remove_ee_subscription(path)) {
+        if (remove_ee_subscription_item(path)) {
           code = HTTP_RESPONSE_CODE_OK;
         } else {
           op_success = false;
@@ -1031,7 +1031,7 @@ bool udm_app::delete_event_subscription(
 }
 
 //------------------------------------------------------------------------------
-bool udm_app::replace_ee_subscription(
+bool udm_app::replace_ee_subscription_item(
     const std::string& path, const std::string& value) {
   Logger::udm_ee().debug(
       "Replace member %s with new value %s", path.c_str(), value.c_str());
@@ -1041,7 +1041,7 @@ bool udm_app::replace_ee_subscription(
 }
 
 //------------------------------------------------------------------------------
-bool udm_app::add_ee_subscription(
+bool udm_app::add_ee_subscription_item(
     const std::string& path, const std::string& value) {
   Logger::udm_ee().debug(
       "Add member %s with value %s", path.c_str(), value.c_str());
@@ -1049,8 +1049,7 @@ bool udm_app::add_ee_subscription(
 }
 
 //------------------------------------------------------------------------------
-bool udm_app::remove_ee_subscription(const std::string& path) {
-  Logger::udm_ee().debug(
-      "Remove member %s with value %s", path.c_str(), value.c_str());
+bool udm_app::remove_ee_subscription_item(const std::string& path) {
+  Logger::udm_ee().debug("Remove member %s", path.c_str());
   // TODO:
 }
