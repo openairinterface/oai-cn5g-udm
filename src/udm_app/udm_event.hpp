@@ -47,8 +47,6 @@ class udm_event {
 
   // class register/handle event
   friend class udm_app;
-  friend class udm_n1;
-  friend class udm_profile;
 
   /*
    * Subscribe to UE Loss of Connectivity Status signal
