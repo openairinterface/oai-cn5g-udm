@@ -153,8 +153,7 @@ void udm_app::handle_generate_auth_data_request(
     Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_info_response = j_ProblemDetails;
-    // code               = Pistache::Http::Code::Not_Found;
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code               = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 
@@ -189,8 +188,7 @@ void udm_app::handle_generate_auth_data_request(
           "Missing authentication parameter in UDR response");
       Logger::udm_ueau().info("Send 403 Forbidden response to AUSF");
       auth_info_response = j_ProblemDetails;
-      // code               = Pistache::Http::Code::Forbidden;
-      code = HTTP_RESPONSE_CODE_FORBIDDEN;
+      code               = HTTP_RESPONSE_CODE_FORBIDDEN;
       return;
     }
   } else {
@@ -207,8 +205,7 @@ void udm_app::handle_generate_auth_data_request(
         authMethod_s);
     Logger::udm_ueau().info("Send 501 Not_Implemented response to AUSF");
     auth_info_response = j_ProblemDetails;
-    // code               = Pistache::Http::Code::Not_Implemented;
-    code = HTTP_RESPONSE_CODE_NOT_IMPLEMENTED;
+    code               = HTTP_RESPONSE_CODE_NOT_IMPLEMENTED;
     return;
   }
 
@@ -284,7 +281,7 @@ void udm_app::handle_generate_auth_data_request(
     }
   }
 
-  // 5GAKA functions---------------------------------------------------------
+  // 5GAKA functions
   Authentication_5gaka::generate_random(rand, 16);  // generate rand
   Authentication_5gaka::f1(
       opc, key, rand, sqn, amf,
@@ -320,7 +317,7 @@ void udm_app::handle_generate_auth_data_request(
   // TODO: Separate into a new function
   // Do it after send ok to AUSF (to be verified)
 
-  // Calculate new sqn----------------------------------------------------------
+  // Calculate new sqn
   unsigned long long sqn_value;
   std::stringstream s1;
   s1 << std::hex << sqn_s;
@@ -367,8 +364,7 @@ void udm_app::handle_generate_auth_data_request(
   Logger::udm_ueau().info("Send 200 Ok response to AUSF");
   Logger::udm_ueau().info("AuthInfoResult %s", AuthInfoResult.dump().c_str());
   auth_info_response = AuthInfoResult;
-  // code               = Pistache::Http::Code::Ok;
-  code = HTTP_RESPONSE_CODE_OK;
+  code               = HTTP_RESPONSE_CODE_OK;
   return;
 }
 
@@ -413,8 +409,7 @@ void udm_app::handle_confirm_auth(
     Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     confirm_response = j_ProblemDetails;
-    // code             = Pistache::Http::Code::Not_Found;
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code             = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 
@@ -427,8 +422,7 @@ void udm_app::handle_confirm_auth(
     Logger::udm_ueau().error("authRemovalInd should be false");
     Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
     confirm_response = j_ProblemDetails;
-    // code             = Pistache::Http::Code::Bad_Request;
-    code = HTTP_RESPONSE_CODE_BAD_REQUEST;
+    code             = HTTP_RESPONSE_CODE_BAD_REQUEST;
     return;
   }
 
@@ -464,8 +458,7 @@ void udm_app::handle_confirm_auth(
 
   Logger::udm_ueau().info("Send 201 Created response to AUSF");
   confirm_response = j_authEvent;
-  // code             = Pistache::Http::Code::Created;
-  code = HTTP_RESPONSE_CODE_CREATED;
+  code             = HTTP_RESPONSE_CODE_CREATED;
   return;
 }
 
@@ -510,8 +503,7 @@ void udm_app::handle_delete_auth(
     Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_response = j_ProblemDetails;
-    // code          = Pistache::Http::Code::Not_Found;
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 
@@ -524,8 +516,7 @@ void udm_app::handle_delete_auth(
     Logger::udm_ueau().error("authRemovalInd should be true");
     Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
     auth_response = j_ProblemDetails;
-    // code          = Pistache::Http::Code::Bad_Request;
-    code = HTTP_RESPONSE_CODE_BAD_REQUEST;
+    code          = HTTP_RESPONSE_CODE_BAD_REQUEST;
     return;
   }
 
@@ -551,8 +542,7 @@ void udm_app::handle_delete_auth(
 
     Logger::udm_ueau().info("Send 204 No_Content response to AUSF");
     auth_response = {};
-    // code          = Pistache::Http::Code::No_Content;
-    code = HTTP_RESPONSE_CODE_NO_CONTENT;
+    code          = HTTP_RESPONSE_CODE_NO_CONTENT;
     return;
   } else {
     // error handling
@@ -565,8 +555,7 @@ void udm_app::handle_delete_auth(
     Logger::udm_ueau().error("Wrong authEventId, should be = " + hash_value);
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_response = j_ProblemDetails;
-    // code          = Pistache::Http::Code::Not_Found;
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 }
@@ -606,8 +595,7 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
 
     response_data = json_problem_details;
-    // code          = Pistache::Http::Code::Not_Found;
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 }
@@ -654,7 +642,6 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     Logger::udm_uecm().error("User " + ue_id + " not found");
     Logger::udm_uecm().info("Send 404 Not_Found response to client");
     response_data = j_ProblemDetails;
-    // code          = Pistache::Http::Code::Not_Found;
     return;
   }
   Logger::udm_uecm().debug("HTTP response code %d", http_code);
