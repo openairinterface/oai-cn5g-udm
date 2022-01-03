@@ -792,8 +792,7 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
   std::string response_get;
   Logger::udm_sdm().debug("UDR: GET Request: " + remote_uri);
   // 2. invoke curl to get response from udr
-  long http_code =
-      udm_client::curl_http_client(remote_uri, "GET", response_get, body);
+  code = udm_client::curl_http_client(remote_uri, "GET", response_get, body);
   // 3. process response
   try {
     Logger::udm_sdm().debug("subscription-data: GET Response: " + response_get);
@@ -809,9 +808,11 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
     Logger::udm_sdm().error("User " + supi + " not found");
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
     response_data = json_problem_details;
+    code          = 404;
     return;
   }
-  Logger::udm_sdm().debug("HTTP response code %d", http_code);
+  Logger::udm_sdm().debug("HTTP response code %d", code);
+  return;
 }
 
 //------------------------------------------------------------------------------
