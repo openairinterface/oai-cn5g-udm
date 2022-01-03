@@ -66,7 +66,9 @@ COPY . /openair-udm
 # Installing and Building UDM
 WORKDIR /openair-udm/build/scripts
 RUN ./build_udm --install-deps --force
-RUN ./build_udm --clean --Verbose --build-type Release --jobs
+RUN ./build_udm --clean --Verbose --build-type Release --jobs && \
+    ldd /openair-udm/build/udm/build/udm && \
+    mv /openair-udm/build/udm/build/udm /openair-udm/build/udm/build/oai_udm
 
 #---------------------------------------------------------------------
 # TARGET IMAGE
@@ -92,21 +94,26 @@ RUN yum update -y && \
 
 # Copying executable and generated libraries
 WORKDIR /openair-udm/bin
-COPY --from=oai-udm-builder /openair-udm/build/udm/build/udm oai_udm
-COPY --from=oai-udm-builder /openair-udm/scripts/entrypoint.sh .
+COPY --from=oai-udm-builder \
+    /openair-udm/build/udm/build/oai_udm \
+    /openair-udm/scripts/entrypoint.sh \
+    ./
 
 WORKDIR /usr/local/lib64
-COPY --from=oai-udm-builder /usr/local/lib/libnghttp2_asio.so .
-COPY --from=oai-udm-builder /usr/lib64/libboost_chrono.so.1.66.0 .
-COPY --from=oai-udm-builder /usr/local/lib/libnghttp2_asio.so.1 .
-COPY --from=oai-udm-builder /usr/local/lib64/libpistache.so.0 .
-COPY --from=oai-udm-builder /lib64/libboost_system.so.1.66.0 .
-COPY --from=oai-udm-builder /lib64/libboost_thread.so.1.66.0 .
-COPY --from=oai-udm-builder /lib64/libboost_date_time.so.1.66.0 .
-COPY --from=oai-udm-builder /lib64/libconfig++.so.9 .
-COPY --from=oai-udm-builder /lib64/libnghttp2.so.14 .
+COPY --from=oai-udm-builder \
+    /usr/local/lib/libnghttp2_asio.so \
+    /usr/lib64/libboost_chrono.so.1.66.0 \
+    /usr/local/lib/libnghttp2_asio.so.1 \
+    /usr/local/lib64/libpistache.so.0 \
+    /lib64/libboost_system.so.1.66.0 \
+    /lib64/libboost_thread.so.1.66.0 \
+    /lib64/libboost_date_time.so.1.66.0 \
+    /lib64/libconfig++.so.9 \
+    /lib64/libnghttp2.so.14 \
+    ./
 
-RUN ldconfig
+RUN ldconfig && \
+    ldd /openair-udm/bin/oai_udm
 
 WORKDIR /openair-udm/etc
 COPY --from=oai-udm-builder /openair-udm/etc/udm.conf .
