@@ -77,6 +77,8 @@ void SMFSelectionSubscriptionDataRetrievalApiImpl::get_smf_sel_data(
   m_udm_app->handle_smf_selection_subscription_data_retrieval(
       supi, response_data, http_code, supported_features_str, plmn_id);
 
+  Logger::udm_server().debug("HTTP response code %d", http_code);
+
   code = static_cast<Pistache::Http::Code>(http_code);
   // Set content type
   if ((code == Pistache::Http::Code::Created) or
@@ -85,9 +87,11 @@ void SMFSelectionSubscriptionDataRetrievalApiImpl::get_smf_sel_data(
       (code == Pistache::Http::Code::No_Content)) {
     response.headers().add<Pistache::Http::Header::ContentType>(
         Pistache::Http::Mime::MediaType("application/json"));
+
   } else {
     response.headers().add<Pistache::Http::Header::ContentType>(
         Pistache::Http::Mime::MediaType("application/problem+json"));
+    code = Pistache::Http::Code::Bad_Request;
   }
 
   response.send(code, response_data.dump().c_str());
