@@ -35,7 +35,7 @@
 
 namespace bs2 = boost::signals2;
 
-namespace udm_application {
+namespace oai::udm::app {
 
 // LOSS_OF_CONNECTIVITY
 // Signal for Loss of Connectivity
@@ -54,5 +54,5 @@ typedef bs2::signal_type<
 // AVAILABILITY_AFTER_DNN_FAILURE
 // CN_TYPE_CHANGE
 
-}  // namespace udm_application
+}  // namespace oai::udm::app
 #endif

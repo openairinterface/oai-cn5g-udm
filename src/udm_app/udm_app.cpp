@@ -64,7 +64,7 @@ extern udm_config udm_cfg;
 udm_client* udm_client_inst = nullptr;
 
 //------------------------------------------------------------------------------
-udm_app::udm_app(const std::string& config_file) {
+udm_app::udm_app(const std::string& config_file) : event_sub() {
   Logger::udm_app().startup("Starting...");
   try {
     udm_client_inst = new udm_client();
@@ -73,11 +73,19 @@ udm_app::udm_app(const std::string& config_file) {
     throw;
   }
   // TODO: Register to NRF
+
+  // Subscribe to UE Loss of Connectivity Status signal
+  loss_of_connectivity_connection = event_sub.subscribe_loss_of_connectivity(
+      boost::bind(&udm_app::handle_ee_lost_of_connectivity, this, _1, _2, _3));
+
   Logger::udm_app().startup("Started");
 }
 
 //------------------------------------------------------------------------------
 udm_app::~udm_app() {
+  // Disconnect the boost connection
+  if (loss_of_connectivity_connection.connected())
+    loss_of_connectivity_connection.disconnect();
   Logger::udm_app().debug("Delete UDM APP instance...");
 }
 
@@ -1033,10 +1041,16 @@ bool udm_app::add_ee_subscription_item(
   Logger::udm_ee().debug(
       "Add member %s with value %s", path.c_str(), value.c_str());
   // TODO:
+  return true;
 }
 
 //------------------------------------------------------------------------------
 bool udm_app::remove_ee_subscription_item(const std::string& path) {
   Logger::udm_ee().debug("Remove member %s", path.c_str());
   // TODO:
+  return true;
 }
+
+//------------------------------------------------------------------------------
+void udm_app::handle_ee_lost_of_connectivity(
+    const std::string& ue_id, uint8_t status, uint8_t http_version) {}

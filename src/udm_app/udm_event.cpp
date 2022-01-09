@@ -28,7 +28,7 @@
  */
 
 #include "udm_event.hpp"
-using namespace udm_application;
+using namespace oai::udm::app;
 //------------------------------------------------------------------------------
 bs2::connection udm_event::subscribe_loss_of_connectivity(
     const loss_of_connectivity_sig_t::slot_type& sig) {

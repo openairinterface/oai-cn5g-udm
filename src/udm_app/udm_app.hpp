@@ -47,6 +47,7 @@
 #include "ProblemDetails.h"
 #include "uint_generator.hpp"
 #include "udm.h"
+#include "udm_event.hpp"
 
 namespace oai {
 namespace udm {
@@ -142,12 +143,26 @@ class udm_app {
       const std::string& path, const std::string& value);
   bool remove_ee_subscription_item(const std::string& path);
 
+  /*
+   * Handle Loss of Connectivity
+   * @param [const std::string&] ue_id: UE's identity (e.g., SUPI)
+   * @param [uint8_t] status: Connectivity status
+   * @param [uint8_t] http_version: HTTP version
+   * @return void
+   */
+  void handle_ee_lost_of_connectivity(
+      const std::string& ue_id, uint8_t status, uint8_t http_version);
+
  private:
   util::uint_generator<uint32_t> evsub_id_generator;
   std::map<evsub_id_t, std::shared_ptr<oai::udm::model::CreatedEeSubscription>>
       udm_event_subscriptions;
   std::map<std::string, std::vector<evsub_id_t>> udm_event_subscriptions_per_ue;
   mutable std::shared_mutex m_mutex_udm_event_subscriptions;
+
+  // for Event Handling
+  udm_event event_sub;
+  bs2::connection loss_of_connectivity_connection;
 };
 }  // namespace app
 }  // namespace udm

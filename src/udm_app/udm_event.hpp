@@ -33,7 +33,7 @@ namespace bs2 = boost::signals2;
 #include "udm.h"
 #include "udm_event_sig.hpp"
 
-namespace udm_application {
+namespace oai::udm::app {
 class udm_event {
  public:
   udm_event(){};
@@ -62,4 +62,4 @@ class udm_event {
   loss_of_connectivity_sig_t
       loss_of_connectivity;  // Signal for Loss of Connectivity Report
 };
-}  // namespace udm_application
+}  // namespace oai::udm::app
