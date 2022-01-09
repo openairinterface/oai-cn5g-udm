@@ -58,8 +58,20 @@ class udm_event {
   bs2::connection subscribe_loss_of_connectivity(
       const loss_of_connectivity_sig_t::slot_type& sig);
 
+  /*
+   * Subscribe to UE Reachability for Data signal
+   * @param [const ue_reachability_for_data_sig_t::slot_type&] sig: slot_type
+   * parameter
+   * @return boost::signals2::connection: the connection between the signal and
+   * the slot
+   */
+  bs2::connection subscribe_ue_reachability_for_data(
+      const ue_reachability_for_data_sig_t::slot_type& sig);
+
  private:
   loss_of_connectivity_sig_t
       loss_of_connectivity;  // Signal for Loss of Connectivity Report
+  ue_reachability_for_data_sig_t
+      ue_reachability_for_data;  // Signal for UE Reachability for Data Report
 };
 }  // namespace oai::udm::app

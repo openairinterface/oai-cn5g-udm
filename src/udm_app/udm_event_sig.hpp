@@ -37,7 +37,6 @@ namespace bs2 = boost::signals2;
 
 namespace oai::udm::app {
 
-// LOSS_OF_CONNECTIVITY
 // Signal for Loss of Connectivity
 // SUPI, Connectivity status, HTTP version
 typedef bs2::signal_type<
@@ -45,7 +44,13 @@ typedef bs2::signal_type<
     bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
     loss_of_connectivity_sig_t;
 
-// UE_REACHABILITY_FOR_DATA
+// Signal for UE Reachability for Data
+// SUPI, Reachability status, HTTP version
+typedef bs2::signal_type<
+    void(std::string, uint8_t, uint8_t),
+    bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
+    ue_reachability_for_data_sig_t;
+
 // UE_REACHABILITY_FOR_SMS
 // LOCATION_REPORTING
 // CHANGE_OF_SUPI_PEI_ASSOCIATION

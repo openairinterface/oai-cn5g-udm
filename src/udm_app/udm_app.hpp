@@ -144,13 +144,23 @@ class udm_app {
   bool remove_ee_subscription_item(const std::string& path);
 
   /*
-   * Handle Loss of Connectivity
+   * Handle Loss of Connectivity Event
    * @param [const std::string&] ue_id: UE's identity (e.g., SUPI)
    * @param [uint8_t] status: Connectivity status
    * @param [uint8_t] http_version: HTTP version
    * @return void
    */
-  void handle_ee_lost_of_connectivity(
+  void handle_ee_loss_of_connectivity(
+      const std::string& ue_id, uint8_t status, uint8_t http_version);
+
+  /*
+   * Handle UE Reachability For Data Event
+   * @param [const std::string&] ue_id: UE's identity (e.g., SUPI)
+   * @param [uint8_t] status: UE Reachability For Data status
+   * @param [uint8_t] http_version: HTTP version
+   * @return void
+   */
+  void handle_ee_ue_reachability_for_data(
       const std::string& ue_id, uint8_t status, uint8_t http_version);
 
  private:
@@ -163,6 +173,7 @@ class udm_app {
   // for Event Handling
   udm_event event_sub;
   bs2::connection loss_of_connectivity_connection;
+  bs2::connection ue_reachability_for_data_connection;
 };
 }  // namespace app
 }  // namespace udm

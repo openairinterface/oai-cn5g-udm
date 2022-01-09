@@ -76,7 +76,10 @@ udm_app::udm_app(const std::string& config_file) : event_sub() {
 
   // Subscribe to UE Loss of Connectivity Status signal
   loss_of_connectivity_connection = event_sub.subscribe_loss_of_connectivity(
-      boost::bind(&udm_app::handle_ee_lost_of_connectivity, this, _1, _2, _3));
+      boost::bind(&udm_app::handle_ee_loss_of_connectivity, this, _1, _2, _3));
+  ue_reachability_for_data_connection =
+      event_sub.subscribe_ue_reachability_for_data(boost::bind(
+          &udm_app::handle_ee_ue_reachability_for_data, this, _1, _2, _3));
 
   Logger::udm_app().startup("Started");
 }
@@ -86,6 +89,8 @@ udm_app::~udm_app() {
   // Disconnect the boost connection
   if (loss_of_connectivity_connection.connected())
     loss_of_connectivity_connection.disconnect();
+  if (ue_reachability_for_data_connection.connected())
+    ue_reachability_for_data_connection.disconnect();
   Logger::udm_app().debug("Delete UDM APP instance...");
 }
 
@@ -1052,5 +1057,13 @@ bool udm_app::remove_ee_subscription_item(const std::string& path) {
 }
 
 //------------------------------------------------------------------------------
-void udm_app::handle_ee_lost_of_connectivity(
-    const std::string& ue_id, uint8_t status, uint8_t http_version) {}
+void udm_app::handle_ee_loss_of_connectivity(
+    const std::string& ue_id, uint8_t status, uint8_t http_version) {
+  // TODO:
+}
+
+//------------------------------------------------------------------------------
+void udm_app::handle_ee_ue_reachability_for_data(
+    const std::string& ue_id, uint8_t status, uint8_t http_version) {
+  // TODO:
+}
