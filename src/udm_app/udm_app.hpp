@@ -31,15 +31,16 @@
 #define FILE_UDM_APP_HPP_SEEN
 
 #include <string>
+#include <pistache/http.h>
+#include <map>
+#include <shared_mutex>
+
 #include "AuthenticationInfoRequest.h"
 #include "PlmnId.h"
 #include "Amf3GppAccessRegistration.h"
 #include "Snssai.h"
 #include "PlmnId.h"
 #include "SdmSubscription.h"
-#include <pistache/http.h>
-#include <map>
-#include <shared_mutex>
 #include "AuthEvent.h"
 #include "EeSubscription.h"
 #include "CreatedEeSubscription.h"
@@ -49,9 +50,7 @@
 #include "udm.h"
 #include "udm_event.hpp"
 
-namespace oai {
-namespace udm {
-namespace app {
+namespace oai::udm::app {
 
 // class ausf_config;
 class udm_app {
@@ -120,6 +119,10 @@ class udm_app {
       const std::vector<oai::udm::model::PatchItem>& patchItem,
       oai::udm::model::ProblemDetails& problemDetails, long& code);
 
+  /*
+   * Generate an unique ID for the new subscription
+   * @return the generated ID
+   */
   evsub_id_t generate_ev_subscription_id();
 
   /*
@@ -134,13 +137,38 @@ class udm_app {
       const evsub_id_t& sub_id, const std::string& ue_id,
       std::shared_ptr<oai::udm::model::CreatedEeSubscription>& ces);
 
+  /*
+   * Delete an Event Subscription
+   * @param [const std::string&] sub_id: Subscription ID
+   * @param [std::string] ue_id: UE's identity
+   * @return true if success, otherwise false
+   */
   bool delete_event_subscription(
-      const std::string& subscription_id, const std::string& ue_id);
+      const std::string& sub_id, const std::string& ue_id);
 
+  /*
+   * Update a new item for a subscription
+   * @param [const std::string &] path: item name
+   * @param [const std::string &] value: new value
+   * @return true if success, otherwise false
+   */
   bool replace_ee_subscription_item(
       const std::string& path, const std::string& value);
+
+  /*
+   * Add a new item for a subscription
+   * @param [const std::string &] path: item name
+   * @param [const std::string &] value: new value
+   * @return true if success, otherwise false
+   */
   bool add_ee_subscription_item(
       const std::string& path, const std::string& value);
+
+  /*
+   * Remove an item for a subscription
+   * @param [const std::string &] path: item name
+   * @return true if success, otherwise false
+   */
   bool remove_ee_subscription_item(const std::string& path);
 
   /*
@@ -175,9 +203,7 @@ class udm_app {
   bs2::connection loss_of_connectivity_connection;
   bs2::connection ue_reachability_for_data_connection;
 };
-}  // namespace app
-}  // namespace udm
-}  // namespace oai
+}  // namespace oai::udm::app
 #include "udm_config.hpp"
 
 #endif /* FILE_UDM_APP_HPP_SEEN */

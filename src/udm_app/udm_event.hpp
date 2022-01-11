@@ -23,9 +23,12 @@
  \brief
  \author Tien-Thinh NGUYEN (EURECOM)
  \company
- \date 2021
+ \date 2022
  \email: contact@openairinterface.org
  */
+
+#ifndef FILE_UDM_EVENT_HPP_SEEN
+#define FILE_UDM_EVENT_HPP_SEEN
 
 #include <boost/signals2.hpp>
 namespace bs2 = boost::signals2;
@@ -75,3 +78,4 @@ class udm_event {
       ue_reachability_for_data;  // Signal for UE Reachability for Data Report
 };
 }  // namespace oai::udm::app
+#endif

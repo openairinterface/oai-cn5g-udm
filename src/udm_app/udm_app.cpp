@@ -1037,7 +1037,7 @@ bool udm_app::replace_ee_subscription_item(
       "Replace member %s with new value %s", path.c_str(), value.c_str());
   // TODO:
 
-  return false;
+  return true;
 }
 
 //------------------------------------------------------------------------------

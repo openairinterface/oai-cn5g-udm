@@ -23,7 +23,7 @@
  \brief
  \author  Tien-Thinh NGUYEN (EURECOM)
  \company
- \date 2021
+ \date 2022
  \email: contact@openairinterface.org
  */
 
