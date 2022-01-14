@@ -51,6 +51,8 @@
 #include "comUt.hpp"
 #include "sha256.hpp"
 #include "udm.h"
+#include "api_conversions.hpp"
+#include "3gpp_29.500.h"
 
 using namespace oai::udm::app;
 using namespace oai::udm::model;
@@ -62,7 +64,7 @@ extern udm_config udm_cfg;
 udm_client* udm_client_inst = nullptr;
 
 //------------------------------------------------------------------------------
-udm_app::udm_app(const std::string& config_file) {
+udm_app::udm_app(const std::string& config_file) : event_sub() {
   Logger::udm_app().startup("Starting...");
   try {
     udm_client_inst = new udm_client();
@@ -71,11 +73,24 @@ udm_app::udm_app(const std::string& config_file) {
     throw;
   }
   // TODO: Register to NRF
+
+  // Subscribe to UE Loss of Connectivity Status signal
+  loss_of_connectivity_connection = event_sub.subscribe_loss_of_connectivity(
+      boost::bind(&udm_app::handle_ee_loss_of_connectivity, this, _1, _2, _3));
+  ue_reachability_for_data_connection =
+      event_sub.subscribe_ue_reachability_for_data(boost::bind(
+          &udm_app::handle_ee_ue_reachability_for_data, this, _1, _2, _3));
+
   Logger::udm_app().startup("Started");
 }
 
 //------------------------------------------------------------------------------
 udm_app::~udm_app() {
+  // Disconnect the boost connection
+  if (loss_of_connectivity_connection.connected())
+    loss_of_connectivity_connection.disconnect();
+  if (ue_reachability_for_data_connection.connected())
+    ue_reachability_for_data_connection.disconnect();
   Logger::udm_app().debug("Delete UDM APP instance...");
 }
 
@@ -151,8 +166,7 @@ void udm_app::handle_generate_auth_data_request(
     Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_info_response = j_ProblemDetails;
-    // code               = Pistache::Http::Code::Not_Found;
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code               = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 
@@ -187,8 +201,7 @@ void udm_app::handle_generate_auth_data_request(
           "Missing authentication parameter in UDR response");
       Logger::udm_ueau().info("Send 403 Forbidden response to AUSF");
       auth_info_response = j_ProblemDetails;
-      // code               = Pistache::Http::Code::Forbidden;
-      code = HTTP_RESPONSE_CODE_FORBIDDEN;
+      code               = HTTP_RESPONSE_CODE_FORBIDDEN;
       return;
     }
   } else {
@@ -205,8 +218,7 @@ void udm_app::handle_generate_auth_data_request(
         authMethod_s);
     Logger::udm_ueau().info("Send 501 Not_Implemented response to AUSF");
     auth_info_response = j_ProblemDetails;
-    // code               = Pistache::Http::Code::Not_Implemented;
-    code = HTTP_RESPONSE_CODE_NOT_IMPLEMENTED;
+    code               = HTTP_RESPONSE_CODE_NOT_IMPLEMENTED;
     return;
   }
 
@@ -282,7 +294,7 @@ void udm_app::handle_generate_auth_data_request(
     }
   }
 
-  // 5GAKA functions---------------------------------------------------------
+  // 5GAKA functions
   Authentication_5gaka::generate_random(rand, 16);  // generate rand
   Authentication_5gaka::f1(
       opc, key, rand, sqn, amf,
@@ -318,7 +330,7 @@ void udm_app::handle_generate_auth_data_request(
   // TODO: Separate into a new function
   // Do it after send ok to AUSF (to be verified)
 
-  // Calculate new sqn----------------------------------------------------------
+  // Calculate new sqn
   unsigned long long sqn_value;
   std::stringstream s1;
   s1 << std::hex << sqn_s;
@@ -365,8 +377,7 @@ void udm_app::handle_generate_auth_data_request(
   Logger::udm_ueau().info("Send 200 Ok response to AUSF");
   Logger::udm_ueau().info("AuthInfoResult %s", AuthInfoResult.dump().c_str());
   auth_info_response = AuthInfoResult;
-  // code               = Pistache::Http::Code::Ok;
-  code = HTTP_RESPONSE_CODE_OK;
+  code               = HTTP_RESPONSE_CODE_OK;
   return;
 }
 
@@ -411,8 +422,7 @@ void udm_app::handle_confirm_auth(
     Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     confirm_response = j_ProblemDetails;
-    // code             = Pistache::Http::Code::Not_Found;
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code             = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 
@@ -425,8 +435,7 @@ void udm_app::handle_confirm_auth(
     Logger::udm_ueau().error("authRemovalInd should be false");
     Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
     confirm_response = j_ProblemDetails;
-    // code             = Pistache::Http::Code::Bad_Request;
-    code = HTTP_RESPONSE_CODE_BAD_REQUEST;
+    code             = HTTP_RESPONSE_CODE_BAD_REQUEST;
     return;
   }
 
@@ -462,8 +471,7 @@ void udm_app::handle_confirm_auth(
 
   Logger::udm_ueau().info("Send 201 Created response to AUSF");
   confirm_response = j_authEvent;
-  // code             = Pistache::Http::Code::Created;
-  code = HTTP_RESPONSE_CODE_CREATED;
+  code             = HTTP_RESPONSE_CODE_CREATED;
   return;
 }
 
@@ -508,8 +516,7 @@ void udm_app::handle_delete_auth(
     Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_response = j_ProblemDetails;
-    // code          = Pistache::Http::Code::Not_Found;
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 
@@ -522,8 +529,7 @@ void udm_app::handle_delete_auth(
     Logger::udm_ueau().error("authRemovalInd should be true");
     Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
     auth_response = j_ProblemDetails;
-    // code          = Pistache::Http::Code::Bad_Request;
-    code = HTTP_RESPONSE_CODE_BAD_REQUEST;
+    code          = HTTP_RESPONSE_CODE_BAD_REQUEST;
     return;
   }
 
@@ -549,8 +555,7 @@ void udm_app::handle_delete_auth(
 
     Logger::udm_ueau().info("Send 204 No_Content response to AUSF");
     auth_response = {};
-    // code          = Pistache::Http::Code::No_Content;
-    code = HTTP_RESPONSE_CODE_NO_CONTENT;
+    code          = HTTP_RESPONSE_CODE_NO_CONTENT;
     return;
   } else {
     // error handling
@@ -563,8 +568,7 @@ void udm_app::handle_delete_auth(
     Logger::udm_ueau().error("Wrong authEventId, should be = " + hash_value);
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_response = j_ProblemDetails;
-    // code          = Pistache::Http::Code::Not_Found;
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 }
@@ -604,8 +608,7 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
 
     response_data = json_problem_details;
-    // code          = Pistache::Http::Code::Not_Found;
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 }
@@ -652,7 +655,6 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     Logger::udm_uecm().error("User " + ue_id + " not found");
     Logger::udm_uecm().info("Send 404 Not_Found response to client");
     response_data = j_ProblemDetails;
-    // code          = Pistache::Http::Code::Not_Found;
     return;
   }
   Logger::udm_uecm().debug("HTTP response code %d", http_code);
@@ -863,4 +865,205 @@ void udm_app::handle_subscription_creation(
   }
   Logger::udm_uecm().debug("HTTP response code %d", http_code);
   response_data = sdmSubscription_j;  // to be verified
+}
+
+//------------------------------------------------------------------------------
+evsub_id_t udm_app::handle_create_ee_subscription(
+    const std::string& ueIdentity,
+    const oai::udm::model::EeSubscription& eeSubscription,
+    oai::udm::model::CreatedEeSubscription& createdSub, long& code) {
+  Logger::udm_ee().info("Handle Create EE Subscription");
+
+  // Generate a subscription ID Id and store the corresponding information in a
+  // map (subscription id, info)
+  evsub_id_t evsub_id = generate_ev_subscription_id();
+
+  oai::udm::model::EeSubscription es = eeSubscription;
+  // TODO: Update Subscription
+
+  // MonitoringConfiguration
+
+  es.setSubscriptionId(std::to_string(evsub_id));
+  std::shared_ptr<CreatedEeSubscription> ces =
+      std::make_shared<CreatedEeSubscription>(createdSub);
+  ces->setEeSubscription(es);
+
+  if (!ueIdentity.empty()) {
+    ces->setNumberOfUes(1);
+  } else {
+    // TODO: For group of UEs
+  }
+  // TODO: MonitoringReport
+
+  add_event_subscription(evsub_id, ueIdentity, ces);
+  code = HTTP_RESPONSE_CODE_CREATED;
+
+  return evsub_id;
+}
+
+//------------------------------------------------------------------------------
+void udm_app::handle_delete_ee_subscription(
+    const std::string& ueIdentity, const std::string& subscriptionId,
+    oai::udm::model::ProblemDetails& problemDetails, long& code) {
+  Logger::udm_ee().info("Handle Delete EE Subscription");
+
+  if (!delete_event_subscription(subscriptionId, ueIdentity)) {
+    // Set ProblemDetails
+    // Code
+    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+  }
+  code = HTTP_RESPONSE_CODE_NO_CONTENT;
+  return;
+}
+
+//------------------------------------------------------------------------------
+void udm_app::handle_update_ee_subscription(
+    const std::string& ueIdentity, const std::string& subscriptionId,
+    const std::vector<oai::udm::model::PatchItem>& patchItem,
+    oai::udm::model::ProblemDetails& problemDetails, long& code) {
+  Logger::udm_ee().info("Handle Update EE Subscription");
+  // TODO:
+  bool op_success = false;
+
+  for (auto p : patchItem) {
+    patch_op_type_t op = util::api_conv::string_to_patch_operation(p.getOp());
+    // Verify Path
+    if ((p.getPath().substr(0, 1).compare("/") != 0) or
+        (p.getPath().length() < 2)) {
+      Logger::udm_ee().warn(
+          "Bad value for operation path: %s ", p.getPath().c_str());
+      code = HTTP_RESPONSE_CODE_BAD_REQUEST;
+      problemDetails.setCause(
+          protocol_application_error_e2str[MANDATORY_IE_INCORRECT]);
+      return;
+    }
+
+    std::string path = p.getPath().substr(1);
+
+    switch (op) {
+      case PATCH_OP_REPLACE: {
+        if (replace_ee_subscription_item(path, p.getValue())) {
+          code = HTTP_RESPONSE_CODE_OK;
+        } else {
+          op_success = false;
+        }
+      } break;
+
+      case PATCH_OP_ADD: {
+        if (add_ee_subscription_item(path, p.getValue())) {
+          code = HTTP_RESPONSE_CODE_OK;
+        } else {
+          op_success = false;
+        }
+      } break;
+
+      case PATCH_OP_REMOVE: {
+        if (remove_ee_subscription_item(path)) {
+          code = HTTP_RESPONSE_CODE_OK;
+        } else {
+          op_success = false;
+        }
+      } break;
+
+      default: {
+        Logger::udm_ee().warn("Requested operation is not valid!");
+        op_success = false;
+      }
+    }
+
+    if (!op_success) {
+      code = HTTP_RESPONSE_CODE_BAD_REQUEST;
+      problemDetails.setCause(
+          protocol_application_error_e2str[INVALID_QUERY_PARAM]);  // TODO:
+    } else {
+    }
+  }
+}
+
+//------------------------------------------------------------------------------
+evsub_id_t udm_app::generate_ev_subscription_id() {
+  return evsub_id_generator.get_uid();
+}
+
+//------------------------------------------------------------------------------
+void udm_app::add_event_subscription(
+    const evsub_id_t& sub_id, const std::string& ue_id,
+    std::shared_ptr<oai::udm::model::CreatedEeSubscription>& ces) {
+  std::unique_lock lock(m_mutex_udm_event_subscriptions);
+  udm_event_subscriptions[sub_id] = ces;
+  std::vector<evsub_id_t> ev_subs;
+
+  if (udm_event_subscriptions_per_ue.count(ue_id) > 0) {
+    ev_subs = udm_event_subscriptions_per_ue.at(ue_id);
+  }
+  ev_subs.push_back(sub_id);
+  udm_event_subscriptions_per_ue[ue_id] = ev_subs;
+  return;
+}
+
+//------------------------------------------------------------------------------
+bool udm_app::delete_event_subscription(
+    const std::string& subscription_id, const std::string& ue_id) {
+  std::unique_lock lock(m_mutex_udm_event_subscriptions);
+  bool result     = true;
+  uint32_t sub_id = 0;
+  try {
+    sub_id = std::stoul(subscription_id);
+  } catch (std::exception e) {
+    Logger::udm_ee().warn(
+        "Bad value for subscription id %s ", subscription_id.c_str());
+    return false;
+  }
+
+  if (udm_event_subscriptions.count(sub_id)) {
+    udm_event_subscriptions.erase(sub_id);
+  } else {
+    result = false;
+  }
+
+  if (udm_event_subscriptions_per_ue.count(ue_id) > 0) {
+    udm_event_subscriptions_per_ue.erase(ue_id);
+  } else {
+    result = false;
+  }
+
+  return result;
+}
+
+//------------------------------------------------------------------------------
+bool udm_app::replace_ee_subscription_item(
+    const std::string& path, const std::string& value) {
+  Logger::udm_ee().debug(
+      "Replace member %s with new value %s", path.c_str(), value.c_str());
+  // TODO:
+
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool udm_app::add_ee_subscription_item(
+    const std::string& path, const std::string& value) {
+  Logger::udm_ee().debug(
+      "Add member %s with value %s", path.c_str(), value.c_str());
+  // TODO:
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool udm_app::remove_ee_subscription_item(const std::string& path) {
+  Logger::udm_ee().debug("Remove member %s", path.c_str());
+  // TODO:
+  return true;
+}
+
+//------------------------------------------------------------------------------
+void udm_app::handle_ee_loss_of_connectivity(
+    const std::string& ue_id, uint8_t status, uint8_t http_version) {
+  // TODO:
+}
+
+//------------------------------------------------------------------------------
+void udm_app::handle_ee_ue_reachability_for_data(
+    const std::string& ue_id, uint8_t status, uint8_t http_version) {
+  // TODO:
 }
