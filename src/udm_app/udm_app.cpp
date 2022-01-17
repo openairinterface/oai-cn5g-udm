@@ -40,6 +40,7 @@
 #include <boost/uuid/uuid_io.hpp>
 #include <chrono>
 
+#include "udm_nrf.hpp"
 #include "logger.hpp"
 #include "udm_client.hpp"
 #include "udm_config.hpp"
@@ -61,6 +62,7 @@ using namespace oai::udm::config;
 
 extern udm_app* udm_app_inst;
 extern udm_config udm_cfg;
+udm_nrf* udm_nrf_inst       = nullptr;
 udm_client* udm_client_inst = nullptr;
 
 //------------------------------------------------------------------------------
@@ -72,7 +74,18 @@ udm_app::udm_app(const std::string& config_file) : event_sub() {
     Logger::udm_app().error("Cannot create UDM APP: %s", e.what());
     throw;
   }
-  // TODO: Register to NRF
+
+  // Register to NRF
+  if (udm_cfg.register_nrf) {
+    try {
+      udm_nrf_inst = new udm_nrf();
+      udm_nrf_inst->register_to_nrf();
+      Logger::udm_app().info("NRF TASK Created ");
+    } catch (std::exception& e) {
+      Logger::udm_app().error("Cannot create NRF TASK: %s", e.what());
+      throw;
+    }
+  }
 
   // Subscribe to UE Loss of Connectivity Status signal
   loss_of_connectivity_connection = event_sub.subscribe_loss_of_connectivity(

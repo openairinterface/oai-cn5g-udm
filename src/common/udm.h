@@ -123,4 +123,42 @@ enum http_response_codes_e {
   HTTP_RESPONSE_CODE_GATEWAY_TIMEOUT        = 504
 };
 
+typedef struct supi_range_s {
+  std::string start;
+  std::string end;
+  std::string pattern;
+} supi_range_t;
+
+typedef struct supi_range_udm_info_item_s {
+  supi_range_t supi_range;
+} supi_range_udm_info_item_t;
+
+typedef struct identity_range_s {
+  std::string start;
+  std::string end;
+  std::string pattern;
+} identity_range_t;
+
+typedef struct identity_range_udm_info_item_s {
+  identity_range_t identity_range;
+} identity_range_udm_info_item_t;
+
+typedef struct internal_grpid_s {
+  std::string start;
+  std::string end;
+  std::string pattern;
+} internal_grpid_range_t;
+
+typedef struct internal_grpid_udm_info_item_s {
+  internal_grpid_range_t int_grpid_range;
+} internal_grpid_range_udm_info_item_t;
+
+typedef struct udm_info_s {
+  std::string groupid;
+  std::vector<supi_range_udm_info_item_t> supi_ranges;
+  std::vector<identity_range_udm_info_item_t> gpsi_ranges;
+  std::vector<identity_range_udm_info_item_t> ext_grp_id_ranges;
+  std::vector<std::string> routing_indicators;
+  std::vector<internal_grpid_range_udm_info_item_t> int_grp_id_ranges;
+} udm_info_t;
 #endif
