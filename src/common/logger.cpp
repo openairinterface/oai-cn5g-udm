@@ -71,6 +71,7 @@ void Logger::_init(
   m_udm_ueau   = new _Logger("udm_ueau", m_sinks, ss.str().c_str());
   m_udm_uecm   = new _Logger("udm_uecm", m_sinks, ss.str().c_str());
   m_udm_sdm    = new _Logger("udm_sdm", m_sinks, ss.str().c_str());
+  m_udm_nrf    = new _Logger("udm_nrf", m_sinks, ss.str().c_str());
   m_udm_server = new _Logger("udm_server", m_sinks, ss.str().c_str());
   m_udm_app    = new _Logger("udm_app", m_sinks, ss.str().c_str());
 }
