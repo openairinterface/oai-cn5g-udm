@@ -32,6 +32,8 @@ add_library (UDM STATIC
   udm_client.cpp 
   udm_config.cpp 
   udm_event.cpp 
+  udm_profile.cpp
+  udm_nrf.cpp 
 )
 
 
