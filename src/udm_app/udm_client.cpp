@@ -71,7 +71,7 @@ udm_client::~udm_client() {
 long udm_client::curl_http_client(
     std::string remoteUri, std::string method, std::string& response,
     std::string msgBody) {
-  Logger::udm_ueau().info("Send HTTP message with body %s", msgBody.c_str());
+  Logger::udm_app().info("Send HTTP message with body %s", msgBody.c_str());
 
   uint32_t str_len = msgBody.length();
   char* body_data  = (char*) malloc(str_len + 1);
@@ -139,10 +139,10 @@ long udm_client::curl_http_client(
     std::string json_data_response = {};
     std::string resMsg             = {};
     bool is_response_ok            = true;
-    Logger::udm_ueau().info("Get response with httpcode (%d)", httpCode);
+    Logger::udm_app().info("Got response with httpcode (%d)", httpCode);
 
     if (httpCode == 0) {
-      Logger::udm_ueau().info(
+      Logger::udm_app().info(
           "Cannot get response when calling %s", remoteUri.c_str());
       // free curl before returning
       curl_slist_free_all(headers);
@@ -157,11 +157,11 @@ long udm_client::curl_http_client(
         httpCode != HTTP_RESPONSE_CODE_NO_CONTENT) {
       is_response_ok = false;
       if (response.size() < 1) {
-        Logger::udm_ueau().info("There's no content in the response");
+        Logger::udm_app().info("There's no content in the response");
         // TODO: send context response error
         return httpCode;
       }
-      Logger::udm_ueau().info("Wrong response code");
+      Logger::udm_app().info("Wrong response code");
 
       return httpCode;
     }
@@ -174,17 +174,17 @@ long udm_client::curl_http_client(
       try {
         response_data = nlohmann::json::parse(json_data_response);
       } catch (nlohmann::json::exception& e) {
-        Logger::udm_ueau().info("Could not get Json content from the response");
+        Logger::udm_app().info("Could not get Json content from the response");
         // Set the default Cause
         response_data["error"]["cause"] = "504 Gateway Timeout";
       }
 
-      Logger::udm_ueau().info(
+      Logger::udm_app().info(
           "Get response with jsonData: %s", json_data_response.c_str());
 
       std::string cause = response_data["error"]["cause"];
-      Logger::udm_ueau().info("Call Network Function services failure");
-      Logger::udm_ueau().info("Cause value: %s", cause.c_str());
+      Logger::udm_app().info("Call Network Function services failure");
+      Logger::udm_app().info("Cause value: %s", cause.c_str());
     }
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);

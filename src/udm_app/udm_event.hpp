@@ -35,8 +35,10 @@ namespace bs2 = boost::signals2;
 
 #include "udm.h"
 #include "udm_event_sig.hpp"
+#include "task_manager.hpp"
 
 namespace oai::udm::app {
+class task_manager;
 class udm_event {
  public:
   udm_event(){};
@@ -50,7 +52,20 @@ class udm_event {
 
   // class register/handle event
   friend class udm_app;
+  friend class udm_nrf;
+  friend class task_manager;
 
+  //------------------------------------------------------------------------------
+  /*
+   * Subscribe to the task tick event
+   * @param [const task_sig_t::slot_type &] sig
+   * @param [uint64_t] period: interval between two events
+   * @param [uint64_t] start:
+   * @return void
+   */
+  bs2::connection subscribe_task_nf_heartbeat(
+      const task_sig_t::slot_type& sig, uint64_t period, uint64_t start = 0);
+  //------------------------------------------------------------------------------
   /*
    * Subscribe to UE Loss of Connectivity Status signal
    * @param [const loss_of_connectivity_sig_t::slot_type&] sig: slot_type
@@ -72,6 +87,8 @@ class udm_event {
       const ue_reachability_for_data_sig_t::slot_type& sig);
 
  private:
+  task_sig_t task_tick;
+
   loss_of_connectivity_sig_t
       loss_of_connectivity;  // Signal for Loss of Connectivity Report
   ue_reachability_for_data_sig_t

@@ -213,7 +213,7 @@ void udm_profile::display() const {
   }
 
   Logger::udm_app().debug("\tUDM Info");
-  Logger::udm_app().debug("\t\tGroupId: %s", udm_info.groupid);
+  Logger::udm_app().debug("\t\tGroupId: %s", udm_info.groupid.c_str());
   for (auto supi : udm_info.supi_ranges) {
     Logger::udm_app().debug(
         "\t\t SupiRanges: Start - %s, End - %s, Pattern - %s",
