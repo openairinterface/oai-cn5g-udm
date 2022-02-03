@@ -165,7 +165,7 @@ void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   patch_item.setPath("/nfStatus");
   patch_item.setValue("REGISTERED");
   patch_items.push_back(patch_item);
-  Logger::udm_nrf().info("Sending NF heartbeat request");
+  Logger::udm_app().info("Sending NF heartbeat request");
 
   std::string response     = {};
   std::string method       = {"PATCH"};
