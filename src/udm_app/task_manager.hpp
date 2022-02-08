@@ -19,80 +19,60 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_client.hpp
- \author  Tien-Thinh NGUYEN
+/*! \file task_manager.hpp
+ \brief
+ \author
  \company Eurecom
  \date 2020
- \email:
+ \email: Tien-Thinh.Nguyen@eurecom.fr
  */
 
-#ifndef FILE_UDM_NRF_SEEN
-#define FILE_UDM_NRF_SEEN
+#ifndef TASK_MANAGER_H_
+#define TASK_MANAGER_H_
 
-#include <map>
-#include <thread>
-
-#include <curl/curl.h>
-
-#include "logger.hpp"
-#include "udm_config.hpp"
 #include "udm_event.hpp"
-#include "udm_profile.hpp"
+
+#include <linux/types.h>
+#include <sys/timerfd.h>
+
+using namespace oai::udm::app;
 
 namespace oai {
 namespace udm {
 namespace app {
 
-class udm_nrf {
- private:
+class udm_event;
+class task_manager {
  public:
-  udm_profile udm_nf_profile;   // UDM profile
-  std::string udm_instance_id;  // UDM instance id
-  // timer_id_t timer_udm_heartbeat;
-
-  udm_nrf(udm_event& ev);
-  udm_nrf(udm_nrf const&) = delete;
-  void operator=(udm_nrf const&) = delete;
-
-  void generate_uuid();
-  /*
-   * Start event nf heartbeat procedure
-   * @param [void]
-   * @return void
-   */
-  void start_event_nf_heartbeat(std::string& remoteURI);
-  /*
-   * Trigger NF heartbeat procedure
-   * @param [void]
-   * @return void
-   */
-  void trigger_nf_heartbeat_procedure(uint64_t ms);
-  /*
-   * Generate a UDM profile for this instance
-   * @param [void]
-   * @return void
-   */
-  void generate_udm_profile(
-      udm_profile& udm_nf_profile, std::string& udm_instance_id);
+  task_manager(udm_event& ev);
 
   /*
-   * Trigger NF instance registration to NRF
+   * Manage the tasks
    * @param [void]
    * @return void
    */
-  void register_to_nrf();
+  void manage_tasks();
+
   /*
-   * Get udm API Root
-   * @param [std::string& ] api_root: udm's API Root
+   * Run the tasks (for the moment, simply call function manage_tasks)
+   * @param [void]
    * @return void
    */
-  void get_udm_api_root(std::string& api_root);
+  void run();
 
  private:
-  udm_event& m_event_sub;
-  bs2::connection task_connection;
+  /*
+   * Make sure that the task tick run every 1ms
+   * @param [void]
+   * @return void
+   */
+  void wait_for_cycle();
+
+  udm_event& event_sub_;
+  int sfd;
 };
 }  // namespace app
 }  // namespace udm
 }  // namespace oai
-#endif /* FILE_UDM_NRF_SEEN */
+
+#endif

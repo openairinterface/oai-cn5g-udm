@@ -86,12 +86,19 @@ int main(int argc, char** argv) {
   sigIntHandler.sa_flags = 0;
   sigaction(SIGINT, &sigIntHandler, NULL);
 
+  // Event subsystem
+  udm_event ev;
+
   // Config
   udm_cfg.load(Options::getlibconfigConfig());
   udm_cfg.display();
 
   // UDM application layer
-  udm_app_inst = new udm_app(Options::getlibconfigConfig());
+  udm_app_inst = new udm_app(Options::getlibconfigConfig(), ev);
+
+  // Task Manager
+  task_manager tm(ev);
+  std::thread task_manager_thread(&task_manager::run, &tm);
 
   // PID file
   // Currently hard-coded value. TODO: add as config option.

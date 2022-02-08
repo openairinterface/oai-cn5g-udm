@@ -330,7 +330,7 @@ void udm_config::display() {
       "    API version ..........: %s", nrf_addr.api_version.c_str());
   if (use_fqdn_dns)
     Logger::config().info(
-        "    FQDN..................: %s", udr_addr.fqdn.c_str());
+        "    FQDN..................: %s", nrf_addr.fqdn.c_str());
 }
 
 //------------------------------------------------------------------------------

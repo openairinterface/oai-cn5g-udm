@@ -66,7 +66,8 @@ udm_nrf* udm_nrf_inst       = nullptr;
 udm_client* udm_client_inst = nullptr;
 
 //------------------------------------------------------------------------------
-udm_app::udm_app(const std::string& config_file) : event_sub() {
+udm_app::udm_app(const std::string& config_file, udm_event& ev)
+    : event_sub(ev) {
   Logger::udm_app().startup("Starting...");
   try {
     udm_client_inst = new udm_client();
@@ -78,7 +79,7 @@ udm_app::udm_app(const std::string& config_file) : event_sub() {
   // Register to NRF
   if (udm_cfg.register_nrf) {
     try {
-      udm_nrf_inst = new udm_nrf();
+      udm_nrf_inst = new udm_nrf(ev);
       udm_nrf_inst->register_to_nrf();
       Logger::udm_app().info("NRF TASK Created ");
     } catch (std::exception& e) {

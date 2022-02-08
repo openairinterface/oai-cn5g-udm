@@ -37,6 +37,10 @@ namespace bs2 = boost::signals2;
 
 namespace oai::udm::app {
 
+typedef bs2::signal_type<
+    void(uint64_t), bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
+    task_sig_t;
+
 // Signal for Loss of Connectivity
 // SUPI, Connectivity status, HTTP version
 typedef bs2::signal_type<
