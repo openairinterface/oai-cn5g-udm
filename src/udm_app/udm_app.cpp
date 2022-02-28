@@ -742,51 +742,44 @@ void udm_app::handle_session_management_subscription_data_retrieval(
 void udm_app::handle_slice_selection_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data, long& code,
     std::string supported_features, oai::udm::model::PlmnId plmn_id) {
-  // 1. populate remote uri for udp request
-  std::string udr_ip =
-      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
-  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
-  std::string remote_uri =
-      udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-      udm_cfg.udr_addr.api_version + "/subscription-data/" + supi + "/" +
-      plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/sm-data";
-  std::string body("");
-  std::string response_get;
-  Logger::udm_sdm().debug("UDR: GET Request: " + remote_uri);
-  // 2. invoke curl to get response from udr
-  long http_code =
-      udm_client::curl_http_client(remote_uri, "GET", response_get, body);
-  // 3. process response
+  Logger::udm_sdm().debug(
+      "Handle Slice Selection Subscription Data Retrieval request");
 
+  // Get the corresponding UDR's URI
+  std::string udr_uri =
+      udm_cfg.get_udr_slice_selection_subscription_data_retrieval_uri(
+          supi, plmn_id);
+  std::string body = {};
+  std::string response_get;
+  Logger::udm_sdm().debug("UDR's URI: %s", udr_uri.c_str());
+  // Send the request and get the response from UDR
+  long http_code =
+      udm_client::curl_http_client(udr_uri, "GET", response_get, body);
+  Logger::udm_sdm().debug("HTTP response code %d", http_code);
+  code = http_code;
+  Logger::udm_sdm().debug("Response from UDR: %s", response_get.c_str());
+
+  // Process the response
   nlohmann::json return_response_data_json = {};
   try {
-    Logger::udm_sdm().debug("subscription-data: GET Response: " + response_get);
-
-    response_data = nlohmann::json::parse(response_get.c_str());
-    // TODO: 1. shall check if "singleNassai" is existing or not, if not, raise
-    // exception
-    // TODO: 2. return_response_data_json: need to check if here is required to
-    // allocate memory first. Or check json code to confirm, otherwise codedump
-    // might happen
-    return_response_data_json["singleNssai"] = response_data["singleNssai"];
+    return_response_data_json = nlohmann::json::parse(response_get.c_str());
+    if (return_response_data_json.find("nssai") !=
+        return_response_data_json.end()) {
+      response_data = return_response_data_json["nssai"];
+      Logger::udm_sdm().debug(
+          "Slice Selection Subscription Data from UDR: %s",
+          response_data.dump().c_str());
+    }
   } catch (nlohmann::json::exception& e) {
-    Logger::udm_sdm().info("Could not get json content from UDR response");
+    Logger::udm_sdm().info("Could not get JSON content from UDR's response");
     ProblemDetails problem_details;
-    nlohmann::json json_problem_details;
-    problem_details.setCause("USER_NOT_FOUND");
+    problem_details.setCause("SUBSCRIPTION_NOT_FOUND");
     problem_details.setStatus(404);
-    problem_details.setDetail("User " + supi + " not found");
-    to_json(json_problem_details, problem_details);
-    Logger::udm_sdm().error("User " + supi + " not found");
-    Logger::udm_sdm().info("Send 404 Not_Found response to client");
-    response_data = json_problem_details;
-    // code          = Pistache::Http::Code::Not_Found;
-
+    problem_details.setDetail("Subscription with SUPI " + supi + " not found");
+    to_json(response_data, problem_details);
+    Logger::udm_sdm().warn("Subscription with SUPI %s not found", supi.c_str());
     return;
   }
-  Logger::udm_sdm().debug("HTTP response code %d", http_code);
-  response_data = return_response_data_json;
-  // code          = static_cast<Pistache::Http::Code>(http_code);
 }
 
 //------------------------------------------------------------------------------

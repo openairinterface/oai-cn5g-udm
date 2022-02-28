@@ -34,6 +34,7 @@
 #include "if.hpp"
 #include "logger.hpp"
 #include "fqdn.hpp"
+#include "udm.h"
 #include "string.hpp"
 
 extern "C" {
@@ -57,8 +58,13 @@ udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
   udr_addr.port             = 80;
   udr_addr.api_version      = "v1";
   udr_addr.fqdn             = {};
+  nrf_addr.ipv4_addr.s_addr = INADDR_ANY;
+  nrf_addr.port             = 80;
+  nrf_addr.api_version      = "v1";
+  nrf_addr.fqdn             = {};
   use_fqdn_dns              = false;
   use_http2                 = false;
+  register_nrf              = false;
 }
 
 //------------------------------------------------------------------------------
@@ -385,4 +391,12 @@ int udm_config::load_interface(
   return RETURNok;
 }
 
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_slice_selection_subscription_data_retrieval_uri(
+    const std::string& supi, const oai::udm::model::PlmnId& plmn_id) {
+  return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
+         ":" + std::to_string(udr_addr.port) + NUDR_DATA_REPOSITORY +
+         udr_addr.api_version + "/subscription-data/" + supi + "/" +
+         plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/am-data";
+}
 }  // namespace oai::udm::config
