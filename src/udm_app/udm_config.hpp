@@ -39,6 +39,7 @@
 #include <vector>
 
 #include "udm_config.hpp"
+#include "PlmnId.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -86,6 +87,13 @@ typedef struct interface_cfg_s {
   std::string api_version;
 } interface_cfg_t;
 
+typedef struct nf_addr_s {
+  struct in_addr ipv4_addr;
+  unsigned int port;
+  std::string api_version;
+  std::string fqdn;
+} nf_addr_t;
+
 class udm_config {
  public:
   udm_config();
@@ -93,6 +101,8 @@ class udm_config {
   int load(const std::string& config_file);
   int load_interface(const Setting& if_cfg, interface_cfg_t& cfg);
   void display();
+  std::string get_udr_slice_selection_subscription_data_retrieval_uri(
+      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
 
   unsigned int instance;
   std::string pid_dir;
@@ -101,19 +111,8 @@ class udm_config {
   interface_cfg_t sbi;
   unsigned int sbi_http2_port;
 
-  struct {
-    struct in_addr ipv4_addr;
-    unsigned int port;
-    std::string api_version;
-    std::string fqdn;
-  } udr_addr;
-
-  struct {
-    struct in_addr ipv4_addr;
-    unsigned int port;
-    std::string api_version;
-    std::string fqdn;
-  } nrf_addr;
+  nf_addr_t udr_addr;
+  nf_addr_t nrf_addr;
 
   bool register_nrf;
   bool use_fqdn_dns;
