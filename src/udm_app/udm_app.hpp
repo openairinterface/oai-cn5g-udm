@@ -191,6 +191,14 @@ class udm_app {
   void handle_ee_ue_reachability_for_data(
       const std::string& ue_id, uint8_t status, uint8_t http_version);
 
+  /*
+   * Increase the value of SQN with a value of 32
+   * @param [const std::string&] c_sqn: Current value in form of string
+   * @param [std::string&] n_sqn: New value in form of string
+   * @return void
+   */
+  void increment_sqn(const std::string& c_sqn, std::string& n_sqn);
+
  private:
   util::uint_generator<uint32_t> evsub_id_generator;
   std::map<evsub_id_t, std::shared_ptr<oai::udm::model::CreatedEeSubscription>>
