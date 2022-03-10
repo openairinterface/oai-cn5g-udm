@@ -286,6 +286,8 @@ void udm_app::handle_generate_auth_data_request(
 
       msgBody = "[" + j_PatchItem.dump() + "]";
       Logger::udm_ueau().info("PATCH Request body: %s", msgBody.c_str());
+      Logger::udm_ueau().info(
+          "Update UDR with PATCH message, body:  %s", msgBody.c_str());
 
       udm_client::curl_http_client(remoteUri, Method, Response, msgBody);
 
@@ -295,7 +297,6 @@ void udm_app::handle_generate_auth_data_request(
       sqn_s = conv::uint8_to_hex_string(sqn, 16);
       // Logger::udm_ueau().debug("sqn string = "+sqn_s);
       sqn_s[12] = '\0';
-
       comUt::print_buffer("udm_ueau", "SQNms", sqn, 6);
 
       if (r_sqn) {  // free
@@ -307,6 +308,13 @@ void udm_app::handle_generate_auth_data_request(
           "Invalid AUTS, generate new AV with SQNhe = " + sqn_s);
     }
   }
+
+  // Increment SQN (to be used as current SQN)
+  std::string current_sqn = {};
+  increment_sqn(sqn_s, current_sqn);
+  // Update SQN
+  conv::hex_str_to_uint8(current_sqn.c_str(), sqn);
+  Logger::udm_ueau().info("Current SQN %s", current_sqn.c_str());
 
   // 5GAKA functions
   Authentication_5gaka::generate_random(rand, 16);  // generate rand
@@ -344,18 +352,10 @@ void udm_app::handle_generate_auth_data_request(
   // TODO: Separate into a new function
   // Do it after send ok to AUSF (to be verified)
 
-  // Calculate new sqn
-  unsigned long long sqn_value;
-  std::stringstream s1;
-  s1 << std::hex << sqn_s;
-  s1 >> sqn_value;  // hex string to decimal value
-  sqn_value += 32;
-  std::stringstream s2;
-  s2 << std::hex << std::setw(12) << std::setfill('0')
-     << sqn_value;  // decimal value to hex string
-  std::string new_sqn(s2.str());
-
-  Logger::udm_ueau().info("new_sqn = " + new_sqn);
+  // Increment SQN (for the next round)
+  std::string new_sqn = {};
+  increment_sqn(current_sqn, new_sqn);
+  Logger::udm_ueau().info("New SQN (for next round) = " + new_sqn);
 
   // UDR PATCH interface
   // Increase sqn
@@ -1073,4 +1073,19 @@ void udm_app::handle_ee_loss_of_connectivity(
 void udm_app::handle_ee_ue_reachability_for_data(
     const std::string& ue_id, uint8_t status, uint8_t http_version) {
   // TODO:
+}
+
+//------------------------------------------------------------------------------
+void udm_app::increment_sqn(const std::string& c_sqn, std::string& n_sqn) {
+  unsigned long long sqn_value;
+  std::stringstream s1;
+  s1 << std::hex << c_sqn;
+  s1 >> sqn_value;  // hex string to decimal value
+  sqn_value += 32;
+  std::stringstream s2;
+  s2 << std::hex << std::setw(12) << std::setfill('0')
+     << sqn_value;  // decimal value to hex string
+
+  std::string sqn_tmp(s2.str());
+  n_sqn = sqn_tmp;
 }
