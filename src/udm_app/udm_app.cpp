@@ -40,20 +40,20 @@
 #include <boost/uuid/uuid_io.hpp>
 #include <chrono>
 
-#include "udm_nrf.hpp"
-#include "logger.hpp"
-#include "udm_client.hpp"
-#include "udm_config.hpp"
-#include "ProblemDetails.h"
-#include "conversions.hpp"
-#include "authentication_algorithms_with_5gaka.hpp"
-#include "SequenceNumber.h"
+#include "3gpp_29.500.h"
 #include "PatchItem.h"
+#include "ProblemDetails.h"
+#include "SequenceNumber.h"
+#include "api_conversions.hpp"
+#include "authentication_algorithms_with_5gaka.hpp"
 #include "comUt.hpp"
+#include "conversions.hpp"
+#include "logger.hpp"
 #include "sha256.hpp"
 #include "udm.h"
-#include "api_conversions.hpp"
-#include "3gpp_29.500.h"
+#include "udm_client.hpp"
+#include "udm_config.hpp"
+#include "udm_nrf.hpp"
 
 using namespace oai::udm::app;
 using namespace oai::udm::model;
@@ -148,38 +148,37 @@ void udm_app::handle_generate_auth_data_request(
 
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
-  std::string udr_port  = std::to_string(udm_cfg.udr_addr.port);
-  std::string remoteUri = {};
-  std::string Method    = {};
-  std::string msgBody   = {};
-  std::string Response  = {};
+  std::string udr_port   = std::to_string(udm_cfg.udr_addr.port);
+  std::string remote_uri = {};
+  std::string method     = {};
+  std::string msg_body   = {};
+  std::string response   = {};
 
-  nlohmann::json j_ProblemDetails = {};
-  ProblemDetails m_ProblemDetails = {};
+  nlohmann::json problem_details_json = {};
+  ProblemDetails problem_details      = {};
 
-  // UDR GET interface ----- get authentication related info--------------------
-  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
-  Logger::udm_ueau().debug("GET Request:" + remoteUri);
-  Method = "GET";
+  // Get authentication related info
+  remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
+  Logger::udm_ueau().debug("GET Request:" + remote_uri);
+  method = "GET";
 
-  udm_client::curl_http_client(remoteUri, Method, Response);
+  udm_client::curl_http_client(remote_uri, method, response);
 
   nlohmann::json response_data = {};
   try {
-    response_data = nlohmann::json::parse(Response.c_str());
+    response_data = nlohmann::json::parse(response.c_str());
   } catch (nlohmann::json::exception& e) {  // error handling
-    Logger::udm_ueau().info("Could not get Json content from UDR response");
+    Logger::udm_ueau().info("Could not get JSON content from UDR response");
 
-    m_ProblemDetails.setCause("USER_NOT_FOUND");
-    m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found");
-    to_json(j_ProblemDetails, m_ProblemDetails);
+    problem_details.setCause("USER_NOT_FOUND");
+    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setDetail(
+        "Authentication Data for Supi " + supi + " not found");
+    to_json(problem_details_json, problem_details);
 
-    Logger::udm_ueau().error("User " + supi + " not found");
-    Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
-    auth_info_response = j_ProblemDetails;
+    Logger::udm_ueau().error(
+        "Authentication Data for Supi " + supi + " not found");
+    auth_info_response = problem_details_json;
     code               = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
@@ -205,40 +204,39 @@ void udm_app::handle_generate_auth_data_request(
       comUt::print_buffer("udm_ueau", "Result For F1-Alg SQN: ", sqn, 6);
     } catch (nlohmann::json::exception& e) {
       // error handling
-      m_ProblemDetails.setCause("AUTHENTICATION_REJECTED");
-      m_ProblemDetails.setStatus(403);
-      m_ProblemDetails.setDetail(
-          "Missing authentication parameter in UDR response");
-      to_json(j_ProblemDetails, m_ProblemDetails);
+      problem_details.setCause("AUTHENTICATION_REJECTED");
+      problem_details.setStatus(HTTP_RESPONSE_CODE_FORBIDDEN);
+      problem_details.setDetail(
+          "Missing authentication parameters in UDR response");
+      to_json(problem_details_json, problem_details);
 
       Logger::udm_ueau().error(
-          "Missing authentication parameter in UDR response");
-      Logger::udm_ueau().info("Send 403 Forbidden response to AUSF");
-      auth_info_response = j_ProblemDetails;
+          "Missing authentication parameters in UDR response");
+      auth_info_response = problem_details_json;
       code               = HTTP_RESPONSE_CODE_FORBIDDEN;
       return;
     }
   } else {
     // error handling
-    m_ProblemDetails.setCause("UNSUPPORTED_PROTECTION_SCHEME");
-    m_ProblemDetails.setStatus(501);
-    m_ProblemDetails.setDetail(
+    problem_details.setCause("UNSUPPORTED_PROTECTION_SCHEME");
+    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_IMPLEMENTED);
+    problem_details.setDetail(
         "Non 5G_AKA authenticationMethod configuration in database");
-    to_json(j_ProblemDetails, m_ProblemDetails);
+    to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().error(
         "Non 5G_AKA authenticationMethod configuration in "
         "database, method set = " +
         authMethod_s);
     Logger::udm_ueau().info("Send 501 Not_Implemented response to AUSF");
-    auth_info_response = j_ProblemDetails;
+    auth_info_response = problem_details_json;
     code               = HTTP_RESPONSE_CODE_NOT_IMPLEMENTED;
     return;
   }
 
   if (authenticationInfoRequest.resynchronizationInfoIsSet()) {
     // Resync procedure
-    Logger::udm_ueau().info("Start resynchronization procedure");
+    Logger::udm_ueau().info("Start Resynchronization procedure");
     ResynchronizationInfo m_ResynchronizationInfo =
         authenticationInfoRequest.getResynchronizationInfo();
     std::string r_rand_s = m_ResynchronizationInfo.getRand();
@@ -255,41 +253,39 @@ void udm_app::handle_generate_auth_data_request(
     if (r_sqn) {  // Not NULL (validate auts)
       Logger::udm_ueau().info("Valid AUTS, generate new AV with SQNms");
 
-      // UDR PATCH interface
-      // replace SQNhe with SQNms
-      remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-                  udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-                  NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
-      Logger::udm_ueau().debug("PATCH Request:" + remoteUri);
-      Method = "PATCH";
+      // Update SQN@UDR, replace SQNhe with SQNms
+      remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
 
-      nlohmann::json j_SequenceNumber;
-      SequenceNumber m_SequenceNumber;
-      m_SequenceNumber.setSqnScheme("NON_TIME_BASED");
+      Logger::udm_ueau().debug("PATCH Request:" + remote_uri);
+      method = "PATCH";
+
+      nlohmann::json sequence_number_json;
+      SequenceNumber sequence_number;
+      sequence_number.setSqnScheme("NON_TIME_BASED");
       r_sqnms_s = conv::uint8_to_hex_string(r_sqn, 6);
-      m_SequenceNumber.setSqn(r_sqnms_s);
+      sequence_number.setSqn(r_sqnms_s);
       std::map<std::string, int32_t> index;
       index["ausf"] = 0;
-      m_SequenceNumber.setLastIndexes(index);
-      to_json(j_SequenceNumber, m_SequenceNumber);
+      sequence_number.setLastIndexes(index);
+      to_json(sequence_number_json, sequence_number);
 
       Logger::udm_ueau().info(
-          "Sequence Number %s", j_SequenceNumber.dump().c_str());
+          "Sequence Number %s", sequence_number_json.dump().c_str());
 
       nlohmann::json j_PatchItem = {};
       PatchItem m_PatchItem      = {};
-      m_PatchItem.setValue(j_SequenceNumber.dump());
+      m_PatchItem.setValue(sequence_number_json.dump());
       m_PatchItem.setOp("replace");
       m_PatchItem.setFrom("");
       m_PatchItem.setPath("");
       to_json(j_PatchItem, m_PatchItem);
 
-      msgBody = "[" + j_PatchItem.dump() + "]";
-      Logger::udm_ueau().info("PATCH Request body: %s", msgBody.c_str());
+      msg_body = "[" + j_PatchItem.dump() + "]";
+      Logger::udm_ueau().info("PATCH Request body: %s", msg_body.c_str());
       Logger::udm_ueau().info(
-          "Update UDR with PATCH message, body:  %s", msgBody.c_str());
+          "Update UDR with PATCH message, body:  %s", msg_body.c_str());
 
-      udm_client::curl_http_client(remoteUri, Method, Response, msgBody);
+      udm_client::curl_http_client(remote_uri, method, response, msg_body);
 
       // replace SQNhe with SQNms
       int i = 0;
@@ -359,34 +355,34 @@ void udm_app::handle_generate_auth_data_request(
 
   // UDR PATCH interface
   // Increase sqn
-  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
-  Logger::udm_ueau().debug("PATCH Request:" + remoteUri);
-  Method = "PATCH";
+  remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+               NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
+  Logger::udm_ueau().debug("PATCH Request:" + remote_uri);
+  method = "PATCH";
 
-  nlohmann::json j_SequenceNumber;
-  SequenceNumber m_SequenceNumber;
-  m_SequenceNumber.setSqnScheme("NON_TIME_BASED");
-  m_SequenceNumber.setSqn(new_sqn);
+  nlohmann::json sequence_number_json;
+  SequenceNumber sequence_number;
+  sequence_number.setSqnScheme("NON_TIME_BASED");
+  sequence_number.setSqn(new_sqn);
   std::map<std::string, int32_t> index;
   index["ausf"] = 0;
-  m_SequenceNumber.setLastIndexes(index);
-  to_json(j_SequenceNumber, m_SequenceNumber);
+  sequence_number.setLastIndexes(index);
+  to_json(sequence_number_json, sequence_number);
 
   nlohmann::json j_PatchItem;
   PatchItem m_PatchItem;
-  m_PatchItem.setValue(j_SequenceNumber.dump());
+  m_PatchItem.setValue(sequence_number_json.dump());
   m_PatchItem.setOp("replace");
   m_PatchItem.setFrom("");
   m_PatchItem.setPath("");
   to_json(j_PatchItem, m_PatchItem);
 
-  msgBody = "[" + j_PatchItem.dump() + "]";
+  msg_body = "[" + j_PatchItem.dump() + "]";
   Logger::udm_ueau().info(
-      "Update UDR with PATCH message, body:  %s", msgBody.c_str());
+      "Update UDR with PATCH message, body:  %s", msg_body.c_str());
 
-  udm_client::curl_http_client(remoteUri, Method, Response, msgBody);
+  udm_client::curl_http_client(remote_uri, method, response, msg_body);
 
   Logger::udm_ueau().info("Send 200 Ok response to AUSF");
   Logger::udm_ueau().info("AuthInfoResult %s", AuthInfoResult.dump().c_str());
@@ -402,73 +398,73 @@ void udm_app::handle_confirm_auth(
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
   std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
-  std::string remoteUri;
-  std::string Method;
-  std::string msgBody;
-  std::string Response;
+  std::string remote_uri;
+  std::string method;
+  std::string msg_body;
+  std::string response;
   std::string Location;
   std::string authEventId;
 
-  nlohmann::json j_ProblemDetails;
-  ProblemDetails m_ProblemDetails;
+  nlohmann::json problem_details_json;
+  ProblemDetails problem_details;
 
   // UDR GET interface
   // get user info
-  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
-  Logger::udm_ueau().debug("GET Request:" + remoteUri);
-  Method = "GET";
+  remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+               NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
+  Logger::udm_ueau().debug("GET Request:" + remote_uri);
+  method = "GET";
 
-  udm_client::curl_http_client(remoteUri, Method, Response);
+  udm_client::curl_http_client(remote_uri, method, response);
 
   nlohmann::json response_data = {};
   try {
-    response_data = nlohmann::json::parse(Response.c_str());
+    response_data = nlohmann::json::parse(response.c_str());
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_ueau().info("Could not get Json content from UDR response");
 
-    m_ProblemDetails.setCause("USER_NOT_FOUND");
-    m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found");
-    to_json(j_ProblemDetails, m_ProblemDetails);
+    problem_details.setCause("USER_NOT_FOUND");
+    problem_details.setStatus(404);
+    problem_details.setDetail("User " + supi + " not found");
+    to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
-    confirm_response = j_ProblemDetails;
+    confirm_response = problem_details_json;
     code             = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 
   if (authEvent.isAuthRemovalInd()) {
     // error handling
-    m_ProblemDetails.setStatus(400);
-    m_ProblemDetails.setDetail("authRemovalInd should be false");
-    to_json(j_ProblemDetails, m_ProblemDetails);
+    problem_details.setStatus(400);
+    problem_details.setDetail("authRemovalInd should be false");
+    to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().error("authRemovalInd should be false");
     Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
-    confirm_response = j_ProblemDetails;
+    confirm_response = problem_details_json;
     code             = HTTP_RESPONSE_CODE_BAD_REQUEST;
     return;
   }
 
   // UDR PUT interface
   // Put authentication status
-  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-              "/authentication-data/authentication-status";
+  remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+               "/authentication-data/authentication-status";
 
-  Logger::udm_ueau().debug("PUT Request:" + remoteUri);
-  Method = "PUT";
+  Logger::udm_ueau().debug("PUT Request:" + remote_uri);
+  method = "PUT";
 
   nlohmann::json j_authEvent;
   to_json(j_authEvent, authEvent);
 
-  msgBody = j_authEvent.dump();
-  Logger::udm_ueau().debug("PATCH Request body = " + msgBody);
+  msg_body = j_authEvent.dump();
+  Logger::udm_ueau().debug("PATCH Request body = " + msg_body);
 
-  udm_client::curl_http_client(remoteUri, Method, Response, msgBody);
+  udm_client::curl_http_client(remote_uri, method, response, msg_body);
 
   std::string hash_value = sha256(supi + authEvent.getServingNetworkName());
   // Logger::udm_ueau().debug("\n\nauthEventId=" +
@@ -497,52 +493,52 @@ void udm_app::handle_delete_auth(
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
   std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
-  std::string remoteUri;
-  std::string Method;
-  std::string msgBody;
-  std::string Response;
+  std::string remote_uri;
+  std::string method;
+  std::string msg_body;
+  std::string response;
   std::string Location;
 
-  nlohmann::json j_ProblemDetails;
-  ProblemDetails m_ProblemDetails;
+  nlohmann::json problem_details_json;
+  ProblemDetails problem_details;
 
   // UDR GET interface
   // get user info
-  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-              NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
-  Logger::udm_ueau().debug("GET Request:" + remoteUri);
-  Method = "GET";
+  remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+               NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
+  Logger::udm_ueau().debug("GET Request:" + remote_uri);
+  method = "GET";
 
-  udm_client::curl_http_client(remoteUri, Method, Response);
+  udm_client::curl_http_client(remote_uri, method, response);
 
   nlohmann::json response_data = {};
   try {
-    response_data = nlohmann::json::parse(Response.c_str());
+    response_data = nlohmann::json::parse(response.c_str());
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_ueau().info("Could not get Json content from UDR response");
 
-    m_ProblemDetails.setCause("USER_NOT_FOUND");
-    m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found");
-    to_json(j_ProblemDetails, m_ProblemDetails);
+    problem_details.setCause("USER_NOT_FOUND");
+    problem_details.setStatus(404);
+    problem_details.setDetail("User " + supi + " not found");
+    to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().error("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
-    auth_response = j_ProblemDetails;
+    auth_response = problem_details_json;
     code          = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
 
   if (!authEvent.isAuthRemovalInd()) {
     // error handling
-    m_ProblemDetails.setStatus(400);
-    m_ProblemDetails.setDetail("authRemovalInd should be true");
-    to_json(j_ProblemDetails, m_ProblemDetails);
+    problem_details.setStatus(400);
+    problem_details.setDetail("authRemovalInd should be true");
+    to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().error("authRemovalInd should be true");
     Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
-    auth_response = j_ProblemDetails;
+    auth_response = problem_details_json;
     code          = HTTP_RESPONSE_CODE_BAD_REQUEST;
     return;
   }
@@ -555,17 +551,17 @@ void udm_app::handle_delete_auth(
   if (!hash_value.compare(authEventId)) {
     // UDR DELETE interface
     // delete authentication status
-    remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-                udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-                "/authentication-data/authentication-status";
+    remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+                 udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+                 "/authentication-data/authentication-status";
 
-    Logger::udm_ueau().debug("DELETE Request:" + remoteUri);
-    Method = "DELETE";
+    Logger::udm_ueau().debug("DELETE Request:" + remote_uri);
+    method = "DELETE";
 
     nlohmann::json j_authEvent;
     to_json(j_authEvent, authEvent);
 
-    udm_client::curl_http_client(remoteUri, Method, Response);
+    udm_client::curl_http_client(remote_uri, method, response);
 
     Logger::udm_ueau().info("Send 204 No_Content response to AUSF");
     auth_response = {};
@@ -574,14 +570,14 @@ void udm_app::handle_delete_auth(
   } else {
     // error handling
     // wrong AuthEventId
-    m_ProblemDetails.setCause("DATA_NOT_FOUND");
-    m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("Wrong authEventId");
-    to_json(j_ProblemDetails, m_ProblemDetails);
+    problem_details.setCause("DATA_NOT_FOUND");
+    problem_details.setStatus(404);
+    problem_details.setDetail("Wrong authEventId");
+    to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().error("Wrong authEventId, should be = " + hash_value);
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
-    auth_response = j_ProblemDetails;
+    auth_response = problem_details_json;
     code          = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
@@ -634,25 +630,25 @@ void udm_app::handle_amf_registration_for_3gpp_access(
         amf_3gpp_access_registration,
     nlohmann::json& response_data, long& code) {
   // TODO: to be completed
-  std::string remoteUri;
+  std::string remote_uri;
   std::string response;
-  nlohmann::json j_ProblemDetails;
-  ProblemDetails m_ProblemDetails;
+  nlohmann::json problem_details_json;
+  ProblemDetails problem_details;
 
   // UDR GET interface
   // get 3gpp_registration related info
-  remoteUri =
+  remote_uri =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr))) +
       ":" + std::to_string(udm_cfg.udr_addr.port) + NUDR_DATA_REPOSITORY +
       udm_cfg.udr_addr.api_version + "/subscription-data/" + ue_id +
       "/context-data/amf-3gpp-access";
-  Logger::udm_uecm().debug("PUT Request:" + remoteUri);
+  Logger::udm_uecm().debug("PUT Request:" + remote_uri);
 
   nlohmann::json amf_registration_json;
   to_json(amf_registration_json, amf_3gpp_access_registration);
   long http_code;
   http_code = udm_client::curl_http_client(
-      remoteUri, "PUT", response, amf_registration_json.dump());
+      remote_uri, "PUT", response, amf_registration_json.dump());
 
   try {
     Logger::udm_uecm().debug("PUT Response:" + response);
@@ -661,14 +657,14 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_uecm().info("Could not get Json content from UDR response");
 
-    m_ProblemDetails.setCause("USER_NOT_FOUND");
-    m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + ue_id + " not found");
-    to_json(j_ProblemDetails, m_ProblemDetails);
+    problem_details.setCause("USER_NOT_FOUND");
+    problem_details.setStatus(404);
+    problem_details.setDetail("User " + ue_id + " not found");
+    to_json(problem_details_json, problem_details);
 
     Logger::udm_uecm().error("User " + ue_id + " not found");
     Logger::udm_uecm().info("Send 404 Not_Found response to client");
-    response_data = j_ProblemDetails;
+    response_data = problem_details_json;
     return;
   }
   Logger::udm_uecm().debug("HTTP response code %d", http_code);
@@ -831,42 +827,42 @@ void udm_app::handle_subscription_creation(
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
   std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
-  std::string remoteUri;
-  std::string Method;
-  std::string msgBody;
-  std::string Response;
-  nlohmann::json j_ProblemDetails;
-  ProblemDetails m_ProblemDetails;
+  std::string remote_uri;
+  std::string method;
+  std::string msg_body;
+  std::string response;
+  nlohmann::json problem_details_json;
+  ProblemDetails problem_details;
 
   // UDR GET interface
   // get 3gpp_registration related info
-  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-              udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
-              "/context-data/sdm-subscriptions";
-  Logger::udm_uecm().debug("POST Request:" + remoteUri);
+  remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
+               udm_cfg.udr_addr.api_version + "/subscription-data/" + supi +
+               "/context-data/sdm-subscriptions";
+  Logger::udm_uecm().debug("POST Request:" + remote_uri);
 
   nlohmann::json sdmSubscription_j;
   to_json(sdmSubscription_j, sdmSubscription);
   long http_code;
   http_code = udm_client::curl_http_client(
-      remoteUri, "POST", Response, sdmSubscription_j.dump());
+      remote_uri, "POST", response, sdmSubscription_j.dump());
 
   nlohmann::json response_data_json = {};
   try {
-    Logger::udm_uecm().debug("POST Response:" + Response);
-    response_data_json = nlohmann::json::parse(Response.c_str());
+    Logger::udm_uecm().debug("POST Response:" + response);
+    response_data_json = nlohmann::json::parse(response.c_str());
 
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_uecm().info("Could not get JSON content from UDR response");
 
-    m_ProblemDetails.setCause("USER_NOT_FOUND");
-    m_ProblemDetails.setStatus(404);
-    m_ProblemDetails.setDetail("User " + supi + " not found");
-    to_json(j_ProblemDetails, m_ProblemDetails);
+    problem_details.setCause("USER_NOT_FOUND");
+    problem_details.setStatus(404);
+    problem_details.setDetail("User " + supi + " not found");
+    to_json(problem_details_json, problem_details);
 
     Logger::udm_uecm().error("User " + supi + " not found");
     Logger::udm_uecm().info("Send 404 Not_Found response to client");
-    response_data = j_ProblemDetails;
+    response_data = problem_details_json;
     code          = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }

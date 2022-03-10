@@ -103,6 +103,8 @@ class udm_config {
   void display();
   std::string get_udr_slice_selection_subscription_data_retrieval_uri(
       const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+  std::string get_udr_url_base();
+  std::string get_udr_authentication_subscription_uri(std::string& supi);
 
   unsigned int instance;
   std::string pid_dir;

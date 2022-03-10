@@ -394,9 +394,22 @@ int udm_config::load_interface(
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_slice_selection_subscription_data_retrieval_uri(
     const std::string& supi, const oai::udm::model::PlmnId& plmn_id) {
-  return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
-         ":" + std::to_string(udr_addr.port) + NUDR_DATA_REPOSITORY +
-         udr_addr.api_version + "/subscription-data/" + supi + "/" +
+  return get_udr_url_base() + "/subscription-data/" + supi + "/" +
          plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/am-data";
 }
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_authentication_subscription_uri(
+    std::string& supi) {
+  return get_udr_url_base() + "/subscription-data/" + supi +
+         NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_url_base() {
+  return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
+         ":" + std::to_string(udr_addr.port) + NUDR_DATA_REPOSITORY +
+         udr_addr.api_version;
+}
+
 }  // namespace oai::udm::config
