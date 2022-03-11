@@ -103,9 +103,18 @@ class udm_config {
   void display();
   std::string get_udr_slice_selection_subscription_data_retrieval_uri(
       const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+  std::string get_udr_access_and_mobility_subscription_data_uri(
+      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+  std::string get_udr_session_management_subscription_data_uri(
+      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+  std::string get_udr_smf_selection_subscription_data_uri(
+      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
   std::string get_udr_url_base();
+  std::string get_udr_sdm_subscriptions_uri(const std::string& supi);
+
   std::string get_udr_authentication_subscription_uri(const std::string& supi);
   std::string get_udr_authentication_status_uri(const std::string& supi);
+  std::string get_udr_amf_3gpp_registration_uri(const std::string& supi);
   std::string get_udm_ueau_base();
 
   unsigned int instance;
