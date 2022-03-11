@@ -400,11 +400,24 @@ std::string udm_config::get_udr_slice_selection_subscription_data_retrieval_uri(
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_authentication_subscription_uri(
-    std::string& supi) {
+    const std::string& supi) {
   return get_udr_url_base() + "/subscription-data/" + supi +
          NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
 }
 
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_authentication_status_uri(
+    const std::string& supi) {
+  return get_udr_url_base() + "/subscription-data/" + supi +
+         "/authentication-data/authentication-status";
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udm_ueau_base() {
+  return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
+         ":" + std::to_string(udr_addr.port) + NUDM_UE_AU_BASE +
+         udr_addr.api_version;
+}
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_url_base() {
   return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
