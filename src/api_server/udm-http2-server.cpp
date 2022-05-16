@@ -86,10 +86,12 @@ void udm_http2_server::start() {
 
   // Confirm/Delete Auth
   server.handle(
-      NUDM_UE_AU_BASE + udm_cfg.sbi.api_version,
+      NUDM_UE_AU_BASE + udm_cfg.sbi.api_version + "/",
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           std::string msg((char*) data, len);
+          Logger::udm_server().info(
+              "Request URI: %s", request.uri().path.c_str());
           try {
             std::vector<std::string> split_q;
             boost::split(split_q, request.uri().path, boost::is_any_of("/"));
@@ -126,7 +128,7 @@ void udm_http2_server::start() {
       });
 
   server.handle(
-      NUDM_SDM_BASE + udm_cfg.sbi.api_version,
+      NUDM_SDM_BASE + udm_cfg.sbi.api_version + "/",
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           std::string msg((char*) data, len);
@@ -277,6 +279,7 @@ void udm_http2_server::generate_auth_data_request_handler(
 void udm_http2_server::confirm_auth_handler(
     const std::string& supi, const oai::udm::model::AuthEvent& authEvent,
     const response& response) {
+  Logger::udm_ueau().info("Handle Authentication Confirmation");
   nlohmann::json response_data = {};
   long http_code               = 0;
   std::string location;
