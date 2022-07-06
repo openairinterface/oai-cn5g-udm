@@ -39,6 +39,7 @@
 #include <vector>
 
 #include "udm_config.hpp"
+#include "PlmnId.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -62,8 +63,13 @@
 #define UDM_CONFIG_STRING_UDR_IPV4_ADDRESS "IPV4_ADDRESS"
 #define UDM_CONFIG_STRING_UDR_PORT "PORT"
 
+#define UDM_CONFIG_STRING_NRF "NRF"
+#define UDM_CONFIG_STRING_NRF_IPV4_ADDRESS "IPV4_ADDRESS"
+#define UDM_CONFIG_STRING_NRF_PORT "PORT"
+
 #define UDM_CONFIG_STRING_SUPPORT_FEATURES "SUPPORT_FEATURES"
 #define UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_FQDN_DNS "USE_FQDN_DNS"
+#define UDM_CONFIG_STRING_SUPPORTED_FEATURES_REGISTER_NRF "REGISTER_NRF"
 #define UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2 "USE_HTTP2"
 #define UDM_CONFIG_STRING_FQDN_DNS "FQDN"
 
@@ -81,6 +87,13 @@ typedef struct interface_cfg_s {
   std::string api_version;
 } interface_cfg_t;
 
+typedef struct nf_addr_s {
+  struct in_addr ipv4_addr;
+  unsigned int port;
+  std::string api_version;
+  std::string fqdn;
+} nf_addr_t;
+
 class udm_config {
  public:
   udm_config();
@@ -88,6 +101,21 @@ class udm_config {
   int load(const std::string& config_file);
   int load_interface(const Setting& if_cfg, interface_cfg_t& cfg);
   void display();
+  std::string get_udr_slice_selection_subscription_data_retrieval_uri(
+      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+  std::string get_udr_access_and_mobility_subscription_data_uri(
+      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+  std::string get_udr_session_management_subscription_data_uri(
+      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+  std::string get_udr_smf_selection_subscription_data_uri(
+      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+  std::string get_udr_url_base();
+  std::string get_udr_sdm_subscriptions_uri(const std::string& supi);
+
+  std::string get_udr_authentication_subscription_uri(const std::string& supi);
+  std::string get_udr_authentication_status_uri(const std::string& supi);
+  std::string get_udr_amf_3gpp_registration_uri(const std::string& supi);
+  std::string get_udm_ueau_base();
 
   unsigned int instance;
   std::string pid_dir;
@@ -96,13 +124,10 @@ class udm_config {
   interface_cfg_t sbi;
   unsigned int sbi_http2_port;
 
-  struct {
-    struct in_addr ipv4_addr;
-    unsigned int port;
-    std::string api_version;
-    std::string fqdn;
-  } udr_addr;
+  nf_addr_t udr_addr;
+  nf_addr_t nrf_addr;
 
+  bool register_nrf;
   bool use_fqdn_dns;
   bool use_http2;
 };

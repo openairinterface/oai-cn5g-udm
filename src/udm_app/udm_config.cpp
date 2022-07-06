@@ -34,6 +34,7 @@
 #include "if.hpp"
 #include "logger.hpp"
 #include "fqdn.hpp"
+#include "udm.h"
 #include "string.hpp"
 
 extern "C" {
@@ -57,8 +58,13 @@ udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
   udr_addr.port             = 80;
   udr_addr.api_version      = "v1";
   udr_addr.fqdn             = {};
+  nrf_addr.ipv4_addr.s_addr = INADDR_ANY;
+  nrf_addr.port             = 80;
+  nrf_addr.api_version      = "v1";
+  nrf_addr.fqdn             = {};
   use_fqdn_dns              = false;
   use_http2                 = false;
+  register_nrf              = false;
 }
 
 //------------------------------------------------------------------------------
@@ -147,6 +153,14 @@ int udm_config::load(const std::string& config_file) {
     }
 
     support_features.lookupValue(
+        UDM_CONFIG_STRING_SUPPORTED_FEATURES_REGISTER_NRF, opt);
+    if (boost::iequals(opt, "yes")) {
+      register_nrf = true;
+    } else {
+      register_nrf = false;
+    }
+
+    support_features.lookupValue(
         UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2, opt);
     if (boost::iequals(opt, "yes")) {
       use_http2 = true;
@@ -221,6 +235,63 @@ int udm_config::load(const std::string& config_file) {
     Logger::udm_app().error("%s : %s", nfex.what(), nfex.getPath());
     return RETURNerror;
   }
+
+  // NRF
+  if (register_nrf) {
+    try {
+      std::string astring = {};
+
+      const Setting& nrf_cfg       = udm_cfg[UDM_CONFIG_STRING_NRF];
+      struct in_addr nrf_ipv4_addr = {};
+      unsigned int nrf_port        = 0;
+      std::string nrf_api_version  = {};
+
+      if (!use_fqdn_dns) {
+        nrf_cfg.lookupValue(UDM_CONFIG_STRING_NRF_IPV4_ADDRESS, astring);
+        IPV4_STR_ADDR_TO_INADDR(
+            util::trim(astring).c_str(), nrf_ipv4_addr,
+            "BAD IPv4 ADDRESS FORMAT FOR NRF !");
+        nrf_addr.ipv4_addr = nrf_ipv4_addr;
+        if (!(nrf_cfg.lookupValue(UDM_CONFIG_STRING_NRF_PORT, nrf_port))) {
+          Logger::udm_app().error(UDM_CONFIG_STRING_NRF_PORT "failed");
+          throw(UDM_CONFIG_STRING_NRF_PORT "failed");
+        }
+        nrf_addr.port = nrf_port;
+        if (!(nrf_cfg.lookupValue(
+                UDM_CONFIG_STRING_API_VERSION, nrf_api_version))) {
+          Logger::udm_app().error(UDM_CONFIG_STRING_API_VERSION "failed");
+          throw(UDM_CONFIG_STRING_API_VERSION "failed");
+        }
+        nrf_addr.api_version = nrf_api_version;
+      } else {
+        nrf_cfg.lookupValue(UDM_CONFIG_STRING_FQDN_DNS, astring);
+        uint8_t addr_type   = {0};
+        std::string address = {};
+        fqdn::resolve(astring, address, nrf_port, addr_type);
+        if (addr_type != 0) {  // IPv6
+          // TODO:
+          throw("DO NOT SUPPORT IPV6 ADDR FOR NRF!");
+        } else {  // IPv4
+          IPV4_STR_ADDR_TO_INADDR(
+              util::trim(address).c_str(), nrf_ipv4_addr,
+              "BAD IPv4 ADDRESS FORMAT FOR NRF !");
+          nrf_addr.ipv4_addr = nrf_ipv4_addr;
+          // We hardcode nrf port from config for the moment
+          if (!(nrf_cfg.lookupValue(UDM_CONFIG_STRING_NRF_PORT, nrf_port))) {
+            Logger::udm_app().error(UDM_CONFIG_STRING_NRF_PORT "failed");
+            throw(UDM_CONFIG_STRING_NRF_PORT "failed");
+          }
+          nrf_addr.port        = nrf_port;
+          nrf_addr.api_version = "v1";  // TODO: to get API version from DNS
+          nrf_addr.fqdn        = astring;
+        }
+      }
+    } catch (const SettingNotFoundException& nfex) {
+      Logger::udm_app().error("%s : %s", nfex.what(), nfex.getPath());
+      return RETURNerror;
+    }
+  }
+
   return RETURNok;
 }
 
@@ -243,6 +314,8 @@ void udm_config::display() {
       "    Api Version...........: %s", sbi.api_version.c_str());
   Logger::config().info("- Supported Features:");
   Logger::config().info(
+      "    REGISTER NRF ..  ......: %s", register_nrf ? "Yes" : "No");
+  Logger::config().info(
       "    Use FQDN ..............: %s", use_fqdn_dns ? "Yes" : "No");
   Logger::config().info(
       "    Use HTTP2..............: %s", use_http2 ? "Yes" : "No");
@@ -254,9 +327,16 @@ void udm_config::display() {
   Logger::config().info("    Port..................: %lu  ", udr_addr.port);
   Logger::config().info(
       "    API version...........: %s", udr_addr.api_version.c_str());
+  Logger::config().info("- NRF:");
+  Logger::config().info(
+      "    IPv4 Addr ............: %s",
+      inet_ntoa(*((struct in_addr*) &nrf_addr.ipv4_addr)));
+  Logger::config().info("    Port .................: %lu  ", nrf_addr.port);
+  Logger::config().info(
+      "    API version ..........: %s", nrf_addr.api_version.c_str());
   if (use_fqdn_dns)
     Logger::config().info(
-        "    FQDN..................: %s", udr_addr.fqdn.c_str());
+        "    FQDN..................: %s", nrf_addr.fqdn.c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -309,6 +389,75 @@ int udm_config::load_interface(
     }
   }
   return RETURNok;
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_slice_selection_subscription_data_retrieval_uri(
+    const std::string& supi, const oai::udm::model::PlmnId& plmn_id) {
+  return get_udr_url_base() + "/subscription-data/" + supi + "/" +
+         plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/am-data";
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_access_and_mobility_subscription_data_uri(
+    const std::string& supi, const oai::udm::model::PlmnId& plmn_id) {
+  return get_udr_url_base() + "/subscription-data/" + supi + "/" +
+         plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/am-data";
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_session_management_subscription_data_uri(
+    const std::string& supi, const oai::udm::model::PlmnId& plmn_id) {
+  return get_udr_url_base() + "/subscription-data/" + supi + "/" +
+         plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/sm-data";
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_smf_selection_subscription_data_uri(
+    const std::string& supi, const oai::udm::model::PlmnId& plmn_id) {
+  return get_udr_url_base() + "/subscription-data/" + supi + "/" +
+         plmn_id.getMcc() + plmn_id.getMnc() +
+         "/provisioned-data/smf-selection-subscription-data";
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_sdm_subscriptions_uri(const std::string& supi) {
+  return get_udr_url_base() + "/subscription-data/" + supi +
+         "/context-data/sdm-subscriptions";
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_authentication_subscription_uri(
+    const std::string& supi) {
+  return get_udr_url_base() + "/subscription-data/" + supi +
+         NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_authentication_status_uri(
+    const std::string& supi) {
+  return get_udr_url_base() + "/subscription-data/" + supi +
+         "/authentication-data/authentication-status";
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_amf_3gpp_registration_uri(
+    const std::string& supi) {
+  return get_udr_url_base() + "/subscription-data/" + supi +
+         "/context-data/amf-3gpp-access";
+}
+
+//------------------------------------------------------------------------------
+std::string udm_config::get_udm_ueau_base() {
+  return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
+         ":" + std::to_string(udr_addr.port) + NUDM_UE_AU_BASE +
+         udr_addr.api_version;
+}
+//------------------------------------------------------------------------------
+std::string udm_config::get_udr_url_base() {
+  return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
+         ":" + std::to_string(udr_addr.port) + NUDR_DATA_REPOSITORY +
+         udr_addr.api_version;
 }
 
 }  // namespace oai::udm::config

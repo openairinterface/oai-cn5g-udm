@@ -55,7 +55,7 @@ namespace oai::udm::app {
 // class ausf_config;
 class udm_app {
  public:
-  explicit udm_app(const std::string& config_file);
+  explicit udm_app(const std::string& config_file, udm_event& ev);
   udm_app(udm_app const&) = delete;
   void operator=(udm_app const&) = delete;
 
@@ -191,6 +191,14 @@ class udm_app {
   void handle_ee_ue_reachability_for_data(
       const std::string& ue_id, uint8_t status, uint8_t http_version);
 
+  /*
+   * Increase the value of SQN with a value of 32
+   * @param [const std::string&] c_sqn: Current value in form of string
+   * @param [std::string&] n_sqn: New value in form of string
+   * @return void
+   */
+  void increment_sqn(const std::string& c_sqn, std::string& n_sqn);
+
  private:
   util::uint_generator<uint32_t> evsub_id_generator;
   std::map<evsub_id_t, std::shared_ptr<oai::udm::model::CreatedEeSubscription>>
@@ -199,7 +207,7 @@ class udm_app {
   mutable std::shared_mutex m_mutex_udm_event_subscriptions;
 
   // for Event Handling
-  udm_event event_sub;
+  udm_event& event_sub;
   bs2::connection loss_of_connectivity_connection;
   bs2::connection ue_reachability_for_data_connection;
 };
