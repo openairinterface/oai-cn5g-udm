@@ -636,7 +636,7 @@ void udm_app::handle_session_management_subscription_data_retrieval(
   std::string remote_uri =
       udm_cfg.get_udr_session_management_subscription_data_uri(supi, plmn_id);
   std::string query_str = {};
-  std::string body = {};
+  std::string body      = {};
 
   if (snssai.getSst() > 0) {
     query_str += "?single-nssai={\"sst\":" + std::to_string(snssai.getSst()) +
