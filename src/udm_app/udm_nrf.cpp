@@ -45,6 +45,7 @@
 
 using namespace oai::udm::app;
 using namespace oai::udm::config;
+using namespace boost::placeholders;
 
 // using json = nlohmann::json;
 
