@@ -1,5 +1,12 @@
 # RELEASE NOTES: #
 
+## v1.4.0 -- July 2022 ##
+
+* Fix HTTP/2 support
+* NRF Registration and heartbeat exchange
+* Official images produced by CI are pushed to `oaisoftwarealliance` Docker-Hub Team account
+* Reduce image size
+
 ## v1.3.0 -- January 2022 ##
 
 * Experimental support for Event Exposure

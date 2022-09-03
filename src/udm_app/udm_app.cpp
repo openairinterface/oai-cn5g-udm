@@ -59,6 +59,7 @@ using namespace oai::udm::app;
 using namespace oai::udm::model;
 using namespace std::chrono;
 using namespace oai::udm::config;
+using namespace boost::placeholders;
 
 extern udm_app* udm_app_inst;
 extern udm_config udm_cfg;
@@ -157,7 +158,7 @@ void udm_app::handle_generate_auth_data_request(
   Logger::udm_ueau().debug("GET Request:" + remote_uri);
   method = "GET";
 
-  udm_client::curl_http_client(remote_uri, method, response);
+  udm_client::curl_http_client(remote_uri, method, response, msg_body);
 
   nlohmann::json response_data = {};
   try {
@@ -397,7 +398,7 @@ void udm_app::handle_confirm_auth(
   Logger::udm_ueau().debug("GET Request:" + remote_uri);
   method = "GET";
 
-  udm_client::curl_http_client(remote_uri, method, response);
+  udm_client::curl_http_client(remote_uri, method, response, msg_body);
 
   nlohmann::json response_data = {};
   try {
@@ -477,7 +478,7 @@ void udm_app::handle_delete_auth(
   Logger::udm_ueau().debug("GET Request:" + remote_uri);
   method = "GET";
 
-  udm_client::curl_http_client(remote_uri, method, response);
+  udm_client::curl_http_client(remote_uri, method, response, msg_body);
 
   nlohmann::json response_data = {};
   try {
@@ -524,7 +525,7 @@ void udm_app::handle_delete_auth(
     nlohmann::json auth_event_json;
     to_json(auth_event_json, authEvent);
 
-    udm_client::curl_http_client(remote_uri, method, response);
+    udm_client::curl_http_client(remote_uri, method, response, msg_body);
 
     Logger::udm_ueau().info("Send 204 No_Content response to AUSF");
     auth_response = {};
@@ -635,6 +636,7 @@ void udm_app::handle_session_management_subscription_data_retrieval(
   std::string remote_uri =
       udm_cfg.get_udr_session_management_subscription_data_uri(supi, plmn_id);
   std::string query_str = {};
+  std::string body      = {};
 
   if (snssai.getSst() > 0) {
     query_str += "?single-nssai={\"sst\":" + std::to_string(snssai.getSst()) +
@@ -653,7 +655,7 @@ void udm_app::handle_session_management_subscription_data_retrieval(
   Logger::udm_sdm().debug("Request URI: " + remote_uri);
 
   // Send curl to UDM
-  code = udm_client::curl_http_client(remote_uri, "GET", response_str);
+  code = udm_client::curl_http_client(remote_uri, "GET", response_str, body);
 
   Logger::udm_sdm().debug("HTTP response code %ld", code);
 

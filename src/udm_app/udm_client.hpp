@@ -47,7 +47,7 @@ class udm_client {
   udm_client(udm_client const&) = delete;
   static long curl_http_client(
       std::string remoteUri, std::string method, std::string& response,
-      std::string msgBody = {});
+      std::string msgBody);
 };
 }  // namespace app
 }  // namespace udm
