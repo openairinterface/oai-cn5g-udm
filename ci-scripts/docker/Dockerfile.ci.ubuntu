@@ -33,13 +33,14 @@
 ARG BASE_IMAGE=ubuntu:bionic
 FROM oai-udm-base:latest as oai-udm-builder
 
+RUN rm -Rf /openair-udm
 WORKDIR /openair-udm
 COPY . /openair-udm
-RUN cp -Rf /openair-udm-ext-ref /openair-udm/build/ext
 
 # Building UDM
 WORKDIR /openair-udm/build/scripts
 RUN ldconfig && \
+    cp -Rf /openair-udm-ext-ref /openair-udm/build/ext && \
     ./build_udm --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udm/build/udm/build/udm && \
     mv /openair-udm/build/udm/build/udm /openair-udm/build/udm/build/oai_udm
