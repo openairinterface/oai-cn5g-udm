@@ -78,6 +78,8 @@ ENV TZ=Europe/Paris
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
+      python3 \
+      python3-jinja2 \
       psmisc \
       net-tools \
       iputils-ping \
@@ -117,7 +119,7 @@ RUN apt-get update && \
 WORKDIR /openair-udm/bin
 COPY --from=oai-udm-builder \
     /openair-udm/build/udm/build/oai_udm \
-    /openair-udm/scripts/entrypoint.sh \
+    /openair-udm/scripts/entrypoint.py \
     /openair-udm/scripts/healthcheck.sh \
     ./
 
@@ -146,5 +148,5 @@ HEALTHCHECK --interval=10s \
             --retries=6 \
     CMD /openair-udm/bin/healthcheck.sh
 
-ENTRYPOINT ["/bin/bash","/openair-udm/bin/entrypoint.sh"]
+ENTRYPOINT ["python3","/openair-udm/bin/entrypoint.py"]
 CMD ["/openair-udm/bin/oai_udm", "-c" , "/openair-udm/etc/udm.conf", "-o"]
