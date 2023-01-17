@@ -90,6 +90,8 @@ COPY ./rhsm-ca /etc/rhsm/ca
 RUN rm -f /etc/rhsm-host && \
     microdnf update -y && \
     microdnf install -y \
+      python3 \
+      python3-pip \
       tzdata \
 #      libasan \
       procps-ng \
@@ -100,6 +102,7 @@ RUN rm -f /etc/rhsm-host && \
       libevent \
       findutils \
       libconfig && \
+    pip3 install jinja2 && \
     microdnf clean all -y && \
     rm -rf /var/cache/yum /var/cache/dnf && \
     # Remove entitlements and Subscription Manager configs
@@ -110,7 +113,7 @@ RUN rm -f /etc/rhsm-host && \
 WORKDIR /openair-udm/bin
 COPY --from=oai-udm-builder \
     /openair-udm/build/udm/build/oai_udm \
-    /openair-udm/scripts/entrypoint.sh \
+    /openair-udm/scripts/entrypoint.py \
     /openair-udm/scripts/healthcheck.sh \
     ./
 
@@ -137,5 +140,5 @@ HEALTHCHECK --interval=10s \
             --retries=6 \
     CMD /openair-udm/bin/healthcheck.sh
 
-ENTRYPOINT ["/bin/bash","/openair-udm/bin/entrypoint.sh"]
+ENTRYPOINT ["python3","/openair-udm/bin/entrypoint.py"]
 CMD ["/openair-udm/bin/oai_udm", "-c" , "/openair-udm/etc/udm.conf", "-o"]
