@@ -34,6 +34,7 @@ ARG BASE_IMAGE=ubuntu:bionic
 FROM $BASE_IMAGE as oai-udm-base
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/Paris
 ENV IS_DOCKERFILE=1
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
@@ -50,21 +51,24 @@ RUN git config --global https.postBuffer 123289600 && \
 
 # Copying source code
 WORKDIR /openair-udm
-COPY . /openair-udm
+COPY ./build/scripts /openair-udm/build/scripts/
+COPY ./build/udm/CMakeLists.txt /openair-udm/build/udm/CMakeLists.txt
+COPY ./build/cmake_modules /openair-udm/cmake_modules/
 
 # Installing all the needed libraries/packages to build and run UDM
 WORKDIR /openair-udm/build/scripts
 RUN ./build_udm --install-deps --force && \
-    cp -Rf /openair-udm/build/ext /openair-udm-ext-ref
+    ldconfig
 
 #---------------------------------------------------------------------
 # BUILDER IMAGE
 #---------------------------------------------------------------------
 FROM oai-udm-base as oai-udm-builder
 # Building UDM
+COPY . /openair-udm
+# Copying source code
 WORKDIR /openair-udm/build/scripts
-RUN ldconfig && \
-    ./build_udm --clean --Verbose --build-type Release --jobs && \
+RUN ./build_udm --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udm/build/udm/build/udm && \
     mv /openair-udm/build/udm/build/udm /openair-udm/build/udm/build/oai_udm
 
