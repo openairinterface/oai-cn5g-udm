@@ -73,29 +73,18 @@ void udm_http2_server::start() {
                 this->generate_auth_data_request_handler(
                     supiOrSuci, authenticationInfoRequest, response);
               }
-            }
-          } catch (std::exception& e) {
-            Logger::udm_server().warn("Invalid request (error: %s)!", e.what());
-            response.write_head(
-                http_status_code_e::HTTP_STATUS_CODE_400_BAD_REQUEST);
-            response.end();
-            return;
-          }
-        });
-      });
+            } else if (
+                split_q[split_q.size() - 1].compare(NUDM_UE_AU_EVENTS) == 0) {
+              if (request.method().compare("POST") == 0 && len > 0) {
+                std::string supi = split_q[split_q.size() - 2].c_str();
+                AuthEvent authEvent;
+                // Parse Body
+                nlohmann::json::parse(msg.c_str()).get_to(authEvent);
 
-  // Confirm/Delete Auth
-  server.handle(
-      NUDM_UE_AU_BASE + udm_cfg.sbi.api_version + "/",
-      [&](const request& request, const response& response) {
-        request.on_data([&](const uint8_t* data, std::size_t len) {
-          std::string msg((char*) data, len);
-          Logger::udm_server().info(
-              "Request URI: %s", request.uri().path.c_str());
-          try {
-            std::vector<std::string> split_q;
-            boost::split(split_q, request.uri().path, boost::is_any_of("/"));
-            if (split_q[split_q.size() - 2].compare(NUDM_UE_AU_EVENTS) == 0) {
+                this->confirm_auth_handler(supi, authEvent, response);
+              }
+            } else if (
+                split_q[split_q.size() - 2].compare(NUDM_UE_AU_EVENTS) == 0) {
               if (request.method().compare("PUT") == 0 && len > 0) {
                 std::string supi        = split_q[split_q.size() - 3].c_str();
                 std::string authEventId = split_q[split_q.size() - 1].c_str();
@@ -105,16 +94,6 @@ void udm_http2_server::start() {
 
                 this->delete_auth_handler(
                     supi, authEventId, authEvent, response);
-              }
-            }
-            if (split_q[split_q.size() - 1].compare(NUDM_UE_AU_EVENTS) == 0) {
-              if (request.method().compare("POST") == 0 && len > 0) {
-                std::string supi = split_q[split_q.size() - 2].c_str();
-                AuthEvent authEvent;
-                // Parse Body
-                nlohmann::json::parse(msg.c_str()).get_to(authEvent);
-
-                this->confirm_auth_handler(supi, authEvent, response);
               }
             }
           } catch (std::exception& e) {
