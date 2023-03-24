@@ -87,7 +87,7 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
         Pistache::Http::Mime::MediaType("application/problem+json"));
   }
 
-  Logger::udm_sdm().debug("HTTP response code %d.\n", code);
+  Logger::udm_sdm().debug("HTTP response code %d.\n", (int) code);
   response.send(code, response_data.dump());
 }
 

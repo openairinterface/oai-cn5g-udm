@@ -65,6 +65,7 @@ udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
   use_fqdn_dns              = false;
   use_http2                 = false;
   register_nrf              = false;
+  log_level                 = spdlog::level::debug;
 }
 
 //------------------------------------------------------------------------------
@@ -114,6 +115,16 @@ int udm_config::load(const std::string& config_file) {
   }
   try {
     udm_cfg.lookupValue(UDM_CONFIG_STRING_UDM_NAME, udm_name);
+  } catch (const SettingNotFoundException& nfex) {
+    Logger::config().error(
+        "%s : %s, using defaults", nfex.what(), nfex.getPath());
+  }
+
+  // Log Level
+  try {
+    std::string string_level;
+    udm_cfg.lookupValue(UDM_CONFIG_STRING_LOG_LEVEL, string_level);
+    log_level = spdlog::level::from_str(string_level);
   } catch (const SettingNotFoundException& nfex) {
     Logger::config().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
@@ -327,16 +338,22 @@ void udm_config::display() {
   Logger::config().info("    Port..................: %lu  ", udr_addr.port);
   Logger::config().info(
       "    API version...........: %s", udr_addr.api_version.c_str());
-  Logger::config().info("- NRF:");
-  Logger::config().info(
-      "    IPv4 Addr ............: %s",
-      inet_ntoa(*((struct in_addr*) &nrf_addr.ipv4_addr)));
-  Logger::config().info("    Port .................: %lu  ", nrf_addr.port);
-  Logger::config().info(
-      "    API version ..........: %s", nrf_addr.api_version.c_str());
-  if (use_fqdn_dns)
+  if (register_nrf) {
+    Logger::config().info("- NRF:");
     Logger::config().info(
-        "    FQDN..................: %s", nrf_addr.fqdn.c_str());
+        "    IPv4 Addr ............: %s",
+        inet_ntoa(*((struct in_addr*) &nrf_addr.ipv4_addr)));
+    Logger::config().info("    Port .................: %lu  ", nrf_addr.port);
+    Logger::config().info(
+        "    API version ..........: %s", nrf_addr.api_version.c_str());
+    if (use_fqdn_dns)
+      Logger::config().info(
+          "    FQDN..................: %s", nrf_addr.fqdn.c_str());
+  }
+
+  Logger::config().info(
+      "- Log Level will be .......: %s",
+      spdlog::level::to_string_view(log_level));
 }
 
 //------------------------------------------------------------------------------

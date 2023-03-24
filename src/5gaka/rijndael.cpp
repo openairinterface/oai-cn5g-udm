@@ -29,6 +29,7 @@
  */
 
 #include "authentication_algorithms_with_5gaka.hpp"
+#include "logger.hpp"
 
 typedef uint8_t u8;
 typedef uint32_t u32;
@@ -201,8 +202,10 @@ void Authentication_5gaka::RijndaelEncrypt(
   printf("end of round(%d)\n0x", 0);
 #endif
 
-  for (int i = 0; i < 16; i++) printf("%x ", state[i & 0x3][i >> 2]);
-  printf("\n");
+  if (Logger::should_log(spdlog::level::debug)) {
+    for (int i = 0; i < 16; i++) printf("%x ", state[i & 0x3][i >> 2]);
+    printf("\n");
+  }
   for (r = 1; r <= 9; r++) {
     ByteSub(state);
     ShiftRow(state);

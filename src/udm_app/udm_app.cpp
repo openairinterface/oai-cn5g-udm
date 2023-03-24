@@ -181,21 +181,26 @@ void udm_app::handle_generate_auth_data_request(
   if (!auth_method_s.compare("5G_AKA") ||
       !auth_method_s.compare("AuthenticationVector")) {
     try {
-      key_s = response_data.at("encPermanentKey");
+      bool should_log = Logger::should_log(spdlog::level::debug);
+      key_s           = response_data.at("encPermanentKey");
       conv::hex_str_to_uint8(key_s.c_str(), key);
-      comUt::print_buffer("udm_ueau", "Result For F1-Alg Key", key, 16);
+      if (should_log)
+        comUt::print_buffer("udm_ueau", "Result For F1-Alg Key", key, 16);
 
       opc_s = response_data.at("encOpcKey");
       conv::hex_str_to_uint8(opc_s.c_str(), opc);
-      comUt::print_buffer("udm_ueau", "Result For F1-Alg OPC", opc, 16);
+      if (should_log)
+        comUt::print_buffer("udm_ueau", "Result For F1-Alg OPC", opc, 16);
 
       amf_s = response_data.at("authenticationManagementField");
       conv::hex_str_to_uint8(amf_s.c_str(), amf);
-      comUt::print_buffer("udm_ueau", "Result For F1-Alg AMF", amf, 2);
+      if (should_log)
+        comUt::print_buffer("udm_ueau", "Result For F1-Alg AMF", amf, 2);
 
       sqn_s = response_data["sequenceNumber"].at("sqn");
       conv::hex_str_to_uint8(sqn_s.c_str(), sqn);
-      comUt::print_buffer("udm_ueau", "Result For F1-Alg SQN: ", sqn, 6);
+      if (should_log)
+        comUt::print_buffer("udm_ueau", "Result For F1-Alg SQN: ", sqn, 6);
     } catch (nlohmann::json::exception& e) {
       // error handling
       problem_details.setCause("AUTHENTICATION_REJECTED");
@@ -284,7 +289,8 @@ void udm_app::handle_generate_auth_data_request(
       sqn_s = conv::uint8_to_hex_string(sqn, 16);
       // Logger::udm_ueau().debug("sqn string = "+sqn_s);
       sqn_s[12] = '\0';
-      comUt::print_buffer("udm_ueau", "SQNms", sqn, 6);
+      if (Logger::should_log(spdlog::level::debug))
+        comUt::print_buffer("udm_ueau", "SQNms", sqn, 6);
 
       if (r_sqn) {  // free
         free(r_sqn);
