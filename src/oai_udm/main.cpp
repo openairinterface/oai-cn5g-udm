@@ -89,6 +89,7 @@ int main(int argc, char** argv) {
   // Config
   udm_cfg.load(Options::getlibconfigConfig());
   udm_cfg.display();
+  Logger::set_level(udm_cfg.log_level);
 
   // UDM application layer
   udm_app_inst = new udm_app(Options::getlibconfigConfig(), ev);

@@ -45,6 +45,8 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
+#include "logger.hpp"
+
 #define UDM_CONFIG_STRING_UDM_CONFIG "UDM"
 #define UDM_CONFIG_STRING_PID_DIRECTORY "PID_DIRECTORY"
 #define UDM_CONFIG_STRING_INSTANCE_ID "INSTANCE_ID"
@@ -72,6 +74,8 @@
 #define UDM_CONFIG_STRING_SUPPORTED_FEATURES_REGISTER_NRF "REGISTER_NRF"
 #define UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2 "USE_HTTP2"
 #define UDM_CONFIG_STRING_FQDN_DNS "FQDN"
+
+#define UDM_CONFIG_STRING_LOG_LEVEL "LOG_LEVEL"
 
 using namespace libconfig;
 
@@ -120,6 +124,7 @@ class udm_config {
   unsigned int instance;
   std::string pid_dir;
   std::string udm_name;
+  spdlog::level::level_enum log_level;
 
   interface_cfg_t sbi;
   unsigned int sbi_http2_port;

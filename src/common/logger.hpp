@@ -25,98 +25,78 @@
  \email: contact@openairinterface.org
  */
 
-#ifndef __LOGGER_H
-#define __LOGGER_H
+#pragma once
 
 #include <cstdarg>
 #include <stdexcept>
 #include <vector>
+#include "logger_base.hpp"
 
-#define SPDLOG_LEVEL_NAMES                                                     \
-  {"trace", "debug", "info ", "start", "warn ", "error", "off  "};
-
-#define SPDLOG_ENABLE_SYSLOG
-#include "spdlog/spdlog.h"
-
-class LoggerException : public std::runtime_error {
- public:
-  explicit LoggerException(const char* m) : std::runtime_error(m) {}
-  explicit LoggerException(const std::string& m) : std::runtime_error(m) {}
-};
-
-class _Logger {
- public:
-  _Logger(
-      const char* category, std::vector<spdlog::sink_ptr>& sinks,
-      const char* pattern);
-
-  void trace(const char* format, ...);
-  void trace(const std::string& format, ...);
-  void debug(const char* format, ...);
-  void debug(const std::string& format, ...);
-  void info(const char* format, ...);
-  void info(const std::string& format, ...);
-  void startup(const char* format, ...);
-  void startup(const std::string& format, ...);
-  void warn(const char* format, ...);
-  void warn(const std::string& format, ...);
-  void error(const char* format, ...);
-  void error(const std::string& format, ...);
-
- private:
-  _Logger();
-  enum _LogType { _ltTrace, _ltDebug, _ltInfo, _ltStartup, _ltWarn, _ltError };
-
-  void log(_LogType lt, const char* format, va_list& args);
-  spdlog::logger m_log;
-};
+static const std::string CONFIG      = "config";
+static const std::string SYSTEM      = "system";
+static const std::string UDM_UEAU    = "udm_ueau";
+static const std::string UDM_UECM    = "udm_uecm";
+static const std::string UDM_EE      = "udm_ee";
+static const std::string UDM_SDM     = "udm_sdm";
+static const std::string UDM_NRF     = "udm_nrf";
+static const std::string UDM_SVR_LOG = "udm_server";
+static const std::string UDM_APP     = "udm_app";
 
 class Logger {
  public:
   static void init(
-      const char* app, const bool log_stdout, const bool log_rot_file) {
-    singleton()._init(app, log_stdout, log_rot_file);
+      const std::string& name, const bool log_stdout, const bool log_rot_file) {
+    oai::logger::logger_registry::register_logger(
+        name, CONFIG, log_stdout, log_rot_file);
+    oai::logger::logger_registry::register_logger(
+        name, SYSTEM, log_stdout, log_rot_file);
+    oai::logger::logger_registry::register_logger(
+        name, UDM_UEAU, log_stdout, log_rot_file);
+    oai::logger::logger_registry::register_logger(
+        name, UDM_UECM, log_stdout, log_rot_file);
+    oai::logger::logger_registry::register_logger(
+        name, UDM_EE, log_stdout, log_rot_file);
+    oai::logger::logger_registry::register_logger(
+        name, UDM_SDM, log_stdout, log_rot_file);
+    oai::logger::logger_registry::register_logger(
+        name, UDM_NRF, log_stdout, log_rot_file);
+    oai::logger::logger_registry::register_logger(
+        name, UDM_SVR_LOG, log_stdout, log_rot_file);
+    oai::logger::logger_registry::register_logger(
+        name, UDM_APP, log_stdout, log_rot_file);
   }
-  static void init(
-      const std::string& app, const bool log_stdout, const bool log_rot_file) {
-    init(app.c_str(), log_stdout, log_rot_file);
+  static void set_level(spdlog::level::level_enum level) {
+    oai::logger::logger_registry::set_level(level);
+  }
+  static bool should_log(spdlog::level::level_enum level) {
+    return oai::logger::logger_registry::should_log(level);
   }
 
-  static _Logger& config() { return *singleton().m_config; }
-  static _Logger& system() { return *singleton().m_system; }
-  static _Logger& udm_ueau() { return *singleton().m_udm_ueau; }
-  static _Logger& udm_uecm() { return *singleton().m_udm_uecm; }
-  static _Logger& udm_ee() { return *singleton().m_udm_ee; }
-  static _Logger& udm_sdm() { return *singleton().m_udm_sdm; }
-  static _Logger& udm_nrf() { return *singleton().m_udm_nrf; }
-  static _Logger& udm_server() { return *singleton().m_udm_server; }
-  static _Logger& udm_app() { return *singleton().m_udm_app; }
-
- private:
-  static Logger* m_singleton;
-  static Logger& singleton() {
-    if (!m_singleton) m_singleton = new Logger();
-    return *m_singleton;
+  static const oai::logger::printf_logger& config() {
+    return oai::logger::logger_registry::get_logger(CONFIG);
   }
-
-  Logger() {}
-  ~Logger() {}
-
-  void _init(const char* app, const bool log_stdout, const bool log_rot_file);
-
-  std::vector<spdlog::sink_ptr> m_sinks;
-
-  std::string m_pattern;
-
-  _Logger* m_config;
-  _Logger* m_system;
-  _Logger* m_udm_ueau;
-  _Logger* m_udm_uecm;
-  _Logger* m_udm_ee;
-  _Logger* m_udm_sdm;
-  _Logger* m_udm_nrf;
-  _Logger* m_udm_server;
-  _Logger* m_udm_app;
+  static const oai::logger::printf_logger& system() {
+    return oai::logger::logger_registry::get_logger(SYSTEM);
+  }
+  static const oai::logger::printf_logger& udm_ueau() {
+    return oai::logger::logger_registry::get_logger(UDM_UEAU);
+  }
+  static const oai::logger::printf_logger& udm_uecm() {
+    return oai::logger::logger_registry::get_logger(UDM_UECM);
+  }
+  static const oai::logger::printf_logger& udm_ee() {
+    return oai::logger::logger_registry::get_logger(UDM_EE);
+  }
+  static const oai::logger::printf_logger& udm_sdm() {
+    return oai::logger::logger_registry::get_logger(UDM_SDM);
+  }
+  static const oai::logger::printf_logger& udm_nrf() {
+    return oai::logger::logger_registry::get_logger(UDM_NRF);
+  }
+  static const oai::logger::printf_logger& udm_server() {
+    return oai::logger::logger_registry::get_logger(UDM_SVR_LOG);
+  }
+  static const oai::logger::printf_logger& udm_app() {
+    return oai::logger::logger_registry::get_logger(UDM_APP);
+  }
 };
-
-#endif
