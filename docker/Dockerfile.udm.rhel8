@@ -66,10 +66,14 @@ COPY . /openair-udm
 
 # Installing and Building UDM
 WORKDIR /openair-udm/build/scripts
-RUN ./build_udm --install-deps --force
+RUN ./build_udm --install-deps --force && \
+    ldconfig
+
 RUN ./build_udm --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udm/build/udm/build/udm && \
     mv /openair-udm/build/udm/build/udm /openair-udm/build/udm/build/oai_udm && \
+    sed -i -e "s@nf-root-folder@udm@" -e "s@nf-config-file@udm.conf@" \
+      ../common-build/docker-scripts/entrypoint.py && \
     # Remove entitlements and Subscription Manager configs
     rm -rf /etc/pki/entitlement && \
     rm -rf /etc/rhsm
@@ -113,7 +117,7 @@ RUN rm -f /etc/rhsm-host && \
 WORKDIR /openair-udm/bin
 COPY --from=oai-udm-builder \
     /openair-udm/build/udm/build/oai_udm \
-    /openair-udm/scripts/entrypoint.py \
+    /openair-udm/build/common-build/docker-scripts/entrypoint.py \
     /openair-udm/scripts/healthcheck.sh \
     ./
 
