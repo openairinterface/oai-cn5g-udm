@@ -52,8 +52,8 @@ RUN git config --global https.postBuffer 123289600 && \
 # Copying source code
 WORKDIR /openair-udm
 COPY ./build/scripts /openair-udm/build/scripts/
+COPY ./build/common-build /openair-udm/build/common-build
 COPY ./build/udm/CMakeLists.txt /openair-udm/build/udm/CMakeLists.txt
-COPY ./build/cmake_modules /openair-udm/cmake_modules/
 
 # Installing all the needed libraries/packages to build and run UDM
 WORKDIR /openair-udm/build/scripts
@@ -70,7 +70,9 @@ COPY . /openair-udm
 WORKDIR /openair-udm/build/scripts
 RUN ./build_udm --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udm/build/udm/build/udm && \
-    mv /openair-udm/build/udm/build/udm /openair-udm/build/udm/build/oai_udm
+    mv /openair-udm/build/udm/build/udm /openair-udm/build/udm/build/oai_udm && \
+    sed -i -e "s@nf-root-folder@udm@" -e "s@nf-config-file@udm.conf@" \
+      ../common-build/docker-scripts/entrypoint.py
 
 #---------------------------------------------------------------------
 # TARGET IMAGE
@@ -123,7 +125,7 @@ RUN apt-get update && \
 WORKDIR /openair-udm/bin
 COPY --from=oai-udm-builder \
     /openair-udm/build/udm/build/oai_udm \
-    /openair-udm/scripts/entrypoint.py \
+    /openair-udm/build/common-build/docker-scripts/entrypoint.py \
     /openair-udm/scripts/healthcheck.sh \
     ./
 
