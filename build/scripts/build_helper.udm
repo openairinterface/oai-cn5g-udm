@@ -131,8 +131,7 @@ check_install_udm_deps() {
       nettle-dev \
       libcurl4 \
       net-tools \
-      pkg-config \
-      libasan2"
+      pkg-config"
   elif [[ "$OS_BASEDISTRO" == "fedora" ]]; then
     PACKAGE_LIST="\
       libconfig-devel \
