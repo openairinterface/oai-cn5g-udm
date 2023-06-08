@@ -92,24 +92,24 @@ int main(int argc, char** argv) {
   std::string conf_file_name = Options::getlibconfigConfig();
   std::string file_ext       = ".conf";
   if (conf_file_name.find(file_ext) != std::string::npos) {
-    Logger::udr_server().debug(
+    Logger::udm_server().debug(
         "Parsing the configuration file, file type CONF.");
-    udr_cfg.load(conf_file_name);
-    Logger::set_level(udr_cfg.log_level);
-    udr_cfg.display();
+    udm_cfg.load(conf_file_name);
+    Logger::set_level(udm_cfg.log_level);
+    udm_cfg.display();
   } else {
     // By default, considering the config file as yaml
     Logger::system().debug("Parsing the configuration file, file type YAML.");
-    udr_cfg_yaml = std::make_unique<udr_config_yaml>(
+    udm_cfg_yaml = std::make_unique<udm_config_yaml>(
         conf_file_name, Options::getlogStdout(), Options::getlogRotFilelog());
-    if (!udr_cfg_yaml->init()) {
-      Logger::udr_server().error("Reading the configuration failed. Exiting.");
+    if (!udm_cfg_yaml->init()) {
+      Logger::udm_server().error("Reading the configuration failed. Exiting.");
       return 1;
     }
-    udr_cfg_yaml->pre_process();
-    udr_cfg_yaml->display();
+    udm_cfg_yaml->pre_process();
+    udm_cfg_yaml->display();
     // Convert from YAML to internal structure
-    udr_cfg_yaml->to_udr_config(udr_cfg);
+    udm_cfg_yaml->to_udm_config(udm_cfg);
   }
 
   // UDM application layer

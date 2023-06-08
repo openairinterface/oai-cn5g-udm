@@ -98,7 +98,6 @@ udm_config_yaml::udm_config_yaml(
     : oai::config::config(
           config_path, oai::config::UDM_CONFIG_NAME, log_stdout, log_rot_file) {
   m_used_sbi_values    = {oai::config::UDM_CONFIG_NAME,
-                       oai::config::UDM_CONFIG_NAME,
                        oai::config::NRF_CONFIG_NAME};
   m_used_config_values = {oai::config::LOG_LEVEL_CONFIG_NAME,
                           oai::config::REGISTER_NF_CONFIG_NAME,
