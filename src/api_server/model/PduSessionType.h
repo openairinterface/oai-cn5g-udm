@@ -50,11 +50,11 @@ namespace model {
 /// </summary>
 
 enum PduSessionType_e {
-  PDU_SESSION_TYPE_E_IPV4         = 1,
-  PDU_SESSION_TYPE_E_IPV6         = 2,
-  PDU_SESSION_TYPE_E_IPV4V6       = 3,
-  PDU_SESSION_TYPE_E_UNSTRUCTURED = 4,
-  PDU_SESSION_TYPE_E_ETHERNET     = 5
+  //PDU_SESSION_TYPE_E_IPV4         = 1,
+  //PDU_SESSION_TYPE_E_IPV6         = 2,
+  //PDU_SESSION_TYPE_E_IPV4V6       = 3,
+  //PDU_SESSION_TYPE_E_UNSTRUCTURED = 4,
+  //PDU_SESSION_TYPE_E_ETHERNET     = 5
 };
 
 static const std::vector<std::string> PduSessionTypeStr = {
