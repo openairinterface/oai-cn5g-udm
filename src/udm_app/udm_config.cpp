@@ -466,15 +466,11 @@ std::string udm_config::get_udr_amf_3gpp_registration_uri(
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udm_ueau_base() {
-  return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
-         ":" + std::to_string(udr_addr.port) + NUDM_UE_AU_BASE +
-         udr_addr.api_version;
+  return udr_addr.uri_root + NUDM_UE_AU_BASE + udr_addr.api_version;
 }
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_url_base() {
-  return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
-         ":" + std::to_string(udr_addr.port) + NUDR_DATA_REPOSITORY +
-         udr_addr.api_version;
+  return udr_addr.uri_root + NUDR_DATA_REPOSITORY + udr_addr.api_version;
 }
 
 }  // namespace oai::udm::config

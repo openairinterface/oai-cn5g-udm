@@ -98,6 +98,7 @@ udm_config_yaml::udm_config_yaml(
     : oai::config::config(
           config_path, oai::config::UDM_CONFIG_NAME, log_stdout, log_rot_file) {
   m_used_sbi_values    = {oai::config::UDM_CONFIG_NAME,
+                       oai::config::UDR_CONFIG_NAME,
                        oai::config::NRF_CONFIG_NAME};
   m_used_config_values = {oai::config::LOG_LEVEL_CONFIG_NAME,
                           oai::config::REGISTER_NF_CONFIG_NAME,
@@ -109,11 +110,15 @@ udm_config_yaml::udm_config_yaml(
   // use case
   auto m_udm = std::make_shared<udm>(
       "UDM", "oai-udm", sbi_interface("SBI", "oai-udm", 80, "v1", "eth0"));
-  add_nf("udm", m_udm);
+  add_nf(oai::config::UDM_CONFIG_NAME, m_udm);
+
+  auto m_udr = std::make_shared<nf>(
+      "UDR", "oai-udr", sbi_interface("SBI", "oai-udr", 80, "v1", "eth0"));
+  add_nf(oai::config::UDR_CONFIG_NAME, m_udr);
 
   auto m_nrf = std::make_shared<nf>(
       "NRF", "oai-nrf", sbi_interface("SBI", "oai-nrf", 80, "v1", "eth0"));
-  add_nf("nrf", m_nrf);
+  add_nf(oai::config::NRF_CONFIG_NAME, m_nrf);
 
   update_used_nfs();
 }
@@ -124,7 +129,9 @@ udm_config_yaml::~udm_config_yaml() {}
 void udm_config_yaml::pre_process() {
   // Process configuration information to display only the appropriate
   // information
-  // TODO
+  // TODO: discover UDR via NRF
+  std::shared_ptr<nf> udr = get_nf(oai::config::UDR_CONFIG_NAME);
+  udr->set_config();
 }
 
 //------------------------------------------------------------------------------
@@ -146,8 +153,14 @@ void udm_config_yaml::to_udm_config(oai::udm::config::udm_config& cfg) {
   cfg.sbi.if_name     = local().get_sbi().get_if_name();
 
   if (get_nf(oai::config::NRF_CONFIG_NAME)) {
-    cfg.nrf_addr.api_version = get_nf("nrf")->get_sbi().get_api_version();
-    cfg.nrf_addr.uri_root    = get_nf(oai::config::NRF_CONFIG_NAME)->get_url();
+    cfg.nrf_addr.api_version =
+        get_nf(oai::config::NRF_CONFIG_NAME)->get_sbi().get_api_version();
+    cfg.nrf_addr.uri_root = get_nf(oai::config::NRF_CONFIG_NAME)->get_url();
+  }
+  if (get_nf(oai::config::UDR_CONFIG_NAME)) {
+    cfg.udr_addr.api_version =
+        get_nf(oai::config::UDR_CONFIG_NAME)->get_sbi().get_api_version();
+    cfg.udr_addr.uri_root = get_nf(oai::config::UDR_CONFIG_NAME)->get_url();
   }
 }
 }  // namespace oai::config
