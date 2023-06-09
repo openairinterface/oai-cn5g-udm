@@ -133,24 +133,25 @@ int main(int argc, char** argv) {
   fp                   = fopen(filename.c_str(), "w+");
   fprintf(fp, "STARTED\n");
 
-  if (!udm_cfg.use_http2) {
-    // UDM Pistache API server (HTTP1)
-    Pistache::Address addr(
-        std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.sbi.addr4))),
-        Pistache::Port(udm_cfg.sbi.port));
-    api_server = new UDMApiServer(addr, udm_app_inst);
-    api_server->init(2);
-    std::thread udm_manager(&UDMApiServer::start, api_server);
-    udm_manager.join();
-  } else {
-    // UDM NGHTTP API server (HTTP2)
-    udm_api_server_2 = new udm_http2_server(
-        conv::toString(udm_cfg.sbi.addr4), udm_cfg.sbi_http2_port,
-        udm_app_inst);
-    std::thread udm_http2_manager(&udm_http2_server::start, udm_api_server_2);
-    udm_http2_manager.join();
-  }
+  //  if (!udm_cfg.use_http2) {
+  // UDM Pistache API server (HTTP1)
+  Pistache::Address addr(
+      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.sbi.addr4))),
+      Pistache::Port(udm_cfg.sbi.port));
+  api_server = new UDMApiServer(addr, udm_app_inst);
+  api_server->init(2);
+  std::thread udm_manager(&UDMApiServer::start, api_server);
+  //    udm_manager.join();
+  //  } else {
+  // UDM NGHTTP API server (HTTP2)
+  udm_api_server_2 = new udm_http2_server(
+      conv::toString(udm_cfg.sbi.addr4), udm_cfg.sbi_http2_port, udm_app_inst);
+  std::thread udm_http2_manager(&udm_http2_server::start, udm_api_server_2);
+  //    udm_http2_manager.join();
+  //  }
 
+  udm_manager.join();
+  udm_http2_manager.join();
   task_manager_thread.join();
 
   fflush(fp);
