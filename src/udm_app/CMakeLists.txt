@@ -31,6 +31,7 @@ add_library (UDM STATIC
   udm_app.cpp
   udm_client.cpp 
   udm_config.cpp 
+  udm_config_yaml.cpp 
   udm_event.cpp 
   udm_profile.cpp
   task_manager.cpp

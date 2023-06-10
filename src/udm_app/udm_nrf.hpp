@@ -86,7 +86,7 @@ class udm_nrf {
    * @param [std::string& ] api_root: udm's API Root
    * @return void
    */
-  void get_udm_api_root(std::string& api_root);
+  void get_nrf_api_root(std::string& api_root);
 
  private:
   udm_event& m_event_sub;

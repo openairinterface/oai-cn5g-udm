@@ -56,11 +56,9 @@ udm_client* udm_client_instance = nullptr;
 //------------------------------------------------------------------------------
 udm_nrf::udm_nrf(udm_event& ev) : m_event_sub(ev) {}
 //---------------------------------------------------------------------------------------------
-void udm_nrf::get_udm_api_root(std::string& api_root) {
+void udm_nrf::get_nrf_api_root(std::string& api_root) {
   api_root =
-      std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.nrf_addr.ipv4_addr))) +
-      ":" + std::to_string(udm_cfg.nrf_addr.port) + NNRF_NFM_BASE +
-      udm_cfg.nrf_addr.api_version;
+      udm_cfg.nrf_addr.uri_root + NNRF_NFM_BASE + udm_cfg.nrf_addr.api_version;
 }
 
 //---------------------------------------------------------------------------------------------
@@ -121,7 +119,7 @@ void udm_nrf::register_to_nrf() {
   std::string udm_api_root = {};
   std::string response     = {};
   std::string method       = {"PUT"};
-  get_udm_api_root(udm_api_root);
+  get_nrf_api_root(udm_api_root);
   std::string remoteUri = udm_api_root + UDM_NF_REGISTER_URL + udm_instance_id;
   nlohmann::json json_data = {};
   udm_nf_profile.to_json(json_data);
@@ -178,7 +176,7 @@ void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   }
 
   std::string udm_api_root = {};
-  get_udm_api_root(udm_api_root);
+  get_nrf_api_root(udm_api_root);
   std::string remoteUri = udm_api_root + UDM_NF_REGISTER_URL + udm_instance_id;
   udm_client_instance->curl_http_client(
       remoteUri, method, response, json_data.dump().c_str());

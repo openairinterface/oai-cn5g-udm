@@ -96,6 +96,7 @@ typedef struct nf_addr_s {
   unsigned int port;
   std::string api_version;
   std::string fqdn;
+  std::string uri_root;
 } nf_addr_t;
 
 class udm_config {

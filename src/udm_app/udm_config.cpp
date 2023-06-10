@@ -203,7 +203,8 @@ int udm_config::load(const std::string& config_file) {
         Logger::udm_app().error(UDM_CONFIG_STRING_UDR_PORT "failed");
         throw(UDM_CONFIG_STRING_UDR_PORT "failed");
       }
-      udr_addr.port = udr_port;
+      udr_addr.port     = udr_port;
+      udr_addr.uri_root = util::trim(astring) + ":" + std::to_string(udr_port);
 
       if (!(udr_cfg.lookupValue(
               UDM_CONFIG_STRING_API_VERSION, udr_api_version))) {
@@ -229,7 +230,9 @@ int udm_config::load(const std::string& config_file) {
           Logger::udm_app().error(UDM_CONFIG_STRING_UDR_PORT "failed");
           throw(UDM_CONFIG_STRING_UDR_PORT "failed");
         }
-        udr_addr.port               = udr_port;
+        udr_addr.port = udr_port;
+        udr_addr.uri_root =
+            util::trim(address) + ":" + std::to_string(udr_port);
         std::string udr_api_version = {};
         if (!(udr_cfg.lookupValue(
                 UDM_CONFIG_STRING_API_VERSION, udr_api_version))) {
@@ -268,6 +271,8 @@ int udm_config::load(const std::string& config_file) {
           throw(UDM_CONFIG_STRING_NRF_PORT "failed");
         }
         nrf_addr.port = nrf_port;
+        nrf_addr.uri_root =
+            util::trim(astring) + ":" + std::to_string(nrf_port);
         if (!(nrf_cfg.lookupValue(
                 UDM_CONFIG_STRING_API_VERSION, nrf_api_version))) {
           Logger::udm_app().error(UDM_CONFIG_STRING_API_VERSION "failed");
@@ -292,7 +297,9 @@ int udm_config::load(const std::string& config_file) {
             Logger::udm_app().error(UDM_CONFIG_STRING_NRF_PORT "failed");
             throw(UDM_CONFIG_STRING_NRF_PORT "failed");
           }
-          nrf_addr.port        = nrf_port;
+          nrf_addr.port = nrf_port;
+          nrf_addr.uri_root =
+              util::trim(address) + ":" + std::to_string(nrf_port);
           nrf_addr.api_version = "v1";  // TODO: to get API version from DNS
           nrf_addr.fqdn        = astring;
         }
@@ -466,15 +473,11 @@ std::string udm_config::get_udr_amf_3gpp_registration_uri(
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udm_ueau_base() {
-  return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
-         ":" + std::to_string(udr_addr.port) + NUDM_UE_AU_BASE +
-         udr_addr.api_version;
+  return udr_addr.uri_root + NUDM_UE_AU_BASE + udr_addr.api_version;
 }
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_url_base() {
-  return std::string(inet_ntoa(*((struct in_addr*) &udr_addr.ipv4_addr))) +
-         ":" + std::to_string(udr_addr.port) + NUDR_DATA_REPOSITORY +
-         udr_addr.api_version;
+  return udr_addr.uri_root + NUDR_DATA_REPOSITORY + udr_addr.api_version;
 }
 
 }  // namespace oai::udm::config
