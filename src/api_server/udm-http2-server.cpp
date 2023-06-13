@@ -145,7 +145,7 @@ void udm_http2_server::start() {
             }
             // Session Management Subscription Data Retrieval
             if (split_q[split_q.size() - 1].compare(NUDM_SM_DATA) == 0) {
-              if (request.method().compare("GET") == 0 && len < 0) {
+              if (request.method().compare("GET") == 0 && len == 0) {
                 std::string supi = split_q[split_q.size() - 2].c_str();
                 PlmnId plmnId    = {};
                 Snssai snssai    = {};
@@ -167,7 +167,7 @@ void udm_http2_server::start() {
             }
             // Slice Selection Subscription Data Retrieval
             if (split_q[split_q.size() - 1].compare(NUDM_NSSAI) == 0) {
-              if (request.method().compare("GET") == 0 && len < 0) {
+              if (request.method().compare("GET") == 0 && len == 0) {
                 std::string supi = split_q[split_q.size() - 2].c_str();
                 PlmnId plmnId;
                 // Parse URI
@@ -184,7 +184,7 @@ void udm_http2_server::start() {
             }
             // SMF Selection Subscription Data Retrieval
             if (split_q[split_q.size() - 1].compare(NUDM_SMF_SELECT) == 0) {
-              if (request.method().compare("GET") == 0 && len < 0) {
+              if (request.method().compare("GET") == 0 && len == 0) {
                 std::string supi = split_q[split_q.size() - 2].c_str();
                 PlmnId plmnId;
                 // Parse URI
