@@ -138,7 +138,7 @@ pipeline {
     }
     stage('Build Core Network Function') {
       parallel {
-        stage ('Build U18 UDM Image') {
+        stage ('Build Ubuntu UDM Image') {
           steps {
             // Now it is only locked during this build stage and not for the whole pipeline
             lock(ubuntuBuildResource) {
