@@ -77,8 +77,7 @@ def perform_flattening(tag):
     cmd += ' --change "WORKDIR /openair-udm" '
     cmd += ' --change "EXPOSE 80/tcp" '
     cmd += ' --change "HEALTHCHECK --interval=10s --timeout=15s --retries=6 CMD /openair-udm/bin/healthcheck.sh" '
-    cmd += ' --change "CMD [\\"/openair-udm/bin/oai_udm\\", \\"-c\\", \\"/openair-udm/etc/udm.conf\\", \\"-o\\"]" '
-    cmd += ' --change "ENTRYPOINT [\\"python3\\", \\"/openair-udm/bin/entrypoint.py\\"]" '
+    cmd += ' --change "CMD [\\"/openair-udm/bin/oai_udm\\", \\"-c\\", \\"/openair-udm/etc/config.yaml\\", \\"-o\\"]" '
     cmd += ' - ' + image_prefix + tag
     print (cmd)
     subprocess.check_output(cmd, shell=True, universal_newlines=True)
