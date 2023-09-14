@@ -136,6 +136,7 @@ class udm_config {
   bool register_nrf;
   bool use_fqdn_dns;
   bool use_http2;
+  uint32_t curl_timeout;
 };
 
 }  // namespace oai::udm::config

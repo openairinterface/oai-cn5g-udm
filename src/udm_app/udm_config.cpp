@@ -66,6 +66,8 @@ udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
   use_http2                 = false;
   register_nrf              = false;
   log_level                 = spdlog::level::debug;
+  curl_timeout              = 3000;
+  sbi_http2_port            = 8080;
 }
 
 //------------------------------------------------------------------------------

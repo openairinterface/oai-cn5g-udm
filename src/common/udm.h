@@ -92,8 +92,6 @@ typedef uint32_t evsub_id_t;
 #define NUDM_UE_AU_EVENTS "auth-events"
 #define NUDM_UE_AU_GEN_AU_DATA "generate-auth-data"
 
-#define NF_CURL_TIMEOUT_MS 1000L
-
 #define MAX_WAIT_MSECS 20000  // 1 second
 
 // 3GPP TS 29.571 (Common data)

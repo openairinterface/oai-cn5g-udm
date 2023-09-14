@@ -100,10 +100,10 @@ udm_config_yaml::udm_config_yaml(
   m_used_sbi_values    = {oai::config::UDM_CONFIG_NAME,
                        oai::config::UDR_CONFIG_NAME,
                        oai::config::NRF_CONFIG_NAME};
-  m_used_config_values = {oai::config::LOG_LEVEL_CONFIG_NAME,
-                          oai::config::REGISTER_NF_CONFIG_NAME,
-                          NF_CONFIG_HTTP_NAME, oai::config::NF_LIST_CONFIG_NAME,
-                          oai::config::UDM_CONFIG_NAME};
+  m_used_config_values = {
+      oai::config::LOG_LEVEL_CONFIG_NAME, oai::config::REGISTER_NF_CONFIG_NAME,
+      oai::config::NF_CONFIG_HTTP_NAME,   oai::config::NF_CONFIG_CURL_TIMEOUT,
+      oai::config::NF_LIST_CONFIG_NAME,   oai::config::UDM_CONFIG_NAME};
 
   // TODO with NF_Type and switch
   // TODO: Still we need to add default NFs even we don't use this in all_in_one
@@ -142,6 +142,7 @@ void udm_config_yaml::to_udm_config(oai::udm::config::udm_config& cfg) {
   cfg.udm_name                   = udm_local->get_udm_name();
   cfg.log_level                  = spdlog::level::from_str(log_level());
   cfg.register_nrf               = register_nrf();
+  cfg.curl_timeout               = get_curl_timeout();
 
   cfg.use_fqdn_dns = false;  // TODO: to be removed
   if (get_http_version() == 2) cfg.use_http2 = true;

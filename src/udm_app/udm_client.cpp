@@ -105,7 +105,7 @@ long udm_client::curl_http_client(
       curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
     else
       curl_easy_setopt(curl, CURLOPT_HTTPGET, 1);
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, NF_CURL_TIMEOUT_MS);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, udm_cfg.curl_timeout);
     curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1);
     curl_easy_setopt(curl, CURLOPT_INTERFACE, udm_cfg.sbi.if_name.c_str());
 
