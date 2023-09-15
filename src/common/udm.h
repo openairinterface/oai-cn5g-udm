@@ -55,7 +55,6 @@ static const std::vector<std::string> nf_type_e2str = {
     "NSSF",  "UDR", "LMF",  "GMLC", "5G_EIR", "SEPP",  "UPF",
     "N3IWF", "AF",  "UDSF", "BSF",  "CHF",    "NWDAF", "UNKNOWN"};
 
-
 // Event Subscription IDs)
 typedef uint32_t evsub_id_t;
 #define EVSUB_ID_FMT "0x%" PRIx32
