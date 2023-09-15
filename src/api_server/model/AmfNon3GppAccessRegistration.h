@@ -105,8 +105,8 @@ class AmfNon3GppAccessRegistration {
   /// <summary>
   ///
   /// </summary>
-  ServiceName getAmfServiceNameDereg() const;
-  void setAmfServiceNameDereg(ServiceName const& value);
+  oai::model::nrf::ServiceName getAmfServiceNameDereg() const;
+  void setAmfServiceNameDereg(oai::model::nrf::ServiceName const& value);
   bool amfServiceNameDeregIsSet() const;
   void unsetAmfServiceNameDereg();
   /// <summary>
@@ -119,27 +119,28 @@ class AmfNon3GppAccessRegistration {
   /// <summary>
   ///
   /// </summary>
-  ServiceName getAmfServiceNamePcscfRest() const;
-  void setAmfServiceNamePcscfRest(ServiceName const& value);
+  oai::model::nrf::ServiceName getAmfServiceNamePcscfRest() const;
+  void setAmfServiceNamePcscfRest(oai::model::nrf::ServiceName const& value);
   bool amfServiceNamePcscfRestIsSet() const;
   void unsetAmfServiceNamePcscfRest();
   /// <summary>
   ///
   /// </summary>
-  Guami getGuami() const;
-  void setGuami(Guami const& value);
+  oai::model::common::Guami getGuami() const;
+  void setGuami(oai::model::common::Guami const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<BackupAmfInfo>& getBackupAmfInfo();
-  void setBackupAmfInfo(std::vector<BackupAmfInfo> const& value);
+  std::vector<oai::model::common::BackupAmfInfo>& getBackupAmfInfo();
+  void setBackupAmfInfo(
+      std::vector<oai::model::common::BackupAmfInfo> const& value);
   bool backupAmfInfoIsSet() const;
   void unsetBackupAmfInfo();
   /// <summary>
   ///
   /// </summary>
-  RatType getRatType() const;
-  void setRatType(RatType const& value);
+  oai::model::common::RatType getRatType() const;
+  void setRatType(oai::model::common::RatType const& value);
   /// <summary>
   ///
   /// </summary>
@@ -193,17 +194,17 @@ class AmfNon3GppAccessRegistration {
 
   std::string m_DeregCallbackUri;
 
-  ServiceName m_AmfServiceNameDereg;
+  oai::model::nrf::ServiceName m_AmfServiceNameDereg;
   bool m_AmfServiceNameDeregIsSet;
   std::string m_PcscfRestorationCallbackUri;
   bool m_PcscfRestorationCallbackUriIsSet;
-  ServiceName m_AmfServiceNamePcscfRest;
+  oai::model::nrf::ServiceName m_AmfServiceNamePcscfRest;
   bool m_AmfServiceNamePcscfRestIsSet;
-  Guami m_Guami;
+  oai::model::common::Guami m_Guami;
 
-  std::vector<BackupAmfInfo> m_BackupAmfInfo;
+  std::vector<oai::model::common::BackupAmfInfo> m_BackupAmfInfo;
   bool m_BackupAmfInfoIsSet;
-  RatType m_RatType;
+  oai::model::common::RatType m_RatType;
 
   bool m_UrrpIndicator;
   bool m_UrrpIndicatorIsSet;

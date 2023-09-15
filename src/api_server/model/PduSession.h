@@ -44,8 +44,6 @@
 
 #include "PlmnId.h"
 
-using namespace oai::udm::model;
-
 namespace oai {
 namespace udm {
 namespace model {
@@ -76,8 +74,8 @@ class PduSession {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  oai::model::common::PlmnId getPlmnId() const;
+  void setPlmnId(oai::model::common::PlmnId const& value);
 
   friend void to_json(nlohmann::json& j, const PduSession& o);
   friend void from_json(const nlohmann::json& j, PduSession& o);
@@ -87,7 +85,7 @@ class PduSession {
 
   std::string m_SmfInstanceId;
 
-  PlmnId m_PlmnId;
+  oai::model::common::PlmnId m_PlmnId;
 };
 
 }  // namespace model

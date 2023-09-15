@@ -61,10 +61,10 @@ void from_json(const nlohmann::json& j, SteeringInfo& o) {
   }
 }
 
-PlmnId SteeringInfo::getPlmnId() const {
+oai::model::common::PlmnId SteeringInfo::getPlmnId() const {
   return m_PlmnId;
 }
-void SteeringInfo::setPlmnId(PlmnId const& value) {
+void SteeringInfo::setPlmnId(oai::model::common::PlmnId const& value) {
   m_PlmnId = value;
 }
 std::vector<AccessTech>& SteeringInfo::getAccessTechList() {

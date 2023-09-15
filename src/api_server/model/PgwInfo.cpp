@@ -77,10 +77,10 @@ std::string PgwInfo::getPgwFqdn() const {
 void PgwInfo::setPgwFqdn(std::string const& value) {
   m_PgwFqdn = value;
 }
-PlmnId PgwInfo::getPlmnId() const {
+oai::model::common::PlmnId PgwInfo::getPlmnId() const {
   return m_PlmnId;
 }
-void PgwInfo::setPlmnId(PlmnId const& value) {
+void PgwInfo::setPlmnId(oai::model::common::PlmnId const& value) {
   m_PlmnId      = value;
   m_PlmnIdIsSet = true;
 }

@@ -39,8 +39,8 @@ extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 using namespace oai::udm::config;
-using namespace oai::udm::helpers;
-using namespace oai::udm::model;
+using namespace oai::model::common::helpers;
+using namespace oai::model::common;
 
 const std::string DeleteEESubscriptionApi::base = "/nudm-ee/";
 

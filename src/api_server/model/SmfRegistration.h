@@ -89,8 +89,8 @@ class SmfRegistration {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSingleNssai() const;
-  void setSingleNssai(Snssai const& value);
+  oai::model::common::Snssai getSingleNssai() const;
+  void setSingleNssai(oai::model::common::Snssai const& value);
   /// <summary>
   ///
   /// </summary>
@@ -115,8 +115,8 @@ class SmfRegistration {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  oai::model::common::PlmnId getPlmnId() const;
+  void setPlmnId(oai::model::common::PlmnId const& value);
   /// <summary>
   ///
   /// </summary>
@@ -172,7 +172,7 @@ class SmfRegistration {
   bool m_SupportedFeaturesIsSet;
   int32_t m_PduSessionId;
 
-  Snssai m_SingleNssai;
+  oai::model::common::Snssai m_SingleNssai;
 
   std::string m_Dnn;
   bool m_DnnIsSet;
@@ -180,7 +180,7 @@ class SmfRegistration {
   bool m_EmergencyServicesIsSet;
   std::string m_PcscfRestorationCallbackUri;
   bool m_PcscfRestorationCallbackUriIsSet;
-  PlmnId m_PlmnId;
+  oai::model::common::PlmnId m_PlmnId;
 
   std::string m_PgwFqdn;
   bool m_PgwFqdnIsSet;

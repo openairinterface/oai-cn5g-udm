@@ -54,8 +54,6 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
-
 class SliceSelectionSubscriptionDataRetrievalApi {
  public:
   SliceSelectionSubscriptionDataRetrievalApi(
@@ -94,7 +92,7 @@ class SliceSelectionSubscriptionDataRetrievalApi {
   virtual void get_nssai(
       const std::string& supi,
       const Pistache::Optional<std::string>& supportedFeatures,
-      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<oai::model::common::PlmnId>& plmnId,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response) = 0;

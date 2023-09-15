@@ -64,13 +64,13 @@ class ModificationNotification {
   /// <summary>
   ///
   /// </summary>
-  std::vector<NotifyItem>& getNotifyItems();
+  std::vector<oai::model::common::NotifyItem>& getNotifyItems();
 
   friend void to_json(nlohmann::json& j, const ModificationNotification& o);
   friend void from_json(const nlohmann::json& j, ModificationNotification& o);
 
  protected:
-  std::vector<NotifyItem> m_NotifyItems;
+  std::vector<oai::model::common::NotifyItem> m_NotifyItems;
 };
 
 }  // namespace model

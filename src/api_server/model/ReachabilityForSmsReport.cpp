@@ -46,7 +46,7 @@ ReachabilityForSmsReport::ReachabilityForSmsReport() {
 void ReachabilityForSmsReport::validate() const {
   std::stringstream msg;
   if (!validate(msg)) {
-    throw oai::udm::helpers::ValidationException(msg.str());
+    throw oai::model::common::helpers::ValidationException(msg.str());
   }
 }
 
@@ -102,10 +102,12 @@ void from_json(const nlohmann::json& j, ReachabilityForSmsReport& o) {
   }
 }
 
-AccessType ReachabilityForSmsReport::getSmsfAccessType() const {
+oai::model::common::AccessType ReachabilityForSmsReport::getSmsfAccessType()
+    const {
   return m_SmsfAccessType;
 }
-void ReachabilityForSmsReport::setSmsfAccessType(AccessType const& value) {
+void ReachabilityForSmsReport::setSmsfAccessType(
+    oai::model::common::AccessType const& value) {
   m_SmsfAccessType = value;
 }
 std::string ReachabilityForSmsReport::getMaxAvailabilityTime() const {

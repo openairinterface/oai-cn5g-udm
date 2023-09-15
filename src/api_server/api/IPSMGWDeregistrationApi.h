@@ -50,8 +50,6 @@
 
 namespace oai::udm::api {
 
-using namespace oai::udm::model;
-
 class IPSMGWDeregistrationApi {
  public:
   IPSMGWDeregistrationApi(std::shared_ptr<Pistache::Rest::Router>);

@@ -83,8 +83,8 @@ class SmsfRegistration {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  oai::model::common::PlmnId getPlmnId() const;
+  void setPlmnId(oai::model::common::PlmnId const& value);
   /// <summary>
   ///
   /// </summary>
@@ -124,7 +124,7 @@ class SmsfRegistration {
   bool m_SmsfSetIdIsSet;
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
-  PlmnId m_PlmnId;
+  oai::model::common::PlmnId m_PlmnId;
 
   std::string m_SmsfMAPAddress;
   bool m_SmsfMAPAddressIsSet;

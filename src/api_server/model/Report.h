@@ -90,8 +90,8 @@ class Report {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getNewServingPlmn() const;
-  void setNewServingPlmn(PlmnId const& value);
+  oai::model::common::PlmnId getNewServingPlmn() const;
+  void setNewServingPlmn(oai::model::common::PlmnId const& value);
   /// <summary>
   ///
   /// </summary>
@@ -125,7 +125,7 @@ class Report {
 
   bool m_Roaming;
 
-  PlmnId m_NewServingPlmn;
+  oai::model::common::PlmnId m_NewServingPlmn;
 
   CnType m_NewCnType;
 

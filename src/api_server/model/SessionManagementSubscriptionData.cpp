@@ -97,10 +97,12 @@ void from_json(const nlohmann::json& j, SessionManagementSubscriptionData& o) {
   }
 }
 
-Snssai SessionManagementSubscriptionData::getSingleNssai() const {
+oai::model::common::Snssai SessionManagementSubscriptionData::getSingleNssai()
+    const {
   return m_SingleNssai;
 }
-void SessionManagementSubscriptionData::setSingleNssai(Snssai const& value) {
+void SessionManagementSubscriptionData::setSingleNssai(
+    oai::model::common::Snssai const& value) {
   m_SingleNssai = value;
 }
 std::map<std::string, DnnConfiguration>&
@@ -151,12 +153,12 @@ bool SessionManagementSubscriptionData::sharedDnnConfigurationsIdIsSet() const {
 void SessionManagementSubscriptionData::unsetSharedDnnConfigurationsId() {
   m_SharedDnnConfigurationsIdIsSet = false;
 }
-OdbPacketServices SessionManagementSubscriptionData::getOdbPacketServices()
-    const {
+oai::model::common::OdbPacketServices
+SessionManagementSubscriptionData::getOdbPacketServices() const {
   return m_OdbPacketServices;
 }
 void SessionManagementSubscriptionData::setOdbPacketServices(
-    OdbPacketServices const& value) {
+    oai::model::common::OdbPacketServices const& value) {
   m_OdbPacketServices      = value;
   m_OdbPacketServicesIsSet = true;
 }
@@ -166,10 +168,12 @@ bool SessionManagementSubscriptionData::odbPacketServicesIsSet() const {
 void SessionManagementSubscriptionData::unsetOdbPacketServices() {
   m_OdbPacketServicesIsSet = false;
 }
-TraceData SessionManagementSubscriptionData::getTraceData() const {
+oai::model::common::TraceData SessionManagementSubscriptionData::getTraceData()
+    const {
   return m_TraceData;
 }
-void SessionManagementSubscriptionData::setTraceData(TraceData const& value) {
+void SessionManagementSubscriptionData::setTraceData(
+    oai::model::common::TraceData const& value) {
   m_TraceData      = value;
   m_TraceDataIsSet = true;
 }

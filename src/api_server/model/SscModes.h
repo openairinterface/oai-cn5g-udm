@@ -64,12 +64,12 @@ class SscModes {
   /// <summary>
   ///
   /// </summary>
-  SscMode getDefaultSscMode() const;
-  void setDefaultSscMode(SscMode const& value);
+  oai::model::common::SscMode getDefaultSscMode() const;
+  void setDefaultSscMode(oai::model::common::SscMode const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<SscMode>& getAllowedSscModes();
+  std::vector<oai::model::common::SscMode>& getAllowedSscModes();
   bool allowedSscModesIsSet() const;
   void unsetAllowedSscModes();
 
@@ -77,9 +77,9 @@ class SscModes {
   friend void from_json(const nlohmann::json& j, SscModes& o);
 
  protected:
-  SscMode m_DefaultSscMode;
+  oai::model::common::SscMode m_DefaultSscMode;
 
-  std::vector<SscMode> m_AllowedSscModes;
+  std::vector<oai::model::common::SscMode> m_AllowedSscModes;
   bool m_AllowedSscModesIsSet;
 };
 

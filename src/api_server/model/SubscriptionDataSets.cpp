@@ -178,10 +178,11 @@ bool SubscriptionDataSets::smDataIsSet() const {
 void SubscriptionDataSets::unsetSmData() {
   m_SmDataIsSet = false;
 }
-TraceData SubscriptionDataSets::getTraceData() const {
+oai::model::common::TraceData SubscriptionDataSets::getTraceData() const {
   return m_TraceData;
 }
-void SubscriptionDataSets::setTraceData(TraceData const& value) {
+void SubscriptionDataSets::setTraceData(
+    oai::model::common::TraceData const& value) {
   m_TraceData      = value;
   m_TraceDataIsSet = true;
 }

@@ -67,10 +67,11 @@ void from_json(const nlohmann::json& j, TraceDataResponse& o) {
   }
 }
 
-TraceData TraceDataResponse::getTraceData() const {
+oai::model::common::TraceData TraceDataResponse::getTraceData() const {
   return m_TraceData;
 }
-void TraceDataResponse::setTraceData(TraceData const& value) {
+void TraceDataResponse::setTraceData(
+    oai::model::common::TraceData const& value) {
   m_TraceData      = value;
   m_TraceDataIsSet = true;
 }

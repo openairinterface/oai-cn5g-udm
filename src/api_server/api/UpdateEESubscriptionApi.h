@@ -51,7 +51,7 @@
 #include "ProblemDetails.h"
 #include <string>
 #include <vector>
-using namespace oai::udm::model;
+
 namespace oai::udm::api {
 
 class UpdateEESubscriptionApi {
@@ -107,7 +107,7 @@ class UpdateEESubscriptionApi {
   /// NF (optional, default to &quot;&quot;)</param>
   virtual void update_ee_subscription(
       const std::string& ueIdentity, const std::string& subscriptionId,
-      const std::vector<PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 };

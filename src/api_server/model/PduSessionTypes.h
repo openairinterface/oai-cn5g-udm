@@ -64,12 +64,12 @@ class PduSessionTypes {
   /// <summary>
   ///
   /// </summary>
-  PduSessionType getDefaultSessionType() const;
-  void setDefaultSessionType(PduSessionType const& value);
+  oai::model::common::PduSessionType getDefaultSessionType() const;
+  void setDefaultSessionType(oai::model::common::PduSessionType const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<PduSessionType>& getAllowedSessionTypes();
+  std::vector<oai::model::common::PduSessionType>& getAllowedSessionTypes();
   bool allowedSessionTypesIsSet() const;
   void unsetAllowedSessionTypes();
 
@@ -77,9 +77,9 @@ class PduSessionTypes {
   friend void from_json(const nlohmann::json& j, PduSessionTypes& o);
 
  protected:
-  PduSessionType m_DefaultSessionType;
+  oai::model::common::PduSessionType m_DefaultSessionType;
 
-  std::vector<PduSessionType> m_AllowedSessionTypes;
+  std::vector<oai::model::common::PduSessionType> m_AllowedSessionTypes;
   bool m_AllowedSessionTypesIsSet;
 };
 

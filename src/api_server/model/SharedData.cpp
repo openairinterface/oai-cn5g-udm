@@ -153,10 +153,11 @@ bool SharedData::sharedDnnConfigurationsIsSet() const {
 void SharedData::unsetSharedDnnConfigurations() {
   m_SharedDnnConfigurationsIsSet = false;
 }
-TraceData SharedData::getSharedTraceData() const {
+oai::model::common::TraceData SharedData::getSharedTraceData() const {
   return m_SharedTraceData;
 }
-void SharedData::setSharedTraceData(TraceData const& value) {
+void SharedData::setSharedTraceData(
+    oai::model::common::TraceData const& value) {
   m_SharedTraceData      = value;
   m_SharedTraceDataIsSet = true;
 }

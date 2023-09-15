@@ -54,9 +54,6 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
-using namespace oai::udm::app;
-
 class SMSSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SMSSubscriptionDataRetrievalApi {
  public:
@@ -68,7 +65,7 @@ class SMSSubscriptionDataRetrievalApiImpl
   void get_sms_data(
       const std::string& supi,
       const Pistache::Optional<std::string>& supportedFeatures,
-      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<oai::model::common::PlmnId>& plmnId,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);

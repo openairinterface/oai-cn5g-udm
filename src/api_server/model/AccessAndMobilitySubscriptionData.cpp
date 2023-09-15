@@ -37,6 +37,8 @@ namespace oai {
 namespace udm {
 namespace model {
 
+using namespace oai::model::common;
+
 AccessAndMobilitySubscriptionData::AccessAndMobilitySubscriptionData() {
   m_SupportedFeatures                = "";
   m_SupportedFeaturesIsSet           = false;

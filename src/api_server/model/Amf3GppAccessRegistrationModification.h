@@ -66,8 +66,8 @@ class Amf3GppAccessRegistrationModification {
   /// <summary>
   ///
   /// </summary>
-  Guami getGuami() const;
-  void setGuami(Guami const& value);
+  oai::model::common::Guami getGuami() const;
+  void setGuami(oai::model::common::Guami const& value);
   /// <summary>
   ///
   /// </summary>
@@ -92,8 +92,9 @@ class Amf3GppAccessRegistrationModification {
   /// <summary>
   ///
   /// </summary>
-  std::vector<BackupAmfInfo>& getBackupAmfInfo();
-  void setBackupAmfInfo(std::vector<BackupAmfInfo> const& value);
+  std::vector<oai::model::common::BackupAmfInfo>& getBackupAmfInfo();
+  void setBackupAmfInfo(
+      std::vector<oai::model::common::BackupAmfInfo> const& value);
   bool backupAmfInfoIsSet() const;
   void unsetBackupAmfInfo();
   /// <summary>
@@ -124,7 +125,7 @@ class Amf3GppAccessRegistrationModification {
       const nlohmann::json& j, Amf3GppAccessRegistrationModification& o);
 
  protected:
-  Guami m_Guami;
+  oai::model::common::Guami m_Guami;
 
   bool m_PurgeFlag;
   bool m_PurgeFlagIsSet;
@@ -132,7 +133,7 @@ class Amf3GppAccessRegistrationModification {
   bool m_PeiIsSet;
   ImsVoPs m_ImsVoPs;
   bool m_ImsVoPsIsSet;
-  std::vector<BackupAmfInfo> m_BackupAmfInfo;
+  std::vector<oai::model::common::BackupAmfInfo> m_BackupAmfInfo;
   bool m_BackupAmfInfoIsSet;
   EpsInterworkingInfo m_EpsInterworkingInfo;
   bool m_EpsInterworkingInfoIsSet;

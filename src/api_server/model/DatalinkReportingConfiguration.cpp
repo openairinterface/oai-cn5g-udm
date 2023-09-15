@@ -38,6 +38,8 @@
 
 namespace oai::udm::model {
 
+using namespace oai::model::common;
+
 DatalinkReportingConfiguration::DatalinkReportingConfiguration() {
   m_DddTrafficDesIsSet = false;
   m_Dnn                = "";
@@ -49,7 +51,7 @@ DatalinkReportingConfiguration::DatalinkReportingConfiguration() {
 void DatalinkReportingConfiguration::validate() const {
   std::stringstream msg;
   if (!validate(msg)) {
-    throw oai::udm::helpers::ValidationException(msg.str());
+    throw oai::model::common::helpers::ValidationException(msg.str());
   }
 }
 

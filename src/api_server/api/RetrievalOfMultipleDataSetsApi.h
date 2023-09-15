@@ -54,8 +54,6 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
-
 class RetrievalOfMultipleDataSetsApi {
  public:
   RetrievalOfMultipleDataSetsApi(std::shared_ptr<Pistache::Rest::Router>);
@@ -94,7 +92,7 @@ class RetrievalOfMultipleDataSetsApi {
   virtual void get_data_sets(
       const std::string& supi,
       const Pistache::Optional<std::vector<std::string>>& datasetNames,
-      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<oai::model::common::PlmnId>& plmnId,
       const Pistache::Optional<std::string>& supportedFeatures,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,

@@ -77,7 +77,7 @@ class udm_app {
 
   void handle_access_mobility_subscription_data_retrieval(
       const std::string& supi, nlohmann::json& response_data, long& code,
-      oai::udm::model::PlmnId PlmnId = {});
+      oai::model::common::PlmnId PlmnId = {});
 
   void handle_amf_registration_for_3gpp_access(
       const std::string& ue_id,
@@ -87,18 +87,18 @@ class udm_app {
 
   void handle_session_management_subscription_data_retrieval(
       const std::string& supi, nlohmann::json& response_data, long& code,
-      oai::udm::model::Snssai snssai = {}, std::string dnn = {},
-      oai::udm::model::PlmnId plmn_id = {});
+      oai::model::common::Snssai snssai = {}, std::string dnn = {},
+      oai::model::common::PlmnId plmn_id = {});
 
   void handle_slice_selection_subscription_data_retrieval(
       const std::string& supi, nlohmann::json& response_data, long& code,
-      std::string supported_features  = {},
-      oai::udm::model::PlmnId plmn_id = {});
+      std::string supported_features     = {},
+      oai::model::common::PlmnId plmn_id = {});
 
   void handle_smf_selection_subscription_data_retrieval(
       const std::string& supi, nlohmann::json& response_data, long& code,
-      std::string supported_features  = {},
-      oai::udm::model::PlmnId plmn_id = {});
+      std::string supported_features     = {},
+      oai::model::common::PlmnId plmn_id = {});
 
   void handle_subscription_creation(
       const std::string& supi,
@@ -112,12 +112,12 @@ class udm_app {
 
   void handle_delete_ee_subscription(
       const std::string& ueIdentity, const std::string& subscriptionId,
-      oai::udm::model::ProblemDetails& problemDetails, long& code);
+      oai::model::common::ProblemDetails& problemDetails, long& code);
 
   void handle_update_ee_subscription(
       const std::string& ueIdentity, const std::string& subscriptionId,
-      const std::vector<oai::udm::model::PatchItem>& patchItem,
-      oai::udm::model::ProblemDetails& problemDetails, long& code);
+      const std::vector<oai::model::common::PatchItem>& patchItem,
+      oai::model::common::ProblemDetails& problemDetails, long& code);
 
   /*
    * Generate an unique ID for the new subscription

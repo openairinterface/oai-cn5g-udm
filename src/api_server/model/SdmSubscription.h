@@ -47,8 +47,6 @@
 #include "ServiceName.h"
 #include "Snssai.h"
 
-using namespace oai::udm::model;
-
 namespace oai {
 namespace udm {
 namespace model {
@@ -93,8 +91,8 @@ class SdmSubscription {
   /// <summary>
   ///
   /// </summary>
-  ServiceName getAmfServiceName() const;
-  void setAmfServiceName(ServiceName const& value);
+  oai::model::nrf::ServiceName getAmfServiceName() const;
+  void setAmfServiceName(oai::model::nrf::ServiceName const& value);
   bool amfServiceNameIsSet() const;
   void unsetAmfServiceName();
   /// <summary>
@@ -104,8 +102,8 @@ class SdmSubscription {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSingleNssai() const;
-  void setSingleNssai(Snssai const& value);
+  oai::model::common::Snssai getSingleNssai() const;
+  void setSingleNssai(oai::model::common::Snssai const& value);
   bool singleNssaiIsSet() const;
   void unsetSingleNssai();
   /// <summary>
@@ -125,8 +123,8 @@ class SdmSubscription {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  oai::model::common::PlmnId getPlmnId() const;
+  void setPlmnId(oai::model::common::PlmnId const& value);
   bool plmnIdIsSet() const;
   void unsetPlmnId();
 
@@ -142,17 +140,17 @@ class SdmSubscription {
   bool m_ExpiresIsSet;
   std::string m_CallbackReference;
 
-  ServiceName m_AmfServiceName;
+  oai::model::nrf::ServiceName m_AmfServiceName;
   bool m_AmfServiceNameIsSet;
   std::vector<std::string> m_MonitoredResourceUris;
 
-  Snssai m_SingleNssai;
+  oai::model::common::Snssai m_SingleNssai;
   bool m_SingleNssaiIsSet;
   std::string m_Dnn;
   bool m_DnnIsSet;
   std::string m_SubscriptionId;
   bool m_SubscriptionIdIsSet;
-  PlmnId m_PlmnId;
+  oai::model::common::PlmnId m_PlmnId;
   bool m_PlmnIdIsSet;
 };
 

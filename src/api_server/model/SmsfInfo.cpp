@@ -64,10 +64,10 @@ std::string SmsfInfo::getSmsfInstanceId() const {
 void SmsfInfo::setSmsfInstanceId(std::string const& value) {
   m_SmsfInstanceId = value;
 }
-PlmnId SmsfInfo::getPlmnId() const {
+oai::model::common::PlmnId SmsfInfo::getPlmnId() const {
   return m_PlmnId;
 }
-void SmsfInfo::setPlmnId(PlmnId const& value) {
+void SmsfInfo::setPlmnId(oai::model::common::PlmnId const& value) {
   m_PlmnId = value;
 }
 

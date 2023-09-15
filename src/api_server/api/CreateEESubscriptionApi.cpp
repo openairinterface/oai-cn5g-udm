@@ -40,7 +40,7 @@ extern oai::udm::config::udm_config udm_cfg;
 namespace oai::udm::api {
 
 using namespace oai::udm::config;
-using namespace oai::udm::helpers;
+using namespace oai::model::common::helpers;
 using namespace oai::udm::model;
 
 const std::string CreateEESubscriptionApi::base = "/nudm-ee/";
@@ -75,7 +75,7 @@ CreateEESubscriptionApi::handleParsingException(const std::exception& ex) const
     throw;
   } catch (nlohmann::detail::exception& e) {
     return std::make_pair(Pistache::Http::Code::Bad_Request, e.what());
-  } catch (oai::udm::helpers::ValidationException& e) {
+  } catch (ValidationException& e) {
     return std::make_pair(Pistache::Http::Code::Bad_Request, e.what());
   } catch (std::exception& e) {
     return std::make_pair(

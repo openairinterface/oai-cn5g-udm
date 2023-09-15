@@ -35,6 +35,8 @@
 
 namespace oai::udm::model {
 
+using namespace oai::model::common;
+
 Amf3GppAccessRegistrationModification::Amf3GppAccessRegistrationModification() {
   m_PurgeFlag                = false;
   m_PurgeFlagIsSet           = false;

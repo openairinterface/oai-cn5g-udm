@@ -44,7 +44,8 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::config;
-using namespace oai::udm::helpers;
+using namespace oai::model::common::helpers;
+using namespace oai::model::common;
 using namespace oai::udm::model;
 
 AccessAndMobilitySubscriptionDataRetrievalApi::
