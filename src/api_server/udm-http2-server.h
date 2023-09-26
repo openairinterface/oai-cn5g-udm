@@ -40,10 +40,6 @@
 using namespace nghttp2::asio_http2;
 using namespace nghttp2::asio_http2::server;
 
-using namespace oai::udm::app;
-using namespace oai::udm::config;
-using namespace oai::udm::model;
-
 class udm_http2_server {
  public:
   udm_http2_server(std::string addr, uint32_t port, udm_app* udm_app_inst)
@@ -67,7 +63,7 @@ class udm_http2_server {
 
   void access_mobility_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      oai::udm::model::PlmnId PlmnId = {});
+      oai::model::common::PlmnId PlmnId = {});
 
   void amf_registration_for_3gpp_access_handler(
       const std::string& ue_id,
@@ -77,16 +73,18 @@ class udm_http2_server {
 
   void session_management_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      oai::udm::model::Snssai snssai = {}, std::string dnn = {},
-      oai::udm::model::PlmnId PlmnId = {});
+      oai::model::common::Snssai snssai = {}, std::string dnn = {},
+      oai::model::common::PlmnId PlmnId = {});
 
   void slice_selection_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      std::string supported_features = {}, oai::udm::model::PlmnId PlmnId = {});
+      std::string supported_features    = {},
+      oai::model::common::PlmnId PlmnId = {});
 
   void smf_selection_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      std::string supported_features = {}, oai::udm::model::PlmnId PlmnId = {});
+      std::string supported_features    = {},
+      oai::model::common::PlmnId PlmnId = {});
 
   void subscription_creation_handler(
       const std::string& supi,

@@ -48,7 +48,7 @@ Report::Report() {
 void Report::validate() const {
   std::stringstream msg;
   if (!validate(msg)) {
-    throw oai::udm::helpers::ValidationException(msg.str());
+    throw oai::model::common::helpers::ValidationException(msg.str());
   }
 }
 
@@ -194,10 +194,10 @@ bool Report::isRoaming() const {
 void Report::setRoaming(bool const value) {
   m_Roaming = value;
 }
-PlmnId Report::getNewServingPlmn() const {
+oai::model::common::PlmnId Report::getNewServingPlmn() const {
   return m_NewServingPlmn;
 }
-void Report::setNewServingPlmn(PlmnId const& value) {
+void Report::setNewServingPlmn(oai::model::common::PlmnId const& value) {
   m_NewServingPlmn = value;
 }
 CnType Report::getNewCnType() const {

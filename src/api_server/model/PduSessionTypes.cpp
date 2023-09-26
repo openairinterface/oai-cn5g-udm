@@ -62,13 +62,16 @@ void from_json(const nlohmann::json& j, PduSessionTypes& o) {
   }
 }
 
-PduSessionType PduSessionTypes::getDefaultSessionType() const {
+oai::model::common::PduSessionType PduSessionTypes::getDefaultSessionType()
+    const {
   return m_DefaultSessionType;
 }
-void PduSessionTypes::setDefaultSessionType(PduSessionType const& value) {
+void PduSessionTypes::setDefaultSessionType(
+    oai::model::common::PduSessionType const& value) {
   m_DefaultSessionType = value;
 }
-std::vector<PduSessionType>& PduSessionTypes::getAllowedSessionTypes() {
+std::vector<oai::model::common::PduSessionType>&
+PduSessionTypes::getAllowedSessionTypes() {
   return m_AllowedSessionTypes;
 }
 bool PduSessionTypes::allowedSessionTypesIsSet() const {

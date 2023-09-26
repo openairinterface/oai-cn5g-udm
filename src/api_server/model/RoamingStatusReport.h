@@ -58,8 +58,8 @@ class RoamingStatusReport {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getNewServingPlmn() const;
-  void setNewServingPlmn(PlmnId const& value);
+  oai::model::common::PlmnId getNewServingPlmn() const;
+  void setNewServingPlmn(oai::model::common::PlmnId const& value);
 
   friend void to_json(nlohmann::json& j, const RoamingStatusReport& o);
   friend void from_json(const nlohmann::json& j, RoamingStatusReport& o);
@@ -67,7 +67,7 @@ class RoamingStatusReport {
  protected:
   bool m_Roaming;
 
-  PlmnId m_NewServingPlmn;
+  oai::model::common::PlmnId m_NewServingPlmn;
 
   // Helper overload for validate. Used when one model stores another model and
   // calls it's validate.

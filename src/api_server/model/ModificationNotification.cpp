@@ -54,7 +54,8 @@ void from_json(const nlohmann::json& j, ModificationNotification& o) {
   j.at("notifyItems").get_to(o.m_NotifyItems);
 }
 
-std::vector<NotifyItem>& ModificationNotification::getNotifyItems() {
+std::vector<oai::model::common::NotifyItem>&
+ModificationNotification::getNotifyItems() {
   return m_NotifyItems;
 }
 

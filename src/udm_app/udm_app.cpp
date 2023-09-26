@@ -44,7 +44,6 @@
 #include "PatchItem.h"
 #include "ProblemDetails.h"
 #include "SequenceNumber.h"
-#include "api_conversions.hpp"
 #include "authentication_algorithms_with_5gaka.hpp"
 #include "comUt.hpp"
 #include "conversions.hpp"
@@ -57,6 +56,7 @@
 
 using namespace oai::udm::app;
 using namespace oai::udm::model;
+using namespace oai::model::common;
 using namespace std::chrono;
 using namespace oai::udm::config;
 using namespace boost::placeholders;
@@ -272,7 +272,9 @@ void udm_app::handle_generate_auth_data_request(
       nlohmann::json patch_item_json = {};
       PatchItem patch_item           = {};
       patch_item.setValue(sequence_number_json.dump());
-      patch_item.setOp("replace");
+      PatchOperation op;
+      op.setEnumValue(PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE);
+      patch_item.setOp(op);
       patch_item.setFrom("");
       patch_item.setPath("");
       to_json(patch_item_json, patch_item);
@@ -368,7 +370,9 @@ void udm_app::handle_generate_auth_data_request(
   nlohmann::json patch_item_json;
   PatchItem patch_item;
   patch_item.setValue(sequence_number_json.dump());
-  patch_item.setOp("replace");
+  PatchOperation op;
+  op.setEnumValue(PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE);
+  patch_item.setOp(op);
   patch_item.setFrom("");
   patch_item.setPath("");
   to_json(patch_item_json, patch_item);
@@ -556,7 +560,7 @@ void udm_app::handle_delete_auth(
 //------------------------------------------------------------------------------
 void udm_app::handle_access_mobility_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data, long& code,
-    oai::udm::model::PlmnId plmn_id) {
+    PlmnId plmn_id) {
   // TODO: check if plmn_id available
   std::string remote_uri =
       udm_cfg.get_udr_access_and_mobility_subscription_data_uri(supi, plmn_id);
@@ -636,8 +640,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
 //------------------------------------------------------------------------------
 void udm_app::handle_session_management_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data, long& code,
-    oai::udm::model::Snssai snssai, std::string dnn,
-    oai::udm::model::PlmnId plmn_id) {
+    Snssai snssai, std::string dnn, PlmnId plmn_id) {
   // UDR's URL
   std::string remote_uri =
       udm_cfg.get_udr_session_management_subscription_data_uri(supi, plmn_id);
@@ -688,7 +691,7 @@ void udm_app::handle_session_management_subscription_data_retrieval(
 //------------------------------------------------------------------------------
 void udm_app::handle_slice_selection_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data, long& code,
-    std::string supported_features, oai::udm::model::PlmnId plmn_id) {
+    std::string supported_features, PlmnId plmn_id) {
   Logger::udm_sdm().debug(
       "Handle Slice Selection Subscription Data Retrieval request");
 
@@ -733,7 +736,7 @@ void udm_app::handle_slice_selection_subscription_data_retrieval(
 //------------------------------------------------------------------------------
 void udm_app::handle_smf_selection_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data, long& code,
-    std::string supported_features, oai::udm::model::PlmnId plmn_id) {
+    std::string supported_features, PlmnId plmn_id) {
   // Get UDR's URI
   std::string remote_uri =
       udm_cfg.get_udr_smf_selection_subscription_data_uri(supi, plmn_id);
@@ -851,7 +854,7 @@ evsub_id_t udm_app::handle_create_ee_subscription(
 //------------------------------------------------------------------------------
 void udm_app::handle_delete_ee_subscription(
     const std::string& ueIdentity, const std::string& subscriptionId,
-    oai::udm::model::ProblemDetails& problemDetails, long& code) {
+    ProblemDetails& problemDetails, long& code) {
   Logger::udm_ee().info("Handle Delete EE Subscription");
 
   if (!delete_event_subscription(subscriptionId, ueIdentity)) {
@@ -866,14 +869,14 @@ void udm_app::handle_delete_ee_subscription(
 //------------------------------------------------------------------------------
 void udm_app::handle_update_ee_subscription(
     const std::string& ueIdentity, const std::string& subscriptionId,
-    const std::vector<oai::udm::model::PatchItem>& patchItem,
-    oai::udm::model::ProblemDetails& problemDetails, long& code) {
+    const std::vector<PatchItem>& patchItem, ProblemDetails& problemDetails,
+    long& code) {
   Logger::udm_ee().info("Handle Update EE Subscription");
   // TODO:
   bool op_success = false;
 
   for (auto p : patchItem) {
-    patch_op_type_t op = util::api_conv::string_to_patch_operation(p.getOp());
+    auto op = p.getOp().getEnumValue();
     // Verify Path
     if ((p.getPath().substr(0, 1).compare("/") != 0) or
         (p.getPath().length() < 2)) {
@@ -888,7 +891,7 @@ void udm_app::handle_update_ee_subscription(
     std::string path = p.getPath().substr(1);
 
     switch (op) {
-      case PATCH_OP_REPLACE: {
+      case PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE: {
         if (replace_ee_subscription_item(path, p.getValue())) {
           code = HTTP_RESPONSE_CODE_OK;
         } else {
@@ -896,7 +899,7 @@ void udm_app::handle_update_ee_subscription(
         }
       } break;
 
-      case PATCH_OP_ADD: {
+      case PatchOperation_anyOf::ePatchOperation_anyOf::ADD: {
         if (add_ee_subscription_item(path, p.getValue())) {
           code = HTTP_RESPONSE_CODE_OK;
         } else {
@@ -904,7 +907,7 @@ void udm_app::handle_update_ee_subscription(
         }
       } break;
 
-      case PATCH_OP_REMOVE: {
+      case PatchOperation_anyOf::ePatchOperation_anyOf::REMOVE: {
         if (remove_ee_subscription_item(path)) {
           code = HTTP_RESPONSE_CODE_OK;
         } else {

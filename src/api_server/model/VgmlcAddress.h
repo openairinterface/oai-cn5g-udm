@@ -71,8 +71,8 @@ class VgmlcAddress {
   /// <summary>
   ///
   /// </summary>
-  Ipv6Addr getVgmlcAddressIpv6() const;
-  void setVgmlcAddressIpv6(Ipv6Addr const& value);
+  oai::model::common::Ipv6Addr getVgmlcAddressIpv6() const;
+  void setVgmlcAddressIpv6(oai::model::common::Ipv6Addr const& value);
   bool vgmlcAddressIpv6IsSet() const;
   void unsetVgmlcAddressIpv6();
   /// <summary>
@@ -89,7 +89,7 @@ class VgmlcAddress {
  protected:
   std::string m_VgmlcAddressIpv4;
   bool m_VgmlcAddressIpv4IsSet;
-  Ipv6Addr m_VgmlcAddressIpv6;
+  oai::model::common::Ipv6Addr m_VgmlcAddressIpv6;
   bool m_VgmlcAddressIpv6IsSet;
   std::string m_VgmlcFqdn;
   bool m_VgmlcFqdnIsSet;

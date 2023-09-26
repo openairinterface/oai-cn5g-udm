@@ -34,6 +34,9 @@
 #include "AmfNon3GppAccessRegistration.h"
 
 namespace oai::udm::model {
+
+using namespace oai::model::common;
+
 AmfNon3GppAccessRegistration::AmfNon3GppAccessRegistration() {
   m_AmfInstanceId                    = "";
   m_SupportedFeatures                = "";
@@ -206,11 +209,12 @@ void AmfNon3GppAccessRegistration::setDeregCallbackUri(
     std::string const& value) {
   m_DeregCallbackUri = value;
 }
-ServiceName AmfNon3GppAccessRegistration::getAmfServiceNameDereg() const {
+oai::model::nrf::ServiceName
+AmfNon3GppAccessRegistration::getAmfServiceNameDereg() const {
   return m_AmfServiceNameDereg;
 }
 void AmfNon3GppAccessRegistration::setAmfServiceNameDereg(
-    ServiceName const& value) {
+    oai::model::nrf::ServiceName const& value) {
   m_AmfServiceNameDereg      = value;
   m_AmfServiceNameDeregIsSet = true;
 }
@@ -235,11 +239,12 @@ bool AmfNon3GppAccessRegistration::pcscfRestorationCallbackUriIsSet() const {
 void AmfNon3GppAccessRegistration::unsetPcscfRestorationCallbackUri() {
   m_PcscfRestorationCallbackUriIsSet = false;
 }
-ServiceName AmfNon3GppAccessRegistration::getAmfServiceNamePcscfRest() const {
+oai::model::nrf::ServiceName
+AmfNon3GppAccessRegistration::getAmfServiceNamePcscfRest() const {
   return m_AmfServiceNamePcscfRest;
 }
 void AmfNon3GppAccessRegistration::setAmfServiceNamePcscfRest(
-    ServiceName const& value) {
+    oai::model::nrf::ServiceName const& value) {
   m_AmfServiceNamePcscfRest      = value;
   m_AmfServiceNamePcscfRestIsSet = true;
 }

@@ -220,10 +220,12 @@ bool SmsManagementSubscriptionData::sharedSmsMngDataIdsIsSet() const {
 void SmsManagementSubscriptionData::unsetSharedSmsMngDataIds() {
   m_SharedSmsMngDataIdsIsSet = false;
 }
-TraceData SmsManagementSubscriptionData::getTraceData() const {
+oai::model::common::TraceData SmsManagementSubscriptionData::getTraceData()
+    const {
   return m_TraceData;
 }
-void SmsManagementSubscriptionData::setTraceData(TraceData const& value) {
+void SmsManagementSubscriptionData::setTraceData(
+    oai::model::common::TraceData const& value) {
   m_TraceData      = value;
   m_TraceDataIsSet = true;
 }

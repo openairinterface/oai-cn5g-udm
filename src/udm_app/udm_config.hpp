@@ -107,13 +107,13 @@ class udm_config {
   int load_interface(const Setting& if_cfg, interface_cfg_t& cfg);
   void display();
   std::string get_udr_slice_selection_subscription_data_retrieval_uri(
-      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+      const std::string& supi, const oai::model::common::PlmnId& plmn_id);
   std::string get_udr_access_and_mobility_subscription_data_uri(
-      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+      const std::string& supi, const oai::model::common::PlmnId& plmn_id);
   std::string get_udr_session_management_subscription_data_uri(
-      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+      const std::string& supi, const oai::model::common::PlmnId& plmn_id);
   std::string get_udr_smf_selection_subscription_data_uri(
-      const std::string& supi, const oai::udm::model::PlmnId& plmn_id);
+      const std::string& supi, const oai::model::common::PlmnId& plmn_id);
   std::string get_udr_url_base();
   std::string get_udr_sdm_subscriptions_uri(const std::string& supi);
 

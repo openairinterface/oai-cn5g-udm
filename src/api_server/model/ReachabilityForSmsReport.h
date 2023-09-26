@@ -74,8 +74,8 @@ class ReachabilityForSmsReport {
   /// <summary>
   ///
   /// </summary>
-  AccessType getSmsfAccessType() const;
-  void setSmsfAccessType(AccessType const& value);
+  oai::model::common::AccessType getSmsfAccessType() const;
+  void setSmsfAccessType(oai::model::common::AccessType const& value);
   /// <summary>
   ///
   /// </summary>
@@ -88,7 +88,7 @@ class ReachabilityForSmsReport {
   friend void from_json(const nlohmann::json& j, ReachabilityForSmsReport& o);
 
  protected:
-  AccessType m_SmsfAccessType;
+  oai::model::common::AccessType m_SmsfAccessType;
 
   std::string m_MaxAvailabilityTime;
   bool m_MaxAvailabilityTimeIsSet;

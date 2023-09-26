@@ -103,8 +103,8 @@ class SharedData {
   /// <summary>
   ///
   /// </summary>
-  TraceData getSharedTraceData() const;
-  void setSharedTraceData(TraceData const& value);
+  oai::model::common::TraceData getSharedTraceData() const;
+  void setSharedTraceData(oai::model::common::TraceData const& value);
   bool sharedTraceDataIsSet() const;
   void unsetSharedTraceData();
   /// <summary>
@@ -128,7 +128,7 @@ class SharedData {
   bool m_SharedSmsMngSubsDataIsSet;
   std::map<std::string, DnnConfiguration> m_SharedDnnConfigurations;
   bool m_SharedDnnConfigurationsIsSet;
-  TraceData m_SharedTraceData;
+  oai::model::common::TraceData m_SharedTraceData;
   bool m_SharedTraceDataIsSet;
   std::map<std::string, SnssaiInfo> m_SharedSnssaiInfos;
   bool m_SharedSnssaiInfosIsSet;

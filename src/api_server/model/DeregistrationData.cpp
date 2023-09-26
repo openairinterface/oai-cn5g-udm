@@ -79,10 +79,11 @@ DeregistrationReason DeregistrationData::getDeregReason() const {
 void DeregistrationData::setDeregReason(DeregistrationReason const& value) {
   m_DeregReason = value;
 }
-AccessType DeregistrationData::getAccessType() const {
+oai::model::common::AccessType DeregistrationData::getAccessType() const {
   return m_AccessType;
 }
-void DeregistrationData::setAccessType(AccessType const& value) {
+void DeregistrationData::setAccessType(
+    oai::model::common::AccessType const& value) {
   m_AccessType      = value;
   m_AccessTypeIsSet = true;
 }

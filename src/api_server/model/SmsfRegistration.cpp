@@ -130,10 +130,10 @@ bool SmsfRegistration::supportedFeaturesIsSet() const {
 void SmsfRegistration::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
-PlmnId SmsfRegistration::getPlmnId() const {
+oai::model::common::PlmnId SmsfRegistration::getPlmnId() const {
   return m_PlmnId;
 }
-void SmsfRegistration::setPlmnId(PlmnId const& value) {
+void SmsfRegistration::setPlmnId(oai::model::common::PlmnId const& value) {
   m_PlmnId = value;
 }
 std::string SmsfRegistration::getSmsfMAPAddress() const {

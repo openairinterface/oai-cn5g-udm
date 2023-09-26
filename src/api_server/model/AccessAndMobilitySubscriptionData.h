@@ -92,8 +92,8 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  AmbrRm getSubscribedUeAmbr() const;
-  void setSubscribedUeAmbr(AmbrRm const& value);
+  oai::model::common::AmbrRm getSubscribedUeAmbr() const;
+  void setSubscribedUeAmbr(oai::model::common::AmbrRm const& value);
   bool subscribedUeAmbrIsSet() const;
   void unsetSubscribedUeAmbr();
   /// <summary>
@@ -106,19 +106,20 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  std::vector<RatType>& getRatRestrictions();
+  std::vector<oai::model::common::RatType>& getRatRestrictions();
   bool ratRestrictionsIsSet() const;
   void unsetRatRestrictions();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Area>& getForbiddenAreas();
+  std::vector<oai::model::common::Area>& getForbiddenAreas();
   bool forbiddenAreasIsSet() const;
   void unsetForbiddenAreas();
   /// <summary>
   ///
   /// </summary>
-  std::vector<CoreNetworkType>& getCoreNetworkTypeRestrictions();
+  std::vector<oai::model::common::CoreNetworkType>&
+  getCoreNetworkTypeRestrictions();
   bool coreNetworkTypeRestrictionsIsSet() const;
   void unsetCoreNetworkTypeRestrictions();
   /// <summary>
@@ -200,8 +201,8 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  OdbPacketServices getOdbPacketServices() const;
-  void setOdbPacketServices(OdbPacketServices const& value);
+  oai::model::common::OdbPacketServices getOdbPacketServices() const;
+  void setOdbPacketServices(oai::model::common::OdbPacketServices const& value);
   bool odbPacketServicesIsSet() const;
   void unsetOdbPacketServices();
   /// <summary>
@@ -220,8 +221,8 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  TraceData getTraceData() const;
-  void setTraceData(TraceData const& value);
+  oai::model::common::TraceData getTraceData() const;
+  void setTraceData(oai::model::common::TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
 
@@ -237,15 +238,16 @@ class AccessAndMobilitySubscriptionData {
   bool m_GpsisIsSet;
   std::vector<std::string> m_InternalGroupIds;
   bool m_InternalGroupIdsIsSet;
-  AmbrRm m_SubscribedUeAmbr;
+  oai::model::common::AmbrRm m_SubscribedUeAmbr;
   bool m_SubscribedUeAmbrIsSet;
   Nssai m_Nssai;
   bool m_NssaiIsSet;
-  std::vector<RatType> m_RatRestrictions;
+  std::vector<oai::model::common::RatType> m_RatRestrictions;
   bool m_RatRestrictionsIsSet;
-  std::vector<Area> m_ForbiddenAreas;
+  std::vector<oai::model::common::Area> m_ForbiddenAreas;
   bool m_ForbiddenAreasIsSet;
-  std::vector<CoreNetworkType> m_CoreNetworkTypeRestrictions;
+  std::vector<oai::model::common::CoreNetworkType>
+      m_CoreNetworkTypeRestrictions;
   bool m_CoreNetworkTypeRestrictionsIsSet;
   int32_t m_RfspIndex;
   bool m_RfspIndexIsSet;
@@ -269,13 +271,13 @@ class AccessAndMobilitySubscriptionData {
   bool m_MicoAllowedIsSet;
   std::vector<std::string> m_SharedAmDataIds;
   bool m_SharedAmDataIdsIsSet;
-  OdbPacketServices m_OdbPacketServices;
+  oai::model::common::OdbPacketServices m_OdbPacketServices;
   bool m_OdbPacketServicesIsSet;
   std::vector<std::string> m_SubscribedDnnList;
   bool m_SubscribedDnnListIsSet;
   int32_t m_ServiceGapTime;
   bool m_ServiceGapTimeIsSet;
-  TraceData m_TraceData;
+  oai::model::common::TraceData m_TraceData;
   bool m_TraceDataIsSet;
 };
 

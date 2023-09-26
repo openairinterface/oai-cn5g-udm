@@ -55,20 +55,6 @@ static const std::vector<std::string> nf_type_e2str = {
     "NSSF",  "UDR", "LMF",  "GMLC", "5G_EIR", "SEPP",  "UPF",
     "N3IWF", "AF",  "UDSF", "BSF",  "CHF",    "NWDAF", "UNKNOWN"};
 
-typedef enum patch_op_type_s {
-  PATCH_OP_ADD     = 0,
-  PATCH_OP_REMOVE  = 1,
-  PATCH_OP_REPLACE = 2,
-  PATCH_OP_MOVE    = 3,
-  PATCH_OP_COPY    = 4,
-  PATCH_OP_TEST    = 5,
-  PATCH_OP_UNKNOWN = 6
-
-} patch_op_type_t;
-
-static const std::vector<std::string> patch_op_type_e2str = {
-    "ADD", "REMOVE", "REPLACE", "MOVE", "COPY", "TEST", "UNKNOWN"};
-
 // Event Subscription IDs)
 typedef uint32_t evsub_id_t;
 #define EVSUB_ID_FMT "0x%" PRIx32

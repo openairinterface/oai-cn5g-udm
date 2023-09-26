@@ -178,10 +178,10 @@ int32_t SmfRegistration::getPduSessionId() const {
 void SmfRegistration::setPduSessionId(int32_t const value) {
   m_PduSessionId = value;
 }
-Snssai SmfRegistration::getSingleNssai() const {
+oai::model::common::Snssai SmfRegistration::getSingleNssai() const {
   return m_SingleNssai;
 }
-void SmfRegistration::setSingleNssai(Snssai const& value) {
+void SmfRegistration::setSingleNssai(oai::model::common::Snssai const& value) {
   m_SingleNssai = value;
 }
 std::string SmfRegistration::getDnn() const {
@@ -223,10 +223,10 @@ bool SmfRegistration::pcscfRestorationCallbackUriIsSet() const {
 void SmfRegistration::unsetPcscfRestorationCallbackUri() {
   m_PcscfRestorationCallbackUriIsSet = false;
 }
-PlmnId SmfRegistration::getPlmnId() const {
+oai::model::common::PlmnId SmfRegistration::getPlmnId() const {
   return m_PlmnId;
 }
-void SmfRegistration::setPlmnId(PlmnId const& value) {
+void SmfRegistration::setPlmnId(oai::model::common::PlmnId const& value) {
   m_PlmnId = value;
 }
 std::string SmfRegistration::getPgwFqdn() const {

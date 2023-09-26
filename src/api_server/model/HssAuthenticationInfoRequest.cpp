@@ -133,10 +133,12 @@ bool HssAuthenticationInfoRequest::requestingNodeTypeIsSet() const {
 void HssAuthenticationInfoRequest::unsetRequestingNodeType() {
   m_RequestingNodeTypeIsSet = false;
 }
-PlmnId HssAuthenticationInfoRequest::getServingNetworkId() const {
+oai::model::common::PlmnId HssAuthenticationInfoRequest::getServingNetworkId()
+    const {
   return m_ServingNetworkId;
 }
-void HssAuthenticationInfoRequest::setServingNetworkId(PlmnId const& value) {
+void HssAuthenticationInfoRequest::setServingNetworkId(
+    oai::model::common::PlmnId const& value) {
   m_ServingNetworkId      = value;
   m_ServingNetworkIdIsSet = true;
 }

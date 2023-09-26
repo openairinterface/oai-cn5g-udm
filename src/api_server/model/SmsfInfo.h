@@ -43,7 +43,7 @@
 #include <string>
 
 #include "PlmnId.h"
-using namespace oai::udm::model;
+
 namespace oai {
 namespace udm {
 namespace model {
@@ -69,8 +69,8 @@ class SmsfInfo {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  oai::model::common::PlmnId getPlmnId() const;
+  void setPlmnId(oai::model::common::PlmnId const& value);
 
   friend void to_json(nlohmann::json& j, const SmsfInfo& o);
   friend void from_json(const nlohmann::json& j, SmsfInfo& o);
@@ -78,7 +78,7 @@ class SmsfInfo {
  protected:
   std::string m_SmsfInstanceId;
 
-  PlmnId m_PlmnId;
+  oai::model::common::PlmnId m_PlmnId;
 };
 
 }  // namespace model

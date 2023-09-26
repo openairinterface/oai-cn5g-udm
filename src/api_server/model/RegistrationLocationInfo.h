@@ -70,8 +70,8 @@ class RegistrationLocationInfo {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  oai::model::common::PlmnId getPlmnId() const;
+  void setPlmnId(oai::model::common::PlmnId const& value);
   bool plmnIdIsSet() const;
   void unsetPlmnId();
   /// <summary>
@@ -84,8 +84,9 @@ class RegistrationLocationInfo {
   /// <summary>
   ///
   /// </summary>
-  std::vector<AccessType>& getAccessTypeList();
-  void setAccessTypeList(std::vector<AccessType> const& value);
+  std::vector<oai::model::common::AccessType>& getAccessTypeList();
+  void setAccessTypeList(
+      std::vector<oai::model::common::AccessType> const& value);
 
   friend void to_json(nlohmann::json& j, const RegistrationLocationInfo& o);
   friend void from_json(const nlohmann::json& j, RegistrationLocationInfo& o);
@@ -93,11 +94,11 @@ class RegistrationLocationInfo {
  protected:
   std::string m_AmfInstanceId;
 
-  PlmnId m_PlmnId;
+  oai::model::common::PlmnId m_PlmnId;
   bool m_PlmnIdIsSet;
   VgmlcAddress m_VgmlcAddress;
   bool m_VgmlcAddressIsSet;
-  std::vector<AccessType> m_AccessTypeList;
+  std::vector<oai::model::common::AccessType> m_AccessTypeList;
 };
 
 }  // namespace oai::udm::model

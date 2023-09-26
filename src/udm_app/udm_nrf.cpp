@@ -45,6 +45,7 @@
 
 using namespace oai::udm::app;
 using namespace oai::udm::config;
+using namespace oai::model::common;
 using namespace boost::placeholders;
 
 // using json = nlohmann::json;
@@ -157,10 +158,12 @@ void udm_nrf::start_event_nf_heartbeat(std::string& remoteURI) {
 //---------------------------------------------------------------------------------------------
 void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   _unused(ms);
-  oai::udm::model::PatchItem patch_item = {};
-  std::vector<oai::udm::model::PatchItem> patch_items;
+  PatchItem patch_item = {};
+  std::vector<PatchItem> patch_items;
   //{"op":"replace","path":"/nfStatus", "value": "REGISTERED"}
-  patch_item.setOp("replace");
+  PatchOperation op;
+  op.setEnumValue(PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE);
+  patch_item.setOp(op);
   patch_item.setPath("/nfStatus");
   patch_item.setValue("REGISTERED");
   patch_items.push_back(patch_item);

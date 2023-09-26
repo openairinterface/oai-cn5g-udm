@@ -37,6 +37,8 @@ namespace oai {
 namespace udm {
 namespace model {
 
+using namespace oai::model::common;
+
 DnnConfiguration::DnnConfiguration() {
   m_IwkEpsInd                         = false;
   m_IwkEpsIndIsSet                    = false;

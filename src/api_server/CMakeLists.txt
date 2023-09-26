@@ -31,6 +31,7 @@ include_directories(${SRC_TOP_DIR}/common/utils)
 include_directories(${SRC_TOP_DIR}/common/libngap)
 include_directories(${SRC_TOP_DIR}/5gaka)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
+include(${BUILD_TOP_DIR}/udm/used_models.cmake)
 
 file(GLOB UDM_API_SERVER_src_files
     ${UDM_API_SERVER_DIR}/udm-api-server.cpp

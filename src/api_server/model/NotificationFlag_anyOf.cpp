@@ -43,7 +43,7 @@ NotificationFlag_anyOf::NotificationFlag_anyOf() {}
 void NotificationFlag_anyOf::validate() const {
   std::stringstream msg;
   if (!validate(msg)) {
-    throw oai::udm::helpers::ValidationException(msg.str());
+    throw oai::model::common::helpers::ValidationException(msg.str());
   }
 }
 

@@ -77,8 +77,10 @@ class DatalinkReportingConfiguration {
   /// <summary>
   ///
   /// </summary>
-  std::vector<DddTrafficDescriptor> getDddTrafficDes() const;
-  void setDddTrafficDes(std::vector<DddTrafficDescriptor> const& value);
+  std::vector<oai::model::common::DddTrafficDescriptor> getDddTrafficDes()
+      const;
+  void setDddTrafficDes(
+      std::vector<oai::model::common::DddTrafficDescriptor> const& value);
   bool dddTrafficDesIsSet() const;
   void unsetDddTrafficDes();
   /// <summary>
@@ -91,15 +93,17 @@ class DatalinkReportingConfiguration {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSlice() const;
-  void setSlice(Snssai const& value);
+  oai::model::common::Snssai getSlice() const;
+  void setSlice(oai::model::common::Snssai const& value);
   bool sliceIsSet() const;
   void unsetSlice();
   /// <summary>
   ///
   /// </summary>
-  std::vector<DlDataDeliveryStatus> getDddStatusList() const;
-  void setDddStatusList(std::vector<DlDataDeliveryStatus> const& value);
+  std::vector<oai::model::common::DlDataDeliveryStatus> getDddStatusList()
+      const;
+  void setDddStatusList(
+      std::vector<oai::model::common::DlDataDeliveryStatus> const& value);
   bool dddStatusListIsSet() const;
   void unsetDddStatusList();
 
@@ -109,13 +113,13 @@ class DatalinkReportingConfiguration {
       const nlohmann::json& j, DatalinkReportingConfiguration& o);
 
  protected:
-  std::vector<DddTrafficDescriptor> m_DddTrafficDes;
+  std::vector<oai::model::common::DddTrafficDescriptor> m_DddTrafficDes;
   bool m_DddTrafficDesIsSet;
   std::string m_Dnn;
   bool m_DnnIsSet;
-  Snssai m_Slice;
+  oai::model::common::Snssai m_Slice;
   bool m_SliceIsSet;
-  std::vector<DlDataDeliveryStatus> m_DddStatusList;
+  std::vector<oai::model::common::DlDataDeliveryStatus> m_DddStatusList;
   bool m_DddStatusListIsSet;
 
   // Helper overload for validate. Used when one model stores another model and

@@ -64,8 +64,8 @@ class TraceDataResponse {
   /// <summary>
   ///
   /// </summary>
-  TraceData getTraceData() const;
-  void setTraceData(TraceData const& value);
+  oai::model::common::TraceData getTraceData() const;
+  void setTraceData(oai::model::common::TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
   /// <summary>
@@ -80,7 +80,7 @@ class TraceDataResponse {
   friend void from_json(const nlohmann::json& j, TraceDataResponse& o);
 
  protected:
-  TraceData m_TraceData;
+  oai::model::common::TraceData m_TraceData;
   bool m_TraceDataIsSet;
   std::string m_SharedTraceDataId;
   bool m_SharedTraceDataIdIsSet;

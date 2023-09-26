@@ -42,7 +42,7 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::helpers;
+using namespace oai::model::common::helpers;
 using namespace oai::udm::model;
 using namespace oai::udm::config;
 

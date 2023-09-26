@@ -57,9 +57,6 @@
 
 namespace oai::udm::api {
 
-using namespace oai::udm::model;
-using namespace oai::udm::app;
-
 class UpdateEESubscriptionApiImpl
     : public oai::udm::api::UpdateEESubscriptionApi {
  public:
@@ -70,7 +67,7 @@ class UpdateEESubscriptionApiImpl
 
   void update_ee_subscription(
       const std::string& ueIdentity, const std::string& subscriptionId,
-      const std::vector<PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 

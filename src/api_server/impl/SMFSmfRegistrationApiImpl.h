@@ -55,9 +55,6 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
-using namespace oai::udm::app;
-
 class SMFSmfRegistrationApiImpl : public oai::udm::api::SMFSmfRegistrationApi {
  public:
   SMFSmfRegistrationApiImpl(
@@ -66,13 +63,14 @@ class SMFSmfRegistrationApiImpl : public oai::udm::api::SMFSmfRegistrationApi {
   ~SMFSmfRegistrationApiImpl() {}
 
   void get_smf_registration(
-      const std::string& ueId, const Pistache::Optional<Snssai>& singleNssai,
+      const std::string& ueId,
+      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void registration(
       const std::string& ueId, const int32_t& pduSessionId,
-      const SmfRegistration& smfRegistration,
+      const oai::udm::model::SmfRegistration& smfRegistration,
       Pistache::Http::ResponseWriter& response);
 
  private:

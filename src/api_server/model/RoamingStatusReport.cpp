@@ -25,7 +25,7 @@ RoamingStatusReport::RoamingStatusReport() {
 void RoamingStatusReport::validate() const {
   std::stringstream msg;
   if (!validate(msg)) {
-    throw oai::udm::helpers::ValidationException(msg.str());
+    throw oai::model::common::helpers::ValidationException(msg.str());
   }
 }
 
@@ -79,10 +79,11 @@ bool RoamingStatusReport::isRoaming() const {
 void RoamingStatusReport::setRoaming(bool const value) {
   m_Roaming = value;
 }
-PlmnId RoamingStatusReport::getNewServingPlmn() const {
+oai::model::common::PlmnId RoamingStatusReport::getNewServingPlmn() const {
   return m_NewServingPlmn;
 }
-void RoamingStatusReport::setNewServingPlmn(PlmnId const& value) {
+void RoamingStatusReport::setNewServingPlmn(
+    oai::model::common::PlmnId const& value) {
   m_NewServingPlmn = value;
 }
 

@@ -86,10 +86,11 @@ bool VgmlcAddress::vgmlcAddressIpv4IsSet() const {
 void VgmlcAddress::unsetVgmlcAddressIpv4() {
   m_VgmlcAddressIpv4IsSet = false;
 }
-Ipv6Addr VgmlcAddress::getVgmlcAddressIpv6() const {
+oai::model::common::Ipv6Addr VgmlcAddress::getVgmlcAddressIpv6() const {
   return m_VgmlcAddressIpv6;
 }
-void VgmlcAddress::setVgmlcAddressIpv6(Ipv6Addr const& value) {
+void VgmlcAddress::setVgmlcAddressIpv6(
+    oai::model::common::Ipv6Addr const& value) {
   m_VgmlcAddressIpv6      = value;
   m_VgmlcAddressIpv6IsSet = true;
 }

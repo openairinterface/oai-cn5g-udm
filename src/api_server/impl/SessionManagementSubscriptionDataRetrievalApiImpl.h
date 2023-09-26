@@ -55,9 +55,6 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
-using namespace oai::udm::app;
-
 class SessionManagementSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SessionManagementSubscriptionDataRetrievalApi {
  public:
@@ -74,9 +71,10 @@ class SessionManagementSubscriptionDataRetrievalApiImpl
   // &ifNoneMatch, const Pistache::Optional<Pistache::Http::Header::Raw>
   // &ifModifiedSince, Pistache::Http::ResponseWriter &response);
   void get_sm_data(
-      const std::string& supi, const Pistache::Optional<Snssai>& singleNssai,
+      const std::string& supi,
+      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
       const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<PlmnId>& plmnId,
+      const Pistache::Optional<oai::model::common::PlmnId>& plmnId,
       Pistache::Http::ResponseWriter& response);
 
  private:

@@ -45,6 +45,7 @@ using namespace nghttp2::asio_http2::server;
 
 using namespace oai::udm::config;
 using namespace oai::udm::model;
+using namespace oai::model::common;
 
 extern udm_config udm_cfg;
 
@@ -310,8 +311,7 @@ void udm_http2_server::delete_auth_handler(
 //------------------------------------------------------------------------------
 
 void udm_http2_server::access_mobility_subscription_data_retrieval_handler(
-    const std::string& supi, const response& response,
-    oai::udm::model::PlmnId PlmnId) {
+    const std::string& supi, const response& response, PlmnId PlmnId) {
   nlohmann::json response_data = {};
   long http_code               = 0;
   header_map h;
@@ -360,9 +360,8 @@ void udm_http2_server::amf_registration_for_3gpp_access_handler(
 //------------------------------------------------------------------------------
 
 void udm_http2_server::session_management_subscription_data_retrieval_handler(
-    const std::string& supi, const response& response,
-    oai::udm::model::Snssai snssai, std::string dnn,
-    oai::udm::model::PlmnId plmnid) {
+    const std::string& supi, const response& response, Snssai snssai,
+    std::string dnn, PlmnId plmnid) {
   nlohmann::json response_data = {};
   long http_code               = 0;
   header_map h;
@@ -385,7 +384,7 @@ void udm_http2_server::session_management_subscription_data_retrieval_handler(
 
 void udm_http2_server::slice_selection_subscription_data_retrieval_handler(
     const std::string& supi, const response& response,
-    std::string supportedfeatures, oai::udm::model::PlmnId plmnid) {
+    std::string supportedfeatures, PlmnId plmnid) {
   nlohmann::json response_data = {};
   long http_code               = 0;
   header_map h;
@@ -408,7 +407,7 @@ void udm_http2_server::slice_selection_subscription_data_retrieval_handler(
 //------------------------------------------------------------------------------
 void udm_http2_server::smf_selection_subscription_data_retrieval_handler(
     const std::string& supi, const response& response,
-    std::string supportedfeatures, oai::udm::model::PlmnId plmnid) {
+    std::string supportedfeatures, PlmnId plmnid) {
   nlohmann::json response_data = {};
   long http_code               = 0;
   header_map h;

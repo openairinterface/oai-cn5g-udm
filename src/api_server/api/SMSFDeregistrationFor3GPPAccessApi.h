@@ -52,8 +52,6 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
-
 class SMSFDeregistrationFor3GPPAccessApi {
  public:
   SMSFDeregistrationFor3GPPAccessApi(std::shared_ptr<Pistache::Rest::Router>);

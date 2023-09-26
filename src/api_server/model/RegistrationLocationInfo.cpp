@@ -74,10 +74,11 @@ std::string RegistrationLocationInfo::getAmfInstanceId() const {
 void RegistrationLocationInfo::setAmfInstanceId(std::string const& value) {
   m_AmfInstanceId = value;
 }
-PlmnId RegistrationLocationInfo::getPlmnId() const {
+oai::model::common::PlmnId RegistrationLocationInfo::getPlmnId() const {
   return m_PlmnId;
 }
-void RegistrationLocationInfo::setPlmnId(PlmnId const& value) {
+void RegistrationLocationInfo::setPlmnId(
+    oai::model::common::PlmnId const& value) {
   m_PlmnId      = value;
   m_PlmnIdIsSet = true;
 }
@@ -100,11 +101,12 @@ bool RegistrationLocationInfo::vgmlcAddressIsSet() const {
 void RegistrationLocationInfo::unsetVgmlcAddress() {
   m_VgmlcAddressIsSet = false;
 }
-std::vector<AccessType>& RegistrationLocationInfo::getAccessTypeList() {
+std::vector<oai::model::common::AccessType>&
+RegistrationLocationInfo::getAccessTypeList() {
   return m_AccessTypeList;
 }
 void RegistrationLocationInfo::setAccessTypeList(
-    std::vector<AccessType> const& value) {
+    std::vector<oai::model::common::AccessType> const& value) {
   m_AccessTypeList = value;
 }
 

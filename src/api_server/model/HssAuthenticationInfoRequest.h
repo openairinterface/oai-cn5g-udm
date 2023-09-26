@@ -47,7 +47,7 @@
 #include "NodeType.h"
 #include "PlmnId.h"
 #include "ResynchronizationInfo.h"
-using namespace oai::udm::model;
+
 namespace oai {
 namespace udm {
 namespace model {
@@ -92,8 +92,8 @@ class HssAuthenticationInfoRequest {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getServingNetworkId() const;
-  void setServingNetworkId(PlmnId const& value);
+  oai::model::common::PlmnId getServingNetworkId() const;
+  void setServingNetworkId(oai::model::common::PlmnId const& value);
   bool servingNetworkIdIsSet() const;
   void unsetServingNetworkId();
   /// <summary>
@@ -124,7 +124,7 @@ class HssAuthenticationInfoRequest {
 
   NodeType m_RequestingNodeType;
   bool m_RequestingNodeTypeIsSet;
-  PlmnId m_ServingNetworkId;
+  oai::model::common::PlmnId m_ServingNetworkId;
   bool m_ServingNetworkIdIsSet;
   ResynchronizationInfo m_ResynchronizationInfo;
   bool m_ResynchronizationInfoIsSet;

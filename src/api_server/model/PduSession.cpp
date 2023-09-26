@@ -73,10 +73,10 @@ std::string PduSession::getSmfInstanceId() const {
 void PduSession::setSmfInstanceId(std::string const& value) {
   m_SmfInstanceId = value;
 }
-PlmnId PduSession::getPlmnId() const {
+oai::model::common::PlmnId PduSession::getPlmnId() const {
   return m_PlmnId;
 }
-void PduSession::setPlmnId(PlmnId const& value) {
+void PduSession::setPlmnId(oai::model::common::PlmnId const& value) {
   m_PlmnId = value;
 }
 
