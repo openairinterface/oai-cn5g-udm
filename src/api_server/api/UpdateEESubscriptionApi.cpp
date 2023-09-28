@@ -70,8 +70,8 @@ void UpdateEESubscriptionApi::setupRoutes() {
 }
 
 std::pair<Pistache::Http::Code, std::string>
-UpdateEESubscriptionApi::handleParsingException(const std::exception& ex) const
-    noexcept {
+UpdateEESubscriptionApi::handleParsingException(
+    const std::exception& ex) const noexcept {
   try {
     throw;
   } catch (nlohmann::detail::exception& e) {
