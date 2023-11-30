@@ -40,8 +40,6 @@ using namespace oai::udm::config;
 using namespace oai::model::common;
 using namespace boost::placeholders;
 
-// using json = nlohmann::json;
-
 extern udm_config udm_cfg;
 extern udm_nrf* udm_nrf_inst;
 udm_client* udm_client_instance = nullptr;

@@ -32,9 +32,7 @@
 #include "udm_event.hpp"
 #include "udm_profile.hpp"
 
-namespace oai {
-namespace udm {
-namespace app {
+namespace oai::udm::app {
 
 class udm_nrf {
  private:
@@ -85,7 +83,5 @@ class udm_nrf {
   udm_event& m_event_sub;
   bs2::connection task_connection;
 };
-}  // namespace app
-}  // namespace udm
-}  // namespace oai
+}  // namespace oai::udm::app
 #endif /* FILE_UDM_NRF_SEEN */

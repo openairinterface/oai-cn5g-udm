@@ -44,7 +44,6 @@
 
 namespace oai::udm::app {
 
-// class ausf_config;
 class udm_app {
  public:
   explicit udm_app(const std::string& config_file, udm_event& ev);

@@ -19,13 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file authentication_algorithms_with_5gaka.cpp
- \brief Based on https://github.com/OPENAIRINTERFACE/openair-hss
- \author  Keliang DU
- \date 2020
- \email: contact@openairinterface.org
- */
-
 #include "authentication_algorithms_with_5gaka.hpp"
 
 #include <errno.h>

@@ -27,9 +27,7 @@
 #include <map>
 #include <thread>
 
-namespace oai {
-namespace udm {
-namespace app {
+namespace oai::udm::app {
 
 class udm_client {
  private:
@@ -42,7 +40,5 @@ class udm_client {
       std::string remoteUri, std::string method, std::string& response,
       std::string msgBody);
 };
-}  // namespace app
-}  // namespace udm
-}  // namespace oai
+}   // namespace oai::udm::app
 #endif /* FILE_UDM_CLIENT_HPP_SEEN */
