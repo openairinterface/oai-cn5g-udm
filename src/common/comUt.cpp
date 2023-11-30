@@ -19,11 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file comUt.cpp
- \brief
- \author
- \company Eurecom
- */
 #include "comUt.hpp"
 
 //------------------------------------------------------------------------------

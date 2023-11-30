@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_nrf.cpp
- \brief
- \author  Tien-Thinh NGUYEN Rohan Kharade
- \company Eurecom
- \date 2020
- \email:
- */
-
 #include "udm_nrf.hpp"
 #include "udm_app.hpp"
 #include "udm_profile.hpp"

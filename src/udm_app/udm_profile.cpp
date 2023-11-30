@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_profile.cpp
- \brief
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2021
- \email: Tien-Thinh.Nguyen@eurecom.fr
- */
-
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 

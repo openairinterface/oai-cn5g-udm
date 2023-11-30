@@ -28,8 +28,6 @@ include_directories(${UDM_API_SERVER_DIR}/)
 include_directories(${SRC_TOP_DIR}/udm_app)
 include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/common/utils)
-include_directories(${SRC_TOP_DIR}/common/libngap)
-include_directories(${SRC_TOP_DIR}/5gaka)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 include(${BUILD_TOP_DIR}/udm/used_models.cmake)
 

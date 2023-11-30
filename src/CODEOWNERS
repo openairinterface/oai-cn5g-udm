@@ -1,0 +1,10 @@
+# CODEOWNERS  
+SRC:
+ - Keliang DU, BUPT
+ - Tien Thinh NGUYEN, Eurecom
+ - Lionel Gauthier, Eurecom
+
+ COMMON
+ - Sebastien ROUX, Eurecom
+ - Lionel Gauthier, Eurecom
+ - Tien Thinh NGUYEN, Eurecom

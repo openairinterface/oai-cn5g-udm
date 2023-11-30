@@ -19,13 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_config.cpp
- \brief
- \author  Hongxin WANG, BUPT
- \date 2021
- \email: contact@openairinterface.org
- */
-
 #include "udm_config.hpp"
 
 #include <iostream>

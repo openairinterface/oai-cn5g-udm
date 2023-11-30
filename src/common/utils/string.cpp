@@ -21,6 +21,7 @@
  * For more information about the OpenAirInterface (OAI) Software Alliance:
  *      contact@openairinterface.org
  */
+
 #include "string.hpp"
 
 #include <stdarg.h>

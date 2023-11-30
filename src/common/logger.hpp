@@ -19,12 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file logger.hpp
- \brief
- \date 2020
- \email: contact@openairinterface.org
- */
-
 #pragma once
 
 #include <cstdarg>

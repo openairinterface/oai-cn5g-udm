@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_app.cpp
- \brief
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2020
- \email: Tien-Thinh.Nguyen@eurecom.fr
- */
-
 #include "udm_app.hpp"
 
 #include <unistd.h>

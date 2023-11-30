@@ -19,13 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_client.hpp
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2020
- \email:
- */
-
 #ifndef FILE_UDM_NRF_SEEN
 #define FILE_UDM_NRF_SEEN
 

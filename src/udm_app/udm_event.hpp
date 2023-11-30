@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_event.hpp
- \brief
- \author Tien-Thinh NGUYEN (EURECOM)
- \company
- \date 2022
- \email: contact@openairinterface.org
- */
-
 #ifndef FILE_UDM_EVENT_HPP_SEEN
 #define FILE_UDM_EVENT_HPP_SEEN
 
