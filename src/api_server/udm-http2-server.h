@@ -31,6 +31,7 @@
 
 using namespace nghttp2::asio_http2;
 using namespace nghttp2::asio_http2::server;
+using namespace oai::udm::app;
 
 class udm_http2_server {
  public:

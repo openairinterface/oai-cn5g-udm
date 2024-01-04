@@ -234,7 +234,7 @@ void udm_profile::display() const {
         int_grp_id.int_grpid_range.end.c_str(),
         int_grp_id.int_grpid_range.pattern.c_str());
   }
-  for (auto route_ind : udm_info.routing_indicators) {
+  for (auto route_ind : udm_info.routing_indicator) {
     Logger::udm_app().debug("\t\t Routing Indicators: %s", route_ind.c_str());
   }
 }
@@ -294,7 +294,7 @@ void udm_profile::to_json(nlohmann::json& data) const {
     tmp["pattern"]     = ext_grp_id.identity_range.pattern;
     data["udmInfo"]["externalGroupIdentifiersRanges"].push_back(tmp);
   }
-  for (auto route_ind : udm_info.routing_indicators) {
+  for (auto route_ind : udm_info.routing_indicator) {
     std::string tmp = route_ind;
     data["udmInfo"]["routingIndicators"].push_back(route_ind);
   }
@@ -373,7 +373,7 @@ void udm_profile::from_json(const nlohmann::json& data) {
     if (info.find("supiRanges") != info.end()) {
       nlohmann::json supi_ranges = data["udmInfo"]["supiRanges"];
       for (auto d : supi_ranges) {
-        supi_range_udm_info_item_t supi;
+        supi_range_info_item_t supi;
         supi.supi_range.start   = d["start"];
         supi.supi_range.end     = d["end"];
         supi.supi_range.pattern = d["pattern"];
@@ -383,7 +383,7 @@ void udm_profile::from_json(const nlohmann::json& data) {
     if (info.find("gpsiRanges") != info.end()) {
       nlohmann::json gpsi_ranges = data["udmInfo"]["gpsiRanges"];
       for (auto d : gpsi_ranges) {
-        identity_range_udm_info_item_t gpsi;
+        identity_range_info_item_t gpsi;
         gpsi.identity_range.start   = d["start"];
         gpsi.identity_range.end     = d["end"];
         gpsi.identity_range.pattern = d["pattern"];
@@ -394,7 +394,7 @@ void udm_profile::from_json(const nlohmann::json& data) {
       nlohmann::json ext_grp_id_ranges =
           data["udmInfo"]["externalGroupIdentifiersRanges"];
       for (auto d : ext_grp_id_ranges) {
-        identity_range_udm_info_item_t ext_grp_id;
+        identity_range_info_item_t ext_grp_id;
         ext_grp_id.identity_range.start   = d["start"];
         ext_grp_id.identity_range.end     = d["end"];
         ext_grp_id.identity_range.pattern = d["pattern"];
@@ -405,14 +405,14 @@ void udm_profile::from_json(const nlohmann::json& data) {
       nlohmann::json routing_indicators_list =
           data["udmInfo"]["routingIndicators"];
       for (auto d : routing_indicators_list) {
-        udm_info.routing_indicators.push_back(d);
+        udm_info.routing_indicator.push_back(d);
       }
     }
     if (info.find("internalGroupIdentifiersRanges") != info.end()) {
       nlohmann::json int_grp_id_ranges =
           data["udmInfo"]["internalGroupIdentifiersRanges"];
       for (auto d : int_grp_id_ranges) {
-        internal_grpid_range_udm_info_item_t int_grp_id;
+        internal_grpid_range_info_item_t int_grp_id;
         int_grp_id.int_grpid_range.start   = d["start"];
         int_grp_id.int_grpid_range.end     = d["end"];
         int_grp_id.int_grpid_range.pattern = d["pattern"];

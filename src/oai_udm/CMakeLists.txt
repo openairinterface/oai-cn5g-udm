@@ -284,8 +284,10 @@ include_directories(${SRC_TOP_DIR}/api_server/api)
 include_directories(${SRC_TOP_DIR}/api_server/impl)
 include_directories(${SRC_TOP_DIR}/api_server/model)
 include_directories(${SRC_TOP_DIR}/5gaka)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/common)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
 
 add_executable(udm
   ${SRC_TOP_DIR}/oai_udm/main.cpp
@@ -293,8 +295,10 @@ add_executable(udm
   )
 
 ## Common modules
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/common/common.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger/logger.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config/config.cmake)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/utils.cmake)
 include(${BUILD_TOP_DIR}/udm/used_models.cmake)
 
 IF(STATIC_LINKING)

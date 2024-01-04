@@ -76,14 +76,14 @@ void udm_nrf::generate_udm_profile(
   // determined by the NRF (see 3GPP TS 23.501 [2], clause 6.2.6.2)
   udm_info_t udm_info_item;
   udm_info_item.groupid = "oai-udm-testgroupid";
-  udm_info_item.routing_indicators.push_back("0210");
-  udm_info_item.routing_indicators.push_back("9876");
-  supi_range_udm_info_item_t supi_ranges;
+  udm_info_item.routing_indicator.push_back("0210");
+  udm_info_item.routing_indicator.push_back("9876");
+  supi_range_info_item_t supi_ranges;
   supi_ranges.supi_range.start   = "208950000000031";
   supi_ranges.supi_range.pattern = "^imsi-20895[31-131]{10}$";
   supi_ranges.supi_range.end     = "208950000000131";
   udm_info_item.supi_ranges.push_back(supi_ranges);
-  identity_range_udm_info_item_t gpsi_ranges;
+  identity_range_info_item_t gpsi_ranges;
   gpsi_ranges.identity_range.start   = "752740000";
   gpsi_ranges.identity_range.pattern = "^gpsi-75274[0-9]{4}$";
   gpsi_ranges.identity_range.end     = "752749999";
