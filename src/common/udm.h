@@ -23,6 +23,7 @@
 #define FILE__SEEN
 
 #define HEART_BEAT_TIMER 10
+#define NRF_REGISTRATION_RETRY_TIMER 5
 
 #define _unused(x) ((void) (x))
 

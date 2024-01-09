@@ -55,18 +55,42 @@ class udm_nrf {
   void operator=(udm_nrf const&) = delete;
 
   void generate_uuid();
+
   /*
    * Start event nf heartbeat procedure
    * @param [void]
    * @return void
    */
   void start_event_nf_heartbeat(std::string& remoteURI);
+
   /*
    * Trigger NF heartbeat procedure
    * @param [void]
    * @return void
    */
   void trigger_nf_heartbeat_procedure(uint64_t ms);
+
+  /*
+   * Start event nrf registration retry
+   * @param [void]
+   * @return void
+   */
+  void start_nrf_registration_retry();
+
+  /*
+   * Trigger NF registration procedure
+   * @param [void]
+   * @return void
+   */
+  void trigger_nrf_registration_retry_procedure(uint64_t ms);
+
+  /*
+   * Stop event nrf registration retry
+   * @param [void]
+   * @return void
+   */
+  void stop_nrf_registration_retry();
+
   /*
    * Generate a UDM profile for this instance
    * @param [void]
@@ -81,6 +105,7 @@ class udm_nrf {
    * @return void
    */
   void register_to_nrf();
+
   /*
    * Get udm API Root
    * @param [std::string& ] api_root: udm's API Root
@@ -91,6 +116,7 @@ class udm_nrf {
  private:
   udm_event& m_event_sub;
   bs2::connection task_connection;
+  bs2::connection retry_nrf_registration_task_connection;
 };
 }  // namespace app
 }  // namespace udm
