@@ -19,10 +19,10 @@
  *      contact@openairinterface.org
  */
 
-#include "comUt.hpp"
+#include "utils.hpp"
 
 //------------------------------------------------------------------------------
-void comUt::print_buffer(
+void utils::print_buffer(
     const std::string app, const std::string commit, uint8_t* buf, int len) {
   if (!app.compare("udm_ueau")) Logger::udm_ueau().info(commit.c_str());
   for (int i = 0; i < len; i++) printf("%x ", buf[i]);
@@ -30,9 +30,10 @@ void comUt::print_buffer(
 }
 
 //------------------------------------------------------------------------------
-void comUt::print_buffer(
-    const string app, const string commit, const uint8_t* buf, int len) {
-  if (!app.compare("udm_ueau")) cout << commit.c_str() << endl;
+void utils::print_buffer(
+    const std::string app, const std::string commit, const uint8_t* buf,
+    int len) {
+  if (!app.compare("udm_ueau")) std::cout << commit.c_str() << std::endl;
   Logger::udm_ueau().debug(commit.c_str());
 
   for (int i = 0; i < len; i++) printf("%x ", buf[i]);
@@ -40,7 +41,7 @@ void comUt::print_buffer(
 }
 
 //------------------------------------------------------------------------------
-void comUt::hexStr2Byte(const char* src, unsigned char* dest, int len) {
+void utils::hex_str_2_byte(const char* src, unsigned char* dest, int len) {
   short i;
   unsigned char hBy, lBy;
   for (i = 0; i < len; i += 2) {

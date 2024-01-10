@@ -37,7 +37,7 @@
 #include "ProblemDetails.h"
 #include "SequenceNumber.h"
 #include "authentication_algorithms_with_5gaka.hpp"
-#include "comUt.hpp"
+#include "utils.hpp"
 #include "conversions.hpp"
 #include "logger.hpp"
 #include "sha256.hpp"
@@ -177,22 +177,22 @@ void udm_app::handle_generate_auth_data_request(
       key_s           = response_data.at("encPermanentKey");
       conv::hex_str_to_uint8(key_s.c_str(), key);
       if (should_log)
-        comUt::print_buffer("udm_ueau", "Result For F1-Alg Key", key, 16);
+        utils::print_buffer("udm_ueau", "Result For F1-Alg Key", key, 16);
 
       opc_s = response_data.at("encOpcKey");
       conv::hex_str_to_uint8(opc_s.c_str(), opc);
       if (should_log)
-        comUt::print_buffer("udm_ueau", "Result For F1-Alg OPC", opc, 16);
+        utils::print_buffer("udm_ueau", "Result For F1-Alg OPC", opc, 16);
 
       amf_s = response_data.at("authenticationManagementField");
       conv::hex_str_to_uint8(amf_s.c_str(), amf);
       if (should_log)
-        comUt::print_buffer("udm_ueau", "Result For F1-Alg AMF", amf, 2);
+        utils::print_buffer("udm_ueau", "Result For F1-Alg AMF", amf, 2);
 
       sqn_s = response_data["sequenceNumber"].at("sqn");
       conv::hex_str_to_uint8(sqn_s.c_str(), sqn);
       if (should_log)
-        comUt::print_buffer("udm_ueau", "Result For F1-Alg SQN: ", sqn, 6);
+        utils::print_buffer("udm_ueau", "Result For F1-Alg SQN: ", sqn, 6);
     } catch (nlohmann::json::exception& e) {
       // error handling
       problem_details.setCause("AUTHENTICATION_REJECTED");
@@ -284,7 +284,7 @@ void udm_app::handle_generate_auth_data_request(
       // Logger::udm_ueau().debug("sqn string = "+sqn_s);
       sqn_s[12] = '\0';
       if (Logger::should_log(spdlog::level::debug))
-        comUt::print_buffer("udm_ueau", "SQNms", sqn, 6);
+        utils::print_buffer("udm_ueau", "SQNms", sqn, 6);
 
       if (r_sqn) {  // free
         free(r_sqn);

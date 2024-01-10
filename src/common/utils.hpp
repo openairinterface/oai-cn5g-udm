@@ -26,14 +26,15 @@
 
 #include "iostream"
 #include "logger.hpp"
-using namespace std;
-class comUt {
+
+class utils {
  public:
   static void print_buffer(
       const std::string app, const std::string commit, uint8_t* buf, int len);
   static void print_buffer(
-      const string app, const string commit, const uint8_t* buf, int len);
-  static void hexStr2Byte(const char* src, unsigned char* dest, int len);
+      const std::string app, const std::string commit, const uint8_t* buf,
+      int len);
+  static void hex_str_2_byte(const char* src, unsigned char* dest, int len);
 };
 
 #endif
