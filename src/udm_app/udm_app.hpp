@@ -49,8 +49,10 @@ class udm_app {
   explicit udm_app(const std::string& config_file, udm_event& ev);
   udm_app(udm_app const&) = delete;
   void operator=(udm_app const&) = delete;
-
   virtual ~udm_app();
+
+  void stop();
+
   void handle_generate_auth_data_request(
       const std::string& supiOrSuci,
       const oai::udm::model::AuthenticationInfoRequest&

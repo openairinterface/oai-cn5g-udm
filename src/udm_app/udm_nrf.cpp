@@ -34,6 +34,7 @@
 
 #include "logger.hpp"
 #include "udm.h"
+#include "sbi_helper.hpp"
 
 using namespace oai::udm::app;
 using namespace oai::udm::config;
@@ -46,11 +47,6 @@ udm_client* udm_client_instance = nullptr;
 
 //------------------------------------------------------------------------------
 udm_nrf::udm_nrf(udm_event& ev) : m_event_sub(ev) {}
-//---------------------------------------------------------------------------------------------
-void udm_nrf::get_nrf_api_root(std::string& api_root) {
-  api_root =
-      udm_cfg.nrf_addr.uri_root + NNRF_NFM_BASE + udm_cfg.nrf_addr.api_version;
-}
 
 //---------------------------------------------------------------------------------------------
 void udm_nrf::generate_udm_profile(
@@ -106,28 +102,91 @@ void udm_nrf::register_to_nrf() {
   udm_profile udm_nf_profile;
   generate_udm_profile(udm_nf_profile, udm_instance_id);
 
-  // Send NF registeration request
-  std::string udm_api_root = {};
-  std::string response     = {};
-  std::string method       = {"PUT"};
-  get_nrf_api_root(udm_api_root);
-  std::string remoteUri = udm_api_root + UDM_NF_REGISTER_URL + udm_instance_id;
+  // Send NF registration request
+  std::string nrf_api_root = {};
+  std::string response_str = {};
+  long response_code       = 0;
+  std::string remote_uri   = {};
+  sbi_helper::get_nrf_nf_instance_uri(
+      udm_cfg.nrf_addr, udm_instance_id, remote_uri);
   nlohmann::json json_data = {};
   udm_nf_profile.to_json(json_data);
 
-  Logger::udm_nrf().info("Sending NF registeration request");
-  udm_client_instance->curl_http_client(
-      remoteUri, method, response, json_data.dump().c_str());
+  Logger::udm_nrf().info(
+      "Sending NF registration request to NRF, NRF's URI: %s", remote_uri);
 
-  try {
-    response_data = nlohmann::json::parse(response);
-    if (response.find("REGISTERED") != 0) {
-      start_event_nf_heartbeat(remoteUri);
+  bool registration_result = false;
+  int num_retries          = 0;
+  while (num_retries < kNumberOfNfRegisterRetries) {
+    num_retries++;
+    if (!udm_client::get_instance().send_request(
+            remote_uri, http_method_e::PUT, json_data.dump().c_str(),
+            response_str, response_code)) {
+      sleep(kTimeIntervalBetweenNfRegisterRetries * pow(2, num_retries - 1));
+      Logger::udm_nrf().debug("NF Register Retry %d ...", num_retries);
+      continue;
+    } else {
+      registration_result = true;
+      break;
     }
-  } catch (nlohmann::json::exception& e) {
-    Logger::udm_nrf().info("NF registeration procedure failed");
+  }
+
+  if (registration_result) {
+    try {
+      response_data = nlohmann::json::parse(response_str);
+      // TODO: use Heart-beart timer interval returned from NRF
+      if (response_data.find("REGISTERED") != response_data.end()) {
+        start_event_nf_heartbeat(remote_uri);
+      }
+
+    } catch (nlohmann::json::exception& e) {
+      Logger::udm_nrf().info("NF Registration procedure failed");
+    }
+  } else {
+    Logger::udm_nrf().info(
+        "NF Registration procedure failed after %d retries", num_retries);
+    // TODO:
   }
 }
+
+//---------------------------------------------------------------------------------------------
+void udm_nrf::deregister_to_nrf() {
+  nlohmann::json response_data = {};
+
+  // Send NF Registration request
+  std::string response_str = {};
+  long response_code       = {0};
+
+  std::string nrf_uri = {};
+  sbi_helper::get_nrf_nf_instance_uri(
+      udm_cfg.nrf_addr, udm_instance_id, nrf_uri);
+
+  Logger::udm_nrf().info("Sending NF Deregistration request");
+
+  bool registration_result = false;
+  int num_retries          = 0;
+  while (num_retries < kNumberOfNfDeregisterRetries) {
+    num_retries++;
+    if (!udm_client::get_instance().send_request(
+            nrf_uri, http_method_e::DELETE, "", response_str, response_code)) {
+      sleep(kTimeIntervalBetweenNfDeregisterRetries * pow(2, num_retries - 1));
+      Logger::udm_app().debug("NF Deregister Retry %d ...", num_retries);
+      continue;
+    } else {
+      registration_result = true;
+      break;
+    }
+  }
+
+  if (registration_result) {
+    // TODO:
+  } else {
+    Logger::udm_nrf().info(
+        "NF Deregistration procedure failed after %d retries", num_retries);
+    // TODO:
+  }
+}
+
 //---------------------------------------------------------------------------------------------
 void udm_nrf::start_event_nf_heartbeat(std::string& remoteURI) {
   // get current time
@@ -145,6 +204,7 @@ void udm_nrf::start_event_nf_heartbeat(std::string& remoteURI) {
       boost::bind(&udm_nrf::trigger_nf_heartbeat_procedure, this, _1), interval,
       ms + interval);
 }
+
 //---------------------------------------------------------------------------------------------
 void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   _unused(ms);
@@ -159,8 +219,9 @@ void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   patch_items.push_back(patch_item);
   Logger::udm_app().info("Sending NF heartbeat request");
 
-  std::string response     = {};
-  std::string method       = {"PATCH"};
+  std::string response = {};
+  long response_code   = 0;
+
   nlohmann::json json_data = nlohmann::json::array();
   for (auto i : patch_items) {
     nlohmann::json item = {};
@@ -168,10 +229,12 @@ void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
     json_data.push_back(item);
   }
 
-  std::string udm_api_root = {};
-  get_nrf_api_root(udm_api_root);
-  std::string remoteUri = udm_api_root + UDM_NF_REGISTER_URL + udm_instance_id;
-  udm_client_instance->curl_http_client(
-      remoteUri, method, response, json_data.dump().c_str());
+  std::string nrf_uri = {};
+  sbi_helper::get_nrf_nf_instance_uri(
+      udm_cfg.nrf_addr, udm_instance_id, nrf_uri);
+
+  udm_client::get_instance().send_request(
+      nrf_uri, http_method_e::PATCH, json_data.dump().c_str(), response,
+      response_code);
   if (!response.empty()) task_connection.disconnect();
 }

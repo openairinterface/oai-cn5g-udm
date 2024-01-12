@@ -27,6 +27,7 @@
 #include <sys/socket.h>
 
 #include <boost/algorithm/string.hpp>
+#include "sbi_helper.hpp"
 
 #define HEART_BEAT_TIMER 10
 
@@ -116,21 +117,4 @@ enum http_response_codes_e {
   HTTP_RESPONSE_CODE_GATEWAY_TIMEOUT        = 504
 };
 
-typedef struct interface_cfg_s {
-  std::string if_name;
-  struct in_addr addr4;
-  struct in_addr network4;
-  struct in6_addr addr6;
-  unsigned int mtu;
-  unsigned int port;
-  std::string api_version;
-} interface_cfg_t;
-
-typedef struct nf_addr_s {
-  struct in_addr ipv4_addr;
-  unsigned int port;
-  std::string api_version;
-  std::string fqdn;
-  std::string uri_root;
-} nf_addr_t;
 #endif

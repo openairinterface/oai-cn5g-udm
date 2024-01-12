@@ -72,12 +72,13 @@ class udm_nrf {
    * @return void
    */
   void register_to_nrf();
+
   /*
-   * Get udm API Root
-   * @param [std::string& ] api_root: udm's API Root
+   * Trigger NF instance deregistration to NRF
+   * @param [void]
    * @return void
    */
-  void get_nrf_api_root(std::string& api_root);
+  void deregister_to_nrf();
 
  private:
   udm_event& m_event_sub;

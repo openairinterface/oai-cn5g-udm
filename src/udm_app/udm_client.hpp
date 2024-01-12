@@ -22,12 +22,12 @@
 #ifndef FILE_UDM_CLIENT_HPP_SEEN
 #define FILE_UDM_CLIENT_HPP_SEEN
 
+#include <string>
 #include <curl/curl.h>
 
-#include <map>
-#include <thread>
-
 namespace oai::udm::app {
+
+enum class http_method_e { GET, POST, PUT, PATCH, DELETE };
 
 class udm_client {
  private:
@@ -36,9 +36,15 @@ class udm_client {
   virtual ~udm_client();
 
   udm_client(udm_client const&) = delete;
-  static long curl_http_client(
-      std::string remoteUri, std::string method, std::string& response,
-      std::string msgBody);
+
+  static udm_client& get_instance() {
+    static udm_client instance;
+    return instance;
+  }
+
+  static bool send_request(
+      const std::string& remote_uri, const http_method_e& method,
+      const std::string& msg_body, std::string& response, long& response_code);
 };
-}   // namespace oai::udm::app
+}  // namespace oai::udm::app
 #endif /* FILE_UDM_CLIENT_HPP_SEEN */

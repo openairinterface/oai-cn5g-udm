@@ -51,19 +51,27 @@ void my_app_signal_handler(int s) {
   std::cout << "Caught signal " << s << std::endl;
   Logger::system().startup("exiting");
   std::cout << "Freeing Allocated memory..." << std::endl;
+
+  // Stop on-going tasks
+  if (udm_app_inst) {
+    udm_app_inst->stop();
+  }
+
   if (api_server) {
     api_server->shutdown();
-    delete api_server;
-    api_server = nullptr;
   }
-  std::cout << "UDM API Server memory done" << std::endl;
 
+  // Delete instances
   if (udm_app_inst) {
     delete udm_app_inst;
     udm_app_inst = nullptr;
   }
 
-  std::cout << "UDM APP memory done" << std::endl;
+  if (api_server) {
+    delete api_server;
+    api_server = nullptr;
+  }
+
   std::cout << "Freeing allocated memory done" << std::endl;
 
   exit(0);

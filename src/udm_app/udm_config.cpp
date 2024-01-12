@@ -45,11 +45,9 @@ udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
   udr_addr.ipv4_addr.s_addr = INADDR_ANY;
   udr_addr.port             = 8080;  // HTTP2 by default
   udr_addr.api_version      = "v1";
-  udr_addr.fqdn             = {};
   nrf_addr.ipv4_addr.s_addr = INADDR_ANY;
   nrf_addr.port             = 8080;  // HTTP2 by default
   nrf_addr.api_version      = "v1";
-  nrf_addr.fqdn             = {};
   use_http2                 = false;
   register_nrf              = false;
   log_level                 = spdlog::level::debug;
