@@ -24,12 +24,13 @@
 #include <iostream>
 #include <libconfig.h++>
 
+#include "api_helper.h"
+#include "common_defs.h"
+#include "fqdn.hpp"
 #include "if.hpp"
 #include "logger.hpp"
-#include "fqdn.hpp"
-#include "udm.h"
 #include "string.hpp"
-#include "common_defs.h"
+#include "udm.h"
 
 #include <arpa/inet.h>
 #include <stdbool.h>
@@ -39,6 +40,7 @@
 #include <unistd.h>
 
 namespace oai::udm::config {
+using namespace oai::udm::api;
 
 //------------------------------------------------------------------------------
 udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
@@ -60,66 +62,70 @@ udm_config::~udm_config() {}
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_slice_selection_subscription_data_retrieval_uri(
     const std::string& supi, const oai::model::common::PlmnId& plmn_id) {
-  return get_udr_url_base() + "/subscription-data/" + supi + "/" +
+  return get_udr_uri_base() + "/subscription-data/" + supi + "/" +
          plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/am-data";
 }
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_access_and_mobility_subscription_data_uri(
     const std::string& supi, const oai::model::common::PlmnId& plmn_id) {
-  return get_udr_url_base() + "/subscription-data/" + supi + "/" +
+  return get_udr_uri_base() + "/subscription-data/" + supi + "/" +
          plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/am-data";
 }
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_session_management_subscription_data_uri(
     const std::string& supi, const oai::model::common::PlmnId& plmn_id) {
-  return get_udr_url_base() + "/subscription-data/" + supi + "/" +
+  return get_udr_uri_base() + "/subscription-data/" + supi + "/" +
          plmn_id.getMcc() + plmn_id.getMnc() + "/provisioned-data/sm-data";
 }
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_smf_selection_subscription_data_uri(
     const std::string& supi, const oai::model::common::PlmnId& plmn_id) {
-  return get_udr_url_base() + "/subscription-data/" + supi + "/" +
+  return get_udr_uri_base() + "/subscription-data/" + supi + "/" +
          plmn_id.getMcc() + plmn_id.getMnc() +
          "/provisioned-data/smf-selection-subscription-data";
 }
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_sdm_subscriptions_uri(const std::string& supi) {
-  return get_udr_url_base() + "/subscription-data/" + supi +
+  return get_udr_uri_base() + "/subscription-data/" + supi +
          "/context-data/sdm-subscriptions";
 }
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_authentication_subscription_uri(
     const std::string& supi) {
-  return get_udr_url_base() + "/subscription-data/" + supi +
-         NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT;
+  return get_udr_uri_base() +
+         fmt::format(
+             api_helper::UdrDrPathSubscriptionDataAuthenticationSubscription,
+             supi);
 }
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_authentication_status_uri(
     const std::string& supi) {
-  return get_udr_url_base() + "/subscription-data/" + supi +
+  return get_udr_uri_base() + "/subscription-data/" + supi +
          "/authentication-data/authentication-status";
 }
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_amf_3gpp_registration_uri(
     const std::string& supi) {
-  return get_udr_url_base() + "/subscription-data/" + supi +
+  return get_udr_uri_base() + "/subscription-data/" + supi +
          "/context-data/amf-3gpp-access";
 }
 
 //------------------------------------------------------------------------------
 std::string udm_config::get_udm_ueau_base() {
-  return udr_addr.uri_root + NUDM_UE_AU_BASE + udr_addr.api_version;
+  return udr_addr.uri_root +
+         oai::udm::api::api_helper::UeAuthenticationServiceBase;
 }
 //------------------------------------------------------------------------------
-std::string udm_config::get_udr_url_base() {
-  return udr_addr.uri_root + NUDR_DATA_REPOSITORY + udr_addr.api_version;
+std::string udm_config::get_udr_uri_base() {
+  return udr_addr.uri_root + api_helper::UdrDataRepositoryBase +
+         udr_addr.api_version;
 }
 
 }  // namespace oai::udm::config

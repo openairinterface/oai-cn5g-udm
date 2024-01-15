@@ -34,6 +34,7 @@
 #include "ProvidingAcknowledgementOfSteeringOfRoamingApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -60,7 +61,9 @@ void ProvidingAcknowledgementOfSteeringOfRoamingApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/am-data/sor-ack",
+      *router,
+      api_helper::SubscriberDataManagementServiceBase +
+          api_helper::UdmSdmPathSupiAmDataSorAckInfo,
       Routes::bind(
           &ProvidingAcknowledgementOfSteeringOfRoamingApi::sor_ack_info_handler,
           this));

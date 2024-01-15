@@ -56,7 +56,7 @@ class udm_config {
       const std::string& supi, const oai::model::common::PlmnId& plmn_id);
   std::string get_udr_smf_selection_subscription_data_uri(
       const std::string& supi, const oai::model::common::PlmnId& plmn_id);
-  std::string get_udr_url_base();
+  std::string get_udr_uri_base();
   std::string get_udr_sdm_subscriptions_uri(const std::string& supi);
   std::string get_udr_authentication_subscription_uri(const std::string& supi);
   std::string get_udr_authentication_status_uri(const std::string& supi);

@@ -60,8 +60,6 @@ class SubscriptionDeletionForSharedDataApi {
   virtual ~SubscriptionDeletionForSharedDataApi() {}
   void init();
 
-  const std::string base = "/nudm-sdm/";
-
  private:
   void setupRoutes();
 

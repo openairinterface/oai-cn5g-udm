@@ -35,6 +35,7 @@ include(${BUILD_TOP_DIR}/udm/used_models.cmake)
 
 
 file(GLOB UDM_API_SERVER_src_files
+    ${UDM_API_SERVER_DIR}/api-helper.cpp
     ${UDM_API_SERVER_DIR}/udm-api-server.cpp
     ${UDM_API_SERVER_DIR}/udm-http2-server.cpp
     ${UDM_API_SERVER_DIR}/model/*.cpp

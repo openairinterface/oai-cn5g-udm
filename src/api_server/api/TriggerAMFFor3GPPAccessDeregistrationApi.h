@@ -60,8 +60,6 @@ class TriggerAMFFor3GPPAccessDeregistrationApi {
   virtual ~TriggerAMFFor3GPPAccessDeregistrationApi() {}
   void init();
 
-  const std::string base = "/nudm-uecm/";
-
  private:
   void setupRoutes();
 

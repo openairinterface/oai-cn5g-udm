@@ -62,8 +62,6 @@ class AMF3GppAccessRegistrationInfoRetrievalApi {
   virtual ~AMF3GppAccessRegistrationInfoRetrievalApi() {}
   void init();
 
-  const std::string base = "/nudm-uecm/";
-
  private:
   void setupRoutes();
 

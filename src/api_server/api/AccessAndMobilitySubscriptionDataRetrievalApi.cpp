@@ -34,6 +34,7 @@
 #include "AccessAndMobilitySubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "conversions.hpp"
 #include "udm_config.hpp"
 
@@ -62,7 +63,9 @@ void AccessAndMobilitySubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/am-data",
+      *router,
+      api_helper::SubscriberDataManagementServiceBase +
+          api_helper::UdmSdmPathSupiAmData,
       Routes::bind(
           &AccessAndMobilitySubscriptionDataRetrievalApi::get_am_data_handler,
           this));

@@ -34,6 +34,7 @@
 #include "SubscriptionDeletionForSharedDataApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,8 +60,8 @@ void SubscriptionDeletionForSharedDataApi::setupRoutes() {
 
   Routes::Delete(
       *router,
-      base + udm_cfg.sbi.api_version +
-          "/shared-data-subscriptions/:subscriptionId",
+      api_helper::SubscriberDataManagementServiceBase +
+          api_helper::UdmSdmPathSharedDataSubscriptionsSubscriptionId,
       Routes::bind(
           &SubscriptionDeletionForSharedDataApi::
               unsubscribe_for_shared_data_handler,

@@ -32,7 +32,9 @@
  */
 
 #include "UpdateEESubscriptionApi.h"
+
 #include "Helpers.h"
+#include "api_helper.h"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -42,8 +44,6 @@ namespace oai::udm::api {
 using namespace oai::udm::config;
 using namespace oai::model::common::helpers;
 using namespace oai::model::common;
-
-const std::string UpdateEESubscriptionApi::base = "/nudm-ee/";
 
 UpdateEESubscriptionApi::UpdateEESubscriptionApi(
     const std::shared_ptr<Pistache::Rest::Router>& rtr)
@@ -58,8 +58,8 @@ void UpdateEESubscriptionApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base + udm_cfg.udr_addr.api_version +
-          "/:ueIdentity/ee-subscriptions/:subscriptionId",
+      api_helper::EventExposureServiceBase +
+          api_helper::UdmEePathEeSubscriptionSubscriptionId,
       Routes::bind(
           &UpdateEESubscriptionApi::update_ee_subscription_handler, this));
 

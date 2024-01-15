@@ -34,6 +34,7 @@
 #include "AMF3GppAccessRegistrationInfoRetrievalApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -61,7 +62,8 @@ void AMF3GppAccessRegistrationInfoRetrievalApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + udm_cfg.sbi.api_version + "/:ueId/registrations/amf-3gpp-access",
+      api_helper::ContextManagementServiceBase +
+          api_helper::UdmUeCmPath3gppRegistrations,
       Routes::bind(
           &AMF3GppAccessRegistrationInfoRetrievalApi::
               get3_gpp_registration_handler,

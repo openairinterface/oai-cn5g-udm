@@ -61,8 +61,6 @@ class ConfirmAuthApi {
   virtual ~ConfirmAuthApi() {}
   void init();
 
-  const std::string base = "/nudm-ueau/";
-
  private:
   void setupRoutes();
 

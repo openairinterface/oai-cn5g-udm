@@ -34,6 +34,7 @@
 #include "SMFSelectionSubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "conversions.hpp"
 #include "udm_config.hpp"
 
@@ -61,7 +62,9 @@ void SMFSelectionSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/smf-select-data",
+      *router,
+      api_helper::ContextManagementServiceBase +
+          api_helper::UdmSdmPathSupiSmfSelData,
       Routes::bind(
           &SMFSelectionSubscriptionDataRetrievalApi::get_smf_sel_data_handler,
           this));

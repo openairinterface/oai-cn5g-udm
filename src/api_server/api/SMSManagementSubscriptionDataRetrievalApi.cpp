@@ -34,6 +34,7 @@
 #include "SMSManagementSubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -60,7 +61,9 @@ void SMSManagementSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/sms-mng-data",
+      *router,
+      api_helper::SubscriberDataManagementServiceBase +
+          api_helper::UdmSdmPathSupiSmsMngtData,
       Routes::bind(
           &SMSManagementSubscriptionDataRetrievalApi::get_sms_mngt_data_handler,
           this));

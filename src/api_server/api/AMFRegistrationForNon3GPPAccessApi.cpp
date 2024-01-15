@@ -34,6 +34,7 @@
 #include "AMFRegistrationForNon3GPPAccessApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -58,8 +59,8 @@ void AMFRegistrationForNon3GPPAccessApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + udm_cfg.sbi.api_version +
-          "/:ueId/registrations/amf-non-3gpp-access",
+      api_helper::ContextManagementServiceBase +
+          api_helper::UdmUeCmPathNon3GppRegistration,
       Routes::bind(
           &AMFRegistrationForNon3GPPAccessApi::non3_gpp_registration_handler,
           this));

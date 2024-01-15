@@ -34,6 +34,7 @@
 #include "SMSF3GPPAccessRegistrationInfoRetrievalApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,7 +60,8 @@ void SMSF3GPPAccessRegistrationInfoRetrievalApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + udm_cfg.sbi.api_version + "/:ueId/registrations/smsf-3gpp-access",
+      api_helper::ContextManagementServiceBase +
+          api_helper::UdmUeCmPath3GppSmsfRegistration,
       Routes::bind(
           &SMSF3GPPAccessRegistrationInfoRetrievalApi::
               get3_gpp_smsf_registration_handler,

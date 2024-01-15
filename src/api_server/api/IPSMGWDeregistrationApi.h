@@ -56,8 +56,6 @@ class IPSMGWDeregistrationApi {
   virtual ~IPSMGWDeregistrationApi() {}
   void init();
 
-  const std::string base = "/nudm-uecm/";
-
  private:
   void setupRoutes();
 

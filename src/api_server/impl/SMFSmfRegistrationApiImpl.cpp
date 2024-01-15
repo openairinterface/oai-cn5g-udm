@@ -33,6 +33,7 @@
 
 #include "SMFSmfRegistrationApiImpl.h"
 
+#include "api_helper.h"
 #include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
@@ -79,10 +80,12 @@ void SMFSmfRegistrationApiImpl::registration(
   // TODO: to move it to UDM_APP
   // UDR GET interface
   // get SmfRegistration related info
-  remote_uri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-               udm_cfg.udr_addr.api_version + "/subscription-data/" + ueId +
-               "/context-data/smf-registrations/" +
-               std::to_string(pduSessionId);
+  remote_uri =
+      udm_cfg.get_udr_uri_base() +
+      fmt::format(
+          oai::udm::api::api_helper::
+              UdrDrPathSubscriptionDataContextDataSmfRegistrationsPduSession,
+          ueId, std::to_string(pduSessionId));
   Logger::udm_uecm().debug("PUT Request:" + remote_uri);
 
   nlohmann::json smf_registration_json;

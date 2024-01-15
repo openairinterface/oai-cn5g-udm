@@ -34,6 +34,7 @@
 #include "TriggerAMFFor3GPPAccessDeregistrationApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,8 +60,8 @@ void TriggerAMFFor3GPPAccessDeregistrationApi::setupRoutes() {
 
   Routes::Post(
       *router,
-      base + udm_cfg.sbi.api_version +
-          "/:ueId/registrations/amf-3gpp-access/dereg-amf",
+      api_helper::ContextManagementServiceBase +
+          api_helper::UdmUeCmPathDeregAmf,
       Routes::bind(
           &TriggerAMFFor3GPPAccessDeregistrationApi::dereg_amf_handler, this));
 

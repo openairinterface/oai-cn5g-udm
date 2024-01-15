@@ -34,6 +34,7 @@
 #include "IPSMGWRegistrationInfoRetrievalApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -57,7 +58,9 @@ void IPSMGWRegistrationInfoRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:ueId/registrations/ip-sm-gw",
+      *router,
+      api_helper::ContextManagementServiceBase +
+          api_helper::UdmUeCmPathIpSmGwRegistration,
       Routes::bind(
           &IPSMGWRegistrationInfoRetrievalApi::
               get_ip_sm_gw_registration_handler,

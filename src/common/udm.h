@@ -69,26 +69,18 @@ typedef uint32_t evsub_id_t;
 #define INVALID_EVSUB_ID ((evsub_id_t) 0x00000000)
 #define UNASSIGNED_EVSUB_ID ((evsub_id_t) 0x00000000)
 
-#define NAUSF_NFM_NF_INSTANCE "/nf-instances/"
-#define NUDR_DATA_REPOSITORY "/nudr-dr/"
-#define NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT                              \
-  "/authentication-data/authentication-subscription"
-
-#define NUDM_SDM_BASE "/nudm-sdm/"
 #define NUDM_SDM_SUB "/sdm-subscriptions"
 #define NUDM_SMF_SELECT "smf-select-data"
 #define NUDM_NSSAI "nssai"
 #define NUDM_SM_DATA "sm-data"
 #define NUDM_UECM_XGPP_ACCESS "amf-3gpp-access"
 #define NUDM_AM_DATA "am-data"
-#define NUDM_UE_AU_BASE "/nudm-ueau/"
 #define NUDM_UE_AU_EVENTS "auth-events"
 #define NUDM_UE_AU_GEN_AU_DATA "generate-auth-data"
 
 #define MAX_WAIT_MSECS 20000  // 1 second
 
 #define UDM_CURL_TIMEOUT_MS 100L
-#define UDM_NF_REGISTER_URL "/nf-instances/"
 
 // 3GPP TS 29.571 (Common data)
 enum http_response_codes_e {

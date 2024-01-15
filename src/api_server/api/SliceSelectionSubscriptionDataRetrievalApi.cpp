@@ -34,6 +34,7 @@
 #include "SliceSelectionSubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "conversions.hpp"
 #include "udm_config.hpp"
 
@@ -61,7 +62,9 @@ void SliceSelectionSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/nssai",
+      *router,
+      api_helper::SubscriberDataManagementServiceBase +
+          api_helper::UdmSdmPathSupiNssai,
       Routes::bind(
           &SliceSelectionSubscriptionDataRetrievalApi::get_nssai_handler,
           this));

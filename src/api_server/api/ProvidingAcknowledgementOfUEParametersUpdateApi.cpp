@@ -34,6 +34,7 @@
 #include "ProvidingAcknowledgementOfUEParametersUpdateApi.h"
 
 #include "Helpers.h"
+#include "api_helper.h"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -60,7 +61,9 @@ void ProvidingAcknowledgementOfUEParametersUpdateApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/am-data/upu-ack",
+      *router,
+      api_helper::SubscriberDataManagementServiceBase +
+          api_helper::UdmSdmPathSupiAmDataUpuAck,
       Routes::bind(
           &ProvidingAcknowledgementOfUEParametersUpdateApi::upu_ack_handler,
           this));
