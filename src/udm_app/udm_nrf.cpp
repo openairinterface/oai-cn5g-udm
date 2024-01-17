@@ -137,14 +137,17 @@ void udm_nrf::register_to_nrf() {
       // TODO: use Heart-beart timer interval returned from NRF
       if (response_data.find("REGISTERED") != response_data.end()) {
         start_event_nf_heartbeat(remote_uri);
+        stop_nrf_registration_retry();
       }
 
     } catch (nlohmann::json::exception& e) {
-      Logger::udm_nrf().info("NF Registration procedure failed");
+      Logger::udm_nrf().info("NF Registration procedure failed, try again ...");
+      start_nrf_registration_retry();
     }
   } else {
     Logger::udm_nrf().info(
-        "NF Registration procedure failed after %d retries", num_retries);
+        "NF Registration procedure failed after %d retries, try again ...", num_retries);
+    start_nrf_registration_retry();
     // TODO:
   }
 }
@@ -237,4 +240,41 @@ void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
       nrf_uri, http_method_e::PATCH, json_data.dump().c_str(), response,
       response_code);
   if (!response.empty()) task_connection.disconnect();
+}
+
+//---------------------------------------------------------------------------------------------
+void udm_nrf::start_nrf_registration_retry() {
+  if (!retry_nrf_registration_task_connection.connected()) {
+    // get current time
+    uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                      std::chrono::system_clock::now().time_since_epoch())
+                      .count();
+    const uint64_t interval =
+        NRF_REGISTRATION_RETRY_TIMER * 1000;  // convert sec to msec
+
+    Logger::udm_nrf().debug("Start NRF registration retry task");
+    retry_nrf_registration_task_connection =
+        m_event_sub.subscribe_task_nf_heartbeat(
+            boost::bind(
+                &udm_nrf::trigger_nrf_registration_retry_procedure, this, _1),
+            interval, ms + interval);
+  }
+}
+
+//---------------------------------------------------------------------------------------------
+void udm_nrf::trigger_nrf_registration_retry_procedure(uint64_t ms) {
+  _unused(ms);
+  register_to_nrf();
+}
+
+//---------------------------------------------------------------------------------------------
+void udm_nrf::stop_nrf_registration_retry() {
+  // get current time
+  uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch())
+                    .count();
+  if (retry_nrf_registration_task_connection.connected()) {
+    Logger::udm_nrf().debug("Stop NRF registration retry task");
+    retry_nrf_registration_task_connection.disconnect();
+  }
 }
