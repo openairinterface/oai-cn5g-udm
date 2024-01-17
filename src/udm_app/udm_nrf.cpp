@@ -146,7 +146,8 @@ void udm_nrf::register_to_nrf() {
     }
   } else {
     Logger::udm_nrf().info(
-        "NF Registration procedure failed after %d retries, try again ...", num_retries);
+        "NF Registration procedure failed after %d retries, try again ...",
+        num_retries);
     start_nrf_registration_retry();
     // TODO:
   }
