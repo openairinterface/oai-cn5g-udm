@@ -1,5 +1,10 @@
 # RELEASE NOTES: #
 
+## v2.0.1 -- January 2024 ##
+
+* Fixes
+  - Remove NRF dependency from SMF
+
 ## v2.0.0 -- December 2023 ##
 
 * Features
