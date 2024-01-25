@@ -97,10 +97,11 @@ std::string udm_config::get_udr_sdm_subscriptions_uri(const std::string& supi) {
 //------------------------------------------------------------------------------
 std::string udm_config::get_udr_authentication_subscription_uri(
     const std::string& supi) {
-  return get_udr_uri_base() +
-         fmt::format(
-             api_helper::UdrDrPathSubscriptionDataAuthenticationSubscription,
-             supi);
+  std::string udr_path_fmt = {};
+  api_helper::get_fmt_format_form(
+      api_helper::UdrDrPathSubscriptionDataAuthenticationSubscription,
+      udr_path_fmt);
+  return get_udr_uri_base() + fmt::format(udr_path_fmt, supi);
 }
 
 //------------------------------------------------------------------------------
