@@ -29,6 +29,7 @@
 #include "udm_config.hpp"
 
 using namespace oai::udm::config;
+using namespace oai::common::sbi;
 
 extern udm_config udm_cfg;
 

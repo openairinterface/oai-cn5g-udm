@@ -41,6 +41,8 @@
 
 #include "logger.hpp"
 
+using namespace oai::common::sbi;
+
 namespace oai::udm::config {
 
 class udm_config {
