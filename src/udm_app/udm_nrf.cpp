@@ -115,8 +115,10 @@ void udm_nrf::register_to_nrf() {
   Logger::udm_nrf().info(
       "Sending NF registration request to NRF, NRF's URI: %s", remote_uri);
 
-  bool registration_result = false;
-  int num_retries          = 0;
+  bool registration_success = false;
+  bool registration_result  = false;
+  int num_retries           = 0;
+
   while (num_retries < kNumberOfNfRegisterRetries) {
     num_retries++;
     if (!udm_client::get_instance().send_request(
@@ -131,25 +133,30 @@ void udm_nrf::register_to_nrf() {
     }
   }
 
+  // Process the result if available
   if (registration_result) {
     try {
       response_data = nlohmann::json::parse(response_str);
       // TODO: use Heart-beart timer interval returned from NRF
-      if (response_data.find("REGISTERED") != response_data.end()) {
-        start_event_nf_heartbeat(remote_uri);
-        stop_nrf_registration_retry();
+      if (response_data.find("nfStatus") != response_data.end()) {
+        std::string status = response_data["nfStatus"].get<std::string>();
+        if (status.compare("REGISTERED") == 0) {
+          registration_success = true;
+          start_event_nf_heartbeat(remote_uri);
+          stop_nrf_registration_retry();
+        }
       }
-
     } catch (nlohmann::json::exception& e) {
       Logger::udm_nrf().info("NF Registration procedure failed, try again ...");
-      start_nrf_registration_retry();
     }
   } else {
     Logger::udm_nrf().info(
         "NF Registration procedure failed after %d retries, try again ...",
         num_retries);
-    start_nrf_registration_retry();
     // TODO:
+  }
+  if (!registration_success) {
+    start_nrf_registration_retry();
   }
 }
 
