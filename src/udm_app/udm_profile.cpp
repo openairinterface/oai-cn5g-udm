@@ -26,7 +26,6 @@
 #include "udm_profile.hpp"
 #include "string.hpp"
 
-// using namespace udm;
 using namespace oai::udm::app;
 
 //------------------------------------------------------------------------------

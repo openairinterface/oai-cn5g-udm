@@ -21,6 +21,8 @@
 
 #include "utils.hpp"
 
+#include "iostream"
+
 //------------------------------------------------------------------------------
 void utils::print_buffer(
     const std::string app, const std::string commit, uint8_t* buf, int len) {

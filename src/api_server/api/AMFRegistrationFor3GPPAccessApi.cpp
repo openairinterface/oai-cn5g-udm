@@ -33,7 +33,7 @@
 
 #include "AMFRegistrationFor3GPPAccessApi.h"
 
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "Helpers.h"
 #include "udm_config.hpp"
 
@@ -59,8 +59,8 @@ void AMFRegistrationFor3GPPAccessApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      api_helper::ContextManagementServiceBase +
-          api_helper::UdmUeCmPath3gppRegistrations,
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmUeCmPath3gppRegistrations,
       Routes::bind(
           &AMFRegistrationFor3GPPAccessApi::xg_3gpp_registration_handler,
           this));

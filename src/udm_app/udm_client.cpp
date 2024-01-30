@@ -23,7 +23,7 @@
 
 #include <curl/curl.h>
 #include <pistache/http.h>
-#include <pistache/mime.h>
+//#include <pistache/mime.h>
 
 #include <nlohmann/json.hpp>
 #include <stdexcept>
@@ -32,12 +32,10 @@
 #include "udm.h"
 #include "udm_config.hpp"
 
-using namespace Pistache::Http;
-using namespace Pistache::Http::Mime;
+// using namespace Pistache::Http;
+// using namespace Pistache::Http::Mime;
 using namespace oai::udm::app;
 using json = nlohmann::json;
-
-extern udm_client* udm_client_inst;
 
 using namespace oai::udm::config;
 extern udm_config udm_cfg;

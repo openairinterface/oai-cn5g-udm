@@ -26,23 +26,14 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-#include <libconfig.h++>
-#include <mutex>
-#include <string>
-#include <vector>
-
 #include "udm.h"
 #include "udm_config.hpp"
 #include "PlmnId.h"
 
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
-
 #include "logger.hpp"
 
 using namespace oai::common::sbi;
-
+using namespace oai::model::common;
 namespace oai::udm::config {
 
 class udm_config {
@@ -69,12 +60,9 @@ class udm_config {
   std::string pid_dir;
   std::string udm_name;
   spdlog::level::level_enum log_level;
-
   interface_cfg_t sbi;
-
   nf_addr_t udr_addr;
   nf_addr_t nrf_addr;
-
   bool register_nrf;
   bool use_http2;
   uint32_t curl_timeout;

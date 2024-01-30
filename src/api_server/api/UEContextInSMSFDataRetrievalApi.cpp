@@ -34,7 +34,7 @@
 #include "UEContextInSMSFDataRetrievalApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -61,8 +61,8 @@ void UEContextInSMSFDataRetrievalApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      api_helper::SubscriberDataManagementServiceBase +
-          api_helper::UdmSdmPathSupiUeCtxInSmsfData,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiUeCtxInSmsfData,
       Routes::bind(
           &UEContextInSMSFDataRetrievalApi::get_ue_ctx_in_smsf_data_handler,
           this));

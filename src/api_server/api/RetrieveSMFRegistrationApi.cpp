@@ -34,7 +34,7 @@
 #include "RetrieveSMFRegistrationApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,8 +59,8 @@ void RetrieveSMFRegistrationApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      api_helper::ContextManagementServiceBase +
-          api_helper::UdmUeCmPathSmfRegistrationPduSession,
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmUeCmPathSmfRegistrationPduSession,
       Routes::bind(
           &RetrieveSMFRegistrationApi::retrieve_smf_registration_handler,
           this));

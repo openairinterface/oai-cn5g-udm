@@ -34,7 +34,7 @@
 #include "SliceSelectionSubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "conversions.hpp"
 #include "udm_config.hpp"
 
@@ -63,8 +63,8 @@ void SliceSelectionSubscriptionDataRetrievalApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      api_helper::SubscriberDataManagementServiceBase +
-          api_helper::UdmSdmPathSupiNssai,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiNssai,
       Routes::bind(
           &SliceSelectionSubscriptionDataRetrievalApi::get_nssai_handler,
           this));

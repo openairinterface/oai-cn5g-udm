@@ -34,7 +34,7 @@
 #include "UECMRegistrationInfoRetrievalApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,8 +59,8 @@ void UECMRegistrationInfoRetrievalApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      api_helper::ContextManagementServiceBase +
-          api_helper::UdmUeCmPathRegistrations,
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmUeCmPathRegistrations,
       Routes::bind(
           &UECMRegistrationInfoRetrievalApi::get_registrations_handler, this));
 

@@ -34,7 +34,7 @@
 #include "AccessAndMobilitySubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "conversions.hpp"
 #include "udm_config.hpp"
 
@@ -64,8 +64,8 @@ void AccessAndMobilitySubscriptionDataRetrievalApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      api_helper::SubscriberDataManagementServiceBase +
-          api_helper::UdmSdmPathSupiAmData,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiAmData,
       Routes::bind(
           &AccessAndMobilitySubscriptionDataRetrievalApi::get_am_data_handler,
           this));

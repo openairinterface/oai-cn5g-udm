@@ -34,7 +34,7 @@
 #include "UELocationInformationRetrievalApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,8 +59,8 @@ void UELocationInformationRetrievalApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      api_helper::ContextManagementServiceBase +
-          api_helper::UdmUeCmPathLocationInfo,
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmUeCmPathLocationInfo,
       Routes::bind(
           &UELocationInformationRetrievalApi::get_location_info_handler, this));
 

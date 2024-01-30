@@ -34,7 +34,7 @@
 #include "ProvidingAcknowledgementOfUEParametersUpdateApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -62,8 +62,8 @@ void ProvidingAcknowledgementOfUEParametersUpdateApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      api_helper::SubscriberDataManagementServiceBase +
-          api_helper::UdmSdmPathSupiAmDataUpuAck,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiAmDataUpuAck,
       Routes::bind(
           &ProvidingAcknowledgementOfUEParametersUpdateApi::upu_ack_handler,
           this));

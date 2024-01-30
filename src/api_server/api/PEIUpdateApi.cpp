@@ -34,7 +34,7 @@
 #include "PEIUpdateApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -58,8 +58,8 @@ void PEIUpdateApi::setupRoutes() {
 
   Routes::Post(
       *router,
-      api_helper::ContextManagementServiceBase +
-          api_helper::UdmUeCmPathPeiUpdate,
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmUeCmPathPeiUpdate,
       Routes::bind(&PEIUpdateApi::pei_update_handler, this));
 
   // Default handler, called when a route is not found

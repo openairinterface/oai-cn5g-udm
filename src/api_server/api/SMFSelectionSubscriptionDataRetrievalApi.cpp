@@ -34,7 +34,7 @@
 #include "SMFSelectionSubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "conversions.hpp"
 #include "udm_config.hpp"
 
@@ -63,8 +63,8 @@ void SMFSelectionSubscriptionDataRetrievalApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      api_helper::ContextManagementServiceBase +
-          api_helper::UdmSdmPathSupiSmfSelData,
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiSmfSelData,
       Routes::bind(
           &SMFSelectionSubscriptionDataRetrievalApi::get_smf_sel_data_handler,
           this));

@@ -19,42 +19,22 @@
  *      contact@openairinterface.org
  */
 
-#pragma once
+#include "udm_sbi_helper.hpp"
 
-#include <map>
-#include <nlohmann/json.hpp>
-#include <string>
+#include <boost/algorithm/string.hpp>
+#include <regex>
+#include <vector>
 
-#include "sbi_helper.hpp"
-#include "udm_config.hpp"
-
-using namespace oai::udm::config;
-using namespace oai::common::sbi;
-
-extern udm_config udm_cfg;
+#include "ProblemDetails.h"
+#include "logger.hpp"
 
 namespace oai::udm::api {
-
-class api_helper : public sbi_helper {
- public:
-  static inline const std::string SubscriberDataManagementServiceBase =
-      sbi_helper::UdmSdmBase +
-      udm_cfg.sbi.api_version.value_or(kDefaultSbiApiVersion);
-
-  static inline const std::string ContextManagementServiceBase =
-      sbi_helper::UdmUeCmBase +
-      udm_cfg.sbi.api_version.value_or(kDefaultSbiApiVersion);
-
-  static inline const std::string UeAuthenticationServiceBase =
-      sbi_helper::UdmUeAuBase +
-      udm_cfg.sbi.api_version.value_or(kDefaultSbiApiVersion);
-
-  static inline const std::string EventExposureServiceBase =
-      sbi_helper::UdmEeBase +
-      udm_cfg.sbi.api_version.value_or(kDefaultSbiApiVersion);
-
-  static void set_problem_details(
-      nlohmann::json& json_data, const std::string& detail);
-};
-
+//------------------------------------------------------------------------------
+void udm_sbi_helper::set_problem_details(
+    nlohmann::json& json_data, const std::string& detail) {
+  Logger::udm_server().error("%s", detail);
+  oai::model::common::ProblemDetails problem_details;
+  problem_details.setDetail(detail);
+  to_json(json_data, problem_details);
+}
 }  // namespace oai::udm::api

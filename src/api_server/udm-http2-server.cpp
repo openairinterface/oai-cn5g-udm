@@ -28,7 +28,7 @@
 #include <string>
 #include "string.hpp"
 
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 #include "3gpp_29.500.h"
@@ -50,7 +50,7 @@ void udm_http2_server::start() {
   Logger::udm_server().info("HTTP2 server started");
   // Generate Auth Data
   server.handle(
-      api_helper::UeAuthenticationServiceBase + "/",
+      udm_sbi_helper::UeAuthenticationServiceBase + "/",
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           std::string msg((char*) data, len);
@@ -102,7 +102,7 @@ void udm_http2_server::start() {
       });
 
   server.handle(
-      api_helper::SubscriberDataManagementServiceBase + "/",
+      udm_sbi_helper::SubscriberDataManagementServiceBase + "/",
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           std::string msg((char*) data, len);

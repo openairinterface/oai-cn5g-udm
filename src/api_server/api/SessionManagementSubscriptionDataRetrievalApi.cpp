@@ -34,7 +34,7 @@
 #include "SessionManagementSubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 
@@ -63,8 +63,8 @@ void SessionManagementSubscriptionDataRetrievalApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      api_helper::SubscriberDataManagementServiceBase +
-          api_helper::UdmSdmPathSupiSmData,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiSmData,
       Routes::bind(
           &SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler,
           this));

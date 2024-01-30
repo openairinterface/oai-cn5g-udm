@@ -34,7 +34,7 @@
 #include "GroupIdentifiersApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -61,8 +61,8 @@ void GroupIdentifiersApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      api_helper::SubscriberDataManagementServiceBase +
-          api_helper::UdmSdmPathGroupDataGroupIdentifiers,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathGroupDataGroupIdentifiers,
       Routes::bind(&GroupIdentifiersApi::get_group_identifiers_handler, this));
 
   // Default handler, called when a route is not found

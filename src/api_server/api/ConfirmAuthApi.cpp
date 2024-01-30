@@ -34,7 +34,7 @@
 #include "ConfirmAuthApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -60,8 +60,8 @@ void ConfirmAuthApi::setupRoutes() {
 
   Routes::Post(
       *router,
-      api_helper::UeAuthenticationServiceBase +
-          api_helper::UdmUeAuPathConfirmAuth,
+      udm_sbi_helper::UeAuthenticationServiceBase +
+          udm_sbi_helper::UdmUeAuPathConfirmAuth,
       Routes::bind(&ConfirmAuthApi::confirm_auth_handler, this));
 
   // Default handler, called when a route is not found

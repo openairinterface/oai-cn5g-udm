@@ -34,7 +34,7 @@
 #include "SubscriptionDeletionApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -60,8 +60,8 @@ void SubscriptionDeletionApi::setupRoutes() {
 
   Routes::Delete(
       *router,
-      api_helper::SubscriberDataManagementServiceBase +
-          api_helper::UdmSdmPathSupiSdmSubscriptionsSubscriptionId,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiSdmSubscriptionsSubscriptionId,
       Routes::bind(&SubscriptionDeletionApi::unsubscribe_handler, this));
 
   // Default handler, called when a route is not found

@@ -34,7 +34,7 @@
 #include "CreateEESubscriptionApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -58,8 +58,8 @@ void CreateEESubscriptionApi::setupRoutes() {
 
   Routes::Post(
       *router,
-      api_helper::EventExposureServiceBase +
-          api_helper::UdmEePathEeSubscription,
+      udm_sbi_helper::EventExposureServiceBase +
+          udm_sbi_helper::UdmEePathEeSubscription,
       Routes::bind(
           &CreateEESubscriptionApi::create_ee_subscription_handler, this));
 

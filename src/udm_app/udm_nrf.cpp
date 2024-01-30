@@ -189,7 +189,8 @@ void udm_nrf::deregister_to_nrf() {
     }
   }
 
-  if (registration_result) {
+  if (registration_result and (response_code == 204)) {
+    Logger::udm_nrf().info("NF Deregistration procedure successful");
     // TODO:
   } else {
     Logger::udm_nrf().info(

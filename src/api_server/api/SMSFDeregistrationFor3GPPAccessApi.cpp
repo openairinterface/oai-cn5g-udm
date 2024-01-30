@@ -34,7 +34,7 @@
 #include "SMSFDeregistrationFor3GPPAccessApi.h"
 
 #include "Helpers.h"
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -61,8 +61,8 @@ void SMSFDeregistrationFor3GPPAccessApi::setupRoutes() {
 
   Routes::Delete(
       *router,
-      api_helper::ContextManagementServiceBase +
-          api_helper::UdmUeCmPath3GppSmsfRegistration,
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmUeCmPath3GppSmsfRegistration,
       Routes::bind(
           &SMSFDeregistrationFor3GPPAccessApi::
               _3_gpp_smsf_deregistration_handler,

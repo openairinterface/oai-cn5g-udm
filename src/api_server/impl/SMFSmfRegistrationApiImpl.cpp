@@ -33,7 +33,7 @@
 
 #include "SMFSmfRegistrationApiImpl.h"
 
-#include "api_helper.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
@@ -83,7 +83,7 @@ void SMFSmfRegistrationApiImpl::registration(
   remote_uri =
       udm_cfg.get_udr_uri_base() +
       fmt::format(
-          oai::udm::api::api_helper::
+          oai::udm::api::udm_sbi_helper::
               UdrDrPathSubscriptionDataContextDataSmfRegistrationsPduSession,
           ueId, std::to_string(pduSessionId));
   Logger::udm_uecm().debug("PUT Request:" + remote_uri);
