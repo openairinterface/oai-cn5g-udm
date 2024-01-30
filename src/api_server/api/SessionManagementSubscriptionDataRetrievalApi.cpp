@@ -64,7 +64,7 @@ void SessionManagementSubscriptionDataRetrievalApi::setupRoutes() {
   Routes::Get(
       *router,
       api_helper::SubscriberDataManagementServiceBase +
-          api_helper::UdmSdmPathSupiAmData,
+          api_helper::UdmSdmPathSupiSmData,
       Routes::bind(
           &SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler,
           this));
