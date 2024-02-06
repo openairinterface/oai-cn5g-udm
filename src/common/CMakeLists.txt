@@ -20,15 +20,15 @@
 ################################################################################
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${SRC_TOP_DIR}/udm_app)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/utils)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
-include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/common)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/common_model)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
 
 add_library(3GPP_COMMON_TYPES STATIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/conversions.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/options.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/comUt.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/udm_sbi_helper.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/utils.cpp
 )
-
-

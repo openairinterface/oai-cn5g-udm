@@ -59,8 +59,6 @@ class UELocationInformationRetrievalApi {
   virtual ~UELocationInformationRetrievalApi() {}
   void init();
 
-  const std::string base = "/nudm-uecm/";
-
  private:
   void setupRoutes();
 

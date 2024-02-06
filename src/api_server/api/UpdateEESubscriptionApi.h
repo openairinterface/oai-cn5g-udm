@@ -61,8 +61,6 @@ class UpdateEESubscriptionApi {
   virtual ~UpdateEESubscriptionApi() = default;
   void init();
 
-  static const std::string base;
-
  private:
   void setupRoutes();
 

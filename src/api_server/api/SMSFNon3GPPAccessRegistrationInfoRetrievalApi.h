@@ -60,8 +60,6 @@ class SMSFNon3GPPAccessRegistrationInfoRetrievalApi {
   virtual ~SMSFNon3GPPAccessRegistrationInfoRetrievalApi() {}
   void init();
 
-  const std::string base = "/nudm-uecm/";
-
  private:
   void setupRoutes();
 

@@ -34,6 +34,7 @@
 #include "GroupIdentifiersApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,7 +60,9 @@ void GroupIdentifiersApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/group-data/group-identifiers",
+      *router,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathGroupDataGroupIdentifiers,
       Routes::bind(&GroupIdentifiersApi::get_group_identifiers_handler, this));
 
   // Default handler, called when a route is not found

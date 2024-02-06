@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_profile.hpp
- \brief
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2021
- \email: Tien-Thinh.Nguyen@eurecom.fr
- */
-
 #ifndef FILE_UDM_PROFILE_HPP_SEEN
 #define FILE_UDM_PROFILE_HPP_SEEN
 
@@ -40,9 +32,7 @@
 #include "3gpp_29.510.h"
 #include "udm.h"
 
-namespace oai {
-namespace udm {
-namespace app {
+namespace oai::udm::app {
 
 class udm_profile : public std::enable_shared_from_this<udm_profile> {
  public:
@@ -343,8 +333,6 @@ class udm_profile : public std::enable_shared_from_this<udm_profile> {
   udm_info_t udm_info;
 };
 
-}  // namespace app
-}  // namespace udm
-}  // namespace oai
+}  // namespace oai::udm::app
 
 #endif

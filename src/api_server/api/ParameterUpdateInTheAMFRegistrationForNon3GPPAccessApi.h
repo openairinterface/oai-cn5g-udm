@@ -61,8 +61,6 @@ class ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi {
   virtual ~ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi() {}
   void init();
 
-  const std::string base = "/nudm-uecm/";
-
  private:
   void setupRoutes();
 

@@ -51,19 +51,27 @@ void my_app_signal_handler(int s) {
   std::cout << "Caught signal " << s << std::endl;
   Logger::system().startup("exiting");
   std::cout << "Freeing Allocated memory..." << std::endl;
+
+  // Stop on-going tasks
+  if (udm_app_inst) {
+    udm_app_inst->stop();
+  }
+
   if (api_server) {
     api_server->shutdown();
-    delete api_server;
-    api_server = nullptr;
   }
-  std::cout << "UDM API Server memory done" << std::endl;
 
+  // Delete instances
   if (udm_app_inst) {
     delete udm_app_inst;
     udm_app_inst = nullptr;
   }
 
-  std::cout << "UDM APP memory done" << std::endl;
+  if (api_server) {
+    delete api_server;
+    api_server = nullptr;
+  }
+
   std::cout << "Freeing allocated memory done" << std::endl;
 
   exit(0);
@@ -90,27 +98,17 @@ int main(int argc, char** argv) {
   udm_event ev;
 
   std::string conf_file_name = Options::getlibconfigConfig();
-  std::string file_ext       = ".conf";
-  if (conf_file_name.find(file_ext) != std::string::npos) {
-    Logger::udm_server().debug(
-        "Parsing the configuration file, file type CONF.");
-    udm_cfg.load(conf_file_name);
-    Logger::set_level(udm_cfg.log_level);
-    udm_cfg.display();
-  } else {
-    // By default, considering the config file as yaml
-    Logger::system().debug("Parsing the configuration file, file type YAML.");
-    udm_cfg_yaml = std::make_unique<udm_config_yaml>(
-        conf_file_name, Options::getlogStdout(), Options::getlogRotFilelog());
-    if (!udm_cfg_yaml->init()) {
-      Logger::udm_server().error("Reading the configuration failed. Exiting.");
-      return 1;
-    }
-    udm_cfg_yaml->pre_process();
-    udm_cfg_yaml->display();
-    // Convert from YAML to internal structure
-    udm_cfg_yaml->to_udm_config(udm_cfg);
+  Logger::system().debug("Parsing the configuration file (YAML).");
+  udm_cfg_yaml = std::make_unique<udm_config_yaml>(
+      conf_file_name, Options::getlogStdout(), Options::getlogRotFilelog());
+  if (!udm_cfg_yaml->init()) {
+    Logger::udm_server().error("Reading the configuration failed. Exiting.");
+    return 1;
   }
+  udm_cfg_yaml->pre_process();
+  udm_cfg_yaml->display();
+  // Convert from YAML to internal structure
+  udm_cfg_yaml->to_udm_config(udm_cfg);
 
   // UDM application layer
   udm_app_inst = new udm_app(Options::getlibconfigConfig(), ev);
@@ -145,8 +143,7 @@ int main(int argc, char** argv) {
   } else {
     // UDM NGHTTP API server (HTTP2)
     udm_api_server_2 = new udm_http2_server(
-        conv::toString(udm_cfg.sbi.addr4), udm_cfg.sbi_http2_port,
-        udm_app_inst);
+        conv::toString(udm_cfg.sbi.addr4), udm_cfg.sbi.port, udm_app_inst);
     std::thread udm_http2_manager(&udm_http2_server::start, udm_api_server_2);
     udm_http2_manager.join();
   }

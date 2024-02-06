@@ -19,27 +19,21 @@
  *      contact@openairinterface.org
  */
 
-/*! \file string.hpp
-   \brief
-   \author  Lionel GAUTHIER
-   \date 2018
-   \email: lionel.gauthier@eurecom.fr
-*/
-#ifndef FILE_STRING_HPP_FILE_SEEN
-#define FILE_STRING_HPP_FILE_SEEN
+#ifndef _PRINT_BUFFER_H
+#define _PRINT_BUFFER_H
 
 #include <string>
 
-namespace util {
+#include "logger.hpp"
 
-std::string string_format(const char* format, ...);
+class utils {
+ public:
+  static void print_buffer(
+      const std::string app, const std::string commit, uint8_t* buf, int len);
+  static void print_buffer(
+      const std::string app, const std::string commit, const uint8_t* buf,
+      int len);
+  static void hex_str_2_byte(const char* src, unsigned char* dest, int len);
+};
 
-std::string& ltrim(std::string& s);
-// trim from end
-std::string& rtrim(std::string& s);
-// trim from both ends
-std::string& trim(std::string& s);
-// extract query param from given querystring
-std::string get_query_param(std::string querystring, std::string param);
-}  // namespace util
 #endif

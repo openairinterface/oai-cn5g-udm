@@ -34,6 +34,7 @@
 #include "SMFSelectionSubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "conversions.hpp"
 #include "udm_config.hpp"
 
@@ -61,7 +62,9 @@ void SMFSelectionSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/smf-select-data",
+      *router,
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiSmfSelData,
       Routes::bind(
           &SMFSelectionSubscriptionDataRetrievalApi::get_smf_sel_data_handler,
           this));
@@ -93,7 +96,7 @@ void SMFSelectionSubscriptionDataRetrievalApi::get_smf_sel_data_handler(
   if (!plmnIdQuery.isEmpty()) {
     PlmnId value;
     std::string valueplmnIdQuery = plmnIdQuery.get();
-    std::string valuechange      = conv::UrlDecode(valueplmnIdQuery);
+    std::string valuechange      = conv::url_decode(valueplmnIdQuery);
     nlohmann::json::parse(valuechange).get_to(value);
     plmnId = Pistache::Some(value);
   }

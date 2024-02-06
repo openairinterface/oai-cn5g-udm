@@ -34,6 +34,7 @@
 #include "GenerateAuthDataApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -60,8 +61,8 @@ void GenerateAuthDataApi::setupRoutes() {
 
   Routes::Post(
       *router,
-      base + udm_cfg.sbi.api_version +
-          "/:supiOrSuci/security-information/generate-auth-data",
+      udm_sbi_helper::UeAuthenticationServiceBase +
+          udm_sbi_helper::UdmUeAuPathGenerateAuthData,
       Routes::bind(&GenerateAuthDataApi::generate_auth_data_handler, this));
 
   // Default handler, called when a route is not found

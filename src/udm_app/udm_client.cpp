@@ -19,19 +19,11 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_client.cpp
- \brief
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2020
- \email: Tien-Thinh.Nguyen@eurecom.fr
- */
-
 #include "udm_client.hpp"
 
 #include <curl/curl.h>
 #include <pistache/http.h>
-#include <pistache/mime.h>
+//#include <pistache/mime.h>
 
 #include <nlohmann/json.hpp>
 #include <stdexcept>
@@ -40,12 +32,10 @@
 #include "udm.h"
 #include "udm_config.hpp"
 
-using namespace Pistache::Http;
-using namespace Pistache::Http::Mime;
+// using namespace Pistache::Http;
+// using namespace Pistache::Http::Mime;
 using namespace oai::udm::app;
 using json = nlohmann::json;
-
-extern udm_client* udm_client_inst;
 
 using namespace oai::udm::config;
 extern udm_config udm_cfg;
@@ -68,19 +58,20 @@ udm_client::~udm_client() {
 }
 
 //------------------------------------------------------------------------------
-long udm_client::curl_http_client(
-    std::string remoteUri, std::string method, std::string& response,
-    std::string msgBody) {
-  Logger::udm_app().info("Send HTTP message with body %s", msgBody.c_str());
+bool udm_client::send_request(
+    const std::string& remote_uri, const http_method_e& method,
+    const std::string& msg_body, std::string& response, long& response_code) {
+  Logger::udm_app().info("Send HTTP message with body %s", msg_body.c_str());
 
-  uint32_t str_len = msgBody.length();
+  bool result = false;
+
+  uint32_t str_len = msg_body.length();
   char* body_data  = (char*) malloc(str_len + 1);
   memset(body_data, 0, str_len + 1);
-  memcpy((void*) body_data, (void*) msgBody.c_str(), str_len);
+  memcpy((void*) body_data, (void*) msg_body.c_str(), str_len);
 
   curl_global_init(CURL_GLOBAL_ALL);
-  CURL* curl    = curl_easy_init();
-  long httpCode = {0};
+  CURL* curl = curl_easy_init();
 
   uint8_t http_version = 1;
   if (udm_cfg.use_http2) http_version = 2;
@@ -88,23 +79,25 @@ long udm_client::curl_http_client(
   if (curl) {
     CURLcode res               = {};
     struct curl_slist* headers = nullptr;
-    if ((method.compare("POST") == 0) or (method.compare("PUT") == 0) or
-        (method.compare("PATCH") == 0)) {
+    if ((method == http_method_e::POST) or (method == http_method_e::PUT) or
+        (method == http_method_e::PATCH)) {
       std::string content_type = "Content-Type: application/json";
       headers = curl_slist_append(headers, content_type.c_str());
       curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     }
-    curl_easy_setopt(curl, CURLOPT_URL, remoteUri.c_str());
-    if (method.compare("POST") == 0)
+
+    curl_easy_setopt(curl, CURLOPT_URL, remote_uri.c_str());
+    if (method == http_method_e::POST)
       curl_easy_setopt(curl, CURLOPT_HTTPPOST, 1);
-    else if (method.compare("PUT") == 0)
+    else if (method == http_method_e::PUT)
       curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
-    else if (method.compare("DELETE") == 0)
+    else if (method == http_method_e::DELETE)
       curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
-    else if (method.compare("PATCH") == 0)
+    else if (method == http_method_e::PATCH)
       curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
     else
       curl_easy_setopt(curl, CURLOPT_HTTPGET, 1);
+
     curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, udm_cfg.curl_timeout);
     curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1);
     curl_easy_setopt(curl, CURLOPT_INTERFACE, udm_cfg.sbi.if_name.c_str());
@@ -119,85 +112,69 @@ long udm_client::curl_http_client(
           curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE);
     }
 
-    // response information.
-    std::unique_ptr<std::string> httpData(new std::string());
-    std::unique_ptr<std::string> httpHeaderData(new std::string());
+    // response information
+    std::unique_ptr<std::string> http_header_data(new std::string());
 
-    // Hook up data handling function.
+    // Hook up data handling function
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &callback);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, httpData.get());
-    curl_easy_setopt(curl, CURLOPT_HEADERDATA, httpHeaderData.get());
-    if ((method.compare("POST") == 0) or (method.compare("PUT") == 0) or
-        (method.compare("PATCH") == 0)) {
-      curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, msgBody.length());
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+    curl_easy_setopt(curl, CURLOPT_HEADERDATA, http_header_data.get());
+
+    if ((method == http_method_e::POST) or (method == http_method_e::PUT) or
+        (method == http_method_e::PATCH)) {
+      curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, msg_body.length());
       curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body_data);
     }
-    res = curl_easy_perform(curl);
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
 
-    // get the response
-    response                       = *httpData.get();
-    std::string json_data_response = {};
-    std::string resMsg             = {};
-    bool is_response_ok            = true;
-    Logger::udm_app().info("Got response with httpcode (%d)", httpCode);
-
-    if (httpCode == 0) {
-      Logger::udm_app().info(
-          "Cannot get response when calling %s", remoteUri.c_str());
-      // free curl before returning
-      curl_slist_free_all(headers);
-      curl_easy_cleanup(curl);
-      return httpCode;
-    }
-
-    nlohmann::json response_data = {};
-
-    if (httpCode != HTTP_RESPONSE_CODE_OK &&
-        httpCode != HTTP_RESPONSE_CODE_CREATED &&
-        httpCode != HTTP_RESPONSE_CODE_NO_CONTENT) {
-      is_response_ok = false;
-      if (response.size() < 1) {
-        Logger::udm_app().info("There's no content in the response");
-        // TODO: send context response error
-        return httpCode;
+    int num_retries = 0;
+    while (num_retries < kNumberOfCurlRetries) {
+      num_retries++;
+      res = curl_easy_perform(curl);
+      if (res != CURLE_OK) {
+        // Sleep between two consecutive retries
+        usleep(kBaseTimeIntervalBetweenCurlRetries * pow(2, num_retries - 1));
+        Logger::udm_app().debug("Curl retry %d ...", num_retries);
+        continue;
+      } else {
+        break;
       }
-      Logger::udm_app().info("Wrong response code");
-
-      return httpCode;
     }
 
-    else {  // httpCode = 200 || httpCode = 201 || httpCode = 204
-      response = *httpData.get();
-    }
+    if (res != CURLE_OK) {
+      Logger::udm_app().debug(
+          "Still could not reach the destination after %d retries",
+          kNumberOfCurlRetries);
+      // TODO: set Problem details
+    } else {
+      result = true;
+      curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+      Logger::udm_app().debug(
+          "Get response with HTTP code (%d)", response_code);
+      // HttpStatusCode response_code_e =
+      //     utils::from_int_to_enum_type(response_code);
 
-    if (!is_response_ok) {
-      try {
-        response_data = nlohmann::json::parse(json_data_response);
-      } catch (nlohmann::json::exception& e) {
-        Logger::udm_app().info("Could not get Json content from the response");
-        // Set the default Cause
-        response_data["error"]["cause"] = "504 Gateway Timeout";
+      if (response_code == 0) {
+        Logger::udm_app().info(
+            "Cannot get response when calling %s", remote_uri.c_str());
+        // TODO: set problem details
+        // free curl before returning
+        curl_slist_free_all(headers);
+        curl_easy_cleanup(curl);
+        return false;
       }
 
-      Logger::udm_app().info(
-          "Get response with jsonData: %s", json_data_response.c_str());
+      // Process the response
+      if (!response.empty())
+        Logger::udm_app().info("Get response with data: %s", response.c_str());
 
-      std::string cause = response_data["error"]["cause"];
-      Logger::udm_app().info("Call Network Function services failure");
-      Logger::udm_app().info("Cause value: %s", cause.c_str());
+      // TODO: set Problem details
     }
     curl_slist_free_all(headers);
+    curl_easy_cleanup(curl);
+  } else {
     curl_easy_cleanup(curl);
   }
 
   curl_global_cleanup();
-
-  if (body_data) {
-    free(body_data);
-    body_data = nullptr;
-  }
-  // fflush(stdout);
-
-  return httpCode;
+  return result;
 }

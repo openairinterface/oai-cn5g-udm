@@ -34,6 +34,7 @@
 #include "DeleteAuthApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,7 +60,8 @@ void DeleteAuthApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + udm_cfg.sbi.api_version + "/:supi/auth-events/:authEventId",
+      udm_sbi_helper::UeAuthenticationServiceBase +
+          udm_sbi_helper::UdmUeAuPathAuthEventId,
       Routes::bind(&DeleteAuthApi::delete_auth_handler, this));
 
   // Default handler, called when a route is not found

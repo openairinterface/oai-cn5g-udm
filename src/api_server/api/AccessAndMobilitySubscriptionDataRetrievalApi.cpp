@@ -34,6 +34,7 @@
 #include "AccessAndMobilitySubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "conversions.hpp"
 #include "udm_config.hpp"
 
@@ -62,7 +63,9 @@ void AccessAndMobilitySubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/am-data",
+      *router,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiAmData,
       Routes::bind(
           &AccessAndMobilitySubscriptionDataRetrievalApi::get_am_data_handler,
           this));
@@ -94,7 +97,7 @@ void AccessAndMobilitySubscriptionDataRetrievalApi::get_am_data_handler(
   if (!plmnIdQuery.isEmpty()) {
     PlmnId value;
     std::string valueplmnIdQuery = plmnIdQuery.get();
-    std::string valuechange      = conv::UrlDecode(valueplmnIdQuery);
+    std::string valuechange      = conv::url_decode(valueplmnIdQuery);
     nlohmann::json::parse(valuechange).get_to(value);
     plmnId = Pistache::Some(value);
   }

@@ -4,8 +4,8 @@
  * this work for additional information regarding copyright ownership.
  * The OpenAirInterface Software Alliance licenses this file to You under
  * the OAI Public License, Version 1.1  (the "License"); you may not use this
- *file except in compliance with the License. You may obtain a copy of the
- *License at
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
  *      http://www.openairinterface.org/?page_id=698
  *
@@ -19,28 +19,22 @@
  *      contact@openairinterface.org
  */
 
-/*! \file comUt.hpp
- \brief
- \author  Keliang DU, BUPT
- \date 2020
- \email: contact@openairinterface.org
- */
+#include "udm_sbi_helper.hpp"
 
-#ifndef _PRINT_BUFFER_H
-#define _PRINT_BUFFER_H
+#include <boost/algorithm/string.hpp>
+#include <regex>
+#include <vector>
 
-#include <string>
-
-#include "iostream"
+#include "ProblemDetails.h"
 #include "logger.hpp"
-using namespace std;
-class comUt {
- public:
-  static void print_buffer(
-      const std::string app, const std::string commit, uint8_t* buf, int len);
-  static void print_buffer(
-      const string app, const string commit, const uint8_t* buf, int len);
-  static void hexStr2Byte(const char* src, unsigned char* dest, int len);
-};
 
-#endif
+namespace oai::udm::api {
+//------------------------------------------------------------------------------
+void udm_sbi_helper::set_problem_details(
+    nlohmann::json& json_data, const std::string& detail) {
+  Logger::udm_server().error("%s", detail);
+  oai::model::common::ProblemDetails problem_details;
+  problem_details.setDetail(detail);
+  to_json(json_data, problem_details);
+}
+}  // namespace oai::udm::api

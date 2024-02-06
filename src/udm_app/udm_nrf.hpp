@@ -19,13 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_client.hpp
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2020
- \email:
- */
-
 #ifndef FILE_UDM_NRF_SEEN
 #define FILE_UDM_NRF_SEEN
 
@@ -39,9 +32,7 @@
 #include "udm_event.hpp"
 #include "udm_profile.hpp"
 
-namespace oai {
-namespace udm {
-namespace app {
+namespace oai::udm::app {
 
 class udm_nrf {
  private:
@@ -107,18 +98,16 @@ class udm_nrf {
   void register_to_nrf();
 
   /*
-   * Get udm API Root
-   * @param [std::string& ] api_root: udm's API Root
+   * Trigger NF instance deregistration to NRF
+   * @param [void]
    * @return void
    */
-  void get_nrf_api_root(std::string& api_root);
+  void deregister_to_nrf();
 
  private:
   udm_event& m_event_sub;
   bs2::connection task_connection;
   bs2::connection retry_nrf_registration_task_connection;
 };
-}  // namespace app
-}  // namespace udm
-}  // namespace oai
+}  // namespace oai::udm::app
 #endif /* FILE_UDM_NRF_SEEN */

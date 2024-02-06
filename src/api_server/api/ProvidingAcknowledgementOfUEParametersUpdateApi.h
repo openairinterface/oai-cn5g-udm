@@ -62,8 +62,6 @@ class ProvidingAcknowledgementOfUEParametersUpdateApi {
   virtual ~ProvidingAcknowledgementOfUEParametersUpdateApi() {}
   void init();
 
-  const std::string base = "/nudm-sdm/";
-
  private:
   void setupRoutes();
 

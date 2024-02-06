@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_http2-server.h
- \brief
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2021
- \email: tien-thinh.nguyen@eurecom.fr
- */
-
 #ifndef FILE_UDM_HTTP2_SERVER_SEEN
 #define FILE_UDM_HTTP2_SERVER_SEEN
 
@@ -39,6 +31,7 @@
 
 using namespace nghttp2::asio_http2;
 using namespace nghttp2::asio_http2::server;
+using namespace oai::udm::app;
 
 class udm_http2_server {
  public:

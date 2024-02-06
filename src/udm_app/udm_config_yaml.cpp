@@ -144,11 +144,9 @@ void udm_config_yaml::to_udm_config(oai::udm::config::udm_config& cfg) {
   cfg.register_nrf               = register_nrf();
   cfg.curl_timeout               = get_curl_timeout();
 
-  cfg.use_fqdn_dns = false;  // TODO: to be removed
   if (get_http_version() == 2) cfg.use_http2 = true;
 
   cfg.sbi.api_version = local().get_sbi().get_api_version();
-  cfg.sbi_http2_port  = local().get_sbi().get_port();
   cfg.sbi.port        = local().get_sbi().get_port();
   cfg.sbi.addr4       = local().get_sbi().get_addr4();
   cfg.sbi.if_name     = local().get_sbi().get_if_name();

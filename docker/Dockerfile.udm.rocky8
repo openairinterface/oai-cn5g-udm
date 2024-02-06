@@ -118,7 +118,6 @@ RUN ldconfig && \
 
 WORKDIR /openair-udm/etc
 COPY --from=oai-udm-builder \
-    /openair-udm/etc/udm.conf \
     /openair-udm/etc/config.yaml ./
 
 WORKDIR /openair-udm

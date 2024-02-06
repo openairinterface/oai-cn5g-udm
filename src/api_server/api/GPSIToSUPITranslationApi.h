@@ -61,8 +61,6 @@ class GPSIToSUPITranslationApi {
   virtual ~GPSIToSUPITranslationApi() {}
   void init();
 
-  const std::string base = "/nudm-sdm/";
-
  private:
   void setupRoutes();
 

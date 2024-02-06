@@ -34,6 +34,7 @@
 #include "RetrievalOfMultipleDataSetsApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,7 +60,9 @@ void RetrievalOfMultipleDataSetsApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:supi",
+      *router,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupi,
       Routes::bind(
           &RetrievalOfMultipleDataSetsApi::get_data_sets_handler, this));
 

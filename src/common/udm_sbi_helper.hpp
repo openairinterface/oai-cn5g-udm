@@ -19,21 +19,40 @@
  *      contact@openairinterface.org
  */
 
-#ifndef FILE_FQDN_HPP_SEEN
-#define FILE_FQDN_HPP_SEEN
-#include <string>
-class fqdn {
+#pragma once
+
+#include <nlohmann/json.hpp>
+
+#include "sbi_helper.hpp"
+#include "udm_config.hpp"
+
+using namespace oai::udm::config;
+using namespace oai::common::sbi;
+
+extern udm_config udm_cfg;
+
+namespace oai::udm::api {
+
+class udm_sbi_helper : public sbi_helper {
  public:
-  /*
-   * Resolve a DNS name to get host's IP Addr
-   * @param [const std::string &] host_name: host's name/url
-   * @param [const std::string &] protocol: protocol
-   * @param [uint8_t &] addr_type: addr_type (Ipv4/v6)
-   * @return void
-   */
-  static bool resolve(
-      const std::string& host_name, std::string& address, uint32_t& port,
-      uint8_t& addr_type, const std::string& protocol = "http");
+  static inline const std::string SubscriberDataManagementServiceBase =
+      sbi_helper::UdmSdmBase +
+      udm_cfg.sbi.api_version.value_or(kDefaultSbiApiVersion);
+
+  static inline const std::string ContextManagementServiceBase =
+      sbi_helper::UdmUeCmBase +
+      udm_cfg.sbi.api_version.value_or(kDefaultSbiApiVersion);
+
+  static inline const std::string UeAuthenticationServiceBase =
+      sbi_helper::UdmUeAuBase +
+      udm_cfg.sbi.api_version.value_or(kDefaultSbiApiVersion);
+
+  static inline const std::string EventExposureServiceBase =
+      sbi_helper::UdmEeBase +
+      udm_cfg.sbi.api_version.value_or(kDefaultSbiApiVersion);
+
+  static void set_problem_details(
+      nlohmann::json& json_data, const std::string& detail);
 };
 
-#endif /* FILE_FQDN_HPP_SEEN */
+}  // namespace oai::udm::api

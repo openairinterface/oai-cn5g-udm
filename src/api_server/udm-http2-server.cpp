@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_http2-server.cpp
- \brief
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2020
- \email: tien-thinh.nguyen@eurecom.fr
- */
-
 #include "udm-http2-server.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/thread.hpp>
@@ -36,6 +28,7 @@
 #include <string>
 #include "string.hpp"
 
+#include "udm_sbi_helper.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 #include "3gpp_29.500.h"
@@ -46,6 +39,7 @@ using namespace nghttp2::asio_http2::server;
 using namespace oai::udm::config;
 using namespace oai::udm::model;
 using namespace oai::model::common;
+using namespace oai::udm::api;
 
 extern udm_config udm_cfg;
 
@@ -56,7 +50,7 @@ void udm_http2_server::start() {
   Logger::udm_server().info("HTTP2 server started");
   // Generate Auth Data
   server.handle(
-      NUDM_UE_AU_BASE + udm_cfg.sbi.api_version + "/",
+      udm_sbi_helper::UeAuthenticationServiceBase + "/",
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           std::string msg((char*) data, len);
@@ -108,7 +102,7 @@ void udm_http2_server::start() {
       });
 
   server.handle(
-      NUDM_SDM_BASE + udm_cfg.sbi.api_version + "/",
+      udm_sbi_helper::SubscriberDataManagementServiceBase + "/",
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           std::string msg((char*) data, len);

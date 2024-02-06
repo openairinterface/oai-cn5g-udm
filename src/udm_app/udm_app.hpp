@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udm_app.hpp
- \brief
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2020
- \email: Tien-Thinh.Nguyen@eurecom.fr
- */
-
 #ifndef FILE_UDM_APP_HPP_SEEN
 #define FILE_UDM_APP_HPP_SEEN
 
@@ -52,14 +44,15 @@
 
 namespace oai::udm::app {
 
-// class ausf_config;
 class udm_app {
  public:
   explicit udm_app(const std::string& config_file, udm_event& ev);
   udm_app(udm_app const&) = delete;
   void operator=(udm_app const&) = delete;
-
   virtual ~udm_app();
+
+  void stop();
+
   void handle_generate_auth_data_request(
       const std::string& supiOrSuci,
       const oai::udm::model::AuthenticationInfoRequest&

@@ -34,6 +34,7 @@
 #include "TraceConfigurationDataRetrievalApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,7 +60,9 @@ void TraceConfigurationDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/trace-data",
+      *router,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiTraceConfigData,
       Routes::bind(
           &TraceConfigurationDataRetrievalApi::get_trace_config_data_handler,
           this));

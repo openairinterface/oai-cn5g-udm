@@ -34,6 +34,7 @@
 #include "UECMRegistrationInfoRetrievalApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -57,7 +58,9 @@ void UECMRegistrationInfoRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:ueId/registrations",
+      *router,
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmUeCmPathRegistrations,
       Routes::bind(
           &UECMRegistrationInfoRetrievalApi::get_registrations_handler, this));
 

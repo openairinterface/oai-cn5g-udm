@@ -22,6 +22,13 @@
 #ifndef FILE__SEEN
 #define FILE__SEEN
 
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+
+#include <boost/algorithm/string.hpp>
+#include "sbi_helper.hpp"
+
 #define HEART_BEAT_TIMER 10
 #define NRF_REGISTRATION_RETRY_TIMER 5
 
@@ -63,23 +70,18 @@ typedef uint32_t evsub_id_t;
 #define INVALID_EVSUB_ID ((evsub_id_t) 0x00000000)
 #define UNASSIGNED_EVSUB_ID ((evsub_id_t) 0x00000000)
 
-#define NAUSF_NFM_NF_INSTANCE "/nf-instances/"
-#define NUDR_DATA_REPOSITORY "/nudr-dr/"
-#define NUDR_AUTHENTICATION_SUBSCRIPTION_ENDPOINT                              \
-  "/authentication-data/authentication-subscription"
-
-#define NUDM_SDM_BASE "/nudm-sdm/"
 #define NUDM_SDM_SUB "/sdm-subscriptions"
 #define NUDM_SMF_SELECT "smf-select-data"
 #define NUDM_NSSAI "nssai"
 #define NUDM_SM_DATA "sm-data"
 #define NUDM_UECM_XGPP_ACCESS "amf-3gpp-access"
 #define NUDM_AM_DATA "am-data"
-#define NUDM_UE_AU_BASE "/nudm-ueau/"
 #define NUDM_UE_AU_EVENTS "auth-events"
 #define NUDM_UE_AU_GEN_AU_DATA "generate-auth-data"
 
 #define MAX_WAIT_MSECS 20000  // 1 second
+
+#define UDM_CURL_TIMEOUT_MS 100L
 
 // 3GPP TS 29.571 (Common data)
 enum http_response_codes_e {
@@ -108,42 +110,4 @@ enum http_response_codes_e {
   HTTP_RESPONSE_CODE_GATEWAY_TIMEOUT        = 504
 };
 
-typedef struct supi_range_s {
-  std::string start;
-  std::string end;
-  std::string pattern;
-} supi_range_t;
-
-typedef struct supi_range_udm_info_item_s {
-  supi_range_t supi_range;
-} supi_range_udm_info_item_t;
-
-typedef struct identity_range_s {
-  std::string start;
-  std::string end;
-  std::string pattern;
-} identity_range_t;
-
-typedef struct identity_range_udm_info_item_s {
-  identity_range_t identity_range;
-} identity_range_udm_info_item_t;
-
-typedef struct internal_grpid_s {
-  std::string start;
-  std::string end;
-  std::string pattern;
-} internal_grpid_range_t;
-
-typedef struct internal_grpid_udm_info_item_s {
-  internal_grpid_range_t int_grpid_range;
-} internal_grpid_range_udm_info_item_t;
-
-typedef struct udm_info_s {
-  std::string groupid;
-  std::vector<supi_range_udm_info_item_t> supi_ranges;
-  std::vector<identity_range_udm_info_item_t> gpsi_ranges;
-  std::vector<identity_range_udm_info_item_t> ext_grp_id_ranges;
-  std::vector<std::string> routing_indicators;
-  std::vector<internal_grpid_range_udm_info_item_t> int_grp_id_ranges;
-} udm_info_t;
 #endif

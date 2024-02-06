@@ -34,6 +34,7 @@
 #include "SliceSelectionSubscriptionDataRetrievalApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "conversions.hpp"
 #include "udm_config.hpp"
 
@@ -61,7 +62,9 @@ void SliceSelectionSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/nssai",
+      *router,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiNssai,
       Routes::bind(
           &SliceSelectionSubscriptionDataRetrievalApi::get_nssai_handler,
           this));
@@ -93,7 +96,7 @@ void SliceSelectionSubscriptionDataRetrievalApi::get_nssai_handler(
   if (!plmnIdQuery.isEmpty()) {
     PlmnId value;
     std::string valueplmnIdQuery = plmnIdQuery.get();
-    std::string valuechange      = conv::UrlDecode(valueplmnIdQuery);
+    std::string valuechange      = conv::url_decode(valueplmnIdQuery);
     nlohmann::json::parse(valuechange).get_to(value);
     plmnId = Pistache::Some(value);
   }

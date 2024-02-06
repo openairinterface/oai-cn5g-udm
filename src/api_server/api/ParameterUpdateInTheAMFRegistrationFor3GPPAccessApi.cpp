@@ -34,6 +34,7 @@
 #include "ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,7 +60,8 @@ void ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base + udm_cfg.sbi.api_version + "/:ueId/registrations/amf-3gpp-access",
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmUeCmPath3gppRegistrations,
       Routes::bind(
           &ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi::
               update3_gpp_registration_handler,

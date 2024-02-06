@@ -19,33 +19,29 @@
  *      contact@openairinterface.org
  */
 
-/*! \file logger.hpp
- \brief
- \date 2020
- \email: contact@openairinterface.org
- */
-
 #pragma once
 
 #include <cstdarg>
 #include <stdexcept>
 #include <vector>
+
 #include "logger_base.hpp"
 
-static const std::string CONFIG      = "config";
-static const std::string SYSTEM      = "system";
-static const std::string UDM_UEAU    = "udm_ueau";
-static const std::string UDM_UECM    = "udm_uecm";
-static const std::string UDM_EE      = "udm_ee";
-static const std::string UDM_SDM     = "udm_sdm";
-static const std::string UDM_NRF     = "udm_nrf";
-static const std::string UDM_SVR_LOG = "udm_server";
-static const std::string UDM_APP     = "udm_app";
+static const std::string CONFIG         = "config";
+static const std::string SYSTEM         = "system";
+static const std::string UDM_UEAU       = "udm_ueau";
+static const std::string UDM_UECM       = "udm_uecm";
+static const std::string UDM_EE         = "udm_ee";
+static const std::string UDM_SDM        = "udm_sdm";
+static const std::string UDM_NRF        = "udm_nrf";
+static const std::string UDM_API_SERVER = "udm_server";
+static const std::string UDM_APP        = "udm_app";
 
-class Logger {
+class Logger : public oai::logger::logger_common {
  public:
   static void init(
       const std::string& name, const bool log_stdout, const bool log_rot_file) {
+    oai::logger::logger_common(name, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
         name, CONFIG, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
@@ -61,7 +57,7 @@ class Logger {
     oai::logger::logger_registry::register_logger(
         name, UDM_NRF, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
-        name, UDM_SVR_LOG, log_stdout, log_rot_file);
+        name, UDM_API_SERVER, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
         name, UDM_APP, log_stdout, log_rot_file);
   }
@@ -94,7 +90,7 @@ class Logger {
     return oai::logger::logger_registry::get_logger(UDM_NRF);
   }
   static const oai::logger::printf_logger& udm_server() {
-    return oai::logger::logger_registry::get_logger(UDM_SVR_LOG);
+    return oai::logger::logger_registry::get_logger(UDM_API_SERVER);
   }
   static const oai::logger::printf_logger& udm_app() {
     return oai::logger::logger_registry::get_logger(UDM_APP);

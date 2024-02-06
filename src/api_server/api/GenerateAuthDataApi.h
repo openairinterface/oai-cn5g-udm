@@ -64,8 +64,6 @@ class GenerateAuthDataApi {
   virtual ~GenerateAuthDataApi() {}
   void init();
 
-  const std::string base = "/nudm-ueau/";
-
  private:
   void setupRoutes();
 

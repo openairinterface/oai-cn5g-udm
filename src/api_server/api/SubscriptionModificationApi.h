@@ -62,8 +62,6 @@ class SubscriptionModificationApi {
   virtual ~SubscriptionModificationApi() {}
   void init();
 
-  const std::string base = "/nudm-sdm/";
-
  private:
   void setupRoutes();
 

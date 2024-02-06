@@ -32,8 +32,10 @@
  */
 
 #include "SessionManagementSubscriptionDataRetrievalApi.h"
-#include "logger.hpp"
+
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
+#include "logger.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -60,7 +62,9 @@ void SessionManagementSubscriptionDataRetrievalApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/sm-data",
+      *router,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiSmData,
       Routes::bind(
           &SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler,
           this));

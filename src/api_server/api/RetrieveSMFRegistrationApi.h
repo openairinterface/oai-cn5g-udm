@@ -59,8 +59,6 @@ class RetrieveSMFRegistrationApi {
   virtual ~RetrieveSMFRegistrationApi() {}
   void init();
 
-  const std::string base = "/nudm-uecm/";
-
  private:
   void setupRoutes();
 

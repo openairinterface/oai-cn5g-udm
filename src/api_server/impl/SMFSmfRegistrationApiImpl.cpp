@@ -33,6 +33,7 @@
 
 #include "SMFSmfRegistrationApiImpl.h"
 
+#include "udm_sbi_helper.hpp"
 #include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
@@ -70,33 +71,34 @@ void SMFSmfRegistrationApiImpl::registration(
     Pistache::Http::ResponseWriter& response) {
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
-  std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
-  std::string remoteUri;
-  std::string Method;
-  std::string msgBody;
-  std::string Response;
-  nlohmann::json j_ProblemDetails;
-  ProblemDetails m_ProblemDetails;
+  std::string udr_port            = std::to_string(udm_cfg.udr_addr.port);
+  std::string remote_uri          = {};
+  std::string response_str        = {};
+  nlohmann::json j_ProblemDetails = {};
+  ProblemDetails m_ProblemDetails = {};
 
   // TODO: to move it to UDM_APP
   // UDR GET interface
   // get SmfRegistration related info
-  remoteUri = udr_ip + ":" + udr_port + NUDR_DATA_REPOSITORY +
-              udm_cfg.udr_addr.api_version + "/subscription-data/" + ueId +
-              "/context-data/smf-registrations/" + std::to_string(pduSessionId);
-  Logger::udm_uecm().debug("PUT Request:" + remoteUri);
-  Method = "PUT";
+  remote_uri =
+      udm_cfg.get_udr_uri_base() +
+      fmt::format(
+          oai::udm::api::udm_sbi_helper::
+              UdrDrPathSubscriptionDataContextDataSmfRegistrationsPduSession,
+          ueId, std::to_string(pduSessionId));
+  Logger::udm_uecm().debug("PUT Request:" + remote_uri);
 
-  nlohmann::json smfRegistration_j;
-  to_json(smfRegistration_j, smfRegistration);
-  long http_code;
-  http_code = udm_client::curl_http_client(
-      remoteUri, Method, Response, smfRegistration_j.dump());
+  nlohmann::json smf_registration_json;
+  to_json(smf_registration_json, smfRegistration);
+  long http_code = 0;
+  udm_client::get_instance().send_request(
+      remote_uri, http_method_e::PUT, smf_registration_json.dump(),
+      response_str, http_code);
 
   nlohmann::json response_data = {};
   try {
-    Logger::udm_uecm().debug("PUT Response:" + Response);
-    response_data = nlohmann::json::parse(Response.c_str());
+    Logger::udm_uecm().debug("PUT Response:" + response_str);
+    response_data = nlohmann::json::parse(response_str.c_str());
 
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_uecm().info("Could not get JSON content from UDR response");
@@ -125,7 +127,7 @@ void SMFSmfRegistrationApiImpl::registration(
 
   response.send(
       static_cast<Pistache::Http::Code>(http_code),
-      smfRegistration_j.dump().c_str());
+      smf_registration_json.dump().c_str());
 }
 
 }  // namespace api

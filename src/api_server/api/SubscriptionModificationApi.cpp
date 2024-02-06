@@ -34,6 +34,7 @@
 #include "SubscriptionModificationApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -60,13 +61,13 @@ void SubscriptionModificationApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base + udm_cfg.sbi.api_version +
-          "/:supi/sdm-subscriptions/:subscriptionId",
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiSdmSubscriptionsSubscriptionId,
       Routes::bind(&SubscriptionModificationApi::modify_handler, this));
   Routes::Patch(
       *router,
-      base + udm_cfg.sbi.api_version +
-          "/shared-data-subscriptions/:subscriptionId",
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSharedDataSubscriptionsSubscriptionId,
       Routes::bind(
           &SubscriptionModificationApi::modify_shared_data_subs_handler, this));
 

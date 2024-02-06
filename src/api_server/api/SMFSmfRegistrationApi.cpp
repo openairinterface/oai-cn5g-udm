@@ -34,6 +34,7 @@
 #include "SMFSmfRegistrationApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -61,12 +62,13 @@ void SMFSmfRegistrationApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + udm_cfg.sbi.api_version + "/:ueId/registrations/smf-registrations",
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmUeCmPathSmfRegistration,
       Routes::bind(&SMFSmfRegistrationApi::get_smf_registration_handler, this));
   Routes::Put(
       *router,
-      base + udm_cfg.sbi.api_version +
-          "/:ueId/registrations/smf-registrations/:pduSessionId",
+      udm_sbi_helper::ContextManagementServiceBase +
+          udm_sbi_helper::UdmUeCmPathSmfRegistrationPduSession,
       Routes::bind(&SMFSmfRegistrationApi::registration_handler, this));
 
   // Default handler, called when a route is not found

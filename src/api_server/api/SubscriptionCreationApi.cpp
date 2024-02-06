@@ -34,6 +34,7 @@
 #include "SubscriptionCreationApi.h"
 
 #include "Helpers.h"
+#include "udm_sbi_helper.hpp"
 #include "udm_config.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
@@ -59,7 +60,9 @@ void SubscriptionCreationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + udm_cfg.sbi.api_version + "/:supi/sdm-subscriptions",
+      *router,
+      udm_sbi_helper::SubscriberDataManagementServiceBase +
+          udm_sbi_helper::UdmSdmPathSupiSdmSubscriptions,
       Routes::bind(&SubscriptionCreationApi::subscribe_handler, this));
 
   // Default handler, called when a route is not found
