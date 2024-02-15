@@ -95,7 +95,6 @@ RUN apt-get update && \
 # Ubuntu 20 --> libasan5
 # Ubuntu 22 --> libasan6
 #      libasan? \
-      libconfig++9v5 \
 # Ubuntu 20 --> libnettle7
 # Ubuntu 22 --> libnettle8
       libnettle? \
@@ -110,9 +109,6 @@ RUN apt-get update && \
       libcurl?-gnutls \
       librtmp1 \
       libpsl5 \
-# Ubuntu 20 --> boost71
-# Ubuntu 22 --> boost74
-      libboost-thread1.7?.0 \
   && rm -rf /var/lib/apt/lists/*
 
 # Copying executable and generated libraries
