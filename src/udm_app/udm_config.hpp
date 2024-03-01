@@ -60,9 +60,11 @@ class udm_config {
   std::string pid_dir;
   std::string udm_name;
   spdlog::level::level_enum log_level;
+
   interface_cfg_t sbi;
   nf_addr_t udr_addr;
   nf_addr_t nrf_addr;
+
   bool register_nrf;
   bool use_http2;
   uint32_t curl_timeout;

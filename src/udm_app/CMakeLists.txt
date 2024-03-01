@@ -33,13 +33,13 @@ include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/utils.cmake)
 
 add_library (UDM STATIC
   udm_app.cpp
-  udm_client.cpp 
   udm_config.cpp 
   udm_config_yaml.cpp 
-  udm_event.cpp 
-  udm_profile.cpp
-  task_manager.cpp
-  udm_nrf.cpp 
+  sbi/udm_client.cpp 
+  sbi/udm_nrf.cpp 
+  sbi/udm_profile.cpp
+  event_handling/udm_event.cpp 
+  event_handling/task_manager.cpp
 )
 
 

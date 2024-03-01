@@ -273,6 +273,8 @@ ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../src/5gaka ${CMAKE_CURRENT_BIN
 add_definitions("-DPACKAGE_NAME=\"UDM\"")
 
 include_directories(${SRC_TOP_DIR}/udm_app)
+include_directories(${SRC_TOP_DIR}/udm_app/event_handling)
+include_directories(${SRC_TOP_DIR}/udm_app/sbi)
 include_directories(${SRC_TOP_DIR}/oai_udm)
 include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/common/utils)

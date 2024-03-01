@@ -22,6 +22,7 @@
 set(5GAKA_DIR "${SRC_TOP_DIR}/5gaka")
 
 include_directories(${SRC_TOP_DIR}/udm_app)
+include_directories(${SRC_TOP_DIR}/udm_app/event_handling)
 include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/common/utils)
 include_directories(${SRC_TOP_DIR}/common/libngap)
