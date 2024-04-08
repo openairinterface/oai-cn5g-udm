@@ -44,13 +44,13 @@ udm_config udm_cfg;
 udm_app* udm_app_inst              = nullptr;
 UDMApiServer* api_server           = nullptr;
 udm_http2_server* udm_api_server_2 = nullptr;
+task_manager* tm_inst              = nullptr;
 
 std::unique_ptr<udm_config_yaml> udm_cfg_yaml;
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
-  std::cout << "Caught signal " << s << std::endl;
-  Logger::system().startup("exiting");
-  std::cout << "Freeing Allocated memory..." << std::endl;
+  Logger::system().info("Exiting: caught signal %d", s);
+  Logger::system().debug("Freeing Allocated memory...");
 
   // Stop on-going tasks
   if (udm_app_inst) {
@@ -59,7 +59,23 @@ void my_app_signal_handler(int s) {
 
   if (api_server) {
     api_server->shutdown();
+    delete api_server;
+    api_server = nullptr;
   }
+
+  if (udm_api_server_2) {
+    udm_api_server_2->stop();
+    delete udm_api_server_2;
+    udm_api_server_2 = nullptr;
+  }
+
+  Logger::system().debug("HTTP servers are shutdown");
+
+  if (tm_inst) {
+    delete tm_inst;
+    tm_inst = nullptr;
+  }
+  Logger::system().debug("Stopped the UDM Task Manager.");
 
   // Delete instances
   if (udm_app_inst) {
@@ -67,13 +83,9 @@ void my_app_signal_handler(int s) {
     udm_app_inst = nullptr;
   }
 
-  if (api_server) {
-    delete api_server;
-    api_server = nullptr;
-  }
-
-  std::cout << "Freeing allocated memory done" << std::endl;
-
+  Logger::system().debug("UDM APP memory done");
+  Logger::system().debug("Freeing allocated memory done");
+  Logger::system().info("Bye.");
   exit(0);
 }
 
@@ -114,8 +126,8 @@ int main(int argc, char** argv) {
   udm_app_inst = new udm_app(Options::getlibconfigConfig(), ev);
 
   // Task Manager
-  task_manager tm(ev);
-  std::thread task_manager_thread(&task_manager::run, &tm);
+  tm_inst = new task_manager(ev);
+  std::thread task_manager_thread(&task_manager::run, tm_inst);
 
   // PID file
   string pid_file_name =
