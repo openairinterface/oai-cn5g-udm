@@ -109,7 +109,7 @@ int main(int argc, char** argv) {
 
   // Logger
   Logger::init("udm", Options::getlogStdout(), Options::getlogRotFilelog());
-  Logger::udm_server().startup("Options parsed");
+  Logger::system().startup("Options parsed");
 
   std::signal(SIGTERM, my_app_signal_handler);
   std::signal(SIGINT, my_app_signal_handler);
@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
   udm_cfg_yaml = std::make_unique<udm_config_yaml>(
       conf_file_name, Options::getlogStdout(), Options::getlogRotFilelog());
   if (!udm_cfg_yaml->init()) {
-    Logger::udm_server().error("Reading the configuration failed. Exiting.");
+    Logger::system().error("Reading the configuration failed. Exiting.");
     return 1;
   }
   udm_cfg_yaml->pre_process();
@@ -132,6 +132,11 @@ int main(int argc, char** argv) {
 
   // UDM application layer
   udm_app_inst = new udm_app(Options::getlibconfigConfig(), ev);
+  if (!udm_app_inst->start()) {
+    udm_app_inst->stop();
+    Logger::system().error("Could not start UDM APP, exiting.");
+    return 1;
+  }
 
   // Task Manager
   tm_inst = new task_manager(ev);
@@ -141,8 +146,7 @@ int main(int argc, char** argv) {
   string pid_file_name =
       get_exe_absolute_path(udm_cfg.pid_dir, udm_cfg.instance);
   if (!is_pid_file_lock_success(pid_file_name.c_str())) {
-    Logger::udm_server().error(
-        "Lock PID file %s failed\n", pid_file_name.c_str());
+    Logger::system().error("Lock PID file %s failed\n", pid_file_name.c_str());
     exit(-EDEADLK);
   }
 

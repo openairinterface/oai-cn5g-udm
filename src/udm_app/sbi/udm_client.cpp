@@ -23,17 +23,14 @@
 
 #include <curl/curl.h>
 #include <pistache/http.h>
-//#include <pistache/mime.h>
-
 #include <nlohmann/json.hpp>
 #include <stdexcept>
 
 #include "logger.hpp"
 #include "udm.h"
 #include "udm_config.hpp"
+#include "utils.hpp"
 
-// using namespace Pistache::Http;
-// using namespace Pistache::Http::Mime;
 using namespace oai::udm::app;
 using json = nlohmann::json;
 
@@ -73,9 +70,6 @@ bool udm_client::send_request(
   curl_global_init(CURL_GLOBAL_ALL);
   CURL* curl = curl_easy_init();
 
-  uint8_t http_version = 1;
-  if (udm_cfg.use_http2) http_version = 2;
-
   if (curl) {
     CURLcode res               = {};
     struct curl_slist* headers = nullptr;
@@ -102,7 +96,7 @@ bool udm_client::send_request(
     curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1);
     curl_easy_setopt(curl, CURLOPT_INTERFACE, udm_cfg.sbi.if_name.c_str());
 
-    if (http_version == 2) {
+    if (udm_cfg.use_http2) {
       if (Logger::should_log(spdlog::level::debug))
         curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
       // we use a self-signed test server, skip verification during debugging
@@ -160,13 +154,13 @@ bool udm_client::send_request(
         // free curl before returning
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);
+        utils::free_wrapper((void**) &body_data);
         return false;
       }
 
       // Process the response
       if (!response.empty())
         Logger::udm_app().info("Get response with data: %s", response.c_str());
-
       // TODO: set Problem details
     }
     curl_slist_free_all(headers);
@@ -176,5 +170,7 @@ bool udm_client::send_request(
   }
 
   curl_global_cleanup();
+  utils::free_wrapper((void**) &body_data);
+
   return result;
 }
