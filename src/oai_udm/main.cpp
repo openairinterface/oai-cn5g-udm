@@ -53,26 +53,32 @@ void my_app_signal_handler(int s) {
   // shutdown procedure in the logs even in case of off-logging
   Logger::set_level(spdlog::level::debug);
   Logger::system().info("Exiting: caught signal %d", s);
-  Logger::system().debug("Freeing Allocated memory...");
 
   // Stop on-going tasks
+  if (api_server) {
+    api_server->shutdown();
+  }
+  if (udm_api_server_2) {
+    udm_api_server_2->stop();
+  }
+  Logger::system().debug("HTTP servers are shutdown");
+
   if (udm_app_inst) {
     udm_app_inst->stop();
   }
 
+  Logger::system().debug("Freeing Allocated memory...");
+  // Delete instances
   if (api_server) {
-    api_server->shutdown();
     delete api_server;
     api_server = nullptr;
   }
 
   if (udm_api_server_2) {
-    udm_api_server_2->stop();
     delete udm_api_server_2;
     udm_api_server_2 = nullptr;
   }
-
-  Logger::system().debug("HTTP servers are shutdown");
+  Logger::system().debug("Stopped HTTP servers");
 
   if (tm_inst) {
     delete tm_inst;
@@ -80,7 +86,6 @@ void my_app_signal_handler(int s) {
   }
   Logger::system().debug("Stopped the UDM Task Manager.");
 
-  // Delete instances
   if (udm_app_inst) {
     delete udm_app_inst;
     udm_app_inst = nullptr;
