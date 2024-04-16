@@ -221,6 +221,14 @@ void udm_http2_server::start() {
 }
 //------------------------------------------------------------------------------
 
+void udm_http2_server::stop() {
+  server.stop();
+  // asio_http2_server.h specifies that after the stop, do a join to wait for
+  // all threads to gracefully finish
+  server.join();
+}
+
+//------------------------------------------------------------------------------
 void udm_http2_server::generate_auth_data_request_handler(
     const std::string& supiOrSuci,
     const oai::udm::model::AuthenticationInfoRequest& authenticationInfoRequest,
