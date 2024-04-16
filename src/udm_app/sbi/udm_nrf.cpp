@@ -20,9 +20,7 @@
  */
 
 #include "udm_nrf.hpp"
-#include "udm_app.hpp"
-#include "udm_profile.hpp"
-#include "udm_client.hpp"
+
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
@@ -32,9 +30,13 @@
 #include <nlohmann/json.hpp>
 #include <stdexcept>
 
+#include "3gpp_29.500.h"
 #include "logger.hpp"
-#include "udm.h"
 #include "sbi_helper.hpp"
+#include "udm.h"
+#include "udm_app.hpp"
+#include "udm_profile.hpp"
+#include "udm_client.hpp"
 
 using namespace oai::udm::app;
 using namespace oai::udm::config;
@@ -163,7 +165,7 @@ void udm_nrf::deregister_to_nrf() {
 
   if (!udm_client::get_instance().send_request(
           nrf_uri, http_method_e::DELETE, "", response_str, response_code)) {
-    Logger::udm_app().debug("NF Deregistration failed");
+    Logger::udm_nrf().debug("NF Deregistration failed");
     // TODO: retry
   } else {
     if (response_code == 204) {
@@ -203,7 +205,7 @@ void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   patch_item.setPath("/nfStatus");
   patch_item.setValue("REGISTERED");
   patch_items.push_back(patch_item);
-  Logger::udm_app().info("Sending NF heartbeat request");
+  Logger::udm_nrf().info("Sending NF heartbeat request");
 
   std::string response = {};
   long response_code   = 0;
@@ -219,11 +221,24 @@ void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   sbi_helper::get_nrf_nf_instance_uri(
       udm_cfg.nrf_addr, udm_instance_id, nrf_uri);
 
-  if (!udm_client::get_instance().send_request(
+  bool is_heartbeat_success = false;
+
+  if (udm_client::get_instance().send_request(
           nrf_uri, http_method_e::PATCH, json_data.dump().c_str(), response,
           response_code)) {
-    Logger::udm_nrf().info("NF Heartbeat procedure failed");
-    task_connection.disconnect();
+    if (response_code == HTTP_STATUS_CODE_200_OK or
+        response_code == HTTP_STATUS_CODE_201_CREATED or
+        response_code == HTTP_STATUS_CODE_204_NO_CONTENT) {
+      is_heartbeat_success = true;
+      // TODO: process the response
+    }
+  }
+
+  if (!is_heartbeat_success) {
+    Logger::udm_nrf().info(
+        "NF Heartbeat procedure failed, try to register again");
+    if (task_connection.connected()) task_connection.disconnect();
+    register_to_nrf();
   }
 }
 

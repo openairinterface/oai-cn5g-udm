@@ -22,9 +22,9 @@
 #include "udm_client.hpp"
 
 #include <curl/curl.h>
-#include <pistache/http.h>
+//#include <pistache/http.h>
 #include <nlohmann/json.hpp>
-#include <stdexcept>
+//#include <stdexcept>
 
 #include "logger.hpp"
 #include "udm.h"
