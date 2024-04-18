@@ -44,7 +44,7 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 
 AMFRegistrationFor3GPPAccessApiImpl::AMFRegistrationFor3GPPAccessApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,

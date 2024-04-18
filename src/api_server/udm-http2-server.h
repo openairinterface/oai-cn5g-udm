@@ -42,17 +42,17 @@ class udm_http2_server {
 
   void generate_auth_data_request_handler(
       const std::string& supiOrSuci,
-      const oai::udm::model::AuthenticationInfoRequest&
+      const oai::model::udm::AuthenticationInfoRequest&
           authenticationInfoRequest,
       const response& response);
 
   void confirm_auth_handler(
-      const std::string& supi, const oai::udm::model::AuthEvent& authEvent,
+      const std::string& supi, const oai::model::udm::AuthEvent& authEvent,
       const response& response);
 
   void delete_auth_handler(
       const std::string& supi, const std::string& authEventId,
-      const oai::udm::model::AuthEvent& authEvent, const response& response);
+      const oai::model::udm::AuthEvent& authEvent, const response& response);
 
   void access_mobility_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
@@ -60,7 +60,7 @@ class udm_http2_server {
 
   void amf_registration_for_3gpp_access_handler(
       const std::string& ue_id,
-      const oai::udm::model::Amf3GppAccessRegistration&
+      const oai::model::udm::Amf3GppAccessRegistration&
           amf_3gpp_access_registration,
       const response& response);
 
@@ -81,7 +81,7 @@ class udm_http2_server {
 
   void subscription_creation_handler(
       const std::string& supi,
-      const oai::udm::model::SdmSubscription& sdmSubscription,
+      const oai::model::udm::SdmSubscription& sdmSubscription,
       const response& response);
 
   void stop();

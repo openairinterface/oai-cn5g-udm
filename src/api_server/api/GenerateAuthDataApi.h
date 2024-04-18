@@ -56,7 +56,7 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 
 class GenerateAuthDataApi {
  public:

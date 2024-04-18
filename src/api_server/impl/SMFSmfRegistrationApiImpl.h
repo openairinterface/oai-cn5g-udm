@@ -70,7 +70,7 @@ class SMFSmfRegistrationApiImpl : public oai::udm::api::SMFSmfRegistrationApi {
       Pistache::Http::ResponseWriter& response);
   void registration(
       const std::string& ueId, const int32_t& pduSessionId,
-      const oai::udm::model::SmfRegistration& smfRegistration,
+      const oai::model::udm::SmfRegistration& smfRegistration,
       Pistache::Http::ResponseWriter& response);
 
  private:

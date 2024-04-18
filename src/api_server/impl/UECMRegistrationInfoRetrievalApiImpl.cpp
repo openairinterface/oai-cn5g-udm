@@ -37,7 +37,7 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 UECMRegistrationInfoRetrievalApiImpl::UECMRegistrationInfoRetrievalApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)

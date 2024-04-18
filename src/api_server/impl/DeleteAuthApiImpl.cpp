@@ -36,7 +36,7 @@
 
 using namespace oai::udm::config;
 extern udm_config udm_cfg;
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 namespace oai {
 namespace udm {
 namespace api {

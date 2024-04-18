@@ -101,7 +101,7 @@ class CreateEESubscriptionApi {
   /// group ID or any UE.</param> <param name="eeSubscription"></param>
   virtual void create_ee_subscription(
       const std::string& ueIdentity,
-      const oai::udm::model::EeSubscription& eeSubscription,
+      const oai::model::udm::EeSubscription& eeSubscription,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

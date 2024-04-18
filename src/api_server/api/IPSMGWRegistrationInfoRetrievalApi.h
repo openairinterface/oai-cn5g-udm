@@ -51,7 +51,7 @@
 
 namespace oai::udm::api {
 
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 class IPSMGWRegistrationInfoRetrievalApi {
  public:
   IPSMGWRegistrationInfoRetrievalApi(std::shared_ptr<Pistache::Rest::Router>);

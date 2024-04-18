@@ -55,17 +55,17 @@ class udm_app {
 
   void handle_generate_auth_data_request(
       const std::string& supiOrSuci,
-      const oai::udm::model::AuthenticationInfoRequest&
+      const oai::model::udm::AuthenticationInfoRequest&
           authenticationInfoRequest,
       nlohmann::json& auth_info_response, long& code);
 
   void handle_confirm_auth(
-      const std::string& supi, const oai::udm::model::AuthEvent& authEvent,
+      const std::string& supi, const oai::model::udm::AuthEvent& authEvent,
       nlohmann::json& confirm_response, std::string& location, long& code);
 
   void handle_delete_auth(
       const std::string& supi, const std::string& authEventId,
-      const oai::udm::model::AuthEvent& authEvent,
+      const oai::model::udm::AuthEvent& authEvent,
       nlohmann::json& auth_response, long& code);
 
   void handle_access_mobility_subscription_data_retrieval(
@@ -74,7 +74,7 @@ class udm_app {
 
   void handle_amf_registration_for_3gpp_access(
       const std::string& ue_id,
-      const oai::udm::model::Amf3GppAccessRegistration&
+      const oai::model::udm::Amf3GppAccessRegistration&
           amf_3gpp_access_registration,
       nlohmann::json& response_data, long& code);
 
@@ -95,13 +95,13 @@ class udm_app {
 
   void handle_subscription_creation(
       const std::string& supi,
-      const oai::udm::model::SdmSubscription& sdmSubscription,
+      const oai::model::udm::SdmSubscription& sdmSubscription,
       nlohmann::json& response_data, long& code);
 
   evsub_id_t handle_create_ee_subscription(
       const std::string& ueIdentity,
-      const oai::udm::model::EeSubscription& eeSubscription,
-      oai::udm::model::CreatedEeSubscription& createdSub, long& code);
+      const oai::model::udm::EeSubscription& eeSubscription,
+      oai::model::udm::CreatedEeSubscription& createdSub, long& code);
 
   void handle_delete_ee_subscription(
       const std::string& ueIdentity, const std::string& subscriptionId,
@@ -122,13 +122,13 @@ class udm_app {
    * Add an Event Subscription to the list
    * @param [const evsub_id_t&] sub_id: Subscription ID
    * @param [std::string] ue_id: UE's identity
-   * @param [std::shared_ptr<oai::udm::model::CreatedEeSubscription>] ces: a
+   * @param [std::shared_ptr<oai::model::udm::CreatedEeSubscription>] ces: a
    * shared pointer stored information of the created subscription
    * @return void
    */
   void add_event_subscription(
       const evsub_id_t& sub_id, const std::string& ue_id,
-      std::shared_ptr<oai::udm::model::CreatedEeSubscription>& ces);
+      std::shared_ptr<oai::model::udm::CreatedEeSubscription>& ces);
 
   /*
    * Delete an Event Subscription
@@ -194,7 +194,7 @@ class udm_app {
 
  private:
   util::uint_generator<uint32_t> evsub_id_generator;
-  std::map<evsub_id_t, std::shared_ptr<oai::udm::model::CreatedEeSubscription>>
+  std::map<evsub_id_t, std::shared_ptr<oai::model::udm::CreatedEeSubscription>>
       udm_event_subscriptions;
   std::map<std::string, std::vector<evsub_id_t>> udm_event_subscriptions_per_ue;
   mutable std::shared_mutex m_mutex_udm_event_subscriptions;
