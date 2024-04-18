@@ -23,7 +23,6 @@ set(UDM_API_SERVER_DIR "${SRC_TOP_DIR}/api_server")
 
 include_directories(${UDM_API_SERVER_DIR}/api)
 include_directories(${UDM_API_SERVER_DIR}/impl)
-include_directories(${UDM_API_SERVER_DIR}/model)
 include_directories(${UDM_API_SERVER_DIR}/)
 include_directories(${SRC_TOP_DIR}/udm_app)
 include_directories(${SRC_TOP_DIR}/udm_app/event_handling)
@@ -34,13 +33,11 @@ include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/common)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/common_model)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
-include(${BUILD_TOP_DIR}/udm/used_models.cmake)
-
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udm/udm.cmake)
 
 file(GLOB UDM_API_SERVER_src_files
     ${UDM_API_SERVER_DIR}/udm-api-server.cpp
     ${UDM_API_SERVER_DIR}/udm-http2-server.cpp
-    ${UDM_API_SERVER_DIR}/model/*.cpp
     ${UDM_API_SERVER_DIR}/api/*.cpp
     ${UDM_API_SERVER_DIR}/impl/*.cpp
 )
