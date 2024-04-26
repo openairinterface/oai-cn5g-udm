@@ -37,10 +37,10 @@
 #include "ProblemDetails.h"
 #include "SequenceNumber.h"
 #include "authentication_algorithms_with_5gaka.hpp"
-#include "utils.hpp"
 #include "conversions.hpp"
 #include "logger.hpp"
 #include "sha256.hpp"
+#include "output_wrapper.hpp"
 #include "udm.h"
 #include "udm_client.hpp"
 #include "udm_config.hpp"
@@ -59,18 +59,36 @@ udm_nrf* udm_nrf_inst = nullptr;
 
 //------------------------------------------------------------------------------
 udm_app::udm_app(const std::string& config_file, udm_event& ev)
-    : event_sub(ev) {
+    : event_sub(ev) {}
+
+//------------------------------------------------------------------------------
+udm_app::~udm_app() {
+  // Disconnect the boost connection
+  if (loss_of_connectivity_connection.connected())
+    loss_of_connectivity_connection.disconnect();
+  if (ue_reachability_for_data_connection.connected())
+    ue_reachability_for_data_connection.disconnect();
+
+  if (udm_nrf_inst) {
+    delete udm_nrf_inst;
+    udm_nrf_inst = nullptr;
+  }
+  Logger::udm_app().debug("Delete UDM APP instance...");
+}
+
+//------------------------------------------------------------------------------
+bool udm_app::start() {
   Logger::udm_app().startup("Starting...");
 
   // Register to NRF
   if (udm_cfg.register_nrf) {
     try {
-      udm_nrf_inst = new udm_nrf(ev);
+      udm_nrf_inst = new udm_nrf(event_sub);
       udm_nrf_inst->register_to_nrf();
       Logger::udm_app().info("NRF TASK Created ");
     } catch (std::exception& e) {
       Logger::udm_app().error("Cannot create NRF TASK: %s", e.what());
-      throw;
+      return false;
     }
   }
 
@@ -82,16 +100,7 @@ udm_app::udm_app(const std::string& config_file, udm_event& ev)
           &udm_app::handle_ee_ue_reachability_for_data, this, _1, _2, _3));
 
   Logger::udm_app().startup("Started");
-}
-
-//------------------------------------------------------------------------------
-udm_app::~udm_app() {
-  // Disconnect the boost connection
-  if (loss_of_connectivity_connection.connected())
-    loss_of_connectivity_connection.disconnect();
-  if (ue_reachability_for_data_connection.connected())
-    ue_reachability_for_data_connection.disconnect();
-  Logger::udm_app().debug("Delete UDM APP instance...");
+  return true;
 }
 
 //------------------------------------------------------------------------------
@@ -178,26 +187,24 @@ void udm_app::handle_generate_auth_data_request(
   if (!auth_method_s.compare("5G_AKA") ||
       !auth_method_s.compare("AuthenticationVector")) {
     try {
-      bool should_log = Logger::should_log(spdlog::level::debug);
-      key_s           = response_data.at("encPermanentKey");
+      key_s = response_data.at("encPermanentKey");
       conv::hex_str_to_uint8(key_s.c_str(), key);
-      if (should_log)
-        utils::print_buffer("udm_ueau", "Result For F1-Alg Key", key, 16);
+      output_wrapper::print_buffer(
+          "udm_ueau", "Result For F1-Alg Key", key, 16);
 
       opc_s = response_data.at("encOpcKey");
       conv::hex_str_to_uint8(opc_s.c_str(), opc);
-      if (should_log)
-        utils::print_buffer("udm_ueau", "Result For F1-Alg OPC", opc, 16);
+      output_wrapper::print_buffer(
+          "udm_ueau", "Result For F1-Alg OPC", opc, 16);
 
       amf_s = response_data.at("authenticationManagementField");
       conv::hex_str_to_uint8(amf_s.c_str(), amf);
-      if (should_log)
-        utils::print_buffer("udm_ueau", "Result For F1-Alg AMF", amf, 2);
+      output_wrapper::print_buffer("udm_ueau", "Result For F1-Alg AMF", amf, 2);
 
       sqn_s = response_data["sequenceNumber"].at("sqn");
       conv::hex_str_to_uint8(sqn_s.c_str(), sqn);
-      if (should_log)
-        utils::print_buffer("udm_ueau", "Result For F1-Alg SQN: ", sqn, 6);
+      output_wrapper::print_buffer(
+          "udm_ueau", "Result For F1-Alg SQN: ", sqn, 6);
     } catch (nlohmann::json::exception& e) {
       // error handling
       problem_details.setCause("AUTHENTICATION_REJECTED");
@@ -289,8 +296,7 @@ void udm_app::handle_generate_auth_data_request(
       sqn_s = conv::uint8_to_hex_string(sqn, 16);
       // Logger::udm_ueau().debug("sqn string = "+sqn_s);
       sqn_s[12] = '\0';
-      if (Logger::should_log(spdlog::level::debug))
-        utils::print_buffer("udm_ueau", "SQNms", sqn, 6);
+      output_wrapper::print_buffer("udm_ueau", "SQNms", sqn, 6);
 
       if (r_sqn) {  // free
         free(r_sqn);
