@@ -19,31 +19,32 @@
  *      contact@openairinterface.org
  */
 
-#include "utils.hpp"
+#include "output_wrapper.hpp"
 
 #include "iostream"
 
 //------------------------------------------------------------------------------
-void utils::print_buffer(
-    const std::string app, const std::string commit, uint8_t* buf, int len) {
-  if (!app.compare("udm_ueau")) Logger::udm_ueau().info(commit.c_str());
-  for (int i = 0; i < len; i++) printf("%x ", buf[i]);
-  printf("\n");
-}
-
-//------------------------------------------------------------------------------
-void utils::print_buffer(
-    const std::string app, const std::string commit, const uint8_t* buf,
+void output_wrapper::print_buffer(
+    const std::string app, const std::string sink, const uint8_t* buf,
     int len) {
-  if (!app.compare("udm_ueau")) std::cout << commit.c_str() << std::endl;
-  Logger::udm_ueau().debug(commit.c_str());
-
-  for (int i = 0; i < len; i++) printf("%x ", buf[i]);
-  printf("\n");
+  if (Logger::should_log(spdlog::level::debug)) {
+    if (!app.compare("config")) Logger::config().info(sink.c_str());
+    if (!app.compare("system")) Logger::system().info(sink.c_str());
+    if (!app.compare("udm_ueau")) Logger::udm_ueau().info(sink.c_str());
+    if (!app.compare("udm_uecm")) Logger::udm_uecm().info(sink.c_str());
+    if (!app.compare("udm_ee")) Logger::udm_ee().info(sink.c_str());
+    if (!app.compare("udm_sdm")) Logger::udm_sdm().info(sink.c_str());
+    if (!app.compare("udm_nrf")) Logger::udm_nrf().info(sink.c_str());
+    if (!app.compare("udm_app")) Logger::udm_app().info(sink.c_str());
+    if (!app.compare("ausf_server")) Logger::udm_server().info(sink.c_str());
+    for (int i = 0; i < len; i++) printf("%x ", buf[i]);
+    printf("\n");
+  }
 }
 
 //------------------------------------------------------------------------------
-void utils::hex_str_2_byte(const char* src, unsigned char* dest, int len) {
+void output_wrapper::hex_str_2_byte(
+    const char* src, unsigned char* dest, int len) {
   short i;
   unsigned char hBy, lBy;
   for (i = 0; i < len; i += 2) {

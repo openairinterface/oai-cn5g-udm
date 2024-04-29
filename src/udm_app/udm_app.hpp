@@ -51,6 +51,7 @@ class udm_app {
   void operator=(udm_app const&) = delete;
   virtual ~udm_app();
 
+  bool start();
   void stop();
 
   void handle_generate_auth_data_request(

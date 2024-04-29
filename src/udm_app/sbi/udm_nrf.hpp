@@ -35,14 +35,12 @@
 namespace oai::udm::app {
 
 class udm_nrf {
- private:
  public:
-  udm_profile udm_nf_profile;   // UDM profile
-  std::string udm_instance_id;  // UDM instance id
   // timer_id_t timer_udm_heartbeat;
 
   udm_nrf(udm_event& ev);
   udm_nrf(udm_nrf const&) = delete;
+  virtual ~udm_nrf();
   void operator=(udm_nrf const&) = delete;
 
   void generate_uuid();
@@ -87,8 +85,7 @@ class udm_nrf {
    * @param [void]
    * @return void
    */
-  void generate_udm_profile(
-      udm_profile& udm_nf_profile, std::string& udm_instance_id);
+  void generate_udm_profile();
 
   /*
    * Trigger NF instance registration to NRF
@@ -108,6 +105,8 @@ class udm_nrf {
   udm_event& m_event_sub;
   bs2::connection task_connection;
   bs2::connection retry_nrf_registration_task_connection;
+  udm_profile udm_nf_profile;   // UDM profile
+  std::string udm_instance_id;  // UDM instance id
 };
 }  // namespace oai::udm::app
 #endif /* FILE_UDM_NRF_SEEN */
