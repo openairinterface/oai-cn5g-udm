@@ -47,7 +47,7 @@ extern udm_config udm_cfg;
 void udm_http2_server::start() {
   boost::system::error_code ec;
 
-  Logger::udm_server().info("HTTP2 server started");
+  Logger::udm_server().info("HTTP2 server being started");
   // Generate Auth Data
   server.handle(
       udm_sbi_helper::UeAuthenticationServiceBase + "/",
@@ -215,9 +215,10 @@ void udm_http2_server::start() {
         });
       });
 
-  if (server.listen_and_serve(ec, m_address, std::to_string(m_port))) {
-    std::cerr << "HTTP Server error: " << ec.message() << std::endl;
+  if (server.listen_and_serve(ec, m_address, std::to_string(m_port), true)) {
+    Logger::udm_server().debug("HTTP Server error: %s", ec.message());
   }
+  Logger::udm_server().info("HTTP2 server fully started");
 }
 //------------------------------------------------------------------------------
 
