@@ -37,7 +37,7 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 using namespace oai::udm::app;
 
 GroupIdentifiersApiImpl::GroupIdentifiersApiImpl(

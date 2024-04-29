@@ -105,7 +105,7 @@ class SMFSmfRegistrationApi {
   /// <param name="smfRegistration"></param>
   virtual void registration(
       const std::string& ueId, const int32_t& pduSessionId,
-      const oai::udm::model::SmfRegistration& smfRegistration,
+      const oai::model::udm::SmfRegistration& smfRegistration,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

@@ -46,7 +46,7 @@ namespace udm {
 namespace api {
 
 using namespace oai::model::common;
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 using namespace oai::udm::app;
 using namespace oai::udm::config;
 

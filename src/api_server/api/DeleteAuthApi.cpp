@@ -44,7 +44,7 @@ namespace udm {
 namespace api {
 
 using namespace oai::model::common::helpers;
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 using namespace oai::udm::config;
 
 DeleteAuthApi::DeleteAuthApi(std::shared_ptr<Pistache::Rest::Router> rtr) {

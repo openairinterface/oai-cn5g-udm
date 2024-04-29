@@ -43,7 +43,7 @@ namespace oai::udm::api {
 
 using namespace oai::udm::config;
 using namespace oai::model::common::helpers;
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 
 CreateEESubscriptionApi::CreateEESubscriptionApi(
     const std::shared_ptr<Pistache::Rest::Router>& rtr)

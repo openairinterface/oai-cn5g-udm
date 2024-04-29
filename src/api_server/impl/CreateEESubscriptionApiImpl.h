@@ -55,7 +55,7 @@
 
 namespace oai::udm::api {
 
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 using namespace oai::udm::app;
 
 class CreateEESubscriptionApiImpl

@@ -37,7 +37,7 @@ using namespace nghttp2::asio_http2;
 using namespace nghttp2::asio_http2::server;
 
 using namespace oai::udm::config;
-using namespace oai::udm::model;
+using namespace oai::model::udm;
 using namespace oai::model::common;
 using namespace oai::udm::api;
 
@@ -231,7 +231,7 @@ void udm_http2_server::stop() {
 //------------------------------------------------------------------------------
 void udm_http2_server::generate_auth_data_request_handler(
     const std::string& supiOrSuci,
-    const oai::udm::model::AuthenticationInfoRequest& authenticationInfoRequest,
+    const oai::model::udm::AuthenticationInfoRequest& authenticationInfoRequest,
     const response& response) {
   Logger::udm_ueau().info("Handle generate_auth_data()");
   nlohmann::json response_data = {};
@@ -259,7 +259,7 @@ void udm_http2_server::generate_auth_data_request_handler(
 //------------------------------------------------------------------------------
 
 void udm_http2_server::confirm_auth_handler(
-    const std::string& supi, const oai::udm::model::AuthEvent& authEvent,
+    const std::string& supi, const oai::model::udm::AuthEvent& authEvent,
     const response& response) {
   Logger::udm_ueau().info("Handle Authentication Confirmation");
   nlohmann::json response_data = {};
@@ -290,7 +290,7 @@ void udm_http2_server::confirm_auth_handler(
 
 void udm_http2_server::delete_auth_handler(
     const std::string& supi, const std::string& authEventId,
-    const oai::udm::model::AuthEvent& authEvent, const response& response) {
+    const oai::model::udm::AuthEvent& authEvent, const response& response) {
   nlohmann::json response_data = {};
   long http_code               = 0;
   header_map h;
@@ -337,7 +337,7 @@ void udm_http2_server::access_mobility_subscription_data_retrieval_handler(
 
 void udm_http2_server::amf_registration_for_3gpp_access_handler(
     const std::string& ue_id,
-    const oai::udm::model::Amf3GppAccessRegistration&
+    const oai::model::udm::Amf3GppAccessRegistration&
         amf_3gpp_access_registration,
     const response& response) {
   nlohmann::json response_data = {};
@@ -432,7 +432,7 @@ void udm_http2_server::smf_selection_subscription_data_retrieval_handler(
 //------------------------------------------------------------------------------
 void udm_http2_server::subscription_creation_handler(
     const std::string& supi,
-    const oai::udm::model::SdmSubscription& sdmSubscription,
+    const oai::model::udm::SdmSubscription& sdmSubscription,
     const response& response) {
   nlohmann::json response_data = {};
   long http_code               = 0;
