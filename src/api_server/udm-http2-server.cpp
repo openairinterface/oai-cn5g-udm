@@ -215,18 +215,22 @@ void udm_http2_server::start() {
         });
       });
 
-  if (server.listen_and_serve(ec, m_address, std::to_string(m_port), true)) {
+  running_server = true;
+  if (server.listen_and_serve(ec, m_address, std::to_string(m_port))) {
     Logger::udm_server().debug("HTTP Server error: %s", ec.message());
   }
-  Logger::udm_server().info("HTTP2 server fully started");
+  running_server = false;
+  Logger::udm_server().info("HTTP2 server fully stopped");
 }
 //------------------------------------------------------------------------------
 
 void udm_http2_server::stop() {
   server.stop();
-  // asio_http2_server.h specifies that after the stop, do a join to wait for
-  // all threads to gracefully finish
-  server.join();
+  while (running_server) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
+  Logger::udm_server().info("HTTP2 server should be fully stopped");
+  std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
 //------------------------------------------------------------------------------

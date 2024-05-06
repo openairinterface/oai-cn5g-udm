@@ -91,6 +91,7 @@ class udm_http2_server {
   uint32_t m_port;
   http2 server;
   udm_app* m_udm_app;
+  bool running_server;
 };
 
 #endif

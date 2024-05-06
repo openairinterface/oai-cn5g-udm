@@ -170,7 +170,8 @@ int main(int argc, char** argv) {
     // UDM NGHTTP API server (HTTP2)
     udm_api_server_2 = new udm_http2_server(
         conv::toString(udm_cfg.sbi.addr4), udm_cfg.sbi.port, udm_app_inst);
-    udm_api_server_2->start();
+    std::thread udm_http2_manager(&udm_http2_server::start, udm_api_server_2);
+    udm_http2_manager.join();
   }
 
   Logger::udm_server().info("Initiation Done!");
