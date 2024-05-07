@@ -55,6 +55,12 @@ void my_app_signal_handler(int s) {
   Logger::system().info("Exiting: caught signal %d", s);
 
   // Stop on-going tasks
+  Logger::system().debug("First the app stop");
+  if (udm_app_inst) {
+    udm_app_inst->stop();
+  }
+
+  Logger::system().debug("Then HTTP server stop");
   if (api_server) {
     api_server->shutdown();
   }
@@ -62,10 +68,6 @@ void my_app_signal_handler(int s) {
     udm_api_server_2->stop();
   }
   Logger::system().debug("HTTP servers are shutdown");
-
-  if (udm_app_inst) {
-    udm_app_inst->stop();
-  }
 
   Logger::system().debug("Freeing Allocated memory...");
   // Delete instances
@@ -172,6 +174,7 @@ int main(int argc, char** argv) {
     udm_http2_manager.join();
   }
 
+  Logger::udm_server().info("Initiation Done!");
   task_manager_thread.join();
 
   fflush(fp);
