@@ -27,7 +27,7 @@
 
 #include "udm_event.hpp"
 
-using namespace oai::udm::app;
+// using namespace oai::udm::app;
 
 namespace oai {
 namespace udm {

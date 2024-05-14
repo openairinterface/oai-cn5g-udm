@@ -57,6 +57,8 @@
 
 namespace oai::udm::api {
 
+using namespace oai::udm::app;
+
 class UpdateEESubscriptionApiImpl
     : public oai::udm::api::UpdateEESubscriptionApi {
  public:

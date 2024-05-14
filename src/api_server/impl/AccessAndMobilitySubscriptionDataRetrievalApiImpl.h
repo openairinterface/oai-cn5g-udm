@@ -54,6 +54,8 @@ namespace oai {
 namespace udm {
 namespace api {
 
+using namespace oai::udm::app;
+
 class AccessAndMobilitySubscriptionDataRetrievalApiImpl
     : public oai::udm::api::AccessAndMobilitySubscriptionDataRetrievalApi {
  public:

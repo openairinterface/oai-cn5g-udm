@@ -54,6 +54,8 @@ namespace oai {
 namespace udm {
 namespace api {
 
+using namespace oai::udm::app;
+
 class RetrievalOfMultipleDataSetsApiImpl
     : public oai::udm::api::RetrievalOfMultipleDataSetsApi {
  public:

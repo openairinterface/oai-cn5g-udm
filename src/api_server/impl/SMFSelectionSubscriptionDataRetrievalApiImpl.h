@@ -54,6 +54,8 @@ namespace oai {
 namespace udm {
 namespace api {
 
+using namespace oai::udm::app;
+
 class SMFSelectionSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SMFSelectionSubscriptionDataRetrievalApi {
  public:
