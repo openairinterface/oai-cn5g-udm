@@ -19,11 +19,12 @@
  *      contact@openairinterface.org
  */
 
+#include "udm_profile.hpp"
+
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
 #include "logger.hpp"
-#include "udm_profile.hpp"
 #include "string.hpp"
 
 using namespace oai::udm::app;

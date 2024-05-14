@@ -21,22 +21,22 @@
 
 #include "udm_nrf.hpp"
 
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
-
 #include <curl/curl.h>
 #include <pistache/http.h>
 #include <pistache/mime.h>
+
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #include <nlohmann/json.hpp>
 #include <stdexcept>
 
 #include "3gpp_29.500.h"
+#include "http_client.hpp"
 #include "logger.hpp"
 #include "sbi_helper.hpp"
 #include "udm.h"
 #include "udm_app.hpp"
 #include "udm_profile.hpp"
-#include "http_client.hpp"
 
 using namespace oai::udm::app;
 using namespace oai::udm::config;
@@ -44,7 +44,6 @@ using namespace oai::model::common;
 using namespace boost::placeholders;
 
 extern udm_config udm_cfg;
-extern udm_nrf* udm_nrf_inst;
 extern std::shared_ptr<oai::http::http_client> http_client_inst;
 
 //------------------------------------------------------------------------------
