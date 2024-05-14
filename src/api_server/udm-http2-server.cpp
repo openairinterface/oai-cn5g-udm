@@ -94,7 +94,7 @@ void udm_http2_server::start() {
           } catch (std::exception& e) {
             Logger::udm_server().warn("Invalid request (error: %s)!", e.what());
             response.write_head(
-                http_status_code_e::HTTP_STATUS_CODE_400_BAD_REQUEST);
+                oai::common::sbi::http_status_code::BAD_REQUEST);
             response.end();
             return;
           }
@@ -208,7 +208,7 @@ void udm_http2_server::start() {
           } catch (std::exception& e) {
             Logger::udm_server().warn("Invalid request (error: %s)!", e.what());
             response.write_head(
-                http_status_code_e::HTTP_STATUS_CODE_400_BAD_REQUEST);
+                oai::common::sbi::http_status_code::BAD_REQUEST);
             response.end();
             return;
           }

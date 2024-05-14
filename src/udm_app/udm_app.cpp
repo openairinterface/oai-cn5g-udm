@@ -42,7 +42,7 @@
 #include "sha256.hpp"
 #include "output_wrapper.hpp"
 #include "udm.h"
-#include "udm_client.hpp"
+#include "http_client.hpp"
 #include "udm_config.hpp"
 #include "udm_nrf.hpp"
 
@@ -56,6 +56,7 @@ using namespace boost::placeholders;
 extern udm_app* udm_app_inst;
 extern udm_config udm_cfg;
 udm_nrf* udm_nrf_inst = nullptr;
+extern std::shared_ptr<oai::http::http_client> http_client_inst;
 
 //------------------------------------------------------------------------------
 udm_app::udm_app(const std::string& config_file, udm_event& ev)
@@ -151,24 +152,22 @@ void udm_app::handle_generate_auth_data_request(
   std::string snn        = authenticationInfoRequest.getServingNetworkName();
   std::string supi       = supiOrSuci;
   std::string remote_uri = {};
-  std::string method     = {};
   std::string msg_body   = {};
-  std::string response   = {};
-  long response_code     = 0;
   nlohmann::json problem_details_json = {};
   ProblemDetails problem_details      = {};
 
   // Get authentication related info
   remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
-  Logger::udm_ueau().debug("GET Request:" + remote_uri);
-  method = "GET";
+  Logger::udm_ueau().debug("Remote URI: " + remote_uri);
 
-  udm_client::get_instance().send_request(
-      remote_uri, http_method_e::GET, msg_body, response, response_code);
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(remote_uri);
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::GET, http_request);
 
   nlohmann::json response_data = {};
   try {
-    response_data = nlohmann::json::parse(response.c_str());
+    response_data = nlohmann::json::parse(http_response.body);
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_ueau().info("Could not get JSON content from UDR response");
 
@@ -183,6 +182,7 @@ void udm_app::handle_generate_auth_data_request(
     return;
   }
 
+  // Process the response
   std::string auth_method_s = response_data.at("authenticationMethod");
   if (!auth_method_s.compare("5G_AKA") ||
       !auth_method_s.compare("AuthenticationVector")) {
@@ -257,8 +257,7 @@ void udm_app::handle_generate_auth_data_request(
       // Update SQN@UDR, replace SQNhe with SQNms
       remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
 
-      Logger::udm_ueau().debug("PATCH Request:" + remote_uri);
-      method = "PATCH";
+      Logger::udm_ueau().debug("Remote URI: " + remote_uri);
 
       nlohmann::json sequence_number_json;
       SequenceNumber sequence_number;
@@ -287,12 +286,14 @@ void udm_app::handle_generate_auth_data_request(
       Logger::udm_ueau().info(
           "Update UDR with PATCH message, body:  %s", msg_body.c_str());
 
-      udm_client::get_instance().send_request(
-          remote_uri, http_method_e::PATCH, msg_body, response, response_code);
+      oai::http::request http_request =
+          http_client_inst->prepare_json_request(remote_uri, msg_body);
+      auto http_response = http_client_inst->send_http_request(
+          oai::common::sbi::method_e::PATCH, http_request);
 
       // replace SQNhe with SQNms
-      int i = 0;
-      for (i; i < 6; i++) sqn[i] = r_sqn[i];  // generate first, increase later
+      for (int i = 0; i < 6; i++)
+        sqn[i] = r_sqn[i];  // generate first, increase later
       sqn_s = conv::uint8_to_hex_string(sqn, 16);
       // Logger::udm_ueau().debug("sqn string = "+sqn_s);
       sqn_s[12] = '\0';
@@ -359,8 +360,7 @@ void udm_app::handle_generate_auth_data_request(
   // Update SQN@UDR
   remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
 
-  Logger::udm_ueau().debug("PATCH Request:" + remote_uri);
-  method = "PATCH";
+  Logger::udm_ueau().debug("Remote URI: " + remote_uri);
 
   nlohmann::json sequence_number_json;
   SequenceNumber sequence_number;
@@ -385,13 +385,14 @@ void udm_app::handle_generate_auth_data_request(
   Logger::udm_ueau().info(
       "Update UDR with PATCH message, body:  %s", msg_body.c_str());
 
-  udm_client::get_instance().send_request(
-      remote_uri, http_method_e::PATCH, msg_body, response, response_code);
+  http_request  = http_client_inst->prepare_json_request(remote_uri, msg_body);
+  http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::PATCH, http_request);
 
-  Logger::udm_ueau().info("Send 200 Ok response to AUSF");
-  Logger::udm_ueau().info("AuthInfoResult %s", AuthInfoResult.dump().c_str());
   auth_info_response = AuthInfoResult;
   code               = HTTP_RESPONSE_CODE_OK;
+  Logger::udm_ueau().info("Send 200 OK response to AUSF");
+  Logger::udm_ueau().info("AuthInfoResult %s", AuthInfoResult.dump().c_str());
   return;
 }
 
@@ -400,26 +401,23 @@ void udm_app::handle_confirm_auth(
     const std::string& supi, const oai::model::udm::AuthEvent& authEvent,
     nlohmann::json& confirm_response, std::string& location, long& code) {
   std::string remote_uri              = {};
-  std::string method                  = {};
   std::string msg_body                = {};
-  std::string response                = {};
-  long response_code                  = 0;
   std::string auth_event_id           = {};
   nlohmann::json problem_details_json = {};
   ProblemDetails problem_details      = {};
 
   // Get user info
   remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
+  Logger::udm_ueau().debug("Remote URI: " + remote_uri);
 
-  Logger::udm_ueau().debug("GET Request:" + remote_uri);
-  method = "GET";
-
-  udm_client::get_instance().send_request(
-      remote_uri, http_method_e::GET, msg_body, response, response_code);
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(remote_uri, msg_body);
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::GET, http_request);
 
   nlohmann::json response_data = {};
   try {
-    response_data = nlohmann::json::parse(response.c_str());
+    response_data = nlohmann::json::parse(http_response.body.c_str());
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_ueau().info("Could not get JSON content from UDR response");
 
@@ -450,17 +448,17 @@ void udm_app::handle_confirm_auth(
 
   // Update authentication status
   remote_uri = udm_cfg.get_udr_authentication_status_uri(supi);
-  Logger::udm_ueau().debug("PUT Request:" + remote_uri);
-  method = "PUT";
+  Logger::udm_ueau().debug("Remote URI:" + remote_uri);
 
   nlohmann::json auth_event_json;
   to_json(auth_event_json, authEvent);
 
   msg_body = auth_event_json.dump();
-  Logger::udm_ueau().debug("PATCH Request body = " + msg_body);
+  Logger::udm_ueau().debug("Request body = " + msg_body);
 
-  udm_client::get_instance().send_request(
-      remote_uri, http_method_e::PUT, msg_body, response, response_code);
+  http_request  = http_client_inst->prepare_json_request(remote_uri, msg_body);
+  http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::PUT, http_request);
 
   std::string hash_value = sha256(supi + authEvent.getServingNetworkName());
   // Logger::udm_ueau().debug("\n\nauthEventId=" +
@@ -485,24 +483,22 @@ void udm_app::handle_delete_auth(
     const oai::model::udm::AuthEvent& authEvent, nlohmann::json& auth_response,
     long& code) {
   std::string remote_uri              = {};
-  std::string method                  = {};
   std::string msg_body                = {};
-  std::string response                = {};
-  long response_code                  = 0;
   nlohmann::json problem_details_json = {};
   ProblemDetails problem_details      = {};
 
   // Get user info
   remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
-  Logger::udm_ueau().debug("GET Request:" + remote_uri);
-  method = "GET";
+  Logger::udm_ueau().debug("Remote URI:" + remote_uri);
 
-  udm_client::get_instance().send_request(
-      remote_uri, http_method_e::GET, msg_body, response, response_code);
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(remote_uri, msg_body);
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::GET, http_request);
 
   nlohmann::json response_data = {};
   try {
-    response_data = nlohmann::json::parse(response.c_str());
+    response_data = nlohmann::json::parse(http_response.body.c_str());
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_ueau().info("Could not get JSON content from UDR response");
 
@@ -540,13 +536,14 @@ void udm_app::handle_delete_auth(
     // Delete authentication status
     remote_uri = udm_cfg.get_udr_authentication_status_uri(supi);
     Logger::udm_ueau().debug("DELETE Request:" + remote_uri);
-    method = "DELETE";
 
     nlohmann::json auth_event_json;
     to_json(auth_event_json, authEvent);
 
-    udm_client::get_instance().send_request(
-        remote_uri, http_method_e::DELETE, msg_body, response, response_code);
+    oai::http::request http_request =
+        http_client_inst->prepare_json_request(remote_uri, msg_body);
+    auto http_response = http_client_inst->send_http_request(
+        oai::common::sbi::method_e::DELETE, http_request);
 
     Logger::udm_ueau().info("Send 204 No_Content response to AUSF");
     auth_response = {};
@@ -575,17 +572,19 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
   // TODO: check if plmn_id available
   std::string remote_uri =
       udm_cfg.get_udr_access_and_mobility_subscription_data_uri(supi, plmn_id);
-  std::string method("GET");
   std::string body("");
-  std::string response_get = {};
-  long response_code       = 0;
-  Logger::udm_sdm().debug("UDR: GET Request: " + remote_uri);
+  Logger::udm_sdm().debug("Remote URI: " + remote_uri);
+
   // Get response from UDR
-  udm_client::get_instance().send_request(
-      remote_uri, http_method_e::GET, body, response_get, response_code);
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(remote_uri, body);
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::GET, http_request);
+
   try {
-    Logger::udm_sdm().debug("subscription-data: GET Response: " + response_get);
-    response_data = nlohmann::json::parse(response_get.c_str());
+    Logger::udm_sdm().debug(
+        "subscription-data: GET Response: " + http_response.body);
+    response_data = nlohmann::json::parse(http_response.body.c_str());
   } catch (nlohmann::json::exception& e) {
     Logger::udm_sdm().info("Could not get JSON content from UDR response");
     ProblemDetails problem_details;
@@ -611,25 +610,24 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     nlohmann::json& response_data, long& code) {
   // TODO: to be completed
   std::string remote_uri              = {};
-  std::string response                = {};
-  long response_code                  = 0;
   nlohmann::json problem_details_json = {};
   ProblemDetails problem_details      = {};
 
   // Get 3gpp_registration related info
   remote_uri = udm_cfg.get_udr_amf_3gpp_registration_uri(ue_id);
-  Logger::udm_uecm().debug("PUT Request:" + remote_uri);
+  Logger::udm_uecm().debug("Remote URI:" + remote_uri);
 
   nlohmann::json amf_registration_json;
   to_json(amf_registration_json, amf_3gpp_access_registration);
-  long http_code;
-  http_code = udm_client::get_instance().send_request(
-      remote_uri, http_method_e::PUT, amf_registration_json.dump(), response,
-      response_code);
+
+  oai::http::request http_request = http_client_inst->prepare_json_request(
+      remote_uri, amf_registration_json.dump());
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::PUT, http_request);
 
   try {
-    Logger::udm_uecm().debug("PUT Response:" + response);
-    response_data = nlohmann::json::parse(response.c_str());
+    Logger::udm_uecm().debug("HTTP Response: " + http_response.body);
+    response_data = nlohmann::json::parse(http_response.body.c_str());
 
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_uecm().info("Could not get JSON content from UDR response");
@@ -644,11 +642,10 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     response_data = problem_details_json;
     return;
   }
-  Logger::udm_uecm().debug("HTTP response code %d", http_code);
+  Logger::udm_uecm().debug("HTTP response code %d", http_response.status_code);
 
   response_data = amf_registration_json;
-  // code          = static_cast<Pistache::Http::Code>(http_code);
-  code = http_code;
+  code          = http_response.status_code;
   return;
 }
 
@@ -675,19 +672,20 @@ void udm_app::handle_session_management_subscription_data_retrieval(
   // URI with Optional SNSSAI/DNN
   remote_uri += query_str;
 
-  std::string response_str = {};
-  Logger::udm_sdm().debug("Request URI: " + remote_uri);
+  Logger::udm_sdm().debug("Remote URI: " + remote_uri);
 
-  // Send curl to UDM
-  udm_client::get_instance().send_request(
-      remote_uri, http_method_e::GET, body, response_str, code);
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(remote_uri, body);
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::GET, http_request);
+  code = http_response.status_code;
 
   Logger::udm_sdm().debug("HTTP response code %ld", code);
 
   // Process response
   try {
-    Logger::udm_sdm().debug("Response: " + response_str);
-    response_data = nlohmann::json::parse(response_str.c_str());
+    Logger::udm_sdm().debug("Response: " + http_response.body);
+    response_data = nlohmann::json::parse(http_response.body.c_str());
   } catch (nlohmann::json::exception& e) {
     Logger::udm_sdm().info("Could not get JSON content from UDR response");
     ProblemDetails problem_details      = {};
@@ -716,20 +714,22 @@ void udm_app::handle_slice_selection_subscription_data_retrieval(
       udm_cfg.get_udr_slice_selection_subscription_data_retrieval_uri(
           supi, plmn_id);
   std::string body = {};
-  std::string response_get;
-  Logger::udm_sdm().debug("UDR's URI: %s", udr_uri.c_str());
+  Logger::udm_sdm().debug("Remote URI: %s", udr_uri.c_str());
   // Send the request and get the response from UDR
-  long http_code = 0;
-  udm_client::get_instance().send_request(
-      udr_uri, http_method_e::GET, body, response_get, http_code);
-  Logger::udm_sdm().debug("HTTP response code %d", http_code);
-  code = http_code;
-  Logger::udm_sdm().debug("Response from UDR: %s", response_get.c_str());
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(udr_uri, body);
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::GET, http_request);
+
+  code = http_response.status_code;
+  Logger::udm_sdm().debug("HTTP response code %d", http_response.status_code);
+  Logger::udm_sdm().debug("Response from UDR: %s", http_response.body.c_str());
 
   // Process the response
   nlohmann::json return_response_data_json = {};
   try {
-    return_response_data_json = nlohmann::json::parse(response_get.c_str());
+    return_response_data_json =
+        nlohmann::json::parse(http_response.body.c_str());
     if (return_response_data_json.find("nssai") !=
         return_response_data_json.end()) {
       response_data = return_response_data_json["nssai"];
@@ -758,18 +758,21 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
   std::string remote_uri =
       udm_cfg.get_udr_smf_selection_subscription_data_uri(supi, plmn_id);
 
-  std::string body         = {};
-  std::string response_get = {};
-  long response_code       = 0;
-  Logger::udm_sdm().debug("UDR: GET Request: " + remote_uri);
+  std::string body = {};
+  Logger::udm_sdm().debug("Remote URI: " + remote_uri);
 
   // Get info from UDR
-  code = udm_client::get_instance().send_request(
-      remote_uri, http_method_e::GET, body, response_get, response_code);
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(remote_uri, body);
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::GET, http_request);
+  code = http_response.status_code;
+
   // Process response
   try {
-    Logger::udm_sdm().debug("subscription-data: GET Response: " + response_get);
-    response_data = nlohmann::json::parse(response_get.c_str());
+    Logger::udm_sdm().debug(
+        "subscription-data: GET Response: " + http_response.body);
+    response_data = nlohmann::json::parse(http_response.body.c_str());
   } catch (nlohmann::json::exception& e) {
     Logger::udm_sdm().info("Could not get JSON content from UDR response");
     ProblemDetails problem_details;
@@ -797,27 +800,26 @@ void udm_app::handle_subscription_creation(
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
   std::string udr_port = std::to_string(udm_cfg.udr_addr.port);
   std::string remote_uri;
-  std::string method;
   std::string msg_body;
-  std::string response;
-  long response_code = 0;
   nlohmann::json problem_details_json;
   ProblemDetails problem_details;
 
   // Get 3gpp_registration related info
   remote_uri = udm_cfg.get_udr_sdm_subscriptions_uri(supi);
-  Logger::udm_uecm().debug("POST Request:" + remote_uri);
+  Logger::udm_uecm().debug("Remote URI:" + remote_uri);
 
   nlohmann::json sdm_subscription_json;
   to_json(sdm_subscription_json, sdmSubscription);
-  long http_code = udm_client::get_instance().send_request(
-      remote_uri, http_method_e::POST, sdm_subscription_json.dump(), response,
-      response_code);
+
+  oai::http::request http_request = http_client_inst->prepare_json_request(
+      remote_uri, sdm_subscription_json.dump());
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::POST, http_request);
 
   nlohmann::json response_data_json = {};
   try {
-    Logger::udm_uecm().debug("POST Response:" + response);
-    response_data_json = nlohmann::json::parse(response.c_str());
+    Logger::udm_uecm().debug("HTTP Response:" + http_response.body);
+    response_data_json = nlohmann::json::parse(http_response.body.c_str());
 
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_uecm().info("Could not get JSON content from UDR response");
@@ -833,9 +835,9 @@ void udm_app::handle_subscription_creation(
     code          = HTTP_RESPONSE_CODE_NOT_FOUND;
     return;
   }
-  Logger::udm_uecm().debug("HTTP response code %d", http_code);
+  Logger::udm_uecm().debug("HTTP response code %d", http_response.status_code);
   response_data = sdm_subscription_json;  // to be verified
-  code          = http_code;
+  code          = http_response.status_code;
 }
 
 //------------------------------------------------------------------------------
@@ -905,7 +907,9 @@ void udm_app::handle_update_ee_subscription(
           "Bad value for operation path: %s ", p.getPath().c_str());
       code = HTTP_RESPONSE_CODE_BAD_REQUEST;
       problemDetails.setCause(
-          protocol_application_error_e2str[MANDATORY_IE_INCORRECT]);
+          oai::common::sbi::protocol_application_error_to_string(
+              oai::common::sbi::protocol_application_error::
+                  MANDATORY_IE_INCORRECT));
       return;
     }
 
@@ -945,7 +949,9 @@ void udm_app::handle_update_ee_subscription(
     if (!op_success) {
       code = HTTP_RESPONSE_CODE_BAD_REQUEST;
       problemDetails.setCause(
-          protocol_application_error_e2str[INVALID_QUERY_PARAM]);  // TODO:
+          oai::common::sbi::protocol_application_error_to_string(
+              oai::common::sbi::protocol_application_error::
+                  INVALID_QUERY_PARAM));  // TODO:
     } else {
     }
   }

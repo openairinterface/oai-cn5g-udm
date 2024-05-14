@@ -36,7 +36,6 @@
 #include <nlohmann/json.hpp>
 
 #include "SessionManagementSubscriptionData.h"
-#include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 

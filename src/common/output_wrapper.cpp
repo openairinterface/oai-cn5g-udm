@@ -36,7 +36,8 @@ void output_wrapper::print_buffer(
     if (!app.compare("udm_sdm")) Logger::udm_sdm().info(sink.c_str());
     if (!app.compare("udm_nrf")) Logger::udm_nrf().info(sink.c_str());
     if (!app.compare("udm_app")) Logger::udm_app().info(sink.c_str());
-    if (!app.compare("ausf_server")) Logger::udm_server().info(sink.c_str());
+    if (!app.compare("udm_server")) Logger::udm_server().info(sink.c_str());
+    if (!app.compare("udm_client")) Logger::udm_client().info(sink.c_str());
     for (int i = 0; i < len; i++) printf("%x ", buf[i]);
     printf("\n");
   }

@@ -33,7 +33,6 @@
 
 #include "SubscriptionCreationApiImpl.h"
 
-#include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 

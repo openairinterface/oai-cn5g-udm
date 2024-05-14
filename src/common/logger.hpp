@@ -34,6 +34,7 @@ static const std::string UDM_UECM       = "udm_uecm";
 static const std::string UDM_EE         = "udm_ee";
 static const std::string UDM_SDM        = "udm_sdm";
 static const std::string UDM_NRF        = "udm_nrf";
+static const std::string UDM_CLIENT     = "udm_client";
 static const std::string UDM_API_SERVER = "udm_server";
 static const std::string UDM_APP        = "udm_app";
 
@@ -58,6 +59,8 @@ class Logger : public oai::logger::logger_common {
         name, UDM_NRF, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
         name, UDM_API_SERVER, log_stdout, log_rot_file);
+    oai::logger::logger_registry::register_logger(
+        name, UDM_CLIENT, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
         name, UDM_APP, log_stdout, log_rot_file);
   }
@@ -91,6 +94,9 @@ class Logger : public oai::logger::logger_common {
   }
   static const oai::logger::printf_logger& udm_server() {
     return oai::logger::logger_registry::get_logger(UDM_API_SERVER);
+  }
+  static const oai::logger::printf_logger& udm_client() {
+    return oai::logger::logger_registry::get_logger(UDM_CLIENT);
   }
   static const oai::logger::printf_logger& udm_app() {
     return oai::logger::logger_registry::get_logger(UDM_APP);

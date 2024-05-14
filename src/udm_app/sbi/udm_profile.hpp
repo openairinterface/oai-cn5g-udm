@@ -32,6 +32,8 @@
 #include "3gpp_29.510.h"
 #include "udm.h"
 
+using namespace oai::common::sbi;
+
 namespace oai::udm::app {
 
 class udm_profile : public std::enable_shared_from_this<udm_profile> {
