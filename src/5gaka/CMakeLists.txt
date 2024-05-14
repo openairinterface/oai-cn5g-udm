@@ -25,14 +25,15 @@ include_directories(${SRC_TOP_DIR}/udm_app)
 include_directories(${SRC_TOP_DIR}/udm_app/event_handling)
 include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/common/utils)
-include_directories(${SRC_TOP_DIR}/common/libngap)
 include_directories(${SRC_TOP_DIR}/5gaka)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/ngap/libngap)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
 
 file(GLOB 5GAKA_src_files
-    ${SRC_TOP_DIR}/common/libngap/*.c
+    ${SRC_TOP_DIR}/${MOUNTED_COMMON}/ngap/libngap/*.c
     ${5GAKA_DIR}/*.cpp
 )
  
 add_library(5GAKA STATIC
-           ${5GAKA_src_files})
+           ${5GAKA_src_files})        

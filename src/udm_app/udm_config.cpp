@@ -27,7 +27,6 @@
 #include <unistd.h>
 
 #include "common_defs.h"
-#include "fqdn.hpp"
 #include "if.hpp"
 #include "logger.hpp"
 #include "string.hpp"

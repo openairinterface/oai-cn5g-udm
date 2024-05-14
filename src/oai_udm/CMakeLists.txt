@@ -291,6 +291,7 @@ include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udm)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/bstr)
 
 add_executable(udm
   ${SRC_TOP_DIR}/oai_udm/main.cpp
