@@ -155,7 +155,7 @@ class udm_profile : public std::enable_shared_from_this<udm_profile> {
 
   /*
    * Set NF type
-   * @param [const nf_type_t &] type: nf type
+   * @param [const std::string&] type: nf type
    * @return void
    */
   void set_nf_type(const std::string& type);

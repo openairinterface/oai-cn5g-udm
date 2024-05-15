@@ -251,10 +251,10 @@ void udm_http2_server::generate_auth_data_request_handler(
       supiOrSuci, authenticationInfoRequest, response_data, http_code);
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -279,14 +279,14 @@ void udm_http2_server::confirm_auth_handler(
   m_udm_app->handle_confirm_auth(
       supi, authEvent, response_data, location, http_code);
 
-  if (http_code == HTTP_RESPONSE_CODE_CREATED)
+  if (http_code == oai::common::sbi::http_status_code::CREATED)
     h.emplace("location", header_value{location});
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -308,10 +308,10 @@ void udm_http2_server::delete_auth_handler(
       supi, authEventId, authEvent, response_data, http_code);
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -331,10 +331,10 @@ void udm_http2_server::access_mobility_subscription_data_retrieval_handler(
       supi, response_data, http_code, PlmnId);
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -357,10 +357,10 @@ void udm_http2_server::amf_registration_for_3gpp_access_handler(
       ue_id, amf_3gpp_access_registration, response_data, http_code);
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -380,10 +380,10 @@ void udm_http2_server::session_management_subscription_data_retrieval_handler(
   m_udm_app->handle_session_management_subscription_data_retrieval(
       supi, response_data, http_code, snssai, dnn, plmnid);
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -403,10 +403,10 @@ void udm_http2_server::slice_selection_subscription_data_retrieval_handler(
   m_udm_app->handle_slice_selection_subscription_data_retrieval(
       supi, response_data, http_code, supportedfeatures, plmnid);
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -426,10 +426,10 @@ void udm_http2_server::smf_selection_subscription_data_retrieval_handler(
   m_udm_app->handle_smf_selection_subscription_data_retrieval(
       supi, response_data, http_code, supportedfeatures, plmnid);
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -451,10 +451,10 @@ void udm_http2_server::subscription_creation_handler(
       supi, sdmSubscription, response_data, http_code);
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});

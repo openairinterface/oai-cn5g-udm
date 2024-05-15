@@ -173,13 +173,13 @@ void udm_app::handle_generate_auth_data_request(
     Logger::udm_ueau().info("Could not get JSON content from UDR response");
 
     problem_details.setCause("USER_NOT_FOUND");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problem_details.setDetail("User " + supi + " not found");
     to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().warn("User " + supi + " not found");
     auth_info_response = problem_details_json;
-    code               = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code               = oai::common::sbi::http_status_code::NOT_FOUND;
     return;
   }
 
@@ -209,7 +209,7 @@ void udm_app::handle_generate_auth_data_request(
     } catch (nlohmann::json::exception& e) {
       // error handling
       problem_details.setCause("AUTHENTICATION_REJECTED");
-      problem_details.setStatus(HTTP_RESPONSE_CODE_FORBIDDEN);
+      problem_details.setStatus(oai::common::sbi::http_status_code::FORBIDDEN);
       problem_details.setDetail(
           "Missing authentication parameters in UDR's response");
       to_json(problem_details_json, problem_details);
@@ -217,13 +217,14 @@ void udm_app::handle_generate_auth_data_request(
       Logger::udm_ueau().warn(
           "Missing authentication parameters in UDR's response");
       auth_info_response = problem_details_json;
-      code               = HTTP_RESPONSE_CODE_FORBIDDEN;
+      code               = oai::common::sbi::http_status_code::FORBIDDEN;
       return;
     }
   } else {
     // error handling
     problem_details.setCause("UNSUPPORTED_PROTECTION_SCHEME");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_IMPLEMENTED);
+    problem_details.setStatus(
+        oai::common::sbi::http_status_code::NOT_IMPLEMENTED);
     problem_details.setDetail("Non 5G_AKA authenticationMethod available");
     to_json(problem_details_json, problem_details);
 
@@ -232,7 +233,7 @@ void udm_app::handle_generate_auth_data_request(
         "= " +
         auth_method_s);
     auth_info_response = problem_details_json;
-    code               = HTTP_RESPONSE_CODE_NOT_IMPLEMENTED;
+    code               = oai::common::sbi::http_status_code::NOT_IMPLEMENTED;
     return;
   }
 
@@ -391,7 +392,7 @@ void udm_app::handle_generate_auth_data_request(
       oai::common::sbi::method_e::PATCH, http_request);
 
   auth_info_response = AuthInfoResult;
-  code               = HTTP_RESPONSE_CODE_OK;
+  code               = oai::common::sbi::http_status_code::OK;
   Logger::udm_ueau().info("Send 200 OK response to AUSF");
   Logger::udm_ueau().info("AuthInfoResult %s", AuthInfoResult.dump().c_str());
   return;
@@ -423,27 +424,27 @@ void udm_app::handle_confirm_auth(
     Logger::udm_ueau().info("Could not get JSON content from UDR response");
 
     problem_details.setCause("USER_NOT_FOUND");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problem_details.setDetail("User " + supi + " not found");
     to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().warn("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     confirm_response = problem_details_json;
-    code             = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code             = oai::common::sbi::http_status_code::NOT_FOUND;
     return;
   }
 
   if (authEvent.isAuthRemovalInd()) {
     // error handling
-    problem_details.setStatus(HTTP_RESPONSE_CODE_BAD_REQUEST);
+    problem_details.setStatus(oai::common::sbi::http_status_code::BAD_REQUEST);
     problem_details.setDetail("authRemovalInd should be false");
     to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().warn("authRemovalInd should be false");
     Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
     confirm_response = problem_details_json;
-    code             = HTTP_RESPONSE_CODE_BAD_REQUEST;
+    code             = oai::common::sbi::http_status_code::BAD_REQUEST;
     return;
   }
 
@@ -474,7 +475,7 @@ void udm_app::handle_confirm_auth(
 
   Logger::udm_ueau().info("Send 201 Created response to AUSF");
   confirm_response = auth_event_json;
-  code             = HTTP_RESPONSE_CODE_CREATED;
+  code             = oai::common::sbi::http_status_code::CREATED;
   return;
 }
 
@@ -504,27 +505,27 @@ void udm_app::handle_delete_auth(
     Logger::udm_ueau().info("Could not get JSON content from UDR response");
 
     problem_details.setCause("USER_NOT_FOUND");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problem_details.setDetail("User " + supi + " not found");
     to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().warn("User " + supi + " not found");
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_response = problem_details_json;
-    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = oai::common::sbi::http_status_code::NOT_FOUND;
     return;
   }
 
   if (!authEvent.isAuthRemovalInd()) {
     // error handling
-    problem_details.setStatus(HTTP_RESPONSE_CODE_BAD_REQUEST);
+    problem_details.setStatus(oai::common::sbi::http_status_code::BAD_REQUEST);
     problem_details.setDetail("authRemovalInd should be true");
     to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().warn("authRemovalInd should be true");
     Logger::udm_ueau().info("Send 400 Bad_Request response to AUSF");
     auth_response = problem_details_json;
-    code          = HTTP_RESPONSE_CODE_BAD_REQUEST;
+    code          = oai::common::sbi::http_status_code::BAD_REQUEST;
     return;
   }
 
@@ -548,20 +549,20 @@ void udm_app::handle_delete_auth(
 
     Logger::udm_ueau().info("Send 204 No_Content response to AUSF");
     auth_response = {};
-    code          = HTTP_RESPONSE_CODE_NO_CONTENT;
+    code          = oai::common::sbi::http_status_code::NO_CONTENT;
     return;
   } else {
     // error handling
     // wrong AuthEventId
     problem_details.setCause("DATA_NOT_FOUND");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problem_details.setDetail("Wrong authEventId");
     to_json(problem_details_json, problem_details);
 
     Logger::udm_ueau().warn("Wrong authEventId, should be = " + hash_value);
     Logger::udm_ueau().info("Send 404 Not_Found response to AUSF");
     auth_response = problem_details_json;
-    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = oai::common::sbi::http_status_code::NOT_FOUND;
     return;
   }
 }
@@ -591,14 +592,14 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
     ProblemDetails problem_details;
     nlohmann::json json_problem_details;
     problem_details.setCause("USER_NOT_FOUND");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problem_details.setDetail("User " + supi + " not found");
     to_json(json_problem_details, problem_details);
     Logger::udm_sdm().error("User " + supi + " not found");
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
 
     response_data = json_problem_details;
-    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = oai::common::sbi::http_status_code::NOT_FOUND;
     return;
   }
 }
@@ -634,7 +635,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     Logger::udm_uecm().info("Could not get JSON content from UDR response");
 
     problem_details.setCause("USER_NOT_FOUND");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problem_details.setDetail("User " + ue_id + " not found");
     to_json(problem_details_json, problem_details);
 
@@ -692,12 +693,12 @@ void udm_app::handle_session_management_subscription_data_retrieval(
     ProblemDetails problem_details      = {};
     nlohmann::json json_problem_details = {};
     problem_details.setCause("USER_NOT_FOUND");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problem_details.setDetail("User " + supi + " not found");
     to_json(json_problem_details, problem_details);
     Logger::udm_sdm().error("User " + supi + " not found");
     response_data = json_problem_details;
-    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = oai::common::sbi::http_status_code::NOT_FOUND;
     return;
   }
   return;
@@ -742,11 +743,11 @@ void udm_app::handle_slice_selection_subscription_data_retrieval(
     Logger::udm_sdm().info("Could not get JSON content from UDR's response");
     ProblemDetails problem_details;
     problem_details.setCause("SUBSCRIPTION_NOT_FOUND");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problem_details.setDetail("Subscription with SUPI " + supi + " not found");
     to_json(response_data, problem_details);
     Logger::udm_sdm().warn("Subscription with SUPI %s not found", supi.c_str());
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code = oai::common::sbi::http_status_code::NOT_FOUND;
     return;
   }
 }
@@ -779,13 +780,13 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
     ProblemDetails problem_details;
     nlohmann::json json_problem_details;
     problem_details.setCause("USER_NOT_FOUND");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problem_details.setDetail("User " + supi + " not found");
     to_json(json_problem_details, problem_details);
     Logger::udm_sdm().error("User " + supi + " not found");
     Logger::udm_sdm().info("Send 404 Not_Found response to client");
     response_data = json_problem_details;
-    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = oai::common::sbi::http_status_code::NOT_FOUND;
     return;
   }
   Logger::udm_sdm().debug("HTTP response code %d", code);
@@ -826,14 +827,14 @@ void udm_app::handle_subscription_creation(
     Logger::udm_uecm().info("Could not get JSON content from UDR response");
 
     problem_details.setCause("USER_NOT_FOUND");
-    problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+    problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problem_details.setDetail("User " + supi + " not found");
     to_json(problem_details_json, problem_details);
 
     Logger::udm_uecm().error("User " + supi + " not found");
     Logger::udm_uecm().info("Send 404 Not_Found response to client");
     response_data = problem_details_json;
-    code          = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code          = oai::common::sbi::http_status_code::NOT_FOUND;
     return;
   }
   Logger::udm_uecm().debug("HTTP response code %d", http_response.status_code);
@@ -870,7 +871,7 @@ evsub_id_t udm_app::handle_create_ee_subscription(
   // TODO: MonitoringReport
 
   add_event_subscription(evsub_id, ueIdentity, ces);
-  code = HTTP_RESPONSE_CODE_CREATED;
+  code = oai::common::sbi::http_status_code::CREATED;
 
   return evsub_id;
 }
@@ -884,9 +885,9 @@ void udm_app::handle_delete_ee_subscription(
   if (!delete_event_subscription(subscriptionId, ueIdentity)) {
     // Set ProblemDetails
     // Code
-    code = HTTP_RESPONSE_CODE_NOT_FOUND;
+    code = oai::common::sbi::http_status_code::NOT_FOUND;
   }
-  code = HTTP_RESPONSE_CODE_NO_CONTENT;
+  code = oai::common::sbi::http_status_code::NO_CONTENT;
   return;
 }
 
@@ -906,7 +907,7 @@ void udm_app::handle_update_ee_subscription(
         (p.getPath().length() < 2)) {
       Logger::udm_ee().warn(
           "Bad value for operation path: %s ", p.getPath().c_str());
-      code = HTTP_RESPONSE_CODE_BAD_REQUEST;
+      code = oai::common::sbi::http_status_code::BAD_REQUEST;
       problemDetails.setCause(
           oai::common::sbi::protocol_application_error_to_string(
               oai::common::sbi::protocol_application_error::
@@ -919,7 +920,7 @@ void udm_app::handle_update_ee_subscription(
     switch (op) {
       case PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE: {
         if (replace_ee_subscription_item(path, p.getValue())) {
-          code = HTTP_RESPONSE_CODE_OK;
+          code = oai::common::sbi::http_status_code::OK;
         } else {
           op_success = false;
         }
@@ -927,7 +928,7 @@ void udm_app::handle_update_ee_subscription(
 
       case PatchOperation_anyOf::ePatchOperation_anyOf::ADD: {
         if (add_ee_subscription_item(path, p.getValue())) {
-          code = HTTP_RESPONSE_CODE_OK;
+          code = oai::common::sbi::http_status_code::OK;
         } else {
           op_success = false;
         }
@@ -935,7 +936,7 @@ void udm_app::handle_update_ee_subscription(
 
       case PatchOperation_anyOf::ePatchOperation_anyOf::REMOVE: {
         if (remove_ee_subscription_item(path)) {
-          code = HTTP_RESPONSE_CODE_OK;
+          code = oai::common::sbi::http_status_code::OK;
         } else {
           op_success = false;
         }
@@ -948,7 +949,7 @@ void udm_app::handle_update_ee_subscription(
     }
 
     if (!op_success) {
-      code = HTTP_RESPONSE_CODE_BAD_REQUEST;
+      code = oai::common::sbi::http_status_code::BAD_REQUEST;
       problemDetails.setCause(
           oai::common::sbi::protocol_application_error_to_string(
               oai::common::sbi::protocol_application_error::
