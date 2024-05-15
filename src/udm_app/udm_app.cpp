@@ -46,11 +46,12 @@
 #include "udm_config.hpp"
 #include "udm_nrf.hpp"
 
-using namespace oai::udm::app;
 using namespace oai::model::udm;
 using namespace oai::model::common;
-using namespace std::chrono;
+using namespace oai::utils;
+using namespace oai::udm::app;
 using namespace oai::udm::config;
+using namespace std::chrono;
 using namespace boost::placeholders;
 
 extern udm_app* udm_app_inst;

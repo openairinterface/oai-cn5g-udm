@@ -194,7 +194,7 @@ class udm_app {
   void increment_sqn(const std::string& c_sqn, std::string& n_sqn);
 
  private:
-  util::uint_generator<uint32_t> evsub_id_generator;
+  oai::utils::uint_generator<uint32_t> evsub_id_generator;
   std::map<evsub_id_t, std::shared_ptr<oai::model::udm::CreatedEeSubscription>>
       udm_event_subscriptions;
   std::map<std::string, std::vector<evsub_id_t>> udm_event_subscriptions_per_ue;

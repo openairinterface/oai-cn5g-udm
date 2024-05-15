@@ -117,7 +117,8 @@ void udm_http2_server::start() {
                 // Parse URI
                 std::string qs = request.uri().raw_query;
                 Logger::udm_server().debug("QueryString: %s", qs.c_str());
-                std::string plmn_id = util::get_query_param(qs, "plmn-id");
+                std::string plmn_id =
+                    oai::utils::get_query_param(qs, "plmn-id");
                 nlohmann::json::parse(plmn_id.c_str()).get_to(plmnId);
 
                 this->access_mobility_subscription_data_retrieval_handler(
@@ -148,13 +149,14 @@ void udm_http2_server::start() {
                 std::string qs = request.uri().raw_query;
                 Logger::udm_server().debug("QueryString: %s", qs.c_str());
                 std::string supported_features =
-                    util::get_query_param(qs, "supported-features");
-                std::string plmn_id = util::get_query_param(qs, "plmn-id");
+                    oai::utils::get_query_param(qs, "supported-features");
+                std::string plmn_id =
+                    oai::utils::get_query_param(qs, "plmn-id");
                 nlohmann::json::parse(plmn_id.c_str()).get_to(plmnId);
                 std::string single_nssai =
-                    util::get_query_param(qs, "single-nssai");
+                    oai::utils::get_query_param(qs, "single-nssai");
                 nlohmann::json::parse(single_nssai.c_str()).get_to(snssai);
-                std::string dnn = util::get_query_param(qs, "dnn");
+                std::string dnn = oai::utils::get_query_param(qs, "dnn");
 
                 this->session_management_subscription_data_retrieval_handler(
                     supi, response, snssai, dnn, plmnId);
@@ -169,8 +171,9 @@ void udm_http2_server::start() {
                 std::string qs = request.uri().raw_query;
                 Logger::udm_server().debug("QueryString: %s", qs.c_str());
                 std::string supported_features =
-                    util::get_query_param(qs, "supported-features");
-                std::string plmn_id = util::get_query_param(qs, "plmn-id");
+                    oai::utils::get_query_param(qs, "supported-features");
+                std::string plmn_id =
+                    oai::utils::get_query_param(qs, "plmn-id");
                 nlohmann::json::parse(plmn_id.c_str()).get_to(plmnId);
 
                 this->slice_selection_subscription_data_retrieval_handler(
@@ -186,8 +189,9 @@ void udm_http2_server::start() {
                 std::string qs = request.uri().raw_query;
                 Logger::udm_server().debug("QueryString: %s", qs.c_str());
                 std::string supported_features =
-                    util::get_query_param(qs, "supported-features");
-                std::string plmn_id = util::get_query_param(qs, "plmn-id");
+                    oai::utils::get_query_param(qs, "supported-features");
+                std::string plmn_id =
+                    oai::utils::get_query_param(qs, "plmn-id");
                 nlohmann::json::parse(plmn_id.c_str()).get_to(plmnId);
 
                 this->smf_selection_subscription_data_retrieval_handler(

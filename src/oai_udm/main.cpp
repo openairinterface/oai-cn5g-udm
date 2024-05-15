@@ -38,8 +38,7 @@
 using namespace oai::udm::app;
 using namespace oai::udm::config;
 using namespace oai::config;
-using namespace util;
-using namespace std;
+using namespace oai::utils;
 
 udm_config udm_cfg;
 udm_app* udm_app_inst              = nullptr;
@@ -153,7 +152,7 @@ int main(int argc, char** argv) {
   std::thread task_manager_thread(&task_manager::run, tm_inst);
 
   // PID file
-  string pid_file_name =
+  std::string pid_file_name =
       get_exe_absolute_path(udm_cfg.pid_dir, udm_cfg.instance);
   if (!is_pid_file_lock_success(pid_file_name.c_str())) {
     Logger::system().error("Lock PID file %s failed\n", pid_file_name.c_str());
@@ -177,7 +176,8 @@ int main(int argc, char** argv) {
   } else {
     // UDM NGHTTP API server (HTTP2)
     udm_api_server_2 = new udm_http2_server(
-        conv::toString(udm_cfg.sbi.addr4), udm_cfg.sbi.port, udm_app_inst);
+        oai::utils::conv::toString(udm_cfg.sbi.addr4), udm_cfg.sbi.port,
+        udm_app_inst);
     std::thread udm_http2_manager(&udm_http2_server::start, udm_api_server_2);
     udm_http2_manager.join();
   }
