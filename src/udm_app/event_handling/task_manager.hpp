@@ -27,11 +27,7 @@
 
 #include "udm_event.hpp"
 
-// using namespace oai::udm::app;
-
-namespace oai {
-namespace udm {
-namespace app {
+namespace oai::udm::app {
 
 class udm_event;
 class task_manager {
@@ -66,8 +62,6 @@ class task_manager {
   bool terminate;
   bool terminated;
 };
-}  // namespace app
-}  // namespace udm
-}  // namespace oai
+}  // namespace oai::udm::app
 
 #endif
