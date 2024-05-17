@@ -304,6 +304,18 @@ class udm_app {
    */
   void increment_sqn(const std::string& c_sqn, std::string& n_sqn);
 
+  /*
+   * Set problem details to be returned to the request client
+   * @param [uint16_t ] status: Status code
+   * @param [uint16_t] cause: cause of the problem
+   * @param [const std::detail&] detail: Description of the problem
+   * @param [nlohmann::json& ] problem_details: problem details in json format
+   * @return void
+   */
+  void set_problem_details(
+      uint16_t status, uint16_t cause, const std::string& detail,
+      nlohmann::json& problem_details);
+
  private:
   oai::utils::uint_generator<uint32_t> evsub_id_generator;
   std::map<evsub_id_t, std::shared_ptr<oai::model::udm::CreatedEeSubscription>>
