@@ -69,7 +69,7 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
 
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udm_app->handle_access_mobility_subscription_data_retrieval(
       supi, response_data, http_code, plmn_id);

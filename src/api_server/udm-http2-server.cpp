@@ -244,7 +244,7 @@ void udm_http2_server::generate_auth_data_request_handler(
     const response& response) {
   Logger::udm_ueau().info("Handle generate_auth_data()");
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_generate_auth_data_request(
@@ -272,7 +272,7 @@ void udm_http2_server::confirm_auth_handler(
     const response& response) {
   Logger::udm_ueau().info("Handle Authentication Confirmation");
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   std::string location;
   header_map h;
 
@@ -301,7 +301,7 @@ void udm_http2_server::delete_auth_handler(
     const std::string& supi, const std::string& authEventId,
     const oai::model::udm::AuthEvent& authEvent, const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_delete_auth(
@@ -324,7 +324,7 @@ void udm_http2_server::delete_auth_handler(
 void udm_http2_server::access_mobility_subscription_data_retrieval_handler(
     const std::string& supi, const response& response, PlmnId PlmnId) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_access_mobility_subscription_data_retrieval(
@@ -350,7 +350,7 @@ void udm_http2_server::amf_registration_for_3gpp_access_handler(
         amf_3gpp_access_registration,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_amf_registration_for_3gpp_access(
@@ -374,7 +374,7 @@ void udm_http2_server::session_management_subscription_data_retrieval_handler(
     const std::string& supi, const response& response, Snssai snssai,
     std::string dnn, PlmnId plmnid) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_session_management_subscription_data_retrieval(
@@ -397,7 +397,7 @@ void udm_http2_server::slice_selection_subscription_data_retrieval_handler(
     const std::string& supi, const response& response,
     std::string supportedfeatures, PlmnId plmnid) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_slice_selection_subscription_data_retrieval(
@@ -420,7 +420,7 @@ void udm_http2_server::smf_selection_subscription_data_retrieval_handler(
     const std::string& supi, const response& response,
     std::string supportedfeatures, PlmnId plmnid) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_smf_selection_subscription_data_retrieval(
@@ -444,7 +444,7 @@ void udm_http2_server::subscription_creation_handler(
     const oai::model::udm::SdmSubscription& sdmSubscription,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_subscription_creation(

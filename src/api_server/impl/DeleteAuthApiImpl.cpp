@@ -53,7 +53,7 @@ void DeleteAuthApiImpl::delete_auth(
 
   nlohmann::json auth_response = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udm_app->handle_delete_auth(
       supi, authEventId, authEvent, auth_response, http_code);

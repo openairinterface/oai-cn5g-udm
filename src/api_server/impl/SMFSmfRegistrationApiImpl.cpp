@@ -91,7 +91,7 @@ void SMFSmfRegistrationApiImpl::registration(
 
   nlohmann::json smf_registration_json;
   to_json(smf_registration_json, smfRegistration);
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   oai::http::request http_request = http_client_inst->prepare_json_request(
       remote_uri, smf_registration_json.dump());
