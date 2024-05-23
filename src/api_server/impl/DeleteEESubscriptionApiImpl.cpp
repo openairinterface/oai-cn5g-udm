@@ -50,7 +50,7 @@ void DeleteEESubscriptionApiImpl::delete_ee_subscription(
   Logger::udm_ee().info("Handle Delete EE Subscription");
 
   Pistache::Http::Code code     = {};
-  long http_code                = 0;
+  uint32_t http_code            = 0;
   nlohmann::json json_data      = {};
   ProblemDetails problemDetails = {};
 

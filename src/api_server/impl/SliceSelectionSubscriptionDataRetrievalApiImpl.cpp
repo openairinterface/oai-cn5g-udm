@@ -33,7 +33,6 @@
 
 #include "SliceSelectionSubscriptionDataRetrievalApiImpl.h"
 
-#include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 
@@ -73,7 +72,7 @@ void SliceSelectionSubscriptionDataRetrievalApiImpl::get_nssai(
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
 
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udm_app->handle_slice_selection_subscription_data_retrieval(
       supi, response_data, http_code, supported_features_str, plmn_id);

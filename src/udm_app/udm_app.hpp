@@ -22,25 +22,25 @@
 #ifndef FILE_UDM_APP_HPP_SEEN
 #define FILE_UDM_APP_HPP_SEEN
 
-#include <string>
 #include <pistache/http.h>
+
 #include <map>
 #include <shared_mutex>
+#include <string>
 
-#include "AuthenticationInfoRequest.h"
-#include "PlmnId.h"
 #include "Amf3GppAccessRegistration.h"
-#include "Snssai.h"
-#include "PlmnId.h"
-#include "SdmSubscription.h"
 #include "AuthEvent.h"
-#include "EeSubscription.h"
+#include "AuthenticationInfoRequest.h"
 #include "CreatedEeSubscription.h"
+#include "EeSubscription.h"
 #include "PatchItem.h"
+#include "PlmnId.h"
 #include "ProblemDetails.h"
-#include "uint_generator.hpp"
+#include "SdmSubscription.h"
+#include "Snssai.h"
 #include "udm.h"
 #include "udm_event.hpp"
+#include "uint_generator.hpp"
 
 namespace oai::udm::app {
 
@@ -54,64 +54,175 @@ class udm_app {
   bool start();
   void stop();
 
+  /*
+   * Handle a request to generate the authentication data
+   * @param [const std::string&] supiOrSuci: UE's SUPI/SUCI
+   * @param [const oai::model::udm::AuthenticationInfoRequest&]
+   * authenticationInfoRequest: request's info
+   * @param [nlohmann::json&] auth_info_response: Authentication response's info
+   * @param [uint32_t&] code: response's code
+   * @return void
+   */
   void handle_generate_auth_data_request(
       const std::string& supiOrSuci,
       const oai::model::udm::AuthenticationInfoRequest&
           authenticationInfoRequest,
-      nlohmann::json& auth_info_response, long& code);
+      nlohmann::json& auth_info_response, uint32_t& code);
 
+  /*
+   * Handle a request to confirm the authentication data
+   * @param [const std::string&] supi: UE's SUPI
+   * @param [const oai::model::udm::AuthEvent&] authEvent: Authentication Event
+   * @param [nlohmann::json&] confirm_response: Confirm response
+   * @param [std::string&] location: location of the resource
+   * @param [uint32_t&] code: response's code
+   * @return void
+   */
   void handle_confirm_auth(
       const std::string& supi, const oai::model::udm::AuthEvent& authEvent,
-      nlohmann::json& confirm_response, std::string& location, long& code);
+      nlohmann::json& confirm_response, std::string& location, uint32_t& code);
 
+  /*
+   * Handle a request to delete an authentication data
+   * @param [const std::string&] supi: UE's SUPI
+   * @param [const std::string&] authEventId: Event ID
+   * @param [const oai::model::udm::AuthEvent&] authEvent: Authentication Event
+   * @param [nlohmann::json&] auth_response: Authentication response
+   * @param [uint32_t&] code: response's code
+   * @return void
+   */
   void handle_delete_auth(
       const std::string& supi, const std::string& authEventId,
       const oai::model::udm::AuthEvent& authEvent,
-      nlohmann::json& auth_response, long& code);
+      nlohmann::json& auth_response, uint32_t& code);
 
+  /*
+   * Handle a request to get the Access and Mobility Subscription Data
+   * @param [const std::string&] supi: UE's SUPI
+   * @param [nlohmann::json&] response_data: response's info
+   * @param [uint32_t&] code: response's code
+   * @param [oai::model::common::PlmnId] PlmnId: PLMN ID
+   * @return void
+   */
   void handle_access_mobility_subscription_data_retrieval(
-      const std::string& supi, nlohmann::json& response_data, long& code,
+      const std::string& supi, nlohmann::json& response_data, uint32_t& code,
       oai::model::common::PlmnId PlmnId = {});
 
+  /*
+   * Handle a request to Create an AMF Registration for 3GPP Access info
+   * @param [const std::string&] supi: UE's SUPI
+   * @param [const oai::model::udm::Amf3GppAccessRegistration&]
+   * amf_3gpp_access_registration: Registration info
+   * @param [nlohmann::json&] response_data: response's info
+   * @param [uint32_t&] code: response's code
+   * @param [oai::model::common::PlmnId] PlmnId: PLMN ID
+   * @return void
+   */
   void handle_amf_registration_for_3gpp_access(
       const std::string& ue_id,
       const oai::model::udm::Amf3GppAccessRegistration&
           amf_3gpp_access_registration,
-      nlohmann::json& response_data, long& code);
+      nlohmann::json& response_data, uint32_t& code);
 
+  /*
+   * Handle a request to get the Session Management Subscription Data
+   * @param [const std::string&] supi: UE's SUPI
+   * @param [nlohmann::json&] response_data: response's info
+   * @param [uint32_t&] code: response's code
+   * @param [oai::model::common::Snssai] snssai: SNSSAI
+   * @param [oai::model::common::PlmnId] PlmnId: PLMN ID
+   * @param [std::string&] dnn: DNN
+   * @return void
+   */
   void handle_session_management_subscription_data_retrieval(
-      const std::string& supi, nlohmann::json& response_data, long& code,
+      const std::string& supi, nlohmann::json& response_data, uint32_t& code,
       oai::model::common::Snssai snssai = {}, std::string dnn = {},
       oai::model::common::PlmnId plmn_id = {});
 
+  /*
+   * Handle a request to get the Slice Selection Subscription Data
+   * @param [const std::string&] supi: UE's SUPI
+   * @param [nlohmann::json&] response_data: response's info
+   * @param [uint32_t&] code: response's code
+   * @param [oai::model::common::PlmnId] PlmnId: PLMN ID
+   * @return void
+   */
   void handle_slice_selection_subscription_data_retrieval(
-      const std::string& supi, nlohmann::json& response_data, long& code,
+      const std::string& supi, nlohmann::json& response_data, uint32_t& code,
       std::string supported_features     = {},
       oai::model::common::PlmnId plmn_id = {});
 
+  /*
+   * Handle a request to get the SMF Selection Subscription Data
+   * @param [const std::string&] supi: UE's SUPI
+   * @param [nlohmann::json&] response_data: response's info
+   * @param [uint32_t&] code: response's code
+   * @param [std::string] supported_features: supported features
+   * @param [oai::model::common::PlmnId] PlmnId: PLMN ID
+   * @return void
+   */
   void handle_smf_selection_subscription_data_retrieval(
-      const std::string& supi, nlohmann::json& response_data, long& code,
+      const std::string& supi, nlohmann::json& response_data, uint32_t& code,
       std::string supported_features     = {},
       oai::model::common::PlmnId plmn_id = {});
 
+  /*
+   * Handle a request to create a subscription
+   * @param [const std::string&] supi: UE's SUPI
+   * @param [const oai::model::udm::SdmSubscription&] sdmSubscription:
+   * Suscription info
+   * @param [nlohmann::json&] response_data: response's info
+   * @param [uint32_t&] code: response's code
+   * @return void
+   */
   void handle_subscription_creation(
       const std::string& supi,
       const oai::model::udm::SdmSubscription& sdmSubscription,
-      nlohmann::json& response_data, long& code);
+      nlohmann::json& response_data, uint32_t& code);
 
+  /*
+   * Handle a request to create an event subscription
+   * @param [const std::string&] supi: UE's SUPI
+   * @param [const oai::model::udm::EeSubscription&] eeSubscription: suscription
+   * info
+   * @param [const oai::model::udm::CreatedEeSubscription&] createdSub: created
+   * suscription info
+   * @param [uint32_t&] code: response's code
+   * @return subscription Id
+   */
   evsub_id_t handle_create_ee_subscription(
       const std::string& ueIdentity,
       const oai::model::udm::EeSubscription& eeSubscription,
-      oai::model::udm::CreatedEeSubscription& createdSub, long& code);
+      oai::model::udm::CreatedEeSubscription& createdSub, uint32_t& code);
 
+  /*
+   * Handle a request to delete an event subscription
+   * @param [const std::string&] ueIdentity: UE's identity
+   * @param [const std::string&] subscriptionId: subscription's Id
+   * @param [oai::model::common::ProblemDetails&] problemDetails: problem
+   * happened (if exist) when deleting the even
+   * @param [uint32_t&] code: response's code
+   * @return void
+   */
   void handle_delete_ee_subscription(
       const std::string& ueIdentity, const std::string& subscriptionId,
-      oai::model::common::ProblemDetails& problemDetails, long& code);
+      oai::model::common::ProblemDetails& problemDetails, uint32_t& code);
 
+  /*
+   * Handle a request to update an event subscription
+   * @param [const std::string&] ueIdentity: UE's identity
+   * @param [const std::string&] subscriptionId: subscription's Id
+   * @param [const std::vector<oai::model::common::PatchItem>&] patchItem: list
+   * of actions
+   * @param [oai::model::common::ProblemDetails&] problemDetails: problem
+   * happened (if exist) when executing the requests
+   * @param [uint32_t&] code: response's code
+   * @return void
+   */
   void handle_update_ee_subscription(
       const std::string& ueIdentity, const std::string& subscriptionId,
       const std::vector<oai::model::common::PatchItem>& patchItem,
-      oai::model::common::ProblemDetails& problemDetails, long& code);
+      oai::model::common::ProblemDetails& problemDetails, uint32_t& code);
 
   /*
    * Generate an unique ID for the new subscription
@@ -193,8 +304,20 @@ class udm_app {
    */
   void increment_sqn(const std::string& c_sqn, std::string& n_sqn);
 
+  /*
+   * Set problem details to be returned to the request client
+   * @param [uint16_t ] status: Status code
+   * @param [uint16_t] cause: cause of the problem
+   * @param [const std::detail&] detail: Description of the problem
+   * @param [nlohmann::json& ] problem_details: problem details in json format
+   * @return void
+   */
+  void set_problem_details(
+      uint16_t status, uint16_t cause, const std::string& detail,
+      nlohmann::json& problem_details);
+
  private:
-  util::uint_generator<uint32_t> evsub_id_generator;
+  oai::utils::uint_generator<uint32_t> evsub_id_generator;
   std::map<evsub_id_t, std::shared_ptr<oai::model::udm::CreatedEeSubscription>>
       udm_event_subscriptions;
   std::map<std::string, std::vector<evsub_id_t>> udm_event_subscriptions_per_ue;

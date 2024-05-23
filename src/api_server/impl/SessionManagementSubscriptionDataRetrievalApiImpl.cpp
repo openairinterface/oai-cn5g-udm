@@ -36,7 +36,6 @@
 #include <nlohmann/json.hpp>
 
 #include "SessionManagementSubscriptionData.h"
-#include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 
@@ -79,7 +78,7 @@ void SessionManagementSubscriptionDataRetrievalApiImpl::get_sm_data(
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
   std::string location         = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udm_app->handle_session_management_subscription_data_retrieval(
       supi, response_data, http_code, snssai, dnn_str, plmn_id);

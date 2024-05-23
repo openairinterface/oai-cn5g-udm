@@ -21,6 +21,7 @@
 
 #include "authentication_algorithms_with_5gaka.hpp"
 
+#include <arpa/inet.h>
 #include <errno.h>
 #include <gmp.h>
 #include <nettle/hmac.h>

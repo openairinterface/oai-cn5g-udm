@@ -21,22 +21,22 @@
 
 #include "udm_nrf.hpp"
 
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
-
 #include <curl/curl.h>
 #include <pistache/http.h>
 #include <pistache/mime.h>
+
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #include <nlohmann/json.hpp>
 #include <stdexcept>
 
 #include "3gpp_29.500.h"
+#include "http_client.hpp"
 #include "logger.hpp"
 #include "sbi_helper.hpp"
 #include "udm.h"
 #include "udm_app.hpp"
 #include "udm_profile.hpp"
-#include "udm_client.hpp"
 
 using namespace oai::udm::app;
 using namespace oai::udm::config;
@@ -44,8 +44,7 @@ using namespace oai::model::common;
 using namespace boost::placeholders;
 
 extern udm_config udm_cfg;
-extern udm_nrf* udm_nrf_inst;
-udm_client* udm_client_instance = nullptr;
+extern std::shared_ptr<oai::http::http_client> http_client_inst;
 
 //------------------------------------------------------------------------------
 udm_nrf::udm_nrf(udm_event& ev) : m_event_sub(ev) {
@@ -107,27 +106,28 @@ void udm_nrf::generate_udm_profile() {
 //---------------------------------------------------------------------------------------------
 void udm_nrf::register_to_nrf() {
   nlohmann::json response_data = {};
+  std::string nrf_uri          = {};
 
-  // Send NF registration request
-  std::string response_str = {};
-  long response_code       = 0;
-  std::string nrf_uri      = {};
-
-  sbi_helper::get_nrf_nf_instance_uri(
-      udm_cfg.nrf_addr, udm_instance_id, nrf_uri);
   nlohmann::json json_data = {};
   udm_nf_profile.to_json(json_data);
 
+  sbi_helper::get_nrf_nf_instance_uri(
+      udm_cfg.nrf_addr, udm_instance_id, nrf_uri);
   Logger::udm_nrf().info(
       "Sending NF registration request to NRF, NRF's URI: %s", nrf_uri);
 
   bool registration_success = false;
 
-  if (udm_client::get_instance().send_request(
-          nrf_uri, http_method_e::PUT, json_data.dump().c_str(), response_str,
-          response_code)) {
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(nrf_uri, json_data.dump());
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::PUT, http_request);
+
+  if ((http_response.status_code == oai::common::sbi::http_status_code::OK) or
+      (http_response.status_code ==
+       oai::common::sbi::http_status_code::CREATED)) {
     try {
-      response_data = nlohmann::json::parse(response_str);
+      response_data = nlohmann::json::parse(http_response.body);
       // TODO: use Heart-beart timer interval returned from NRF
       if (response_data.find("nfStatus") != response_data.end()) {
         std::string status = response_data["nfStatus"].get<std::string>();
@@ -152,26 +152,24 @@ void udm_nrf::register_to_nrf() {
 //---------------------------------------------------------------------------------------------
 void udm_nrf::deregister_to_nrf() {
   nlohmann::json response_data = {};
+  std::string nrf_uri          = {};
 
-  // Send NF Registration request
-  std::string response_str = {};
-  long response_code       = {0};
-
-  std::string nrf_uri = {};
   sbi_helper::get_nrf_nf_instance_uri(
       udm_cfg.nrf_addr, udm_instance_id, nrf_uri);
-
   Logger::udm_nrf().info("Sending NF Deregistration request");
 
-  if (!udm_client::get_instance().send_request(
-          nrf_uri, http_method_e::DELETE, "", response_str, response_code)) {
-    Logger::udm_nrf().debug("NF Deregistration failed");
-    // TODO: retry
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(nrf_uri);
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::DELETE, http_request);
+
+  if (http_response.status_code ==
+      oai::common::sbi::http_status_code::NO_CONTENT) {
+    Logger::udm_nrf().info("NF Deregistration procedure successful");
+    // TODO:
   } else {
-    if (response_code == 204) {
-      Logger::udm_nrf().info("NF Deregistration procedure successful");
-      // TODO: process the response
-    }
+    Logger::udm_nrf().info("NF Deregistration procedure failed");
+    // TODO:
   }
 }
 
@@ -207,9 +205,6 @@ void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   patch_items.push_back(patch_item);
   Logger::udm_nrf().info("Sending NF heartbeat request");
 
-  std::string response = {};
-  long response_code   = 0;
-
   nlohmann::json json_data = nlohmann::json::array();
   for (auto i : patch_items) {
     nlohmann::json item = {};
@@ -221,20 +216,16 @@ void udm_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   sbi_helper::get_nrf_nf_instance_uri(
       udm_cfg.nrf_addr, udm_instance_id, nrf_uri);
 
-  bool is_heartbeat_success = false;
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(nrf_uri, json_data.dump());
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::PATCH, http_request);
 
-  if (udm_client::get_instance().send_request(
-          nrf_uri, http_method_e::PATCH, json_data.dump().c_str(), response,
-          response_code)) {
-    if (response_code == HTTP_STATUS_CODE_200_OK or
-        response_code == HTTP_STATUS_CODE_201_CREATED or
-        response_code == HTTP_STATUS_CODE_204_NO_CONTENT) {
-      is_heartbeat_success = true;
-      // TODO: process the response
-    }
-  }
-
-  if (!is_heartbeat_success) {
+  if ((http_response.status_code == oai::common::sbi::http_status_code::OK) or
+      (http_response.status_code ==
+       oai::common::sbi::http_status_code::NO_CONTENT)) {
+    // TODO: process the response
+  } else {
     Logger::udm_nrf().info(
         "NF Heartbeat procedure failed, try to register again");
     if (task_connection.connected()) task_connection.disconnect();

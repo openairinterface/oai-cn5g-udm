@@ -25,9 +25,9 @@
 #include <boost/signals2.hpp>
 namespace bs2 = boost::signals2;
 
+#include "task_manager.hpp"
 #include "udm.h"
 #include "udm_event_sig.hpp"
-#include "task_manager.hpp"
 
 namespace oai::udm::app {
 class task_manager;

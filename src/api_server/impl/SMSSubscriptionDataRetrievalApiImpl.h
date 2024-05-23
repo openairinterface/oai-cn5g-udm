@@ -54,6 +54,8 @@ namespace oai {
 namespace udm {
 namespace api {
 
+using namespace oai::udm::app;
+
 class SMSSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SMSSubscriptionDataRetrievalApi {
  public:

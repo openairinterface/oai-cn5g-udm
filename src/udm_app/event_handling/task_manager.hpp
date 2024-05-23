@@ -22,16 +22,12 @@
 #ifndef TASK_MANAGER_H_
 #define TASK_MANAGER_H_
 
-#include "udm_event.hpp"
-
 #include <linux/types.h>
 #include <sys/timerfd.h>
 
-using namespace oai::udm::app;
+#include "udm_event.hpp"
 
-namespace oai {
-namespace udm {
-namespace app {
+namespace oai::udm::app {
 
 class udm_event;
 class task_manager {
@@ -66,8 +62,6 @@ class task_manager {
   bool terminate;
   bool terminated;
 };
-}  // namespace app
-}  // namespace udm
-}  // namespace oai
+}  // namespace oai::udm::app
 
 #endif

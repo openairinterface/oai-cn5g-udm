@@ -97,7 +97,7 @@ void AccessAndMobilitySubscriptionDataRetrievalApi::get_am_data_handler(
   if (!plmnIdQuery.isEmpty()) {
     PlmnId value;
     std::string valueplmnIdQuery = plmnIdQuery.get();
-    std::string valuechange      = conv::url_decode(valueplmnIdQuery);
+    std::string valuechange = oai::utils::conv::url_decode(valueplmnIdQuery);
     nlohmann::json::parse(valuechange).get_to(value);
     plmnId = Pistache::Some(value);
   }

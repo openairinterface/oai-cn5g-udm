@@ -55,6 +55,8 @@ namespace oai {
 namespace udm {
 namespace api {
 
+using namespace oai::udm::app;
+
 class SessionManagementSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SessionManagementSubscriptionDataRetrievalApi {
  public:

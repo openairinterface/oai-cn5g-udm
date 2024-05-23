@@ -94,7 +94,7 @@ void udm_http2_server::start() {
           } catch (std::exception& e) {
             Logger::udm_server().warn("Invalid request (error: %s)!", e.what());
             response.write_head(
-                http_status_code_e::HTTP_STATUS_CODE_400_BAD_REQUEST);
+                oai::common::sbi::http_status_code::BAD_REQUEST);
             response.end();
             return;
           }
@@ -117,7 +117,8 @@ void udm_http2_server::start() {
                 // Parse URI
                 std::string qs = request.uri().raw_query;
                 Logger::udm_server().debug("QueryString: %s", qs.c_str());
-                std::string plmn_id = util::get_query_param(qs, "plmn-id");
+                std::string plmn_id =
+                    oai::utils::get_query_param(qs, "plmn-id");
                 nlohmann::json::parse(plmn_id.c_str()).get_to(plmnId);
 
                 this->access_mobility_subscription_data_retrieval_handler(
@@ -148,13 +149,14 @@ void udm_http2_server::start() {
                 std::string qs = request.uri().raw_query;
                 Logger::udm_server().debug("QueryString: %s", qs.c_str());
                 std::string supported_features =
-                    util::get_query_param(qs, "supported-features");
-                std::string plmn_id = util::get_query_param(qs, "plmn-id");
+                    oai::utils::get_query_param(qs, "supported-features");
+                std::string plmn_id =
+                    oai::utils::get_query_param(qs, "plmn-id");
                 nlohmann::json::parse(plmn_id.c_str()).get_to(plmnId);
                 std::string single_nssai =
-                    util::get_query_param(qs, "single-nssai");
+                    oai::utils::get_query_param(qs, "single-nssai");
                 nlohmann::json::parse(single_nssai.c_str()).get_to(snssai);
-                std::string dnn = util::get_query_param(qs, "dnn");
+                std::string dnn = oai::utils::get_query_param(qs, "dnn");
 
                 this->session_management_subscription_data_retrieval_handler(
                     supi, response, snssai, dnn, plmnId);
@@ -169,8 +171,9 @@ void udm_http2_server::start() {
                 std::string qs = request.uri().raw_query;
                 Logger::udm_server().debug("QueryString: %s", qs.c_str());
                 std::string supported_features =
-                    util::get_query_param(qs, "supported-features");
-                std::string plmn_id = util::get_query_param(qs, "plmn-id");
+                    oai::utils::get_query_param(qs, "supported-features");
+                std::string plmn_id =
+                    oai::utils::get_query_param(qs, "plmn-id");
                 nlohmann::json::parse(plmn_id.c_str()).get_to(plmnId);
 
                 this->slice_selection_subscription_data_retrieval_handler(
@@ -186,8 +189,9 @@ void udm_http2_server::start() {
                 std::string qs = request.uri().raw_query;
                 Logger::udm_server().debug("QueryString: %s", qs.c_str());
                 std::string supported_features =
-                    util::get_query_param(qs, "supported-features");
-                std::string plmn_id = util::get_query_param(qs, "plmn-id");
+                    oai::utils::get_query_param(qs, "supported-features");
+                std::string plmn_id =
+                    oai::utils::get_query_param(qs, "plmn-id");
                 nlohmann::json::parse(plmn_id.c_str()).get_to(plmnId);
 
                 this->smf_selection_subscription_data_retrieval_handler(
@@ -208,7 +212,7 @@ void udm_http2_server::start() {
           } catch (std::exception& e) {
             Logger::udm_server().warn("Invalid request (error: %s)!", e.what());
             response.write_head(
-                http_status_code_e::HTTP_STATUS_CODE_400_BAD_REQUEST);
+                oai::common::sbi::http_status_code::BAD_REQUEST);
             response.end();
             return;
           }
@@ -240,17 +244,17 @@ void udm_http2_server::generate_auth_data_request_handler(
     const response& response) {
   Logger::udm_ueau().info("Handle generate_auth_data()");
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_generate_auth_data_request(
       supiOrSuci, authenticationInfoRequest, response_data, http_code);
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -268,21 +272,21 @@ void udm_http2_server::confirm_auth_handler(
     const response& response) {
   Logger::udm_ueau().info("Handle Authentication Confirmation");
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   std::string location;
   header_map h;
 
   m_udm_app->handle_confirm_auth(
       supi, authEvent, response_data, location, http_code);
 
-  if (http_code == HTTP_RESPONSE_CODE_CREATED)
+  if (http_code == oai::common::sbi::http_status_code::CREATED)
     h.emplace("location", header_value{location});
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -297,17 +301,17 @@ void udm_http2_server::delete_auth_handler(
     const std::string& supi, const std::string& authEventId,
     const oai::model::udm::AuthEvent& authEvent, const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_delete_auth(
       supi, authEventId, authEvent, response_data, http_code);
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -320,17 +324,17 @@ void udm_http2_server::delete_auth_handler(
 void udm_http2_server::access_mobility_subscription_data_retrieval_handler(
     const std::string& supi, const response& response, PlmnId PlmnId) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_access_mobility_subscription_data_retrieval(
       supi, response_data, http_code, PlmnId);
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -346,17 +350,17 @@ void udm_http2_server::amf_registration_for_3gpp_access_handler(
         amf_3gpp_access_registration,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_amf_registration_for_3gpp_access(
       ue_id, amf_3gpp_access_registration, response_data, http_code);
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -370,16 +374,16 @@ void udm_http2_server::session_management_subscription_data_retrieval_handler(
     const std::string& supi, const response& response, Snssai snssai,
     std::string dnn, PlmnId plmnid) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_session_management_subscription_data_retrieval(
       supi, response_data, http_code, snssai, dnn, plmnid);
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -393,16 +397,16 @@ void udm_http2_server::slice_selection_subscription_data_retrieval_handler(
     const std::string& supi, const response& response,
     std::string supportedfeatures, PlmnId plmnid) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_slice_selection_subscription_data_retrieval(
       supi, response_data, http_code, supportedfeatures, plmnid);
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -416,16 +420,16 @@ void udm_http2_server::smf_selection_subscription_data_retrieval_handler(
     const std::string& supi, const response& response,
     std::string supportedfeatures, PlmnId plmnid) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_smf_selection_subscription_data_retrieval(
       supi, response_data, http_code, supportedfeatures, plmnid);
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
@@ -440,17 +444,17 @@ void udm_http2_server::subscription_creation_handler(
     const oai::model::udm::SdmSubscription& sdmSubscription,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_subscription_creation(
       supi, sdmSubscription, response_data, http_code);
 
   // Set content type
-  if ((http_code == HTTP_RESPONSE_CODE_CREATED) or
-      (http_code == HTTP_RESPONSE_CODE_ACCEPTED) or
-      (http_code == HTTP_RESPONSE_CODE_OK) or
-      (http_code == HTTP_RESPONSE_CODE_NO_CONTENT)) {
+  if ((http_code == oai::common::sbi::http_status_code::CREATED) or
+      (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
+      (http_code == oai::common::sbi::http_status_code::OK) or
+      (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
     h.emplace("content-type", header_value{"application/problem"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});

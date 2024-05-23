@@ -52,7 +52,6 @@ namespace oai {
 namespace udm {
 namespace api {
 
-// using namespace oai::model::udm;
 using namespace oai::udm::app;
 
 class SubscriptionDeletionForSharedDataApiImpl

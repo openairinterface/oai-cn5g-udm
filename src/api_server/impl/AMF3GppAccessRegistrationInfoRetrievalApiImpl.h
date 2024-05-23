@@ -52,6 +52,7 @@
 namespace oai {
 namespace udm {
 namespace api {
+using namespace oai::udm::app;
 
 class AMF3GppAccessRegistrationInfoRetrievalApiImpl
     : public oai::udm::api::AMF3GppAccessRegistrationInfoRetrievalApi {

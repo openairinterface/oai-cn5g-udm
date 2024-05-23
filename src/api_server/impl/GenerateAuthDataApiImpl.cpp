@@ -55,7 +55,7 @@ void GenerateAuthDataApiImpl::generate_auth_data(
   std::string reponse_from_udr;
   nlohmann::json auth_info_response = {};
   Pistache::Http::Code code         = {};
-  long http_code                    = 0;
+  uint32_t http_code                = 0;
 
   m_udm_app->handle_generate_auth_data_request(
       supiOrSuci, authenticationInfoRequest, auth_info_response, http_code);

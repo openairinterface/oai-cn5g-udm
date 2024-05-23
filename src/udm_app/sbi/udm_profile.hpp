@@ -24,13 +24,16 @@
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
+
 #include <nlohmann/json.hpp>
 #include <shared_mutex>
 #include <vector>
 
-#include "logger.hpp"
 #include "3gpp_29.510.h"
+#include "logger.hpp"
 #include "udm.h"
+
+using namespace oai::common::sbi;
 
 namespace oai::udm::app {
 
@@ -152,7 +155,7 @@ class udm_profile : public std::enable_shared_from_this<udm_profile> {
 
   /*
    * Set NF type
-   * @param [const nf_type_t &] type: nf type
+   * @param [const std::string&] type: nf type
    * @return void
    */
   void set_nf_type(const std::string& type);

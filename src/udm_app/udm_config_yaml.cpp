@@ -21,9 +21,10 @@
 
 #include "udm_config_yaml.hpp"
 
+#include <boost/algorithm/string.hpp>
+
 #include "conversions.hpp"
 #include "logger.hpp"
-#include <boost/algorithm/string.hpp>
 
 namespace oai::config {
 

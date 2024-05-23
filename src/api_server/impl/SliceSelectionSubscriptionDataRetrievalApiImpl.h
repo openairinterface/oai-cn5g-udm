@@ -53,6 +53,9 @@
 namespace oai {
 namespace udm {
 namespace api {
+
+using namespace oai::udm::app;
+
 class SliceSelectionSubscriptionDataRetrievalApiImpl
     : public oai::udm::api::SliceSelectionSubscriptionDataRetrievalApi {
  public:

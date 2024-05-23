@@ -33,7 +33,6 @@
 
 #include "AMFRegistrationFor3GPPAccessApiImpl.h"
 
-#include "udm_client.hpp"
 #include "logger.hpp"
 #include "udm_config.hpp"
 
@@ -58,7 +57,7 @@ void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
   std::string location;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udm_app->handle_amf_registration_for_3gpp_access(
       ueId, amf3GppAccessRegistration, response_data, http_code);

@@ -54,7 +54,7 @@ void ConfirmAuthApiImpl::confirm_auth(
 
   nlohmann::json confirm_response = {};
   Pistache::Http::Code code       = {};
-  long http_code                  = 0;
+  uint32_t http_code              = 0;
   std::string location;
 
   m_udm_app->handle_confirm_auth(

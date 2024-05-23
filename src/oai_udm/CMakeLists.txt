@@ -255,6 +255,9 @@ add_boolean_option( LOG_OAI                         False    "Thread safe loggin
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 #find_package(Threads REQUIRED)
 
+#CPR
+find_package(cpr REQUIRED)
+
 ################################################################
 # Add sub modules
 ################################################################
@@ -265,7 +268,6 @@ else(STATIC_LINKING)
 endif(STATIC_LINKING)
 
 ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../src/common ${CMAKE_CURRENT_BINARY_DIR}/common)
-ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../src/common/utils ${CMAKE_CURRENT_BINARY_DIR}/utils)
 ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../src/api_server ${CMAKE_CURRENT_BINARY_DIR}/api_server)
 ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../src/5gaka ${CMAKE_CURRENT_BINARY_DIR}/5gaka)
 ################################################################################
@@ -285,8 +287,10 @@ include_directories(${SRC_TOP_DIR}/5gaka)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/common)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udm)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/bstr)
 
 add_executable(udm
   ${SRC_TOP_DIR}/oai_udm/main.cpp
@@ -297,6 +301,7 @@ add_executable(udm
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/common/common.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger/logger.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config/config.cmake)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http/http.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/utils.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udm/udm.cmake)
 
@@ -308,5 +313,5 @@ IF(STATIC_LINKING)
 ENDIF(STATIC_LINKING)   
 
 target_link_libraries (udm ${ASAN} 
-    -Wl,--start-group UDM 3GPP_COMMON_TYPES 5GAKA UDM_API CN_UTILS -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lgmp -Wl,--end-group pthread m rt boost_system pistache curl yaml-cpp)
+    -Wl,--start-group UDM 3GPP_COMMON_TYPES 5GAKA UDM_API -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lgmp -Wl,--end-group pthread m rt boost_system pistache curl yaml-cpp cpr::cpr)
     

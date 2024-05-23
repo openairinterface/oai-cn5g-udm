@@ -52,7 +52,7 @@ void CreateEESubscriptionApiImpl::create_ee_subscription(
   Logger::udm_ee().info("Handle Create EE Subscription");
 
   Pistache::Http::Code code        = {};
-  long http_code                   = 0;
+  uint32_t http_code               = 0;
   CreatedEeSubscription createdSub = {};
   nlohmann::json json_data         = {};
 
