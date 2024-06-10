@@ -19,14 +19,15 @@
  *      contact@openairinterface.org
  */
 
-#ifndef FILE__SEEN
-#define FILE__SEEN
+#ifndef FILE_UDM_H_SEEN
+#define FILE_UDM_H_SEEN
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 
 #include <boost/algorithm/string.hpp>
+
 #include "sbi_helper.hpp"
 
 #define HEART_BEAT_TIMER 10

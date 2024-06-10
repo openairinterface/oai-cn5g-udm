@@ -46,6 +46,7 @@
 #include "udm.h"
 #include "udm_config.hpp"
 #include "udm_nrf.hpp"
+#include "udm_sbi_helper.hpp"
 
 using namespace oai::model::udm;
 using namespace oai::model::common;
@@ -54,6 +55,7 @@ using namespace oai::udm::app;
 using namespace oai::udm::config;
 using namespace std::chrono;
 using namespace boost::placeholders;
+using namespace oai::udm::api;
 
 extern udm_app* udm_app_inst;
 extern udm_config udm_cfg;
@@ -159,7 +161,7 @@ void udm_app::handle_generate_auth_data_request(
   ProblemDetails problem_details      = {};
 
   // Get authentication related info
-  remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
+  remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
   Logger::udm_ueau().debug("Remote URI: " + remote_uri);
 
   oai::http::request http_request =
@@ -250,7 +252,8 @@ void udm_app::handle_generate_auth_data_request(
       Logger::udm_ueau().info("Valid AUTS, generate new AV with SQNms");
 
       // Update SQN@UDR, replace SQNhe with SQNms
-      remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
+      remote_uri =
+          udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
 
       Logger::udm_ueau().debug("Remote URI: " + remote_uri);
 
@@ -353,7 +356,7 @@ void udm_app::handle_generate_auth_data_request(
   Logger::udm_ueau().info("New SQN (for next round) = " + new_sqn);
 
   // Update SQN@UDR
-  remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
+  remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
 
   Logger::udm_ueau().debug("Remote URI: " + remote_uri);
 
@@ -402,7 +405,7 @@ void udm_app::handle_confirm_auth(
   ProblemDetails problem_details      = {};
 
   // Get user info
-  remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
+  remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
   Logger::udm_ueau().debug("Remote URI: " + remote_uri);
 
   oai::http::request http_request =
@@ -436,7 +439,7 @@ void udm_app::handle_confirm_auth(
   }
 
   // Update authentication status
-  remote_uri = udm_cfg.get_udr_authentication_status_uri(supi);
+  remote_uri = udm_sbi_helper::get_udr_authentication_status_uri(supi);
   Logger::udm_ueau().debug("Remote URI:" + remote_uri);
 
   nlohmann::json auth_event_json;
@@ -457,8 +460,8 @@ void udm_app::handle_confirm_auth(
   auth_event_id = hash_value;  // Represents the authEvent Id per UE per serving
                                // network assigned by the UDM during
                                // ResultConfirmation service operation.
-  location = udm_cfg.get_udm_ueau_base() + "/" + supi + "/auth-events/" +
-             auth_event_id;
+  location = udm_sbi_helper::get_udm_ueau_base() + "/" + supi +
+             "/auth-events/" + auth_event_id;
 
   Logger::udm_ueau().info("Send 201 Created response to AUSF");
   confirm_response = auth_event_json;
@@ -477,7 +480,7 @@ void udm_app::handle_delete_auth(
   ProblemDetails problem_details      = {};
 
   // Get user info
-  remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);
+  remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
   Logger::udm_ueau().debug("Remote URI:" + remote_uri);
 
   oai::http::request http_request =
@@ -517,7 +520,7 @@ void udm_app::handle_delete_auth(
 
   if (!hash_value.compare(authEventId)) {
     // Delete authentication status
-    remote_uri = udm_cfg.get_udr_authentication_status_uri(supi);
+    remote_uri = udm_sbi_helper::get_udr_authentication_status_uri(supi);
     Logger::udm_ueau().debug("DELETE Request:" + remote_uri);
 
     nlohmann::json auth_event_json;
@@ -550,7 +553,8 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
     PlmnId plmn_id) {
   // TODO: check if plmn_id available
   std::string remote_uri =
-      udm_cfg.get_udr_access_and_mobility_subscription_data_uri(supi, plmn_id);
+      udm_sbi_helper::get_udr_access_and_mobility_subscription_data_uri(
+          supi, plmn_id);
   std::string body("");
   Logger::udm_sdm().debug("Remote URI: " + remote_uri);
 
@@ -588,7 +592,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   ProblemDetails problem_details      = {};
 
   // Get 3gpp_registration related info
-  remote_uri = udm_cfg.get_udr_amf_3gpp_registration_uri(ue_id);
+  remote_uri = udm_sbi_helper::get_udr_amf_3gpp_registration_uri(ue_id);
   Logger::udm_uecm().debug("Remote URI:" + remote_uri);
 
   nlohmann::json amf_registration_json;
@@ -626,7 +630,8 @@ void udm_app::handle_session_management_subscription_data_retrieval(
     Snssai snssai, std::string dnn, PlmnId plmn_id) {
   // UDR's URL
   std::string remote_uri =
-      udm_cfg.get_udr_session_management_subscription_data_uri(supi, plmn_id);
+      udm_sbi_helper::get_udr_session_management_subscription_data_uri(
+          supi, plmn_id);
   std::string query_str = {};
   std::string body      = {};
 
@@ -679,7 +684,7 @@ void udm_app::handle_slice_selection_subscription_data_retrieval(
 
   // Get the corresponding UDR's URI
   std::string udr_uri =
-      udm_cfg.get_udr_slice_selection_subscription_data_retrieval_uri(
+      udm_sbi_helper::get_udr_slice_selection_subscription_data_retrieval_uri(
           supi, plmn_id);
   std::string body = {};
   Logger::udm_sdm().debug("Remote URI: %s", udr_uri.c_str());
@@ -724,7 +729,8 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
     std::string supported_features, PlmnId plmn_id) {
   // Get UDR's URI
   std::string remote_uri =
-      udm_cfg.get_udr_smf_selection_subscription_data_uri(supi, plmn_id);
+      udm_sbi_helper::get_udr_smf_selection_subscription_data_uri(
+          supi, plmn_id);
 
   std::string body = {};
   Logger::udm_sdm().debug("Remote URI: " + remote_uri);
@@ -769,7 +775,7 @@ void udm_app::handle_subscription_creation(
   ProblemDetails problem_details;
 
   // Get 3gpp_registration related info
-  remote_uri = udm_cfg.get_udr_sdm_subscriptions_uri(supi);
+  remote_uri = udm_sbi_helper::get_udr_sdm_subscriptions_uri(supi);
   Logger::udm_uecm().debug("Remote URI:" + remote_uri);
 
   nlohmann::json sdm_subscription_json;

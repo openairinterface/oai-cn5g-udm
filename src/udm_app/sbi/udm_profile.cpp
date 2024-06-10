@@ -193,7 +193,7 @@ void udm_profile::display() const {
     Logger::udm_app().debug("    SNSSAI:");
   }
   for (auto s : snssais) {
-    Logger::udm_app().debug("        SST, SD: %d, %s", s.sST, s.sD.c_str());
+    Logger::udm_app().debug("        SST, SD: %d, %s", s.sst, s.sd.c_str());
   }
 
   // IPv4 Addresses
@@ -250,8 +250,8 @@ void udm_profile::to_json(nlohmann::json& data) const {
   data["sNssais"] = nlohmann::json::array();
   for (auto s : snssais) {
     nlohmann::json tmp = {};
-    tmp["sst"]         = s.sST;
-    tmp["sd"]          = s.sD;
+    tmp["sst"]         = s.sst;
+    tmp["sd"]          = s.sd;
     data["sNssais"].push_back(tmp);
   }
   data["fqdn"] = fqdn;
@@ -333,8 +333,8 @@ void udm_profile::from_json(const nlohmann::json& data) {
   if (data.find("sNssais") != data.end()) {
     for (auto it : data["sNssais"]) {
       snssai_t s = {};
-      s.sST      = it["sst"].get<int>();
-      s.sD       = it["sd"].get<std::string>();
+      s.sst      = it["sst"].get<int>();
+      s.sd       = it["sd"].get<std::string>();
       snssais.push_back(s);
     }
   }
