@@ -19,8 +19,8 @@
  *      contact@openairinterface.org
  */
 
-#ifndef _5GAKA_H_
-#define _5GAKA_H_
+#ifndef SRC_5GAKA_AUTHENTICATION_ALGORITHMS_WITH_5GAKA_HPP_
+#define SRC_5GAKA_AUTHENTICATION_ALGORITHMS_WITH_5GAKA_HPP_
 
 #include <gmp.h>
 #include <pthread.h>
@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include <cstddef>
 #include <string>
 
 #define SQN_LENGTH_BITS (48)
@@ -94,7 +95,6 @@ typedef enum {
 } algorithm_type_dist_t;
 
 class Authentication_5gaka {
- public:
  public:
   /*
    * f1: Computes network authentication code MAC-A from key K, random,
@@ -202,8 +202,25 @@ class Authentication_5gaka {
   static void RijndaelKeySchedule(const uint8_t key[16]);
   static void RijndaelEncrypt(const uint8_t in[16], uint8_t out[16]);
 
+  static bool suciFromString(
+      const std::string& suci, std::string& mcc, std::string& mnc,
+      std::string& routingIndicator, std::string& protectionSchemeId,
+      std::string& hnpkId, std::string& schemeOutput,
+      std::string& eccEphemeralPublicKey, std::string& ciphertext,
+      std::string& macTagValue, std::string& error);
+  static bool suciSidfProfileA(
+      const std::string& homeNetworkPrivateKey,
+      const std::string& homeNetworkPublicKey,
+      const std::string& eccEphemeralPublicKey, const std::string& ciphertext,
+      const std::string& macTagValue, const std::string& routingIndicator,
+      std::string& imsi, std::string& error);
+  static bool suciSidf(
+      const std::string& homeNetworkPrivateKey,
+      const std::string& homeNetworkPublicKey, const std::string& suci,
+      std::string& routingIndicator, std::string& msin, std::string& error);
+
  private:
   auc_vector_t auc_vector;
 };
 
-#endif
+#endif  // SRC_5GAKA_AUTHENTICATION_ALGORITHMS_WITH_5GAKA_HPP_

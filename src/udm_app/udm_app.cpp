@@ -140,7 +140,7 @@ void udm_app::handle_generate_auth_data_request(
   std::string opc_s      = {};
 
   std::string snn        = authenticationInfoRequest.getServingNetworkName();
-  std::string supi       = supiOrSuci;
+  std::string supi       = {};
   std::string remote_uri = {};
   std::string method     = {};
   std::string msg_body   = {};
@@ -148,6 +148,45 @@ void udm_app::handle_generate_auth_data_request(
   long response_code     = 0;
   nlohmann::json problem_details_json = {};
   ProblemDetails problem_details      = {};
+  const std::string kHomeNetworkPrivateKey = 
+    "c53c22208b61860b06c62e5406a7b330c2b577aa5558981510d128247d38bd1d";
+  const std::string kHomeNetworkPublicKey =
+    "5a8d38864820197c3394b92613b20b91633cbd897119273bf8e4a6f4eec0a650";
+
+  
+  if (supiOrSuci.find("imsi-") == 0) {
+    if ((supiOrSuci.length() < (6+5)) || (supiOrSuci.length() > (6+15))) {
+      std::string error = "Invalid IMSI length";
+      problem_details.setCause("USER_NOT_FOUND");
+      problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+      problem_details.setDetail("User " + supiOrSuci + " " + error);
+      to_json(problem_details_json, problem_details);
+
+      Logger::udm_ueau().warn("User " + supiOrSuci + " " + error);
+      auth_info_response = problem_details_json;
+      code               = HTTP_RESPONSE_CODE_NOT_FOUND;
+      return;
+    }
+    // No change, format is already IMSI
+    supi = supiOrSuci;
+  } else if (supiOrSuci.find("suci-") == 0) {
+    std::string error = {};
+    std::string routingIndicator = {};
+    if (!Authentication_5gaka::suciSidf(
+      kHomeNetworkPrivateKey,
+      kHomeNetworkPublicKey,
+      supiOrSuci, routingIndicator, supi, error)) {
+      problem_details.setCause("USER_NOT_FOUND");
+      problem_details.setStatus(HTTP_RESPONSE_CODE_NOT_FOUND);
+      problem_details.setDetail("User " + supiOrSuci + " " + error);
+      to_json(problem_details_json, problem_details);
+
+      Logger::udm_ueau().warn("User " + supiOrSuci + " " + error);
+      auth_info_response = problem_details_json;
+      code               = HTTP_RESPONSE_CODE_NOT_FOUND;
+      return;
+    }
+  }
 
   // Get authentication related info
   remote_uri = udm_cfg.get_udr_authentication_subscription_uri(supi);

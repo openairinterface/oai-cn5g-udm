@@ -19,24 +19,29 @@
  *      contact@openairinterface.org
  */
 
-#ifndef _PRINT_BUFFER_H
-#define _PRINT_BUFFER_H
+#include <gtest/gtest.h>
 
-#include <string>
-#include <vector>
+std::vector<uint8_t> hexStringToByteArray(const std::string& hexString) {
+  std::vector<uint8_t> byteArray;
+  if (hexString.length() % 2 == 1) {
+    throw std::invalid_argument("Hex string to convert is not byte aligned");
+  }
+  // Loop through the hex string, two characters at a time
+  for (size_t i = 0; i < hexString.length(); i += 2) {
+    // Extract two characters representing a byte
+    std::string byteString = hexString.substr(i, 2);
 
-#include "logger.hpp"
+    // Convert the byte string to a uint8_t value
+    uint8_t byteValue =
+        static_cast<uint8_t>(std::stoi(byteString, nullptr, 16));
 
-class utils {
- public:
-  static void print_buffer(
-      const std::string app, const std::string commit, uint8_t* buf, int len);
-  static void print_buffer(
-      const std::string app, const std::string commit, const uint8_t* buf,
-      int len);
-  static void hex_str_2_byte(const char* src, unsigned char* dest, int len);
-  static std::vector<uint8_t> hex_string_2_byte_array(
-      const std::string& hexString);
-};
+    // Add the byte to the byte array
+    byteArray.push_back(byteValue);
+  }
+  return byteArray;
+}
 
-#endif
+int main(int argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

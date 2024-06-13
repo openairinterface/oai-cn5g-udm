@@ -60,3 +60,23 @@ void utils::hex_str_2_byte(const char* src, unsigned char* dest, int len) {
     dest[i / 2] = (hBy << 4) | lBy;
   }
 }
+//------------------------------------------------------------------------------
+std::vector<uint8_t> utils::hex_string_2_byte_array(const std::string& hexString) {
+  std::vector<uint8_t> byte_array;
+  if (hexString.length() % 2 == 1) {
+    throw std::invalid_argument("Hex string to convert is not byte aligned");
+  }
+  // Loop through the hex string, two characters at a time
+  for (size_t i = 0; i < hexString.length(); i += 2) {
+    // Extract two characters representing a byte
+    std::string byte_string = hexString.substr(i, 2);
+
+    // Convert the byte string to a uint8_t value
+    uint8_t byte_value =
+        static_cast<uint8_t>(std::stoi(byte_string, nullptr, 16));
+
+    // Add the byte to the byte array
+    byte_array.push_back(byte_value);
+  }
+  return byte_array; 
+} 
