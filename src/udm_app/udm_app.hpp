@@ -22,8 +22,6 @@
 #ifndef FILE_UDM_APP_HPP_SEEN
 #define FILE_UDM_APP_HPP_SEEN
 
-#include <pistache/http.h>
-
 #include <map>
 #include <shared_mutex>
 #include <string>

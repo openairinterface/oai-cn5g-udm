@@ -34,10 +34,10 @@
 #include "SMFSmfRegistrationApiImpl.h"
 
 #include "http_client.hpp"
-#include "udm_sbi_helper.hpp"
 #include "logger.hpp"
-#include "udm_config.hpp"
 #include "udm.h"
+#include "udm_config.hpp"
+#include "udm_sbi_helper.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
 extern std::shared_ptr<oai::http::http_client> http_client_inst;
@@ -82,7 +82,7 @@ void SMFSmfRegistrationApiImpl::registration(
   // UDR GET interface
   // get SmfRegistration related info
   remote_uri =
-      udm_cfg.get_udr_uri_base() +
+      oai::udm::api::udm_sbi_helper::get_udr_uri_base() +
       fmt::format(
           oai::udm::api::udm_sbi_helper::
               UdrDrPathSubscriptionDataContextDataSmfRegistrationsPduSession,

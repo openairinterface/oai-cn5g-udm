@@ -22,38 +22,16 @@
 #ifndef _UDM_CONFIG_H_
 #define _UDM_CONFIG_H_
 
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-
-#include "PlmnId.h"
-#include "logger.hpp"
 #include "udm.h"
 #include "udm_config.hpp"
 
 using namespace oai::common::sbi;
-using namespace oai::model::common;
 namespace oai::udm::config {
 
 class udm_config {
  public:
   udm_config();
   ~udm_config();
-
-  std::string get_udr_slice_selection_subscription_data_retrieval_uri(
-      const std::string& supi, const oai::model::common::PlmnId& plmn_id);
-  std::string get_udr_access_and_mobility_subscription_data_uri(
-      const std::string& supi, const oai::model::common::PlmnId& plmn_id);
-  std::string get_udr_session_management_subscription_data_uri(
-      const std::string& supi, const oai::model::common::PlmnId& plmn_id);
-  std::string get_udr_smf_selection_subscription_data_uri(
-      const std::string& supi, const oai::model::common::PlmnId& plmn_id);
-  std::string get_udr_uri_base();
-  std::string get_udr_sdm_subscriptions_uri(const std::string& supi);
-  std::string get_udr_authentication_subscription_uri(const std::string& supi);
-  std::string get_udr_authentication_status_uri(const std::string& supi);
-  std::string get_udr_amf_3gpp_registration_uri(const std::string& supi);
-  std::string get_udm_ueau_base();
 
   unsigned int instance;
   std::string pid_dir;

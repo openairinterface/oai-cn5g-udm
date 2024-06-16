@@ -28,12 +28,12 @@ include_directories(${SRC_TOP_DIR}/udm_app)
 include_directories(${SRC_TOP_DIR}/udm_app/event_handling)
 include_directories(${SRC_TOP_DIR}/udm_app/sbi)
 include_directories(${SRC_TOP_DIR}/common)
-include_directories(${SRC_TOP_DIR}/common/utils)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/common)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/common_model)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/bstr)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udm/udm.cmake)
 
 file(GLOB UDM_API_SERVER_src_files
