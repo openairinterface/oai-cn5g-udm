@@ -140,8 +140,8 @@ int main(int argc, char** argv) {
   // HTTP Client
   uint8_t http_version = udm_cfg.use_http2 ? 2 : 1;
   http_client_inst     = oai::http::http_client::create_instance(
-      Logger::udm_client(), oai::common::sbi::kNfDefaultHttpRequestTimeout,
-      udm_cfg.sbi.if_name, http_version);
+      Logger::udm_client(), udm_cfg.http_request_timeout, udm_cfg.sbi.if_name,
+      http_version);
 
   // UDM application layer
   udm_app_inst = new udm_app(Options::getlibconfigConfig(), ev);
