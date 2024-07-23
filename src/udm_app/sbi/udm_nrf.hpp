@@ -22,8 +22,6 @@
 #ifndef FILE_UDM_NRF_SEEN
 #define FILE_UDM_NRF_SEEN
 
-#include <curl/curl.h>
-
 #include <map>
 #include <thread>
 

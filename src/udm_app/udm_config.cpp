@@ -21,6 +21,8 @@
 
 #include "udm_config.hpp"
 
+#include "config.hpp"
+
 namespace oai::udm::config {
 
 //------------------------------------------------------------------------------
@@ -34,7 +36,8 @@ udm_config::udm_config() : instance(0), pid_dir(), udm_name(), sbi() {
   use_http2                 = false;
   register_nrf              = false;
   log_level                 = spdlog::level::debug;
-  curl_timeout              = 3000;
+  http_request_timeout =
+      oai::config::NF_CONFIG_HTTP_REQUEST_TIMEOUT_DEFAULT_VALUE;
 }
 
 //------------------------------------------------------------------------------

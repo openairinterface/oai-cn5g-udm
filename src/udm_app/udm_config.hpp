@@ -44,7 +44,7 @@ class udm_config {
 
   bool register_nrf;
   bool use_http2;
-  uint32_t curl_timeout;
+  uint32_t http_request_timeout;
 };
 
 }  // namespace oai::udm::config

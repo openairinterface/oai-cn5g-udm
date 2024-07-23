@@ -35,7 +35,7 @@ register_nf:
 
 http_version: 2
 
-curl_timeout: 5000 # in milliseconds
+http_request_timeout: 5000 # in milliseconds
 
 ############## SBI Interfaces
 ### Each NF takes its local SBI interfaces and remote interfaces from here, unless it gets them using NRF discovery mechanisms
