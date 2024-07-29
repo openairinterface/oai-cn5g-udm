@@ -1,5 +1,20 @@
 # RELEASE NOTES: #
 
+## v2.1.0 -- August 2024 ##
+
+* Features
+  - Update UDM APP structure
+  - Use HTTP Request Timeout parameter from Conf file
+* Fixes
+  - Fix HTTP/2 server shutdown
+* Tech Debt
+  - Code cleanup
+  - Stopping support for RHEL8/Rocky8 in favor of RHEL9/Rocky9
+  - Removing unneccessary packages from target images
+  - Cleanup UDM client and add connection handling mechanism
+  - Move UDM SBI models to common src git submodule
+  - HTTP client cpr library refactoring effort
+
 ## v2.0.1 -- January 2024 ##
 
 * Fixes
