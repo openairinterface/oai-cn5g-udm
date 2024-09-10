@@ -315,3 +315,10 @@ ENDIF(STATIC_LINKING)
 target_link_libraries (udm ${ASAN} 
     -Wl,--start-group UDM 3GPP_COMMON_TYPES 5GAKA UDM_API -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lgmp -Wl,--end-group pthread m rt boost_system pistache curl yaml-cpp cpr::cpr)
     
+
+add_boolean_option(USE_LTTNG  False "Activate the LTTNG tracer, a debugging/monitoring framework" ON)
+if (USE_LTTNG)
+    message("Using the lttng build variant")
+    add_definitions("-DLOGGER_CAN_USE_LTTNG")
+    target_link_libraries(udm -ldl lttng-ust)
+endif ()
