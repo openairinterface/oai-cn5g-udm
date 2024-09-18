@@ -28,7 +28,6 @@
 #include "logger_base.hpp"
 
 static const std::string CONFIG         = "config";
-static const std::string SYSTEM         = "system";
 static const std::string UDM_UEAU       = "udm_ueau";
 static const std::string UDM_UECM       = "udm_uecm";
 static const std::string UDM_EE         = "udm_ee";
@@ -45,8 +44,6 @@ class Logger : public oai::logger::logger_common {
     oai::logger::logger_common(name, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
         name, CONFIG, log_stdout, log_rot_file);
-    oai::logger::logger_registry::register_logger(
-        name, SYSTEM, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
         name, UDM_UEAU, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
@@ -73,9 +70,6 @@ class Logger : public oai::logger::logger_common {
 
   static const oai::logger::printf_logger& config() {
     return oai::logger::logger_registry::get_logger(CONFIG);
-  }
-  static const oai::logger::printf_logger& system() {
-    return oai::logger::logger_registry::get_logger(SYSTEM);
   }
   static const oai::logger::printf_logger& udm_ueau() {
     return oai::logger::logger_registry::get_logger(UDM_UEAU);
