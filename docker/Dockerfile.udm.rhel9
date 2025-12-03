@@ -36,13 +36,9 @@ ENV IS_DOCKERFILE=1
 # Copy the entitlements
 COPY ./etc-pki-entitlement /etc/pki/entitlement
 
-# Copy the subscription manager configurations
-COPY ./rhsm-conf /etc/rhsm
-COPY ./rhsm-ca /etc/rhsm/ca
-
 RUN rm -f /etc/rhsm-host && \
     subscription-manager repos --enable codeready-builder-for-rhel-9-x86_64-rpms && \
-    dnf update -y && \
+    dnf update -y --allowerasing --skip-broken --nobest && \
     # here just to display the current version
     cat /etc/os-release && \
     dnf install -y \
@@ -74,8 +70,7 @@ RUN ./build_udm --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udm/build/udm/build/udm && \
     mv /openair-udm/build/udm/build/udm /openair-udm/build/udm/build/oai_udm && \
     # Remove entitlements and Subscription Manager configs
-    rm -rf /etc/pki/entitlement && \
-    rm -rf /etc/rhsm
+    rm -rf /etc/pki/entitlement
 
 FROM mikefarah/yq:latest as yq-source
 
@@ -89,8 +84,7 @@ ENV TZ=Europe/Paris
 COPY ./etc-pki-entitlement /etc/pki/entitlement
 
 # Copy the subscription manager configurations
-COPY ./rhsm-conf /etc/rhsm
-COPY ./rhsm-ca /etc/rhsm/ca
+COPY --from=oai-udm-builder /etc/rhsm /etc/rhsm
 
 # We install some debug tools for the moment in addition of mandatory libraries
 RUN rm -f /etc/rhsm-host && \
