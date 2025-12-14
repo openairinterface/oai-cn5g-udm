@@ -33,7 +33,7 @@
 
 # 3. OAI UDM Feature List #
 
-Based on document **3GPP TS 23.501 V16.0.0 §6.2.7**.
+Based on document **3GPP TS 23.501 V16.14.0 §6.2.7**.
 
 | **ID** | **Classification**                                      | **Status**         | **Comments**  |
 | ------ | ------------------------------------------------------- | ------------------ |---------------|
