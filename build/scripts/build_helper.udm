@@ -113,6 +113,7 @@ check_install_udm_deps() {
       libcurl4-gnutls-dev \
       libevent-dev \
       libgmp-dev \
+      libgtest-dev \
       libhogweed? \
       libidn2-0-dev \
       libidn11-dev \
