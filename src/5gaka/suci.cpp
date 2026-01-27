@@ -48,8 +48,10 @@ using std::byte;
 
 #include "authentication_algorithms_with_5gaka.hpp"
 #include "conversions.hpp"
+#include "logger.hpp"
 #include "string.hpp"
 #include "utils.hpp"
+
 /*
 5.8.2 Subscriber privacy related requirements to UDM and SIDF from ETSI TS 133
 501 V17.12.0 The SIDF is responsible for de-concealment of the SUCI and shall
@@ -451,6 +453,8 @@ bool Authentication_5gaka::suciSidfProfileA(
 
   if (macTagValue.compare(mac_computed_str) != 0) {
     error = "HMAC: MAC tag do not match";
+    Logger::udm_ueau().debug("MAC computed %s", mac_computed_str);
+    Logger::udm_ueau().debug("MACTagValue %s", macTagValue);
     return false;
   }
   //--------------------------------------------------------------------

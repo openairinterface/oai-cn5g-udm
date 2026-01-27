@@ -159,14 +159,14 @@ void udm_app::handle_generate_auth_data_request(
   std::string msg_body   = {};
   nlohmann::json problem_details_json = {};
   ProblemDetails problem_details      = {};
-  const std::string kHomeNetworkPrivateKey = 
-    "c53c22208b61860b06c62e5406a7b330c2b577aa5558981510d128247d38bd1d";
+  const std::string kHomeNetworkPrivateKey =
+      "c53c22208b61860b06c62e5406a7b330c2b577aa5558981510d128247d38bd1d";
   const std::string kHomeNetworkPublicKey =
-    "5a8d38864820197c3394b92613b20b91633cbd897119273bf8e4a6f4eec0a650";
+      "5a8d38864820197c3394b92613b20b91633cbd897119273bf8e4a6f4eec0a650";
 
-  
   if (supiOrSuci.find("imsi-") == 0) {
-    if ((supiOrSuci.length() < (6+5)) || (supiOrSuci.length() > (6+15))) {
+    Logger::udm_ueau().debug("5GS mobile identity type: SUPI");
+    if ((supiOrSuci.length() < (6 + 5)) || (supiOrSuci.length() > (6 + 15))) {
       std::string error = "Invalid IMSI length";
       problem_details.setCause("USER_NOT_FOUND");
       problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
@@ -181,12 +181,12 @@ void udm_app::handle_generate_auth_data_request(
     // No change, format is already IMSI
     supi = supiOrSuci;
   } else if (supiOrSuci.find("suci-") == 0) {
-    std::string error = {};
+    Logger::udm_ueau().debug("5GS mobile identity type: SUCI");
+    std::string error            = {};
     std::string routingIndicator = {};
     if (!Authentication_5gaka::suciSidf(
-      kHomeNetworkPrivateKey,
-      kHomeNetworkPublicKey,
-      supiOrSuci, routingIndicator, supi, error)) {
+            kHomeNetworkPrivateKey, kHomeNetworkPublicKey, supiOrSuci,
+            routingIndicator, supi, error)) {
       problem_details.setCause("USER_NOT_FOUND");
       problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
       problem_details.setDetail("User " + supiOrSuci + " " + error);
@@ -197,6 +197,7 @@ void udm_app::handle_generate_auth_data_request(
       code               = oai::common::sbi::http_status_code::NOT_FOUND;
       return;
     }
+    Logger::udm_ueau().debug("SUPI %s ", supi);
   }
 
   // Get authentication related info
@@ -385,6 +386,7 @@ void udm_app::handle_generate_auth_data_request(
   AuthInfoResult["authenticationVector"]["autn"]     = autn_s;
   AuthInfoResult["authenticationVector"]["xresStar"] = xresStar_s;
   AuthInfoResult["authenticationVector"]["kausf"]    = kausf_s;
+  AuthInfoResult["supi"]                             = supi;
 
   // TODO: Separate into a new function
   // Do it after send ok to AUSF (to be verified)
