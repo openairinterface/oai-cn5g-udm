@@ -96,9 +96,9 @@ hnpk_profile_b.pub: openssl pkey -in hnpk_profile_b.pem -pubout -out
 hnpk_profile_b.pub
 */
 
-const int kNullScheme                               = 0x0;
-const int kProfileA                                 = 0x1;
-const int kProfileB                                 = 0x2;
+// const int kNullScheme                               = 0x0;
+// const int kProfileA                                 = 0x1;
+// const int kProfileB                                 = 0x2;
 const int kHomeKeyDigitLength                       = 64;
 const int kProfileAEccEphemeralPublicKeyDigitLength = 64;
 const int kProfileBEccEphemeralPublicKeyDigitLength = 66;
@@ -189,7 +189,7 @@ ROUTINGIND - Pattern:
       switch (protection_scheme_id_int) {
         case kNullScheme:
           break;
-        case kProfileA:
+        case kEciesSchemeProfileA:
           eccEphemeralPublicKey =
               schemeOutput.substr(0, kProfileAEccEphemeralPublicKeyDigitLength);
           ciphertext = schemeOutput.substr(
@@ -201,7 +201,7 @@ ROUTINGIND - Pattern:
               schemeOutput.length() - kMacTagValueDigitLength,
               std::string::npos);
           break;
-        case kProfileB:
+        case kEciesSchemeProfileB:
           eccEphemeralPublicKey =
               schemeOutput.substr(0, kProfileBEccEphemeralPublicKeyDigitLength);
           ciphertext = schemeOutput.substr(
@@ -518,9 +518,9 @@ bool unswapMsinPairedDigits(
 }
 //------------------------------------------------------------------------------
 bool Authentication_5gaka::suciSidf(
-    const std::string& homeNetworkPrivateKey,
-    const std::string& homeNetworkPublicKey, const std::string& suci,
-    std::string& routingIndicator, std::string& imsi, std::string& error) {
+    const std::vector<subscriber_profile_t>& subscriber_profiles,
+    const std::string& suci, std::string& routingIndicator, std::string& imsi,
+    std::string& error) {
   std::string mcc;
   std::string mnc;
   std::string swapped_msin;
@@ -531,18 +531,27 @@ bool Authentication_5gaka::suciSidf(
   std::string ephemeral_public_key;
   std::string cipher_text_value;
   std::string mac_tag_value;
-  imsi  = {};
-  error = {};
+  imsi                              = {};
+  error                             = {};
+  std::string homeNetworkPublicKey  = {};
+  std::string homeNetworkPrivateKey = {};
   if (suciFromString(
           suci, mcc, mnc, routingIndicator, protection_scheme_id, hnpk_id,
           scheme_output, ephemeral_public_key, cipher_text_value, mac_tag_value,
           error)) {
     int protection_scheme_id_int = std::stoi(protection_scheme_id);
+    if (!getSubscriberProfile(
+            protection_scheme_id_int, hnpk_id, subscriber_profiles,
+            homeNetworkPrivateKey, homeNetworkPublicKey)) {
+      error = "Failed to get subscriber profile";
+      return false;
+    }
+
     switch (protection_scheme_id_int) {
       case kNullScheme:
         msin = scheme_output;
         break;
-      case kProfileA:
+      case kEciesSchemeProfileA:
         if (!suciSidfProfileA(
                 homeNetworkPrivateKey, homeNetworkPublicKey,
                 ephemeral_public_key, cipher_text_value, mac_tag_value,
@@ -565,4 +574,20 @@ bool Authentication_5gaka::suciSidf(
   } else {
     return false;
   }
+}
+
+//------------------------------------------------------------------------------
+bool Authentication_5gaka::getSubscriberProfile(
+    uint8_t protection_scheme_id_int, const std::string& hnpk_id,
+    const std::vector<subscriber_profile_t>& subscriber_profiles,
+    std::string& homeNetworkPrivateKey, std::string& homeNetworkPublicKey) {
+  for (const auto& profile : subscriber_profiles) {
+    if ((profile.protection_scheme == protection_scheme_id_int) &&
+        (profile.home_network_public_key_id == hnpk_id)) {
+      homeNetworkPrivateKey = profile.home_network_private_key;
+      homeNetworkPublicKey  = profile.home_network_public_key;
+      return true;
+    }
+  }
+  return false;
 }

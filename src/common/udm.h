@@ -51,4 +51,11 @@ typedef uint32_t evsub_id_t;
 #define NUDM_UE_AU_EVENTS "auth-events"
 #define NUDM_UE_AU_GEN_AU_DATA "generate-auth-data"
 
+typedef struct subscriber_profile_s {
+  uint8_t protection_scheme;
+  std::string home_network_public_key;
+  std::string home_network_private_key;
+  std::string home_network_public_key_id;
+} subscriber_profile_t;
+
 #endif

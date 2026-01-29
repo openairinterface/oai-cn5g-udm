@@ -31,6 +31,8 @@
 #include <cstddef>
 #include <string>
 
+#include "udm.h"
+
 #define SQN_LENGTH_BITS (48)
 #define SQN_LENGTH_OCTEST (SQN_LENGTH_BITS / 8)
 #define IK_LENGTH_BITS (128)
@@ -215,9 +217,14 @@ class Authentication_5gaka {
       const std::string& macTagValue, const std::string& routingIndicator,
       std::string& imsi, std::string& error);
   static bool suciSidf(
-      const std::string& homeNetworkPrivateKey,
-      const std::string& homeNetworkPublicKey, const std::string& suci,
-      std::string& routingIndicator, std::string& msin, std::string& error);
+      const std::vector<subscriber_profile_t>& subscriber_profiles,
+      const std::string& suci, std::string& routingIndicator, std::string& msin,
+      std::string& error);
+
+  static bool getSubscriberProfile(
+      uint8_t protection_scheme_id_int, const std::string& hnpk_id,
+      const std::vector<subscriber_profile_t>& subscriber_profiles,
+      std::string& homeNetworkPrivateKey, std::string& homeNetworkPublicKey);
 
  private:
   auc_vector_t auc_vector;

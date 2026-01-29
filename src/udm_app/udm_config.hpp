@@ -45,6 +45,8 @@ class udm_config {
   bool register_nrf;
   bool use_http2;
   uint32_t http_request_timeout;
+
+  std::vector<subscriber_profile_t> subscriber_profiles;
 };
 
 }  // namespace oai::udm::config

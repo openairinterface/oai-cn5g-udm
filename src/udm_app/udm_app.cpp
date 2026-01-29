@@ -159,10 +159,6 @@ void udm_app::handle_generate_auth_data_request(
   std::string msg_body   = {};
   nlohmann::json problem_details_json = {};
   ProblemDetails problem_details      = {};
-  const std::string kHomeNetworkPrivateKey =
-      "c53c22208b61860b06c62e5406a7b330c2b577aa5558981510d128247d38bd1d";
-  const std::string kHomeNetworkPublicKey =
-      "5a8d38864820197c3394b92613b20b91633cbd897119273bf8e4a6f4eec0a650";
 
   if (supiOrSuci.find("imsi-") == 0) {
     Logger::udm_ueau().debug("5GS mobile identity type: SUPI");
@@ -185,8 +181,8 @@ void udm_app::handle_generate_auth_data_request(
     std::string error            = {};
     std::string routingIndicator = {};
     if (!Authentication_5gaka::suciSidf(
-            kHomeNetworkPrivateKey, kHomeNetworkPublicKey, supiOrSuci,
-            routingIndicator, supi, error)) {
+            udm_cfg.subscriber_profiles, supiOrSuci, routingIndicator, supi,
+            error)) {
       problem_details.setCause("USER_NOT_FOUND");
       problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
       problem_details.setDetail("User " + supiOrSuci + " " + error);

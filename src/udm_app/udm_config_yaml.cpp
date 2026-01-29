@@ -32,13 +32,13 @@ namespace oai::config {
 subscriber_profile::subscriber_profile() {}
 
 subscriber_profile::subscriber_profile(
-    const std::string& protection_scheme,
+    const uint8_t& protection_scheme,
     const std::string& home_network_public_key,
     const std::string& home_network_private_key,
     const std::string& home_network_public_key_id)
     : subscriber_profile() {
   m_protection_scheme =
-      string_config_value(UDM_CONFIG_PROTECTION_SCHEME, protection_scheme);
+      int_config_value(UDM_CONFIG_PROTECTION_SCHEME, protection_scheme);
   m_home_network_public_key = string_config_value(
       UDM_CONFIG_HOME_NETWORK_PUBLIC_KEY, home_network_public_key);
   m_home_network_private_key = string_config_value(
@@ -93,7 +93,7 @@ std::string subscriber_profile::to_string(const std::string& indent) const {
 }
 
 //------------------------------------------------------------------------------
-std::string subscriber_profile::get_protection_scheme() const {
+uint8_t subscriber_profile::get_protection_scheme() const {
   return m_protection_scheme.get_value();
 }
 
@@ -205,6 +205,10 @@ const std::string udm::get_udm_name() const {
   return m_udm_name.get_value();
 }
 
+const std::vector<subscriber_profile> udm::get_subscriber_profile_list() const {
+  return m_subscriber_profile_list;
+}
+
 //------------------------------------------------------------------------------
 udm_config_yaml::udm_config_yaml(
     const std::string& config_path, bool log_stdout, bool log_rot_file)
@@ -275,6 +279,15 @@ void udm_config_yaml::to_udm_config(oai::udm::config::udm_config& cfg) {
     cfg.udr_addr.api_version =
         get_nf(oai::config::UDR_CONFIG_NAME)->get_sbi().get_api_version();
     cfg.udr_addr.uri_root = get_nf(oai::config::UDR_CONFIG_NAME)->get_url();
+  }
+
+  for (const auto& profile : udm_local->get_subscriber_profile_list()) {
+    subscriber_profile_t sp;
+    sp.protection_scheme          = profile.get_protection_scheme();
+    sp.home_network_public_key    = profile.get_home_network_public_key();
+    sp.home_network_private_key   = profile.get_home_network_private_key();
+    sp.home_network_public_key_id = profile.get_home_network_public_key_id();
+    cfg.subscriber_profiles.push_back(sp);
   }
 }
 }  // namespace oai::config

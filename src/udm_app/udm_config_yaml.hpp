@@ -52,7 +52,7 @@ namespace oai::config {
 
 class subscriber_profile : public config_type {
  private:
-  string_config_value m_protection_scheme{};
+  int_config_value m_protection_scheme{};
   string_config_value m_home_network_public_key{};
   string_config_value m_home_network_private_key{};
   string_config_value m_home_network_public_key_id{};
@@ -60,7 +60,7 @@ class subscriber_profile : public config_type {
  public:
   explicit subscriber_profile();
   explicit subscriber_profile(
-      const std::string& protection_scheme,
+      const uint8_t& protection_scheme,
       const std::string& home_network_public_key,
       const std::string& home_network_private_key,
       const std::string& home_network_public_key_id);
@@ -71,7 +71,7 @@ class subscriber_profile : public config_type {
   void set_validation_regex(const std::string& regex);
 
   [[nodiscard]] std::string to_string(const std::string& indent) const override;
-  [[nodiscard]] std::string get_protection_scheme() const;
+  [[nodiscard]] uint8_t get_protection_scheme() const;
   [[nodiscard]] std::string get_home_network_public_key() const;
   [[nodiscard]] std::string get_home_network_private_key() const;
   [[nodiscard]] std::string get_home_network_public_key_id() const;
@@ -95,6 +95,8 @@ class udm : public nf {
   [[nodiscard]] const uint32_t get_instance_id() const;
   [[nodiscard]] const std::string get_pid_directory() const;
   [[nodiscard]] const std::string get_udm_name() const;
+  [[nodiscard]] const std::vector<subscriber_profile>
+  get_subscriber_profile_list() const;
 };
 
 class udm_config_yaml : public config {
