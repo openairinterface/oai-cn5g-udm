@@ -29,6 +29,99 @@
 namespace oai::config {
 
 //------------------------------------------------------------------------------
+subscriber_profile::subscriber_profile() {}
+
+subscriber_profile::subscriber_profile(
+    const std::string& protection_scheme,
+    const std::string& home_network_public_key,
+    const std::string& home_network_private_key,
+    const std::string& home_network_public_key_id)
+    : subscriber_profile() {
+  m_protection_scheme =
+      string_config_value(UDM_CONFIG_PROTECTION_SCHEME, protection_scheme);
+  m_home_network_public_key = string_config_value(
+      UDM_CONFIG_HOME_NETWORK_PUBLIC_KEY, home_network_public_key);
+  m_home_network_private_key = string_config_value(
+      UDM_CONFIG_HOME_NETWORK_PRIVATE_KEY, home_network_private_key);
+  m_home_network_public_key_id = string_config_value(
+      UDM_CONFIG_HOME_NETWORK_PUBLIC_KEY_ID, home_network_public_key_id);
+}
+
+//------------------------------------------------------------------------------
+void subscriber_profile::from_yaml(const YAML::Node& node) {
+  if (node[UDM_CONFIG_PROTECTION_SCHEME]) {
+    m_protection_scheme.from_yaml(node[UDM_CONFIG_PROTECTION_SCHEME]);
+  }
+  if (node[UDM_CONFIG_HOME_NETWORK_PUBLIC_KEY]) {
+    m_home_network_public_key.from_yaml(
+        node[UDM_CONFIG_HOME_NETWORK_PUBLIC_KEY]);
+  }
+  if (node[UDM_CONFIG_HOME_NETWORK_PRIVATE_KEY]) {
+    m_home_network_private_key.from_yaml(
+        node[UDM_CONFIG_HOME_NETWORK_PRIVATE_KEY]);
+  }
+  if (node[UDM_CONFIG_HOME_NETWORK_PUBLIC_KEY_ID]) {
+    m_home_network_public_key_id.from_yaml(
+        node[UDM_CONFIG_HOME_NETWORK_PUBLIC_KEY_ID]);
+  }
+}
+
+//------------------------------------------------------------------------------
+std::string subscriber_profile::to_string(const std::string& indent) const {
+  std::string out;
+  unsigned int inner_width = get_inner_width(indent.length());
+
+  out.append(indent).append(fmt::format(
+      BASE_FORMATTER, INNER_LIST_ELEM, UDM_CONFIG_PROTECTION_SCHEME_LABEL,
+      inner_width, m_protection_scheme.get_value()));
+
+  out.append(indent).append(fmt::format(
+      BASE_FORMATTER, EMPTY_LIST_ELEM, UDM_CONFIG_HOME_NETWORK_PUBLIC_KEY_LABEL,
+      inner_width, m_home_network_public_key.get_value()));
+
+  out.append(indent).append(fmt::format(
+      BASE_FORMATTER, EMPTY_LIST_ELEM,
+      UDM_CONFIG_HOME_NETWORK_PRIVATE_KEY_LABEL, inner_width,
+      m_home_network_private_key.get_value()));
+
+  out.append(indent).append(fmt::format(
+      BASE_FORMATTER, EMPTY_LIST_ELEM,
+      UDM_CONFIG_HOME_NETWORK_PUBLIC_KEY_ID_LABEL, inner_width,
+      m_home_network_public_key_id.get_value()));
+
+  return out;
+}
+
+//------------------------------------------------------------------------------
+std::string subscriber_profile::get_protection_scheme() const {
+  return m_protection_scheme.get_value();
+}
+
+//------------------------------------------------------------------------------
+std::string subscriber_profile::get_home_network_public_key() const {
+  return m_home_network_public_key.get_value();
+}
+
+//------------------------------------------------------------------------------
+std::string subscriber_profile::get_home_network_private_key() const {
+  return m_home_network_private_key.get_value();
+}
+
+//------------------------------------------------------------------------------
+std::string subscriber_profile::get_home_network_public_key_id() const {
+  return m_home_network_public_key_id.get_value();
+}
+
+//------------------------------------------------------------------------------
+void subscriber_profile::validate() {
+  if (!m_set) return;
+  m_protection_scheme.validate();
+  m_home_network_public_key.validate();
+  m_home_network_private_key.validate();
+  m_home_network_public_key_id.validate();
+}
+
+//------------------------------------------------------------------------------
 udm::udm(
     const std::string& name, const std::string& host, const sbi_interface& sbi)
     : nf(name, host, sbi) {}
@@ -50,6 +143,18 @@ void udm::from_yaml(const YAML::Node& node) {
 
     if (key == UDM_CONFIG_UDM_NAME) {
       m_udm_name.from_yaml(elem.second);
+    }
+
+    if (key == UDM_CONFIG_SUBSCRIBER_PROFILE_LIST) {
+      if (!elem.second.IsSequence()) {
+        Logger::udm_app().warn("Could not parse %s", key);
+      } else {
+        for (int i = 0; i < elem.second.size(); i++) {
+          subscriber_profile sp;
+          sp.from_yaml(elem.second[i]);
+          m_subscriber_profile_list.push_back(sp);
+        }
+      }
     }
   }
 }
@@ -76,6 +181,13 @@ std::string udm::to_string(const std::string& indent) const {
       .append(fmt::format(
           BASE_FORMATTER, OUTER_LIST_ELEM, UDM_CONFIG_UDM_NAME_LABEL,
           inner_width, m_udm_name.get_value()));
+
+  out.append(inner_indent)
+      .append(fmt::format(
+          "{} {}\n", OUTER_LIST_ELEM,
+          UDM_CONFIG_SUBSCRIBER_PROFILE_LIST_LABEL));
+  for (const auto& i : m_subscriber_profile_list)
+    out.append(i.to_string(inner_indent + indent));
 
   return out;
 }
