@@ -182,6 +182,8 @@ std::string udm::to_string(const std::string& indent) const {
           BASE_FORMATTER, OUTER_LIST_ELEM, UDM_CONFIG_UDM_NAME_LABEL,
           inner_width, m_udm_name.get_value()));
 
+  if (m_subscriber_profile_list.empty()) return out;
+
   out.append(inner_indent)
       .append(fmt::format(
           "{} {}\n", OUTER_LIST_ELEM,
