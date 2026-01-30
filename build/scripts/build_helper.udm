@@ -125,6 +125,7 @@ check_install_udm_deps() {
       nettle-dev \
       libcurl4 \
       net-tools \
+      libcrypto++-dev\
       pkg-config"
   elif [[ "$OS_BASEDISTRO" == "fedora" ]]; then
     PACKAGE_LIST="\
