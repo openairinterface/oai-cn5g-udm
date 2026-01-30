@@ -216,3 +216,14 @@ pcf:
 
 nssf:
   slice_config_path: /openair-nssf/etc/nssf_slice_config.yaml
+
+udm:
+  subscriber_profiles: #from test data, section C.4, 3GPP TS 33.501
+    - protection_scheme: 1  # Protection Scheme ID: 0 for Null-scheme, 1 for Profile A, 2 for Profile B  
+      home_network_public_key: '5a8d38864820197c3394b92613b20b91633cbd897119273bf8e4a6f4eec0a650' # Home Network Public Key for ECIES Profile A
+      home_network_private_key: 'c53c22208b61860b06c62e5406a7b330c2b577aa5558981510d128247d38bd1d' # Home Network Private Key for ECIES Profile A
+      home_network_public_key_id: 1 # Home Network Public Key Identifier for ECIES Profile A
+    - protection_scheme: 2  # Protection Scheme ID: 0 for Null-scheme, 1 for Profile A, 2 for Profile B 
+      home_network_public_key: '0472DA71976234CE833A6907425867B82E074D44EF907DFB4B3E21C1C2256EBCD15A7DED52FCBB097A4ED250E036C7B9C8C7004C4EEDC4F068CD7BF8D3F900E3B4' # Home Network Public Key for ECIES Profile B
+      home_network_private_key: 'F1AB1074477EBCC7F554EA1C5FC368B1616730155E0041AC447D6301975FECDA' # Home Network Private Key for ECIES Profile A
+      home_network_public_key_id: 2 # Home Network Public Key Identifier for ECIES Profile B
