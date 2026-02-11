@@ -142,6 +142,8 @@ check_install_udm_deps() {
       pkgconfig \
       ninja-build \
       boost-devel \
+      cryptopp\
+      cryptopp-devel\
       libasan"
   else
     echo_fatal "$OS_DISTRO is not a supported distribution."
