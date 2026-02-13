@@ -144,9 +144,11 @@ RUN echo "Target platform is: ${TARGETPLATFORM}" && \
     wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY} -O /usr/bin/yq && \
     chmod +x /usr/bin/yq
 
+
+ARG COPY_PATH_ENV="/lib/x86_64-linux-gnu/libcrypto++.so.8"
+
 RUN case "${TARGETPLATFORM}" in \
-      "linux/amd64") COPY --from=oai-udm-builder /lib/x86_64-linux-gnu/libcrypto++.so.8 /usr/local/lib/; ;; \
-      "linux/arm64") COPY --from=oai-udm-builder /lib/aarch64-linux-gnu/libcrypto++.so.8 /usr/local/lib/; ;; \
+      "linux/arm64") COPY_PATH_ENV="/lib/aarch64-linux-gnu/libcrypto++.so.8"; ;; \
       *) echo "Unsupported platform"; exit 1; ;; \
     esac 
         
@@ -158,6 +160,7 @@ COPY --from=oai-udm-builder \
     /usr/local/lib/libfmt.so \
     /usr/local/lib/libyaml-cpp.so.0.? \
     /usr/local/lib/libcpr.so.1 \
+    COPY_PATH_ENV \
     /usr/local/lib/
 
 RUN ldconfig && \
