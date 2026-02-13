@@ -61,7 +61,8 @@ void utils::hex_str_2_byte(const char* src, unsigned char* dest, int len) {
   }
 }
 //------------------------------------------------------------------------------
-std::vector<uint8_t> utils::hex_string_2_byte_array(const std::string& hexString) {
+std::vector<uint8_t> utils::hex_string_2_byte_array(
+    const std::string& hexString) {
   std::vector<uint8_t> byte_array;
   if (hexString.length() % 2 == 1) {
     throw std::invalid_argument("Hex string to convert is not byte aligned");
@@ -78,5 +79,5 @@ std::vector<uint8_t> utils::hex_string_2_byte_array(const std::string& hexString
     // Add the byte to the byte array
     byte_array.push_back(byte_value);
   }
-  return byte_array; 
-} 
+  return byte_array;
+}
