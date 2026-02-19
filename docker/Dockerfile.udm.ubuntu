@@ -154,7 +154,6 @@ COPY --from=oai-udm-builder \
     /usr/local/lib/libfmt.so \
     /usr/local/lib/libyaml-cpp.so.0.? \
     /usr/local/lib/libcpr.so.1 \
-    COPY_PATH_ENV \
     /usr/local/lib/
 
 RUN ldconfig && \
