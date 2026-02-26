@@ -91,7 +91,8 @@ void udm_nrf::generate_udm_profile() {
   gpsi_ranges.identity_range.pattern = "^gpsi-75274[0-9]{4}$";
   gpsi_ranges.identity_range.end     = "752749999";
   udm_info_item.gpsi_ranges.push_back(gpsi_ranges);
-  udm_nf_profile.set_udm_info(udm_info_item);
+  // TODO: Disable UDM Info item temporarily, should get the values from the
+  // configuration file udm_nf_profile.set_udm_info(udm_info_item);
   // ToDo:- Add remaining fields
   // identity_range_udm_info_item_t ext_grp_id_ranges;
   // internal_grpid_range_udm_info_item_t int_grp_id_ranges;
