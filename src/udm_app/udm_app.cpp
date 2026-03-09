@@ -154,11 +154,47 @@ void udm_app::handle_generate_auth_data_request(
   std::string opc_s      = {};
 
   std::string snn        = authenticationInfoRequest.getServingNetworkName();
-  std::string supi       = supiOrSuci;
+  std::string supi       = {};
   std::string remote_uri = {};
   std::string msg_body   = {};
   nlohmann::json problem_details_json = {};
   ProblemDetails problem_details      = {};
+
+  if (supiOrSuci.find("imsi-") == 0) {
+    Logger::udm_ueau().debug("5GS mobile identity type: SUPI");
+    if ((supiOrSuci.length() < (6 + 5)) || (supiOrSuci.length() > (6 + 15))) {
+      std::string error = "Invalid IMSI length";
+      problem_details.setCause("USER_NOT_FOUND");
+      problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
+      problem_details.setDetail("User " + supiOrSuci + " " + error);
+      to_json(problem_details_json, problem_details);
+
+      Logger::udm_ueau().warn("User " + supiOrSuci + " " + error);
+      auth_info_response = problem_details_json;
+      code               = oai::common::sbi::http_status_code::NOT_FOUND;
+      return;
+    }
+    // No change, format is already IMSI
+    supi = supiOrSuci;
+  } else if (supiOrSuci.find("suci-") == 0) {
+    Logger::udm_ueau().debug("5GS mobile identity type: SUCI");
+    std::string error            = {};
+    std::string routingIndicator = {};
+    if (!Authentication_5gaka::suciSidf(
+            udm_cfg.subscriber_profiles, supiOrSuci, routingIndicator, supi,
+            error)) {
+      problem_details.setCause("USER_NOT_FOUND");
+      problem_details.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
+      problem_details.setDetail("User " + supiOrSuci + " " + error);
+      to_json(problem_details_json, problem_details);
+
+      Logger::udm_ueau().warn("User " + supiOrSuci + " " + error);
+      auth_info_response = problem_details_json;
+      code               = oai::common::sbi::http_status_code::NOT_FOUND;
+      return;
+    }
+    Logger::udm_ueau().debug("SUPI %s ", supi);
+  }
 
   // Get authentication related info
   remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
@@ -346,6 +382,7 @@ void udm_app::handle_generate_auth_data_request(
   AuthInfoResult["authenticationVector"]["autn"]     = autn_s;
   AuthInfoResult["authenticationVector"]["xresStar"] = xresStar_s;
   AuthInfoResult["authenticationVector"]["kausf"]    = kausf_s;
+  AuthInfoResult["supi"]                             = supi;
 
   // TODO: Separate into a new function
   // Do it after send ok to AUSF (to be verified)

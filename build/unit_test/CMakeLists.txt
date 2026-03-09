@@ -18,10 +18,11 @@
 # For more information about the OpenAirInterface (OAI) Software Alliance:
 #      contact@openairinterface.org
 ################################################################################
-cmake_minimum_required (VERSION 3.0.2)
+cmake_minimum_required (VERSION 3.3)
 project(oai-cn)
 
 enable_testing()
+
 
 # Override options for UDM
 set (  PACKAGE_NAME                    "UDM" )
@@ -36,10 +37,8 @@ set (SRC_TOP_DIR     $ENV{OPENAIRCN_DIR}/src)
 ################################################
 # For common-src usage
 ################################################
-set (  NF_TARGET                        udm )
+set (  NF_TARGET                        unit_test)
 set (  MOUNTED_COMMON                   common-src)
 
+ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../src/test ${CMAKE_CURRENT_BINARY_DIR}/test)
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/../../src/oai_udm/CMakeLists.txt)
-
-ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../src/udm_app ${CMAKE_CURRENT_BINARY_DIR}/udm_app)

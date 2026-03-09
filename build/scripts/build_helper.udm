@@ -113,6 +113,7 @@ check_install_udm_deps() {
       libcurl4-gnutls-dev \
       libevent-dev \
       libgmp-dev \
+      libgtest-dev \
       libhogweed? \
       libidn2-0-dev \
       libidn11-dev \
@@ -124,6 +125,7 @@ check_install_udm_deps() {
       nettle-dev \
       libcurl4 \
       net-tools \
+      libcrypto++-dev\
       pkg-config"
   elif [[ "$OS_BASEDISTRO" == "fedora" ]]; then
     PACKAGE_LIST="\
@@ -140,6 +142,8 @@ check_install_udm_deps() {
       pkgconfig \
       ninja-build \
       boost-devel \
+      cryptopp\
+      cryptopp-devel\
       libasan"
   else
     echo_fatal "$OS_DISTRO is not a supported distribution."
