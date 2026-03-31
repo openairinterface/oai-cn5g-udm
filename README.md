@@ -28,11 +28,16 @@ Each has its own repository: this repository (`oai-cn5g-udm`) is meant for UDM.
 
 # Licence info
 
-It is distributed under `Collaborative Standards Software License v1.0 (CSSL v1.0)`.
+The source code is distributed under `Collaborative Standards Software License v1.0 (CSSL v1.0)`.
 For more details, visit the [OAI Website](https://openairinterface.org/oai-cssl/).
 
 The full text of `Collaborative Standards Software License v1.0` is also included in the [LICENSE](LICENSE)
 file at the root of this repository.
+
+Certain files in the repository are using MIT License and documentation is distributed under
+Creative Commons Attribution 4.0 International license.
+
+For third-party softwares, please refer to the [NOTICE](NOTICE) file.
 
 # Where to start
 
