@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+
 <table style="border-collapse: collapse; border: none;">
   <tr style="border-collapse: collapse; border: none;">
     <td style="border-collapse: collapse; border: none;">
@@ -48,4 +50,4 @@ Based on document **3GPP TS 23.501 V16.14.0 §6.2.7**.
 | 9      | Subscription management                                 | :x:                |               |
 | 10     | SMS management                                          | :x:                |               |
 | 11     | 5GLAN group management handling                         | :x:                |               |
-| 12     | Support of external parameter provisioning              | :x:                |               |      
+| 12     | Support of external parameter provisioning              | :x:                |               |

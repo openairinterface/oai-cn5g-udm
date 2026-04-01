@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+
 # REST API Server for AUSF NFDiscovery Service
 
 ## Overview
