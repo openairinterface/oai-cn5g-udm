@@ -2,12 +2,27 @@
 
 # RELEASE NOTES:
 
-## v2.2.1 -- March 2026
+## v2.2.1 -- April 2026
 
-* Change of license from OAI Public License v1.1 to CSSL v1.0
-* Re-license documentation to the CC-BY-4.0 License
-* Re-license orchestration files (docker compose yaml files, health scripts, openshift build files)
-  and CI-scripts under the MIT License
+* Build and CI fixes for RHEL 9 based environments
+  - Switch container registry usage to `registry.redhat.io`
+  - Replace RHEL `yq` image pull with direct GitHub download flow
+  - Pass the EPEL URL as a parameter in Jenkins RHEL jobs
+* Licensing and documentation
+  - Re-license the project from OAI Public License v1.1 to CSSL v1.0
+  - Re-license documentation under CC-BY-4.0 and orchestration/CI assets under MIT
+  - Add `NOTICE`, `LICENSES/`, and related contribution/documentation updates
+* Features
+    - Add SUCI de-concealment support for SIDF Scheme A / ECIES Profile A
+    - Load subscriber profiles from configuration and use the correct profile for Scheme A/B
+    - Add example subscriber-profile configuration in `etc/config.yaml`
+* Fixes
+    - Fix CMake/build integration for the new 5G AKA and SIDF code paths
+    - Fix Docker builds, including `libcrypto` installation, ARM build issues, and shared library copying
+* Tests
+    - Add unit tests for 5G AKA, SHA-256, ECIES format, and ECIES Profile A
+* Documentation
+    - Update feature-set documentation for the new SIDF capability
 
 ## v2.2.0 -- December 2025
 
