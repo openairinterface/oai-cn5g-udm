@@ -19,7 +19,7 @@
 
 using namespace oai::udm::config;
 extern udm_config udm_cfg;
-using namespace oai::model::udm;
+using namespace oai::_3gpp::model;
 namespace oai {
 namespace udm {
 namespace api {

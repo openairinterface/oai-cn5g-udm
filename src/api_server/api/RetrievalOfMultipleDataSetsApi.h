@@ -73,7 +73,7 @@ class RetrievalOfMultipleDataSetsApi {
   virtual void get_data_sets(
       const std::string& supi,
       const Pistache::Optional<std::vector<std::string>>& datasetNames,
-      const Pistache::Optional<oai::model::common::PlmnId>& plmnId,
+      const Pistache::Optional<oai::_3gpp::model::PlmnId>& plmnId,
       const Pistache::Optional<std::string>& supportedFeatures,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,

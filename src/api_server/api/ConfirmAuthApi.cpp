@@ -26,8 +26,8 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::model::common::helpers;
-using namespace oai::model::udm;
+using namespace oai::_3gpp::model::helpers;
+using namespace oai::_3gpp::model;
 using namespace oai::udm::config;
 
 ConfirmAuthApi::ConfirmAuthApi(std::shared_ptr<Pistache::Rest::Router> rtr) {

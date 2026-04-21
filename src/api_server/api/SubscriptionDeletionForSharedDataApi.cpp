@@ -26,7 +26,7 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::model::common::helpers;
+using namespace oai::_3gpp::model::helpers;
 using namespace oai::udm::config;
 
 SubscriptionDeletionForSharedDataApi::SubscriptionDeletionForSharedDataApi(

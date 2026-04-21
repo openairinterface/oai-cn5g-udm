@@ -24,8 +24,8 @@ extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 using namespace oai::udm::config;
-using namespace oai::model::common::helpers;
-using namespace oai::model::common;
+using namespace oai::_3gpp::model::helpers;
+using namespace oai::_3gpp::model;
 
 DeleteEESubscriptionApi::DeleteEESubscriptionApi(
     const std::shared_ptr<Pistache::Rest::Router>& rtr)

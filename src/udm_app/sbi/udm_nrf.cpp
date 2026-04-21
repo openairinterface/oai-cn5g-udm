@@ -19,7 +19,7 @@
 
 using namespace oai::udm::app;
 using namespace oai::udm::config;
-using namespace oai::model::common;
+using namespace oai::_3gpp::model;
 using namespace boost::placeholders;
 
 extern udm_config udm_cfg;

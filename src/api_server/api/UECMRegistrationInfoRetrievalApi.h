@@ -37,7 +37,7 @@
 
 namespace oai::udm::api {
 
-using namespace oai::model::udm;
+using namespace oai::_3gpp::model;
 
 class UECMRegistrationInfoRetrievalApi {
  public:

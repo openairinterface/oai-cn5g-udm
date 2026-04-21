@@ -16,7 +16,7 @@ namespace oai::udm::api {
 void udm_sbi_helper::set_problem_details(
     nlohmann::json& json_data, const std::string& detail) {
   Logger::udm_server().error("%s", detail);
-  oai::model::common::ProblemDetails problem_details;
+  oai::_3gpp::model::ProblemDetails problem_details;
   problem_details.setDetail(detail);
   to_json(json_data, problem_details);
 }
@@ -24,7 +24,7 @@ void udm_sbi_helper::set_problem_details(
 //------------------------------------------------------------------------------
 std::string
 udm_sbi_helper::get_udr_slice_selection_subscription_data_retrieval_uri(
-    const std::string& supi, const oai::model::common::PlmnId& plmn_id) {
+    const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id) {
   std::string fmr_format_str = {};
   udm_sbi_helper::get_fmt_format_form(
       udm_sbi_helper::UdrDrPathSubscriptionDataProvisionedDataAmData,
@@ -35,7 +35,7 @@ udm_sbi_helper::get_udr_slice_selection_subscription_data_retrieval_uri(
 
 //------------------------------------------------------------------------------
 std::string udm_sbi_helper::get_udr_access_and_mobility_subscription_data_uri(
-    const std::string& supi, const oai::model::common::PlmnId& plmn_id) {
+    const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id) {
   std::string fmr_format_str = {};
   udm_sbi_helper::get_fmt_format_form(
       udm_sbi_helper::UdrDrPathSubscriptionDataProvisionedDataAmData,
@@ -46,7 +46,7 @@ std::string udm_sbi_helper::get_udr_access_and_mobility_subscription_data_uri(
 
 //------------------------------------------------------------------------------
 std::string udm_sbi_helper::get_udr_session_management_subscription_data_uri(
-    const std::string& supi, const oai::model::common::PlmnId& plmn_id) {
+    const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id) {
   std::string fmr_format_str = {};
   udm_sbi_helper::get_fmt_format_form(
       udm_sbi_helper::UdrDrPathSubscriptionDataProvisionedDataSmData,
@@ -57,7 +57,7 @@ std::string udm_sbi_helper::get_udr_session_management_subscription_data_uri(
 
 //------------------------------------------------------------------------------
 std::string udm_sbi_helper::get_udr_smf_selection_subscription_data_uri(
-    const std::string& supi, const oai::model::common::PlmnId& plmn_id) {
+    const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id) {
   std::string fmr_format_str = {};
   udm_sbi_helper::get_fmt_format_form(
       udm_sbi_helper::UdrDrPathSubscriptionDataProvisionedDataSmf,

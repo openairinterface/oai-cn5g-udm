@@ -57,9 +57,9 @@ class SessionManagementSubscriptionDataRetrievalApiImpl
   // &ifModifiedSince, Pistache::Http::ResponseWriter &response);
   void get_sm_data(
       const std::string& supi,
-      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
+      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
       const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<oai::model::common::PlmnId>& plmnId,
+      const Pistache::Optional<oai::_3gpp::model::PlmnId>& plmnId,
       Pistache::Http::ResponseWriter& response);
 
  private:

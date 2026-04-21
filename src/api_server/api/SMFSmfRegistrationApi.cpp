@@ -26,9 +26,9 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::model::common::helpers;
-using namespace oai::model::udm;
-using namespace oai::model::common;
+using namespace oai::_3gpp::model::helpers;
+using namespace oai::_3gpp::model;
+using namespace oai::_3gpp::model;
 using namespace oai::udm::config;
 
 SMFSmfRegistrationApi::SMFSmfRegistrationApi(

@@ -25,46 +25,46 @@ class udm_http2_server {
 
   void generate_auth_data_request_handler(
       const std::string& supiOrSuci,
-      const oai::model::udm::AuthenticationInfoRequest&
+      const oai::_3gpp::model::AuthenticationInfoRequest&
           authenticationInfoRequest,
       const response& response);
 
   void confirm_auth_handler(
-      const std::string& supi, const oai::model::udm::AuthEvent& authEvent,
+      const std::string& supi, const oai::_3gpp::model::AuthEvent& authEvent,
       const response& response);
 
   void delete_auth_handler(
       const std::string& supi, const std::string& authEventId,
-      const oai::model::udm::AuthEvent& authEvent, const response& response);
+      const oai::_3gpp::model::AuthEvent& authEvent, const response& response);
 
   void access_mobility_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      oai::model::common::PlmnId PlmnId = {});
+      oai::_3gpp::model::PlmnId PlmnId = {});
 
   void amf_registration_for_3gpp_access_handler(
       const std::string& ue_id,
-      const oai::model::udm::Amf3GppAccessRegistration&
+      const oai::_3gpp::model::Amf3GppAccessRegistration&
           amf_3gpp_access_registration,
       const response& response);
 
   void session_management_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      oai::model::common::Snssai snssai = {}, std::string dnn = {},
-      oai::model::common::PlmnId PlmnId = {});
+      oai::_3gpp::model::Snssai snssai = {}, std::string dnn = {},
+      oai::_3gpp::model::PlmnId PlmnId = {});
 
   void slice_selection_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      std::string supported_features    = {},
-      oai::model::common::PlmnId PlmnId = {});
+      std::string supported_features   = {},
+      oai::_3gpp::model::PlmnId PlmnId = {});
 
   void smf_selection_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      std::string supported_features    = {},
-      oai::model::common::PlmnId PlmnId = {});
+      std::string supported_features   = {},
+      oai::_3gpp::model::PlmnId PlmnId = {});
 
   void subscription_creation_handler(
       const std::string& supi,
-      const oai::model::udm::SdmSubscription& sdmSubscription,
+      const oai::_3gpp::model::SdmSubscription& sdmSubscription,
       const response& response);
 
   void stop();

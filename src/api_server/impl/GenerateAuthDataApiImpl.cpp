@@ -22,7 +22,7 @@ namespace udm {
 namespace api {
 
 using namespace oai::udm::config;
-using namespace oai::model::udm;
+using namespace oai::_3gpp::model;
 
 GenerateAuthDataApiImpl::GenerateAuthDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,

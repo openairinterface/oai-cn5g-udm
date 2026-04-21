@@ -24,8 +24,8 @@ extern oai::udm::config::udm_config udm_cfg;
 
 namespace oai::udm::api {
 
-using namespace oai::model::common::helpers;
-using namespace oai::model::common;
+using namespace oai::_3gpp::model::helpers;
+using namespace oai::_3gpp::model;
 using namespace oai::udm::config;
 
 SMSFDeregistrationForNon3GPPAccessApi::SMSFDeregistrationForNon3GPPAccessApi(
