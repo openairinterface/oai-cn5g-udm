@@ -22,7 +22,7 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::model::udm;
+using namespace oai::_3gpp::model;
 
 CreateEESubscriptionApiImpl::CreateEESubscriptionApiImpl(
     const std::shared_ptr<Pistache::Rest::Router>& rtr, udm_app* udm_app_inst,

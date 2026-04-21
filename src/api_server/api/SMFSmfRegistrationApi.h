@@ -72,7 +72,7 @@ class SMFSmfRegistrationApi {
   /// &quot;&quot;)</param>
   virtual void get_smf_registration(
       const std::string& ueId,
-      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
+      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
@@ -88,7 +88,7 @@ class SMFSmfRegistrationApi {
   /// <param name="smfRegistration"></param>
   virtual void registration(
       const std::string& ueId, const int32_t& pduSessionId,
-      const oai::model::udm::SmfRegistration& smfRegistration,
+      const oai::_3gpp::model::SmfRegistration& smfRegistration,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

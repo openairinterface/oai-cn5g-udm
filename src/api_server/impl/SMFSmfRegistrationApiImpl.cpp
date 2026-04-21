@@ -29,8 +29,8 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::model::common;
-using namespace oai::model::udm;
+using namespace oai::_3gpp::model;
+using namespace oai::_3gpp::model;
 using namespace oai::udm::app;
 using namespace oai::udm::config;
 

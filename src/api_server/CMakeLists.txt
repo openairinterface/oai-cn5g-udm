@@ -13,11 +13,11 @@ include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/3gpp)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/common)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
-include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/common_model)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/bstr)
-include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udm/udm.cmake)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udm.cmake)
 
 file(GLOB UDM_API_SERVER_src_files
     ${UDM_API_SERVER_DIR}/udm-api-server.cpp

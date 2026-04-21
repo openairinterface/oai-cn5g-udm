@@ -20,6 +20,8 @@
 #include "PatchItem.h"
 #include "ProblemDetails.h"
 #include "SequenceNumber.h"
+#include "SqnScheme.h"
+#include "SqnScheme_anyOf.h"
 #include "authentication_algorithms_with_5gaka.hpp"
 #include "conversions.hpp"
 #include "http_client.hpp"
@@ -31,8 +33,7 @@
 #include "udm_nrf.hpp"
 #include "udm_sbi_helper.hpp"
 
-using namespace oai::model::udm;
-using namespace oai::model::common;
+using namespace oai::_3gpp::model;
 using namespace oai::utils;
 using namespace oai::udm::app;
 using namespace oai::udm::config;
@@ -104,7 +105,8 @@ void udm_app::stop() {
 //------------------------------------------------------------------------------
 void udm_app::handle_generate_auth_data_request(
     const std::string& supiOrSuci,
-    const oai::model::udm::AuthenticationInfoRequest& authenticationInfoRequest,
+    const oai::_3gpp::model::AuthenticationInfoRequest&
+        authenticationInfoRequest,
     nlohmann::json& auth_info_response, uint32_t& code) {
   Logger::udm_ueau().info("Handle Generate Auth Data Request");
   uint8_t rand[16] = {0};
@@ -278,7 +280,10 @@ void udm_app::handle_generate_auth_data_request(
 
       nlohmann::json sequence_number_json;
       SequenceNumber sequence_number;
-      sequence_number.setSqnScheme("NON_TIME_BASED");
+      SqnScheme sqn_scheme_1;
+      sqn_scheme_1.setEnumValue(
+          SqnScheme_anyOf::eSqnScheme_anyOf::NON_TIME_BASED);
+      sequence_number.setSqnScheme(sqn_scheme_1);
       r_sqnms_s = conv::uint8_to_hex_string(r_sqn, 6);
       sequence_number.setSqn(r_sqnms_s);
       std::map<std::string, int32_t> index;
@@ -382,7 +387,9 @@ void udm_app::handle_generate_auth_data_request(
 
   nlohmann::json sequence_number_json;
   SequenceNumber sequence_number;
-  sequence_number.setSqnScheme("NON_TIME_BASED");
+  SqnScheme sqn_scheme_2;
+  sqn_scheme_2.setEnumValue(SqnScheme_anyOf::eSqnScheme_anyOf::NON_TIME_BASED);
+  sequence_number.setSqnScheme(sqn_scheme_2);
   sequence_number.setSqn(new_sqn);
   std::map<std::string, int32_t> index;
   index["ausf"] = 0;
@@ -416,7 +423,7 @@ void udm_app::handle_generate_auth_data_request(
 
 //------------------------------------------------------------------------------
 void udm_app::handle_confirm_auth(
-    const std::string& supi, const oai::model::udm::AuthEvent& authEvent,
+    const std::string& supi, const oai::_3gpp::model::AuthEvent& authEvent,
     nlohmann::json& confirm_response, std::string& location, uint32_t& code) {
   std::string remote_uri              = {};
   std::string msg_body                = {};
@@ -492,8 +499,8 @@ void udm_app::handle_confirm_auth(
 //------------------------------------------------------------------------------
 void udm_app::handle_delete_auth(
     const std::string& supi, const std::string& authEventId,
-    const oai::model::udm::AuthEvent& authEvent, nlohmann::json& auth_response,
-    uint32_t& code) {
+    const oai::_3gpp::model::AuthEvent& authEvent,
+    nlohmann::json& auth_response, uint32_t& code) {
   std::string remote_uri              = {};
   std::string msg_body                = {};
   nlohmann::json problem_details_json = {};
@@ -603,7 +610,7 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
 //------------------------------------------------------------------------------
 void udm_app::handle_amf_registration_for_3gpp_access(
     const std::string& ue_id,
-    const oai::model::udm::Amf3GppAccessRegistration&
+    const oai::_3gpp::model::Amf3GppAccessRegistration&
         amf_3gpp_access_registration,
     nlohmann::json& response_data, uint32_t& code) {
   // TODO: to be completed
@@ -784,7 +791,7 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
 //------------------------------------------------------------------------------
 void udm_app::handle_subscription_creation(
     const std::string& supi,
-    const oai::model::udm::SdmSubscription& sdmSubscription,
+    const oai::_3gpp::model::SdmSubscription& sdmSubscription,
     nlohmann::json& response_data, uint32_t& code) {
   std::string udr_ip =
       std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.udr_addr.ipv4_addr)));
@@ -829,15 +836,15 @@ void udm_app::handle_subscription_creation(
 //------------------------------------------------------------------------------
 evsub_id_t udm_app::handle_create_ee_subscription(
     const std::string& ueIdentity,
-    const oai::model::udm::EeSubscription& eeSubscription,
-    oai::model::udm::CreatedEeSubscription& createdSub, uint32_t& code) {
+    const oai::_3gpp::model::EeSubscription& eeSubscription,
+    oai::_3gpp::model::CreatedEeSubscription& createdSub, uint32_t& code) {
   Logger::udm_ee().info("Handle Create EE Subscription");
 
   // Generate a subscription ID Id and store the corresponding information in a
   // map (subscription id, info)
   evsub_id_t evsub_id = generate_ev_subscription_id();
 
-  oai::model::udm::EeSubscription es = eeSubscription;
+  oai::_3gpp::model::EeSubscription es = eeSubscription;
   // TODO: Update Subscription
 
   // MonitoringConfiguration
@@ -951,7 +958,7 @@ evsub_id_t udm_app::generate_ev_subscription_id() {
 //------------------------------------------------------------------------------
 void udm_app::add_event_subscription(
     const evsub_id_t& sub_id, const std::string& ue_id,
-    std::shared_ptr<oai::model::udm::CreatedEeSubscription>& ces) {
+    std::shared_ptr<oai::_3gpp::model::CreatedEeSubscription>& ces) {
   std::unique_lock lock(m_mutex_udm_event_subscriptions);
   udm_event_subscriptions[sub_id] = ces;
   std::vector<evsub_id_t> ev_subs;

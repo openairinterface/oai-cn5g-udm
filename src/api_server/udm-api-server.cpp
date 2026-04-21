@@ -58,7 +58,7 @@ void setUpUnixSignals(std::vector<int> quitSignals) {
 
 using namespace oai::udm::api;
 using namespace oai::udm::config;
-using namespace oai::model::udm;
+using namespace oai::_3gpp::model;
 
 //------------------------------------------------------------------------------
 void UDMApiServer::init(size_t thr) {
