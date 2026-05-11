@@ -49,8 +49,9 @@ class udm_http2_server {
 
   void session_management_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      oai::_3gpp::model::Snssai snssai = {}, std::string dnn = {},
-      oai::_3gpp::model::PlmnId PlmnId = {});
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn,
+      const std::optional<oai::_3gpp::model::PlmnId>& plmn_id);
 
   void slice_selection_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,

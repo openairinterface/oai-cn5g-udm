@@ -654,22 +654,43 @@ void udm_app::handle_amf_registration_for_3gpp_access(
 //------------------------------------------------------------------------------
 void udm_app::handle_session_management_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data, uint32_t& code,
-    Snssai snssai, std::string dnn, PlmnId plmn_id) {
+    const std::optional<oai::model::common::Snssai>& snssai,
+    const std::optional<std::string>& dnn,
+    const std::optional<oai::model::common::PlmnId>& plmn_id_opt) {
+  // TODO: If PLMN Id is not available, use the HPLMN instead
+  std::optional<oai::model::common::PlmnId> plmn_id = plmn_id_opt;
+  if (!plmn_id_opt.has_value()) {
+    get_hplmn_id(supi, plmn_id);
+  }
+
+  // If couldn't get PLMN Id, then reply with USER_NOT_FOUND
+  if (!plmn_id.has_value()) {
+    Logger::udm_sdm().info("Could not get JSON content from UDR response");
+    code = oai::common::sbi::http_status_code::NOT_FOUND;
+    std::string problem_description = "User " + supi + " not found";
+    set_problem_details(
+        code, udm_protocol_application_error::USER_NOT_FOUND,
+        problem_description, response_data);
+    Logger::udm_ueau().warn(problem_description);
+    return;
+  }
+
   // UDR's URL
   std::string remote_uri =
       udm_sbi_helper::get_udr_session_management_subscription_data_uri(
-          supi, plmn_id);
+          supi, plmn_id.value());
   std::string query_str = {};
   std::string body      = {};
 
-  if (snssai.getSst() > 0) {
-    query_str += "?single-nssai={\"sst\":" + std::to_string(snssai.getSst()) +
-                 ",\"sd\":\"" + snssai.getSd() + "\"}";
-    if (!dnn.empty()) {
-      query_str += "&dnn=" + dnn;
+  if (snssai.has_value() and snssai.value().getSst() > 0) {
+    query_str +=
+        "?single-nssai={\"sst\":" + std::to_string(snssai.value().getSst()) +
+        ",\"sd\":\"" + snssai.value().getSd() + "\"}";
+    if (dnn.has_value()) {
+      query_str += "&dnn=" + dnn.value();
     }
-  } else if (!dnn.empty()) {
-    query_str += "?dnn=" + dnn;
+  } else if (dnn.has_value()) {
+    query_str += "?dnn=" + dnn.value();
   }
 
   // URI with Optional SNSSAI/DNN
@@ -1062,4 +1083,13 @@ void udm_app::set_problem_details(
   p.setCause(udm_protocol_application_error_to_string(cause));
   p.setDetail(detail);
   to_json(problem_details, p);
+}
+
+//------------------------------------------------------------------------------
+void udm_app::get_hplmn_id(
+    const std::string& supi,
+    std::optional<oai::model::common::PlmnId>& plmn_id) {
+  if (hplmn.count(supi) > 0) {
+    plmn_id = std::make_optional<oai::model::common::PlmnId>(hplmn.at(supi));
+  }
 }

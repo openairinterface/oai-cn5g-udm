@@ -119,8 +119,9 @@ class udm_app {
    */
   void handle_session_management_subscription_data_retrieval(
       const std::string& supi, nlohmann::json& response_data, uint32_t& code,
-      oai::_3gpp::model::Snssai snssai = {}, std::string dnn = {},
-      oai::_3gpp::model::PlmnId plmn_id = {});
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn,
+      const std::optional<oai::_3gpp::model::PlmnId>& plmn_id);
 
   /*
    * Handle a request to get the Slice Selection Subscription Data
@@ -299,6 +300,16 @@ class udm_app {
       uint16_t status, uint16_t cause, const std::string& detail,
       nlohmann::json& problem_details);
 
+  /*
+   * Get the UE's Home PLMN
+   * @param [const std::string& ] supi: UE's SUPI
+   * @param [std::optional<oai::model::common::PlmnId>&] plmn_id: PLMN Id
+   * @return void
+   */
+  void get_hplmn_id(
+      const std::string& supi,
+      std::optional<oai::model::common::PlmnId>& plmn_id);
+
  private:
   oai::utils::uint_generator<uint32_t> evsub_id_generator;
   std::map<
@@ -306,6 +317,7 @@ class udm_app {
       udm_event_subscriptions;
   std::map<std::string, std::vector<evsub_id_t>> udm_event_subscriptions_per_ue;
   mutable std::shared_mutex m_mutex_udm_event_subscriptions;
+  std::map<std::string, oai::model::common::PlmnId> hplmn;
 
   // for Event Handling
   udm_event& event_sub;
