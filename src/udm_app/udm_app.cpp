@@ -1163,4 +1163,3 @@ bool udm_app::validate_snn(const std::string& snn) {
 
   return true;
 }
->>>>>>> fix_query_parameters
