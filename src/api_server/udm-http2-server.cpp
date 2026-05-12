@@ -126,8 +126,6 @@ void udm_http2_server::start() {
             if (split_q[split_q.size() - 1].compare(NUDM_SM_DATA) == 0) {
               if (request.method().compare("GET") == 0 && len == 0) {
                 std::string supi = split_q[split_q.size() - 2].c_str();
-                std::optional<PlmnId> plmnId = {};
-                std::optional<Snssai> snssai = {};
 
                 // Parse query parameters
                 std::string qs = request.uri().raw_query;
@@ -173,7 +171,7 @@ void udm_http2_server::start() {
                 }
 
                 this->session_management_subscription_data_retrieval_handler(
-                    supi, response, snssai, dnn_opt, plmnId);
+                    supi, response, single_nssai_opt, dnn_opt, plmn_id_opt);
               }
             }
             // Slice Selection Subscription Data Retrieval
@@ -327,7 +325,7 @@ void udm_http2_server::delete_auth_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -350,7 +348,7 @@ void udm_http2_server::access_mobility_subscription_data_retrieval_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -376,7 +374,7 @@ void udm_http2_server::amf_registration_for_3gpp_access_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -387,9 +385,9 @@ void udm_http2_server::amf_registration_for_3gpp_access_handler(
 
 void udm_http2_server::session_management_subscription_data_retrieval_handler(
     const std::string& supi, const response& response,
-    const std::optional<oai::model::common::Snssai>& snssai,
+    const std::optional<oai::_3gpp::model::Snssai>& snssai,
     const std::optional<std::string>& dnn,
-    const std::optional<oai::model::common::PlmnId>& plmn_id) {
+    const std::optional<oai::_3gpp::model::PlmnId>& plmn_id) {
   nlohmann::json response_data = {};
   uint32_t http_code           = 0;
   header_map h;
@@ -401,7 +399,7 @@ void udm_http2_server::session_management_subscription_data_retrieval_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -424,7 +422,7 @@ void udm_http2_server::slice_selection_subscription_data_retrieval_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -447,7 +445,7 @@ void udm_http2_server::smf_selection_subscription_data_retrieval_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -467,12 +465,11 @@ void udm_http2_server::subscription_creation_handler(
   m_udm_app->handle_subscription_creation(
       supi, sdmSubscription, response_data, http_code);
 
-  // Set content type
   if ((http_code == oai::common::sbi::http_status_code::CREATED) or
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }

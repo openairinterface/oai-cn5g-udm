@@ -14,6 +14,7 @@
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <chrono>
+#include <regex>
 
 #include "3gpp_29.500.h"
 #include "3gpp_29.503.h"
@@ -48,7 +49,11 @@ extern std::shared_ptr<oai::http::http_client> http_client_inst;
 
 //------------------------------------------------------------------------------
 udm_app::udm_app(const std::string& config_file, udm_event& ev)
-    : event_sub(ev) {}
+    : event_sub(ev), m_mutex_hplmn(), m_mutex_udm_event_subscriptions() {
+  udm_event_subscriptions        = {};
+  udm_event_subscriptions_per_ue = {};
+  hplmn                          = {};
+}
 
 //------------------------------------------------------------------------------
 udm_app::~udm_app() {
@@ -109,6 +114,7 @@ void udm_app::handle_generate_auth_data_request(
         authenticationInfoRequest,
     nlohmann::json& auth_info_response, uint32_t& code) {
   Logger::udm_ueau().info("Handle Generate Auth Data Request");
+
   uint8_t rand[16] = {0};
   uint8_t opc[16]  = {0};
   uint8_t key[16]  = {0};
@@ -180,6 +186,24 @@ void udm_app::handle_generate_auth_data_request(
     }
     Logger::udm_ueau().debug("SUPI %s ", supi);
   }
+
+  Logger::udm_ueau().debug("SUPI %s, SNN %s", supi, snn);
+
+  // Validate SNN
+  if (!validate_snn(snn)) {
+    Logger::udm_ueau().info("SNN is not valid");
+    code = oai::common::sbi::http_status_code::NOT_ACCEPTABLE;
+    std::string problem_description =
+        "SNN is not valid for this UE (SUPI " + supi + ")";
+    set_problem_details(
+        code, udm_protocol_application_error::CONTEXT_NOT_FOUND,
+        problem_description, auth_info_response);
+    Logger::udm_ueau().warn(problem_description);
+    return;
+  }
+
+  // Store PLMN info to be used later
+  store_plmn_id(supi, snn);
 
   // Get authentication related info
   remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
@@ -654,11 +678,11 @@ void udm_app::handle_amf_registration_for_3gpp_access(
 //------------------------------------------------------------------------------
 void udm_app::handle_session_management_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data, uint32_t& code,
-    const std::optional<oai::model::common::Snssai>& snssai,
+    const std::optional<oai::_3gpp::model::Snssai>& snssai,
     const std::optional<std::string>& dnn,
-    const std::optional<oai::model::common::PlmnId>& plmn_id_opt) {
+    const std::optional<oai::_3gpp::model::PlmnId>& plmn_id_opt) {
   // TODO: If PLMN Id is not available, use the HPLMN instead
-  std::optional<oai::model::common::PlmnId> plmn_id = plmn_id_opt;
+  std::optional<oai::_3gpp::model::PlmnId> plmn_id = plmn_id_opt;
   if (!plmn_id_opt.has_value()) {
     get_hplmn_id(supi, plmn_id);
   }
@@ -1088,8 +1112,55 @@ void udm_app::set_problem_details(
 //------------------------------------------------------------------------------
 void udm_app::get_hplmn_id(
     const std::string& supi,
-    std::optional<oai::model::common::PlmnId>& plmn_id) {
+    std::optional<oai::_3gpp::model::PlmnId>& plmn_id) {
+  std::shared_lock lock(m_mutex_hplmn);
+
   if (hplmn.count(supi) > 0) {
-    plmn_id = std::make_optional<oai::model::common::PlmnId>(hplmn.at(supi));
+    plmn_id = std::make_optional<oai::_3gpp::model::PlmnId>(hplmn.at(supi));
   }
 }
+
+//------------------------------------------------------------------------------
+void udm_app::store_plmn_id(const std::string& supi, const std::string& snn) {
+  // example of SNN: 5G:mnc095.mcc208.3gppnetwork.org
+  oai::_3gpp::model::PlmnId plmn_id = {};
+  std::vector<std::string> split_str;
+  boost::split(split_str, snn, boost::is_any_of("."));
+  if (split_str.size() != 4) return;
+  if (split_str[0].size() == 9)
+    plmn_id.setMcc(split_str[0].substr(6, 3));
+  else
+    return;
+  if (split_str[1].size() == 6)
+    plmn_id.setMnc(split_str[1].substr(3, 3));
+  else
+    return;
+  Logger::udm_ueau().debug(
+      "SUPI %s, PLMN Id (MCC %s, MNC %s)", supi, plmn_id.getMcc(),
+      plmn_id.getMnc());
+
+  std::unique_lock lock(m_mutex_hplmn);
+  hplmn.insert(
+      std::pair<std::string, oai::_3gpp::model::PlmnId>(supi, plmn_id));
+}
+
+//------------------------------------------------------------------------------
+bool udm_app::validate_snn(const std::string& snn) {
+  // example of SNN: 5G:mnc095.mcc208.3gppnetwork.org
+  std::string regex_str = "^5G:mnc[0-9]{3}[.]mcc[0-9]{3}[.]3gppnetwork[.]org$";
+  try {
+    std::regex re(regex_str);
+    if (!std::regex_match(snn, re)) {
+      Logger::udm_app().debug(
+          "SNN (%s) does not follow the regex specification (%s)", snn,
+          regex_str);
+      return false;
+    }
+  } catch (const std::regex_error& e) {
+    Logger::udm_app().warn("regex_error caught %s", e.what());
+    return false;
+  }
+
+  return true;
+}
+>>>>>>> fix_query_parameters
