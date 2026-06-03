@@ -1128,11 +1128,11 @@ void udm_app::store_plmn_id(const std::string& supi, const std::string& snn) {
   boost::split(split_str, snn, boost::is_any_of("."));
   if (split_str.size() != 4) return;
   if (split_str[0].size() == 9)
-    plmn_id.setMcc(split_str[0].substr(6, 3));
+    plmn_id.setMnc(split_str[0].substr(6, 3));
   else
     return;
   if (split_str[1].size() == 6)
-    plmn_id.setMnc(split_str[1].substr(3, 3));
+    plmn_id.setMcc(split_str[1].substr(3, 3));
   else
     return;
   Logger::udm_ueau().debug(
