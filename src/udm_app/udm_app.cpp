@@ -187,8 +187,6 @@ void udm_app::handle_generate_auth_data_request(
     Logger::udm_ueau().debug("SUPI %s ", supi);
   }
 
-  Logger::udm_ueau().debug("SUPI %s, SNN %s", supi, snn);
-
   // Validate SNN
   oai::_3gpp::model::PlmnId plmn_id = {};
   if (!validate_snn(snn, plmn_id)) {
@@ -202,6 +200,9 @@ void udm_app::handle_generate_auth_data_request(
     Logger::udm_ueau().warn(problem_description);
     return;
   }
+  Logger::udm_ueau().debug(
+      "SUPI %s, SNN %s, PLMN Id (MCC %s, MNC %s)", supi, snn, plmn_id.getMcc(),
+      plmn_id.getMnc());
 
   // Store PLMN info to be used later
   store_plmn_id(supi, plmn_id);
@@ -1158,9 +1159,6 @@ bool udm_app::validate_snn(
     plmn_id.setMcc(split_str[1].substr(3, 3));
   else
     return false;
-  Logger::udm_ueau().debug(
-      "SUPI %s, PLMN Id (MCC %s, MNC %s)", supi, plmn_id.getMcc(),
-      plmn_id.getMnc());
 
   return true;
 }
