@@ -203,7 +203,7 @@ void udm_app::handle_generate_auth_data_request(
   }
 
   // Store PLMN info to be used later
-  store_plmn_id(supi, snn);
+  // store_plmn_id(supi, snn);
 
   // Get authentication related info
   remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
