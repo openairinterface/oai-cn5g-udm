@@ -14,6 +14,7 @@
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <chrono>
+#include <regex>
 
 #include "3gpp_29.500.h"
 #include "3gpp_29.503.h"
@@ -48,7 +49,11 @@ extern std::shared_ptr<oai::http::http_client> http_client_inst;
 
 //------------------------------------------------------------------------------
 udm_app::udm_app(const std::string& config_file, udm_event& ev)
-    : event_sub(ev) {}
+    : event_sub(ev), m_mutex_hplmn(), m_mutex_udm_event_subscriptions() {
+  udm_event_subscriptions        = {};
+  udm_event_subscriptions_per_ue = {};
+  hplmn                          = {};
+}
 
 //------------------------------------------------------------------------------
 udm_app::~udm_app() {
@@ -109,6 +114,7 @@ void udm_app::handle_generate_auth_data_request(
         authenticationInfoRequest,
     nlohmann::json& auth_info_response, uint32_t& code) {
   Logger::udm_ueau().info("Handle Generate Auth Data Request");
+
   uint8_t rand[16] = {0};
   uint8_t opc[16]  = {0};
   uint8_t key[16]  = {0};
@@ -180,6 +186,26 @@ void udm_app::handle_generate_auth_data_request(
     }
     Logger::udm_ueau().debug("SUPI %s ", supi);
   }
+
+  // Validate SNN
+  oai::_3gpp::model::PlmnId plmn_id = {};
+  if (!validate_snn(snn, plmn_id)) {
+    Logger::udm_ueau().info("SNN is not valid");
+    code = oai::common::sbi::http_status_code::NOT_ACCEPTABLE;
+    std::string problem_description =
+        "SNN is not valid for this UE (SUPI " + supi + ")";
+    set_problem_details(
+        code, udm_protocol_application_error::CONTEXT_NOT_FOUND,
+        problem_description, auth_info_response);
+    Logger::udm_ueau().warn(problem_description);
+    return;
+  }
+  Logger::udm_ueau().debug(
+      "SUPI %s, SNN %s, PLMN Id (MCC %s, MNC %s)", supi, snn, plmn_id.getMcc(),
+      plmn_id.getMnc());
+
+  // Store PLMN info to be used later
+  store_plmn_id(supi, plmn_id);
 
   // Get authentication related info
   remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
@@ -654,22 +680,43 @@ void udm_app::handle_amf_registration_for_3gpp_access(
 //------------------------------------------------------------------------------
 void udm_app::handle_session_management_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data, uint32_t& code,
-    Snssai snssai, std::string dnn, PlmnId plmn_id) {
+    const std::optional<oai::_3gpp::model::Snssai>& snssai,
+    const std::optional<std::string>& dnn,
+    const std::optional<oai::_3gpp::model::PlmnId>& plmn_id_opt) {
+  // TODO: If PLMN Id is not available, use the HPLMN instead
+  std::optional<oai::_3gpp::model::PlmnId> plmn_id = plmn_id_opt;
+  if (!plmn_id_opt.has_value()) {
+    get_hplmn_id(supi, plmn_id);
+  }
+
+  // If couldn't get PLMN Id, then reply with USER_NOT_FOUND
+  if (!plmn_id.has_value()) {
+    Logger::udm_sdm().info("Could not get JSON content from UDR response");
+    code = oai::common::sbi::http_status_code::NOT_FOUND;
+    std::string problem_description = "User " + supi + " not found";
+    set_problem_details(
+        code, udm_protocol_application_error::USER_NOT_FOUND,
+        problem_description, response_data);
+    Logger::udm_ueau().warn(problem_description);
+    return;
+  }
+
   // UDR's URL
   std::string remote_uri =
       udm_sbi_helper::get_udr_session_management_subscription_data_uri(
-          supi, plmn_id);
+          supi, plmn_id.value());
   std::string query_str = {};
   std::string body      = {};
 
-  if (snssai.getSst() > 0) {
-    query_str += "?single-nssai={\"sst\":" + std::to_string(snssai.getSst()) +
-                 ",\"sd\":\"" + snssai.getSd() + "\"}";
-    if (!dnn.empty()) {
-      query_str += "&dnn=" + dnn;
+  if (snssai.has_value() and snssai.value().getSst() > 0) {
+    query_str +=
+        "?single-nssai={\"sst\":" + std::to_string(snssai.value().getSst()) +
+        ",\"sd\":\"" + snssai.value().getSd() + "\"}";
+    if (dnn.has_value()) {
+      query_str += "&dnn=" + dnn.value();
     }
-  } else if (!dnn.empty()) {
-    query_str += "?dnn=" + dnn;
+  } else if (dnn.has_value()) {
+    query_str += "?dnn=" + dnn.value();
   }
 
   // URI with Optional SNSSAI/DNN
@@ -1062,4 +1109,59 @@ void udm_app::set_problem_details(
   p.setCause(udm_protocol_application_error_to_string(cause));
   p.setDetail(detail);
   to_json(problem_details, p);
+}
+
+//------------------------------------------------------------------------------
+void udm_app::get_hplmn_id(
+    const std::string& supi,
+    std::optional<oai::_3gpp::model::PlmnId>& plmn_id) {
+  std::shared_lock lh(m_mutex_hplmn);
+
+  if (hplmn.count(supi) > 0) {
+    plmn_id = std::make_optional<oai::_3gpp::model::PlmnId>(hplmn.at(supi));
+  }
+  lh.unlock();
+  return;
+}
+
+//------------------------------------------------------------------------------
+void udm_app::store_plmn_id(
+    const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id) {
+  std::unique_lock lh(m_mutex_hplmn);
+  hplmn[supi] = plmn_id;
+  lh.unlock();
+  return;
+}
+
+//------------------------------------------------------------------------------
+bool udm_app::validate_snn(
+    const std::string& snn, oai::_3gpp::model::PlmnId& plmn_id) {
+  // example of SNN: 5G:mnc095.mcc208.3gppnetwork.org
+  std::string regex_str = "^5G:mnc[0-9]{3}[.]mcc[0-9]{3}[.]3gppnetwork[.]org$";
+  try {
+    std::regex re(regex_str);
+    if (!std::regex_match(snn, re)) {
+      Logger::udm_app().debug(
+          "SNN (%s) does not follow the regex specification (%s)", snn,
+          regex_str);
+      return false;
+    }
+  } catch (const std::regex_error& e) {
+    Logger::udm_app().warn("regex_error caught %s", e.what());
+    return false;
+  }
+
+  std::vector<std::string> split_str;
+  boost::split(split_str, snn, boost::is_any_of("."));
+  if (split_str.size() != 4) return false;
+  if (split_str[0].size() == 9)
+    plmn_id.setMnc(split_str[0].substr(6, 3));
+  else
+    return false;
+  if (split_str[1].size() == 6)
+    plmn_id.setMcc(split_str[1].substr(3, 3));
+  else
+    return false;
+
+  return true;
 }

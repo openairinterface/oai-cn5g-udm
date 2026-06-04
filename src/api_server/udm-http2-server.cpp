@@ -126,23 +126,52 @@ void udm_http2_server::start() {
             if (split_q[split_q.size() - 1].compare(NUDM_SM_DATA) == 0) {
               if (request.method().compare("GET") == 0 && len == 0) {
                 std::string supi = split_q[split_q.size() - 2].c_str();
-                PlmnId plmnId    = {};
-                Snssai snssai    = {};
-                // Parse URI
+
+                // Parse query parameters
                 std::string qs = request.uri().raw_query;
                 Logger::udm_server().debug("QueryString: %s", qs.c_str());
-                std::string supported_features =
-                    oai::utils::get_query_param(qs, "supported-features");
-                std::string plmn_id =
-                    oai::utils::get_query_param(qs, "plmn-id");
-                nlohmann::json::parse(plmn_id.c_str()).get_to(plmnId);
-                std::string single_nssai =
-                    oai::utils::get_query_param(qs, "single-nssai");
-                nlohmann::json::parse(single_nssai.c_str()).get_to(snssai);
-                std::string dnn = oai::utils::get_query_param(qs, "dnn");
+                std::map<std::string, std::string> query_parameters;
+                oai::common::sbi::sbi_helper::parse_query(qs, query_parameters);
+
+                // Query parameters
+                // supported-features
+                std::optional<std::string> supported_features_opt =
+                    std::nullopt;
+                if (auto search = query_parameters.find("supported-features");
+                    search != query_parameters.end()) {
+                  supported_features_opt =
+                      std::make_optional<std::string>(search->second);
+                }
+
+                // plmn-id
+                std::optional<PlmnId> plmn_id_opt = std::nullopt;
+                if (auto search = query_parameters.find("plmn-id");
+                    search != query_parameters.end()) {
+                  PlmnId plmn_id_tmp = {};
+                  nlohmann::json::parse((search->second).c_str())
+                      .get_to(plmn_id_tmp);
+                  plmn_id_opt = std::make_optional<PlmnId>(plmn_id_tmp);
+                }
+
+                // single-nssai
+                std::optional<Snssai> single_nssai_opt = std::nullopt;
+                if (auto search = query_parameters.find("single-nssai");
+                    search != query_parameters.end()) {
+                  Snssai snssai_tmp = {};
+                  nlohmann::json::parse((search->second).c_str())
+                      .get_to(snssai_tmp);
+                  single_nssai_opt = std::make_optional<Snssai>(snssai_tmp);
+                }
+
+                // dnn
+                std::optional<std::string> dnn_opt = std::nullopt;
+                if (auto search = query_parameters.find("dnn");
+                    search != query_parameters.end()) {
+                  dnn_opt = std::make_optional<std::string>(search->second);
+                }
 
                 this->session_management_subscription_data_retrieval_handler(
-                    supi, response, snssai, dnn, plmnId);
+                    supi, response, single_nssai_opt, dnn_opt, plmn_id_opt);
               }
             }
             // Slice Selection Subscription Data Retrieval
@@ -296,7 +325,7 @@ void udm_http2_server::delete_auth_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -319,7 +348,7 @@ void udm_http2_server::access_mobility_subscription_data_retrieval_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -345,7 +374,7 @@ void udm_http2_server::amf_registration_for_3gpp_access_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -355,20 +384,22 @@ void udm_http2_server::amf_registration_for_3gpp_access_handler(
 //------------------------------------------------------------------------------
 
 void udm_http2_server::session_management_subscription_data_retrieval_handler(
-    const std::string& supi, const response& response, Snssai snssai,
-    std::string dnn, PlmnId plmnid) {
+    const std::string& supi, const response& response,
+    const std::optional<oai::_3gpp::model::Snssai>& snssai,
+    const std::optional<std::string>& dnn,
+    const std::optional<oai::_3gpp::model::PlmnId>& plmn_id) {
   nlohmann::json response_data = {};
   uint32_t http_code           = 0;
   header_map h;
 
   m_udm_app->handle_session_management_subscription_data_retrieval(
-      supi, response_data, http_code, snssai, dnn, plmnid);
+      supi, response_data, http_code, snssai, dnn, plmn_id);
   // Set content type
   if ((http_code == oai::common::sbi::http_status_code::CREATED) or
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -391,7 +422,7 @@ void udm_http2_server::slice_selection_subscription_data_retrieval_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -414,7 +445,7 @@ void udm_http2_server::smf_selection_subscription_data_retrieval_handler(
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
@@ -434,12 +465,11 @@ void udm_http2_server::subscription_creation_handler(
   m_udm_app->handle_subscription_creation(
       supi, sdmSubscription, response_data, http_code);
 
-  // Set content type
   if ((http_code == oai::common::sbi::http_status_code::CREATED) or
       (http_code == oai::common::sbi::http_status_code::ACCEPTED) or
       (http_code == oai::common::sbi::http_status_code::OK) or
       (http_code == oai::common::sbi::http_status_code::NO_CONTENT)) {
-    h.emplace("content-type", header_value{"application/problem"});
+    h.emplace("content-type", header_value{"application/json"});
   } else {
     h.emplace("content-type", header_value{"application/problem+json"});
   }
