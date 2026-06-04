@@ -190,7 +190,8 @@ void udm_app::handle_generate_auth_data_request(
   Logger::udm_ueau().debug("SUPI %s, SNN %s", supi, snn);
 
   // Validate SNN
-  if (!validate_snn(snn)) {
+  oai::_3gpp::model::PlmnId plmn_id = {};
+  if (!validate_snn(snn, plmn_id)) {
     Logger::udm_ueau().info("SNN is not valid");
     code = oai::common::sbi::http_status_code::NOT_ACCEPTABLE;
     std::string problem_description =
@@ -203,7 +204,7 @@ void udm_app::handle_generate_auth_data_request(
   }
 
   // Store PLMN info to be used later
-  // store_plmn_id(supi, snn);
+  store_plmn_id(supi, plmn_id);
 
   // Get authentication related info
   remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
@@ -1121,31 +1122,16 @@ void udm_app::get_hplmn_id(
 }
 
 //------------------------------------------------------------------------------
-void udm_app::store_plmn_id(const std::string& supi, const std::string& snn) {
-  // example of SNN: 5G:mnc095.mcc208.3gppnetwork.org
-  oai::_3gpp::model::PlmnId plmn_id = {};
-  std::vector<std::string> split_str;
-  boost::split(split_str, snn, boost::is_any_of("."));
-  if (split_str.size() != 4) return;
-  if (split_str[0].size() == 9)
-    plmn_id.setMnc(split_str[0].substr(6, 3));
-  else
-    return;
-  if (split_str[1].size() == 6)
-    plmn_id.setMcc(split_str[1].substr(3, 3));
-  else
-    return;
-  Logger::udm_ueau().debug(
-      "SUPI %s, PLMN Id (MCC %s, MNC %s)", supi, plmn_id.getMcc(),
-      plmn_id.getMnc());
-
+void udm_app::store_plmn_id(
+    const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id) {
   std::unique_lock lock(m_mutex_hplmn);
-  hplmn.insert(
-      std::pair<std::string, oai::_3gpp::model::PlmnId>(supi, plmn_id));
+  hplmn.emplace(supi, plmn_id);
+  return;
 }
 
 //------------------------------------------------------------------------------
-bool udm_app::validate_snn(const std::string& snn) {
+bool udm_app::validate_snn(
+    const std::string& snn, oai::_3gpp::model::PlmnId& plmn_id) {
   // example of SNN: 5G:mnc095.mcc208.3gppnetwork.org
   std::string regex_str = "^5G:mnc[0-9]{3}[.]mcc[0-9]{3}[.]3gppnetwork[.]org$";
   try {
@@ -1160,6 +1146,21 @@ bool udm_app::validate_snn(const std::string& snn) {
     Logger::udm_app().warn("regex_error caught %s", e.what());
     return false;
   }
+
+  std::vector<std::string> split_str;
+  boost::split(split_str, snn, boost::is_any_of("."));
+  if (split_str.size() != 4) return false;
+  if (split_str[0].size() == 9)
+    plmn_id.setMnc(split_str[0].substr(6, 3));
+  else
+    return false;
+  if (split_str[1].size() == 6)
+    plmn_id.setMcc(split_str[1].substr(3, 3));
+  else
+    return false;
+  Logger::udm_ueau().debug(
+      "SUPI %s, PLMN Id (MCC %s, MNC %s)", supi, plmn_id.getMcc(),
+      plmn_id.getMnc());
 
   return true;
 }

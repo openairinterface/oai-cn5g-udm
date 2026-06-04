@@ -301,11 +301,12 @@ class udm_app {
       nlohmann::json& problem_details);
 
   /*
-   * Validate the format of SNN
+   * Validate the format of SNN and get the corresponding PLMN ID if valid
    * @param [const std::string&] snn: Serving Network Name
+   * @param [oai::_3gpp::model::PlmnId&] plmn_id: PLMN ID
    * @return true if SNN follows the regex specification otherwise return false
    */
-  bool validate_snn(const std::string& snn);
+  bool validate_snn(const std::string& snn, oai::_3gpp::model::PlmnId& plmn_id);
 
   /*
    * Get the UE's Home PLMN
@@ -320,10 +321,11 @@ class udm_app {
   /*
    * Get the PLMN ID from SNN and store in the DB
    * @param [const std::string& ] supi: UE's SUPI
-   * @param [const std::string&] snn: Serving Network Name
+   * @param [const oai::_3gpp::model::PlmnId&] plmn_id: PLMN ID
    * @return void
    */
-  void store_plmn_id(const std::string& supi, const std::string& snn);
+  void store_plmn_id(
+      const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id);
 
  private:
   oai::utils::uint_generator<uint32_t> evsub_id_generator;
