@@ -1128,7 +1128,7 @@ void udm_app::get_hplmn_id(
 void udm_app::store_plmn_id(
     const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id) {
   std::unique_lock lh(m_mutex_hplmn);
-  hplmn.emplace(supi, plmn_id);
+  hplmn[supi] = plmn_id;
   lh.unlock();
   return;
 }
