@@ -1115,17 +1115,21 @@ void udm_app::set_problem_details(
 void udm_app::get_hplmn_id(
     const std::string& supi,
     std::optional<oai::_3gpp::model::PlmnId>& plmn_id) {
-  std::lock_guard<std::mutex> lk(m_mutex_hplmn);
+  std::shared_lock lh(m_mutex_hplmn);
+
   if (hplmn.count(supi) > 0) {
     plmn_id = std::make_optional<oai::_3gpp::model::PlmnId>(hplmn.at(supi));
   }
+  lh.unlock();
+  return;
 }
 
 //------------------------------------------------------------------------------
 void udm_app::store_plmn_id(
     const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id) {
-  std::lock_guard<std::mutex> lk(m_mutex_hplmn);
+  std::unique_lock lh(m_mutex_hplmn);
   hplmn.emplace(supi, plmn_id);
+  lh.unlock();
   return;
 }
 

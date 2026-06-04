@@ -335,7 +335,7 @@ class udm_app {
   std::map<std::string, std::vector<evsub_id_t>> udm_event_subscriptions_per_ue;
   mutable std::shared_mutex m_mutex_udm_event_subscriptions;
   std::map<std::string, oai::_3gpp::model::PlmnId> hplmn;
-  mutable std::mutex m_mutex_hplmn;
+  mutable std::shared_mutex m_mutex_hplmn;
 
   // for Event Handling
   udm_event& event_sub;
