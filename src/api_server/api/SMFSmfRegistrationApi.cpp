@@ -67,27 +67,27 @@ void SMFSmfRegistrationApi::get_smf_registration_handler(
 
   // Getting the query params
   auto singleNssaiQuery = request.query().get("single-nssai");
-  Pistache::Optional<Snssai> singleNssai;
-  if (!singleNssaiQuery.isEmpty()) {
+  std::optional<Snssai> singleNssai;
+  if (!singleNssaiQuery.has_value()) {
     Snssai valueQuery_instance;
-    // if(fromStringValue(singleNssaiQuery.get(), valueQuery_instance)){
-    //    singleNssai = Pistache::Some(valueQuery_instance);
+    // if(fromStringValue(singleNssaiQuery.value(), valueQuery_instance)){
+    //    singleNssai = std::make_optional(valueQuery_instance);
     //}
   }
   auto dnnQuery = request.query().get("dnn");
-  Pistache::Optional<std::string> dnn;
-  if (!dnnQuery.isEmpty()) {
+  std::optional<std::string> dnn;
+  if (!dnnQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(dnnQuery.get(), valueQuery_instance)) {
-      dnn = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(dnnQuery.value(), valueQuery_instance)) {
+      dnn = std::make_optional(valueQuery_instance);
     }
   }
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (!supportedFeaturesQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(supportedFeaturesQuery.get(), valueQuery_instance)) {
-      supportedFeatures = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supportedFeaturesQuery.value(), valueQuery_instance)) {
+      supportedFeatures = std::make_optional(valueQuery_instance);
     }
   }
 

@@ -58,27 +58,27 @@ void GroupIdentifiersApi::get_group_identifiers_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto extGroupIdQuery = request.query().get("ext-group-id");
-  Pistache::Optional<std::string> extGroupId;
-  if (!extGroupIdQuery.isEmpty()) {
+  std::optional<std::string> extGroupId;
+  if (!extGroupIdQuery.has_value()) {
     std::string value;
-    if (fromStringValue(extGroupIdQuery.get(), value)) {
-      extGroupId = Pistache::Some(value);
+    if (fromStringValue(extGroupIdQuery.value(), value)) {
+      extGroupId = std::make_optional(value);
     }
   }
   auto intGroupIdQuery = request.query().get("int-group-id");
-  Pistache::Optional<std::string> intGroupId;
-  if (!intGroupIdQuery.isEmpty()) {
+  std::optional<std::string> intGroupId;
+  if (!intGroupIdQuery.has_value()) {
     std::string value;
-    if (fromStringValue(intGroupIdQuery.get(), value)) {
-      intGroupId = Pistache::Some(value);
+    if (fromStringValue(intGroupIdQuery.value(), value)) {
+      intGroupId = std::make_optional(value);
     }
   }
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (!supportedFeaturesQuery.has_value()) {
     std::string value;
-    if (fromStringValue(supportedFeaturesQuery.get(), value)) {
-      supportedFeatures = Pistache::Some(value);
+    if (fromStringValue(supportedFeaturesQuery.value(), value)) {
+      supportedFeatures = std::make_optional(value);
     }
   }
 

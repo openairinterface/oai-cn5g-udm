@@ -40,9 +40,9 @@ SMFSmfRegistrationApiImpl::SMFSmfRegistrationApiImpl(
     : SMFSmfRegistrationApi(rtr) {}
 
 void SMFSmfRegistrationApiImpl::get_smf_registration(
-    const std::string& ueId, const Pistache::Optional<Snssai>& singleNssai,
-    const Pistache::Optional<std::string>& dnn,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::string& ueId, const std::optional<Snssai>& singleNssai,
+    const std::optional<std::string>& dnn,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,

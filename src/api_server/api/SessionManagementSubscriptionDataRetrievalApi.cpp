@@ -72,48 +72,48 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
   /*
    * TODO:
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if(!supportedFeaturesQuery.isEmpty()){
+  std::optional<std::string> supportedFeatures;
+  if(!supportedFeaturesQuery.has_value()){
       std::string value;
-      if(fromStringValue(supportedFeaturesQuery.get(), value)){
-          supportedFeatures = Pistache::Some(value);
+      if(fromStringValue(supportedFeaturesQuery.value(), value)){
+          supportedFeatures = std::make_optional(value);
       }
   }
   */
   auto singleNssaiQuery = request.query().get("single-nssai");
-  Pistache::Optional<Snssai> singleNssai;
-  if (!singleNssaiQuery.isEmpty()) {
+  std::optional<Snssai> singleNssai;
+  if (!singleNssaiQuery.has_value()) {
     Logger::udm_sdm().debug(
-        "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
+        "singleNssaiQuery: %s", singleNssaiQuery.value().c_str());
     Snssai value;
-    if (fromStringValue(singleNssaiQuery.get(), value)) {
+    if (fromStringValue(singleNssaiQuery.value(), value)) {
       Logger::udm_sdm().debug(
           "SNSSAI SST %d, SD %s", value.getSst(), value.getSd().c_str());
-      singleNssai = Pistache::Some(value);
+      singleNssai = std::make_optional(value);
     }
   }
 
   auto dnnQuery = request.query().get("dnn");
-  Pistache::Optional<std::string> dnn;
-  if (!dnnQuery.isEmpty()) {
-    Logger::udm_sdm().debug("dnnQuery: %s", dnnQuery.get().c_str());
+  std::optional<std::string> dnn;
+  if (!dnnQuery.has_value()) {
+    Logger::udm_sdm().debug("dnnQuery: %s", dnnQuery.value().c_str());
     std::string value;
-    if (fromStringValue(dnnQuery.get(), value)) {
+    if (fromStringValue(dnnQuery.value(), value)) {
       Logger::udm_sdm().debug("DNN: %s", value.c_str());
-      dnn = Pistache::Some(value);
+      dnn = std::make_optional(value);
     }
   }
 
   auto plmnIdQuery = request.query().get("plmn-id");
-  Pistache::Optional<PlmnId> plmnId;
-  if (!plmnIdQuery.isEmpty()) {
-    Logger::udm_sdm().debug("plmnIdQuery: %s", plmnIdQuery.get().c_str());
+  std::optional<PlmnId> plmnId;
+  if (!plmnIdQuery.has_value()) {
+    Logger::udm_sdm().debug("plmnIdQuery: %s", plmnIdQuery.value().c_str());
     PlmnId value;
-    if (fromStringValue(plmnIdQuery.get(), value)) {
+    if (fromStringValue(plmnIdQuery.value(), value)) {
       Logger::udm_sdm().debug(
           "PLMN MCC %s, MNC %s", value.getMcc().c_str(),
           value.getMnc().c_str());
-      plmnId = Pistache::Some(value);
+      plmnId = std::make_optional(value);
     }
   }
 

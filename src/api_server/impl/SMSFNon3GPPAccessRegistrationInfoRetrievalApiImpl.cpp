@@ -31,7 +31,7 @@ SMSFNon3GPPAccessRegistrationInfoRetrievalApiImpl::
 void SMSFNon3GPPAccessRegistrationInfoRetrievalApiImpl::
     get_non3_gpp_smsf_registration(
         const std::string& ueId,
-        const Pistache::Optional<std::string>& supportedFeatures,
+        const std::optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,

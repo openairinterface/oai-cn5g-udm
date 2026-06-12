@@ -65,19 +65,19 @@ void TraceConfigurationDataRetrievalApi::get_trace_config_data_handler(
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (!supportedFeaturesQuery.has_value()) {
     std::string value;
-    if (fromStringValue(supportedFeaturesQuery.get(), value)) {
-      supportedFeatures = Pistache::Some(value);
+    if (fromStringValue(supportedFeaturesQuery.value(), value)) {
+      supportedFeatures = std::make_optional(value);
     }
   }
   auto plmnIdQuery = request.query().get("plmn-id");
-  Pistache::Optional<PlmnId> plmnId;
-  /*    if(!plmnIdQuery.isEmpty()){
+  std::optional<PlmnId> plmnId;
+  /*    if(!plmnIdQuery.has_value()){
           PlmnId value;
-          if(fromStringValue(plmnIdQuery.get(), value)){
-              plmnId = Pistache::Some(value);
+          if(fromStringValue(plmnIdQuery.value(), value)){
+              plmnId = std::make_optional(value);
           }
       }
     */

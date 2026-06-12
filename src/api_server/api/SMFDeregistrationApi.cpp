@@ -60,11 +60,11 @@ void SMFDeregistrationApi::smf_deregistration_handler(
 
   // Getting the query params
   auto smfSetIdQuery = request.query().get("smf-set-id");
-  Pistache::Optional<std::string> smfSetId;
-  if (!smfSetIdQuery.isEmpty()) {
+  std::optional<std::string> smfSetId;
+  if (!smfSetIdQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(smfSetIdQuery.get(), valueQuery_instance)) {
-      smfSetId = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(smfSetIdQuery.value(), valueQuery_instance)) {
+      smfSetId = std::make_optional(valueQuery_instance);
     }
   }
 
