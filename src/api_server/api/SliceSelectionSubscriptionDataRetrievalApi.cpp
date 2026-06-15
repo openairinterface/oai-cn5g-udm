@@ -68,7 +68,7 @@ void SliceSelectionSubscriptionDataRetrievalApi::get_nssai_handler(
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");
   std::optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.has_value()) {
+  if (supportedFeaturesQuery.has_value()) {
     std::string value;
     if (fromStringValue(supportedFeaturesQuery.value(), value)) {
       supportedFeatures = std::make_optional(value);
@@ -76,7 +76,7 @@ void SliceSelectionSubscriptionDataRetrievalApi::get_nssai_handler(
   }
   auto plmnIdQuery = request.query().get("plmn-id");
   std::optional<PlmnId> plmnId;
-  if (!plmnIdQuery.has_value()) {
+  if (plmnIdQuery.has_value()) {
     PlmnId value;
     std::string valueplmnIdQuery = plmnIdQuery.value();
     std::string valuechange = oai::utils::conv::url_decode(valueplmnIdQuery);

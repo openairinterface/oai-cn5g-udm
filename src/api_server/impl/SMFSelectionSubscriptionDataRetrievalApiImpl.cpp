@@ -43,12 +43,12 @@ void SMFSelectionSubscriptionDataRetrievalApiImpl::get_smf_sel_data(
     const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
   std::string supported_features_str = {};
-  if (!supportedFeatures.has_value()) {
+  if (supportedFeatures.has_value()) {
     supported_features_str = supportedFeatures.value();
   }
 
   PlmnId plmn_id = {};
-  if (!plmnId.has_value()) {
+  if (plmnId.has_value()) {
     plmn_id = plmnId.value();
   }
 

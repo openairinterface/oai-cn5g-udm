@@ -67,7 +67,7 @@ void SMSFDeregistrationFor3GPPAccessApi::_3_gpp_smsf_deregistration_handler(
   // Getting the query params
   auto smsfSetIdQuery = request.query().get("smsf-set-id");
   std::optional<std::string> smsfSetId;
-  if (!smsfSetIdQuery.has_value()) {
+  if (smsfSetIdQuery.has_value()) {
     std::string valueQuery_instance;
     if (fromStringValue(smsfSetIdQuery.value(), valueQuery_instance)) {
       smsfSetId = std::make_optional(valueQuery_instance);

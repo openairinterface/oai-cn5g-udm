@@ -60,7 +60,7 @@ void RetrievalOfSharedDataApi::get_shared_data_handler(
   // Getting the query params
   auto sharedDataIdsQuery = request.query().get("shared-data-ids");
   std::optional<std::vector<std::string>> sharedDataIds;
-  if (!sharedDataIdsQuery.has_value()) {
+  if (sharedDataIdsQuery.has_value()) {
     std::vector<std::string> value;
     if (fromStringValue(sharedDataIdsQuery.value(), value)) {
       sharedDataIds = std::make_optional(value);
@@ -68,7 +68,7 @@ void RetrievalOfSharedDataApi::get_shared_data_handler(
   }
   auto supportedFeaturesQuery = request.query().get("supportedFeatures");
   std::optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.has_value()) {
+  if (supportedFeaturesQuery.has_value()) {
     std::string value;
     if (fromStringValue(supportedFeaturesQuery.value(), value)) {
       supportedFeatures = std::make_optional(value);

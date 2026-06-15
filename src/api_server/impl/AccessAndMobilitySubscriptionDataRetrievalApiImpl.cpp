@@ -46,7 +46,7 @@ void AccessAndMobilitySubscriptionDataRetrievalApiImpl::get_am_data(
     const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
   PlmnId plmn_id = {};
-  if (!plmnId.has_value()) {
+  if (plmnId.has_value()) {
     plmn_id = plmnId.value();
   }
 

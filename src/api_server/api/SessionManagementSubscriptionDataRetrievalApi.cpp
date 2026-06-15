@@ -82,7 +82,7 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
   */
   auto singleNssaiQuery = request.query().get("single-nssai");
   std::optional<Snssai> singleNssai;
-  if (!singleNssaiQuery.has_value()) {
+  if (singleNssaiQuery.has_value()) {
     Logger::udm_sdm().debug(
         "singleNssaiQuery: %s", singleNssaiQuery.value().c_str());
     Snssai value;
@@ -95,7 +95,7 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
 
   auto dnnQuery = request.query().get("dnn");
   std::optional<std::string> dnn;
-  if (!dnnQuery.has_value()) {
+  if (dnnQuery.has_value()) {
     Logger::udm_sdm().debug("dnnQuery: %s", dnnQuery.value().c_str());
     std::string value;
     if (fromStringValue(dnnQuery.value(), value)) {
@@ -106,7 +106,7 @@ void SessionManagementSubscriptionDataRetrievalApi::get_sm_data_handler(
 
   auto plmnIdQuery = request.query().get("plmn-id");
   std::optional<PlmnId> plmnId;
-  if (!plmnIdQuery.has_value()) {
+  if (plmnIdQuery.has_value()) {
     Logger::udm_sdm().debug("plmnIdQuery: %s", plmnIdQuery.value().c_str());
     PlmnId value;
     if (fromStringValue(plmnIdQuery.value(), value)) {

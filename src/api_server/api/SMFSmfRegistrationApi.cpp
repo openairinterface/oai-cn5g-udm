@@ -68,7 +68,7 @@ void SMFSmfRegistrationApi::get_smf_registration_handler(
   // Getting the query params
   auto singleNssaiQuery = request.query().get("single-nssai");
   std::optional<Snssai> singleNssai;
-  if (!singleNssaiQuery.has_value()) {
+  if (singleNssaiQuery.has_value()) {
     Snssai valueQuery_instance;
     // if(fromStringValue(singleNssaiQuery.value(), valueQuery_instance)){
     //    singleNssai = std::make_optional(valueQuery_instance);
@@ -76,7 +76,7 @@ void SMFSmfRegistrationApi::get_smf_registration_handler(
   }
   auto dnnQuery = request.query().get("dnn");
   std::optional<std::string> dnn;
-  if (!dnnQuery.has_value()) {
+  if (dnnQuery.has_value()) {
     std::string valueQuery_instance;
     if (fromStringValue(dnnQuery.value(), valueQuery_instance)) {
       dnn = std::make_optional(valueQuery_instance);
@@ -84,7 +84,7 @@ void SMFSmfRegistrationApi::get_smf_registration_handler(
   }
   auto supportedFeaturesQuery = request.query().get("supported-features");
   std::optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.has_value()) {
+  if (supportedFeaturesQuery.has_value()) {
     std::string valueQuery_instance;
     if (fromStringValue(supportedFeaturesQuery.value(), valueQuery_instance)) {
       supportedFeatures = std::make_optional(valueQuery_instance);

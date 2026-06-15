@@ -43,17 +43,17 @@ void SessionManagementSubscriptionDataRetrievalApiImpl::get_sm_data(
     const std::optional<std::string>& dnn, const std::optional<PlmnId>& plmnId,
     Pistache::Http::ResponseWriter& response) {
   Snssai snssai = {};
-  if (!singleNssai.has_value()) {
+  if (singleNssai.has_value()) {
     snssai = singleNssai.value();
   }
 
   std::string dnn_str = {};
-  if (!dnn.has_value()) {
+  if (dnn.has_value()) {
     dnn_str = dnn.value();
   }
 
   PlmnId plmn_id = {};
-  if (!plmnId.has_value()) {
+  if (plmnId.has_value()) {
     plmn_id = plmnId.value();
   }
 

@@ -87,7 +87,7 @@ void UpdateEESubscriptionApi::update_ee_subscription_handler(
     // Getting the query params
     auto supportedFeaturesQuery = request.query().get("supported-features");
     std::optional<std::string> supportedFeatures;
-    if (!supportedFeaturesQuery.has_value()) {
+    if (supportedFeaturesQuery.has_value()) {
       std::string valueQuery_instance;
       if (fromStringValue(
               supportedFeaturesQuery.value(), valueQuery_instance)) {

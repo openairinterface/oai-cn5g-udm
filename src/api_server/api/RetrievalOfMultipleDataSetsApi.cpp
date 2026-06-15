@@ -65,7 +65,7 @@ void RetrievalOfMultipleDataSetsApi::get_data_sets_handler(
   // Getting the query params
   auto datasetNamesQuery = request.query().get("dataset-names");
   std::optional<std::vector<std::string>> datasetNames;
-  if (!datasetNamesQuery.has_value()) {
+  if (datasetNamesQuery.has_value()) {
     std::vector<std::string> value;
     if (fromStringValue(datasetNamesQuery.value(), value)) {
       datasetNames = std::make_optional(value);
@@ -82,7 +82,7 @@ void RetrievalOfMultipleDataSetsApi::get_data_sets_handler(
   */
   auto supportedFeaturesQuery = request.query().get("supported-features");
   std::optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.has_value()) {
+  if (supportedFeaturesQuery.has_value()) {
     std::string value;
     if (fromStringValue(supportedFeaturesQuery.value(), value)) {
       supportedFeatures = std::make_optional(value);

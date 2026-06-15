@@ -67,7 +67,7 @@ void SMSManagementSubscriptionDataRetrievalApi::get_sms_mngt_data_handler(
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");
   std::optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.has_value()) {
+  if (supportedFeaturesQuery.has_value()) {
     std::string value;
     if (fromStringValue(supportedFeaturesQuery.value(), value)) {
       supportedFeatures = std::make_optional(value);

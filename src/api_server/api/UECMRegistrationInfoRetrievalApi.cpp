@@ -63,7 +63,7 @@ void UECMRegistrationInfoRetrievalApi::get_registrations_handler(
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");
   std::optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.has_value()) {
+  if (supportedFeaturesQuery.has_value()) {
     std::string valueQuery_instance;
     if (fromStringValue(supportedFeaturesQuery.value(), valueQuery_instance)) {
       supportedFeatures = std::make_optional(valueQuery_instance);
@@ -72,7 +72,7 @@ void UECMRegistrationInfoRetrievalApi::get_registrations_handler(
   auto registrationDatasetNamesQuery =
       request.query().get("registration-dataset-names");
   std::optional<std::vector<RegistrationDataSetName>> registrationDatasetNames;
-  if (!registrationDatasetNamesQuery.has_value()) {
+  if (registrationDatasetNamesQuery.has_value()) {
     std::vector<RegistrationDataSetName> valueQuery_instance;
     // if(fromStringValue(registrationDatasetNamesQuery.value(),
     // valueQuery_instance)){
@@ -81,7 +81,7 @@ void UECMRegistrationInfoRetrievalApi::get_registrations_handler(
   }
   auto singleNssaiQuery = request.query().get("single-nssai");
   std::optional<Snssai> singleNssai;
-  if (!singleNssaiQuery.has_value()) {
+  if (singleNssaiQuery.has_value()) {
     Snssai valueQuery_instance;
     // if(fromStringValue(singleNssaiQuery.value(), valueQuery_instance)){
     //    singleNssai = std::make_optional(valueQuery_instance);
@@ -89,7 +89,7 @@ void UECMRegistrationInfoRetrievalApi::get_registrations_handler(
   }
   auto dnnQuery = request.query().get("dnn");
   std::optional<std::string> dnn;
-  if (!dnnQuery.has_value()) {
+  if (dnnQuery.has_value()) {
     std::string valueQuery_instance;
     if (fromStringValue(dnnQuery.value(), valueQuery_instance)) {
       dnn = std::make_optional(valueQuery_instance);

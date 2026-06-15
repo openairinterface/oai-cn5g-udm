@@ -59,7 +59,7 @@ void GroupIdentifiersApi::get_group_identifiers_handler(
   // Getting the query params
   auto extGroupIdQuery = request.query().get("ext-group-id");
   std::optional<std::string> extGroupId;
-  if (!extGroupIdQuery.has_value()) {
+  if (extGroupIdQuery.has_value()) {
     std::string value;
     if (fromStringValue(extGroupIdQuery.value(), value)) {
       extGroupId = std::make_optional(value);
@@ -67,7 +67,7 @@ void GroupIdentifiersApi::get_group_identifiers_handler(
   }
   auto intGroupIdQuery = request.query().get("int-group-id");
   std::optional<std::string> intGroupId;
-  if (!intGroupIdQuery.has_value()) {
+  if (intGroupIdQuery.has_value()) {
     std::string value;
     if (fromStringValue(intGroupIdQuery.value(), value)) {
       intGroupId = std::make_optional(value);
@@ -75,7 +75,7 @@ void GroupIdentifiersApi::get_group_identifiers_handler(
   }
   auto supportedFeaturesQuery = request.query().get("supported-features");
   std::optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.has_value()) {
+  if (supportedFeaturesQuery.has_value()) {
     std::string value;
     if (fromStringValue(supportedFeaturesQuery.value(), value)) {
       supportedFeatures = std::make_optional(value);
