@@ -26,7 +26,7 @@
 #include <SMSFDeregistrationFor3GPPAccessApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "udm_app.hpp"
@@ -47,7 +47,7 @@ class SMSFDeregistrationFor3GPPAccessApiImpl
   ~SMSFDeregistrationFor3GPPAccessApiImpl() {}
 
   void _3_gpp_smsf_deregistration(
-      const std::string& ueId, const Pistache::Optional<std::string>& smsfSetId,
+      const std::string& ueId, const std::optional<std::string>& smsfSetId,
       Pistache::Http::ResponseWriter& response);
 
  private:

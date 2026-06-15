@@ -26,7 +26,7 @@
 #include <UELocationInformationRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "LocationInfo.h"
@@ -48,7 +48,7 @@ class UELocationInformationRetrievalApiImpl
 
   void get_location_info(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 
  private:
