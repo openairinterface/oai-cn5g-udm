@@ -82,12 +82,28 @@ class udm_nrf {
    */
   void deregister_to_nrf();
 
+  /*
+   * Discover an NF endpoint via NRF, selecting the NFService whose serviceName
+   * matches @service_name (e.g. "namf-evts", "nsmf-event-exposure").
+   * @param [const std::string&] target_nf_type: e.g. "AMF", "SMF"
+   * @param [const std::string&] service_name: target service name
+   * @param [std::string&] endpoint: resolved "scheme://ipv4:port" on success
+   * @return true on success, false otherwise
+   */
+  bool discover_nf(
+      const std::string& target_nf_type, const std::string& service_name,
+      std::string& endpoint);
+
  private:
   udm_event& m_event_sub;
   bs2::connection task_connection;
   bs2::connection retry_nrf_registration_task_connection;
   udm_profile udm_nf_profile;   // UDM profile
   std::string udm_instance_id;  // UDM instance id
+
+  // Discovery cache keyed by "<nf_type>:<service_name>"
+  std::map<std::string, std::string> m_discovery_cache;
+  std::mutex m_discovery_mutex;
 };
 }  // namespace oai::udm::app
 #endif /* FILE_UDM_NRF_SEEN */

@@ -112,6 +112,11 @@ std::string udm_sbi_helper::get_udm_ueau_base() {
          oai::udm::api::udm_sbi_helper::UeAuthenticationServiceBase;
 }
 //------------------------------------------------------------------------------
+std::string udm_sbi_helper::get_udm_ee_base() {
+  return udm_cfg.sbi.get_ipv4_root() +
+         oai::udm::api::udm_sbi_helper::EventExposureServiceBase;
+}
+//------------------------------------------------------------------------------
 std::string udm_sbi_helper::get_udr_uri_base() {
   return udm_cfg.udr_addr.uri_root + udm_sbi_helper::UdrDataRepositoryBase +
          udm_cfg.udr_addr.api_version;
