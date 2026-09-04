@@ -283,8 +283,9 @@ bool udm_nrf::discover_nf(
       udm_cfg.nrf_addr, uri);
   uri += "?target-nf-type=" + target_nf_type + "&requester-nf-type=UDM";
 
-  request req   = http_client::prepare_json_request(uri);
-  response resp = http_client_inst->send_http_request(method_e::GET, req);
+  oai::http::request req = http_client_inst->prepare_json_request(uri);
+  oai::http::response resp =
+      http_client_inst->send_http_request(method_e::GET, req);
   if (resp.status_code != oai::common::sbi::http_status_code::OK) {
     Logger::udm_nrf().warn(
         "NRF discovery for %s failed (HTTP %d)", target_nf_type.c_str(),

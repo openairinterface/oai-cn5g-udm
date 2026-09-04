@@ -1520,11 +1520,10 @@ void udm_app::relay_subscribe_to_amf(
 
   oai::http::request http_request = http_client_inst->prepare_json_request(
       amf_subscriptions_uri, body.dump());
-  auto http_response = http_client_inst->send_http_request(
+  auto resp = http_client_inst->send_http_request(
       oai::common::sbi::method_e::POST, http_request);
 
-  if (http_response.status_code !=
-      oai::common::sbi::http_status_code::CREATED) {
+  if (resp.status_code != oai::common::sbi::http_status_code::CREATED) {
     Logger::udm_ee().warn(
         "AMF relay subscribe for sub %u failed (HTTP %d)", sub_id,
         resp.status_code);
@@ -1558,7 +1557,7 @@ void udm_app::relay_unsubscribe(const evsub_id_t& sub_id) {
   }
 
   oai::http::request http_request =
-      http_client_inst->prepare_json_request(remote_uri, body.dump());
+      http_client_inst->prepare_json_request(remote_uri);
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::DELETE, http_request);
 
