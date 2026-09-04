@@ -6,6 +6,7 @@
 #define FILE_UDM_APP_HPP_SEEN
 
 #include <map>
+#include <memory>
 #include <shared_mutex>
 #include <string>
 
@@ -13,7 +14,10 @@
 #include "AuthEvent.h"
 #include "AuthenticationInfoRequest.h"
 #include "CreatedEeSubscription.h"
+#include "DataRestorationNotification.h"
+#include "EeMonitoringRevoked.h"
 #include "EeSubscription.h"
+#include "MonitoringReport.h"
 #include "PatchItem.h"
 #include "PlmnId.h"
 #include "ProblemDetails.h"
@@ -24,6 +28,23 @@
 #include "uint_generator.hpp"
 
 namespace oai::udm::app {
+
+// Which NF detects a given Nudm_EE EventType.
+enum class ee_event_detector_t {
+  UDM_LOCAL,
+  AMF_RELAY,
+  SMF_RELAY,  // deferred in MVP (accept + store, no relay)
+  SMS_GMSC,   // out of scope (accept + store, no relay)
+  UNKNOWN
+};
+
+// Correlation between a local Nudm_EE subscription and the subscription it
+// created on a remote AMF (for unsubscribe / modify / AMF-reselection).
+typedef struct relay_correlation_s {
+  std::string remote_nf_type;           // "AMF"
+  std::string remote_subscription_uri;  // Location returned by the remote NF
+  std::string amf_instance_id;          // serving AMF at subscribe time
+} relay_correlation_t;
 
 class udm_app {
  public:
@@ -119,8 +140,9 @@ class udm_app {
    */
   void handle_session_management_subscription_data_retrieval(
       const std::string& supi, nlohmann::json& response_data, uint32_t& code,
-      oai::_3gpp::model::Snssai snssai = {}, std::string dnn = {},
-      oai::_3gpp::model::PlmnId plmn_id = {});
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn,
+      const std::optional<oai::_3gpp::model::PlmnId>& plmn_id);
 
   /*
    * Handle a request to get the Slice Selection Subscription Data
@@ -176,7 +198,8 @@ class udm_app {
   evsub_id_t handle_create_ee_subscription(
       const std::string& ueIdentity,
       const oai::_3gpp::model::EeSubscription& eeSubscription,
-      oai::_3gpp::model::CreatedEeSubscription& createdSub, uint32_t& code);
+      oai::_3gpp::model::CreatedEeSubscription& createdSub,
+      oai::_3gpp::model::ProblemDetails& problemDetails, uint32_t& code);
 
   /*
    * Handle a request to delete an event subscription
@@ -241,23 +264,28 @@ class udm_app {
    * @return true if success, otherwise false
    */
   bool replace_ee_subscription_item(
-      const std::string& path, const std::string& value);
+      const std::string& subscriptionId, const std::string& path,
+      const std::string& value);
 
   /*
    * Add a new item for a subscription
+   * @param [const std::string &] subscriptionId: subscription's Id
    * @param [const std::string &] path: item name
    * @param [const std::string &] value: new value
    * @return true if success, otherwise false
    */
   bool add_ee_subscription_item(
-      const std::string& path, const std::string& value);
+      const std::string& subscriptionId, const std::string& path,
+      const std::string& value);
 
   /*
    * Remove an item for a subscription
+   * @param [const std::string &] subscriptionId: subscription's Id
    * @param [const std::string &] path: item name
    * @return true if success, otherwise false
    */
-  bool remove_ee_subscription_item(const std::string& path);
+  bool remove_ee_subscription_item(
+      const std::string& subscriptionId, const std::string& path);
 
   /*
    * Handle Loss of Connectivity Event
@@ -266,6 +294,41 @@ class udm_app {
    * @param [uint8_t] http_version: HTTP version
    * @return void
    */
+  /*
+   * Notify an Event Occurrence to a consumer by POSTing an array of
+   * MonitoringReport to its callback URI (non-blocking, on the SBI worker pool)
+   * @param [const std::string&] callback_uri: consumer's callbackReference
+   * @param [const std::vector<oai::_3gpp::model::MonitoringReport>&] reports
+   * @return void
+   */
+  void notify_event_occurrence(
+      const std::string& callback_uri,
+      const std::vector<oai::_3gpp::model::MonitoringReport>& reports);
+
+  /*
+   * Send a Monitoring Revocation (EeMonitoringRevoked) to the secondary
+   * callback of an EE subscription (e.g. on AF/MTC authorization revocation or
+   * group exclusion). Non-blocking. Trigger wiring is out of MVP scope; this is
+   * the sender (callable from a trigger/test).
+   * @param [const evsub_id_t&] sub_id: subscription whose secondCallbackRef to
+   * notify
+   * @param [const oai::_3gpp::model::EeMonitoringRevoked&] revoked: body
+   * @return void
+   */
+  void send_revocation(
+      const evsub_id_t& sub_id,
+      const oai::_3gpp::model::EeMonitoringRevoked& revoked);
+
+  /*
+   * Send a Data Restoration notification to every EE subscription that
+   * registered a dataRestorationCallbackUri (e.g. on UDR data loss). Follows
+   * 307/308 redirects. The real inbound UDR-loss trigger is out of MVP scope.
+   * @param [const oai::_3gpp::model::DataRestorationNotification&] notification
+   * @return void
+   */
+  void send_data_restoration(
+      const oai::_3gpp::model::DataRestorationNotification& notification);
+
   void handle_ee_loss_of_connectivity(
       const std::string& ue_id, uint8_t status, uint8_t http_version);
 
@@ -299,18 +362,85 @@ class udm_app {
       uint16_t status, uint16_t cause, const std::string& detail,
       nlohmann::json& problem_details);
 
+  /*
+   * Validate the format of SNN and get the corresponding PLMN ID if valid
+   * @param [const std::string&] snn: Serving Network Name
+   * @param [oai::_3gpp::model::PlmnId&] plmn_id: PLMN ID
+   * @return true if SNN follows the regex specification otherwise return false
+   */
+  bool validate_snn(const std::string& snn, oai::_3gpp::model::PlmnId& plmn_id);
+
+  /*
+   * Get the UE's Home PLMN
+   * @param [const std::string& ] supi: UE's SUPI
+   * @param [std::optional<oai::_3gpp::model::PlmnId>&] plmn_id: PLMN Id
+   * @return void
+   */
+  void get_hplmn_id(
+      const std::string& supi,
+      std::optional<oai::_3gpp::model::PlmnId>& plmn_id);
+
+  /*
+   * Get the PLMN ID from SNN and store in the DB
+   * @param [const std::string& ] supi: UE's SUPI
+   * @param [const oai::_3gpp::model::PlmnId&] plmn_id: PLMN ID
+   * @return void
+   */
+  void store_plmn_id(
+      const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id);
+
+  /*
+   * Classify which NF detects a given Nudm_EE event type.
+   */
+  ee_event_detector_t classify_event_detector(
+      oai::_3gpp::model::EventType_anyOf::eEventType_anyOf ev) const;
+
+  /*
+   * Map a Nudm_EE (AMF-relay) event type to its Namf_EventExposure event-type
+   * string; returns empty if not AMF-relay.
+   */
+  std::string namf_event_type_for(
+      oai::_3gpp::model::EventType_anyOf::eEventType_anyOf ev) const;
+
+  /*
+   * GET the serving AMF instance id for a UE from UDR (net-new read path; UDM
+   * only PUTs the registration today). Returns empty on failure.
+   */
+  std::string get_serving_amf_instance_id(const std::string& ue_id);
+
+  /*
+   * Relay an EE subscription to the serving AMF (Namf_EventExposure), injecting
+   * the consumer's callback + correlation id so the AMF notifies the consumer
+   * directly. Runs on the SBI worker pool. Stores the correlation on success.
+   */
+  void relay_subscribe_to_amf(
+      const evsub_id_t& sub_id, const std::string& ue_id);
+
+  /*
+   * Relay an unsubscribe (DELETE) to the remote AMF subscription, if any.
+   */
+  void relay_unsubscribe(const evsub_id_t& sub_id);
+
  private:
   oai::utils::uint_generator<uint32_t> evsub_id_generator;
   std::map<
       evsub_id_t, std::shared_ptr<oai::_3gpp::model::CreatedEeSubscription>>
       udm_event_subscriptions;
   std::map<std::string, std::vector<evsub_id_t>> udm_event_subscriptions_per_ue;
+  // evsub_id -> remote AMF subscription correlation (guarded by the same mutex)
+  std::map<evsub_id_t, relay_correlation_t> udm_event_relay_correlation;
   mutable std::shared_mutex m_mutex_udm_event_subscriptions;
+  std::map<std::string, oai::_3gpp::model::PlmnId> hplmn;
+  mutable std::shared_mutex m_mutex_hplmn;
 
   // for Event Handling
   udm_event& event_sub;
   bs2::connection loss_of_connectivity_connection;
   bs2::connection ue_reachability_for_data_connection;
+
+  // UDM NF instance id used as nfId in relayed subscriptions (ideally the same
+  // UUID registered with NRF; generated locally for now).
+  std::string m_udm_instance_id;
 };
 }  // namespace oai::udm::app
 #include "udm_config.hpp"

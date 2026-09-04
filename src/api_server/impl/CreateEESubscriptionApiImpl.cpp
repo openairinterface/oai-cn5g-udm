@@ -37,10 +37,11 @@ void CreateEESubscriptionApiImpl::create_ee_subscription(
   Pistache::Http::Code code        = {};
   uint32_t http_code               = 0;
   CreatedEeSubscription createdSub = {};
+  ProblemDetails problemDetails    = {};
   nlohmann::json json_data         = {};
 
   evsub_id_t sub_id = m_udm_app->handle_create_ee_subscription(
-      ueIdentity, eeSubscription, createdSub, http_code);
+      ueIdentity, eeSubscription, createdSub, problemDetails, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
 
