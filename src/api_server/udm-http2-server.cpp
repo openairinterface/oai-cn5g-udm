@@ -272,6 +272,7 @@ void udm_http2_server::start() {
       });
 
   // Context Management (Nudm_UECM)
+  /*
   server.handle(
       udm_sbi_helper::ContextManagementServiceBase + "/",
       [&](const request& request, const response& response) {
@@ -302,7 +303,7 @@ void udm_http2_server::start() {
           }
         });
       });
-
+*/
   running_server = true;
   if (server.listen_and_serve(ec, m_address, std::to_string(m_port))) {
     Logger::udm_server().debug("HTTP Server error: %s", ec.message());
