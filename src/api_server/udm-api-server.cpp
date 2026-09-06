@@ -92,6 +92,9 @@ void UDMApiServer::init(size_t thr) {
   m_generateAuthDataApiImpl->init();
   m_sMFSmfRegistrationApiImpl->init();
   m_aMFRegistrationFor3GPPAccessApiImpl->init();
+  m_createEESubscriptionApiImpl->init();
+  m_deleteEESubscriptionApiImpl->init();
+  m_updateEESubscriptionApiImpl->init();
 }
 
 //------------------------------------------------------------------------------

@@ -26,7 +26,9 @@ using namespace oai::udm::app;
 SMSFDeregistrationFor3GPPAccessApiImpl::SMSFDeregistrationFor3GPPAccessApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : SMSFDeregistrationFor3GPPAccessApi(rtr) {}
+    : SMSFDeregistrationFor3GPPAccessApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void SMSFDeregistrationFor3GPPAccessApiImpl::_3_gpp_smsf_deregistration(
     const std::string& ueId, const std::optional<std::string>& smsfSetId,

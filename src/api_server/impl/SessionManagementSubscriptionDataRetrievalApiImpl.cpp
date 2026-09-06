@@ -36,7 +36,9 @@ SessionManagementSubscriptionDataRetrievalApiImpl::
     SessionManagementSubscriptionDataRetrievalApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
         std::string address)
-    : SessionManagementSubscriptionDataRetrievalApi(rtr) {}
+    : SessionManagementSubscriptionDataRetrievalApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void SessionManagementSubscriptionDataRetrievalApiImpl::get_sm_data(
     const std::string& supi, const std::optional<Snssai>& singleNssai,

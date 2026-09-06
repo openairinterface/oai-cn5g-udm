@@ -27,7 +27,9 @@ ProvidingAcknowledgementOfSteeringOfRoamingApiImpl::
     ProvidingAcknowledgementOfSteeringOfRoamingApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
         std::string address)
-    : ProvidingAcknowledgementOfSteeringOfRoamingApi(rtr) {}
+    : ProvidingAcknowledgementOfSteeringOfRoamingApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void ProvidingAcknowledgementOfSteeringOfRoamingApiImpl::sor_ack_info(
     const std::string& supi, const AcknowledgeInfo& acknowledgeInfo,

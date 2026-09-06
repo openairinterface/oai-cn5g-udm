@@ -26,7 +26,9 @@ using namespace oai::udm::app;
 SMSFRegistrationFor3GPPAccessApiImpl::SMSFRegistrationFor3GPPAccessApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : SMSFRegistrationFor3GPPAccessApi(rtr) {}
+    : SMSFRegistrationFor3GPPAccessApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void SMSFRegistrationFor3GPPAccessApiImpl::_3_gpp_smsf_registration(
     const std::string& ueId, const SmsfRegistration& smsfRegistration,

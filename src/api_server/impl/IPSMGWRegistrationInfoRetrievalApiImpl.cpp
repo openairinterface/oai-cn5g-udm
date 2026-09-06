@@ -26,7 +26,9 @@ using namespace oai::udm::app;
 IPSMGWRegistrationInfoRetrievalApiImpl::IPSMGWRegistrationInfoRetrievalApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : IPSMGWRegistrationInfoRetrievalApi(rtr) {}
+    : IPSMGWRegistrationInfoRetrievalApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void IPSMGWRegistrationInfoRetrievalApiImpl::get_ip_sm_gw_registration(
     const std::string& ueId, Pistache::Http::ResponseWriter& response) {

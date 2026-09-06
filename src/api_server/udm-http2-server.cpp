@@ -567,10 +567,8 @@ void udm_http2_server::create_ee_subscription_handler(
   nlohmann::json response_data = {};
   if (http_code == oai::common::sbi::http_status_code::CREATED) {
     h.emplace(
-        "location",
-        header_value{
-            udm_sbi_helper::get_udm_ee_base() + "/" + ueIdentity + "/" +
-            NUDM_EE_SUBSCRIPTIONS + "/" + std::to_string(evsub_id)});
+        "location", header_value{udm_sbi_helper::get_ee_subscription_location(
+                        ueIdentity, std::to_string(evsub_id))});
     h.emplace("content-type", header_value{"application/json"});
     to_json(response_data, createdSub);
   } else {

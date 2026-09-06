@@ -25,7 +25,9 @@ using namespace oai::_3gpp::model;
 DeleteEESubscriptionApiImpl::DeleteEESubscriptionApiImpl(
     const std::shared_ptr<Pistache::Rest::Router>& rtr, udm_app* udm_app_inst,
     std::string address)
-    : DeleteEESubscriptionApi(rtr) {}
+    : DeleteEESubscriptionApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void DeleteEESubscriptionApiImpl::delete_ee_subscription(
     const std::string& ueIdentity, const std::string& subscriptionId,

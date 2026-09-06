@@ -515,11 +515,8 @@ void udm_app::handle_confirm_auth(
   // hash_value.substr(0,hash_value.length()/2));
   Logger::udm_ueau().debug("authEventId=" + hash_value);
 
-  auth_event_id = hash_value;  // Represents the authEvent Id per UE per serving
-                               // network assigned by the UDM during
-                               // ResultConfirmation service operation.
-  location = udm_sbi_helper::get_udm_ueau_base() + "/" + supi +
-             "/auth-events/" + auth_event_id;
+  auth_event_id = hash_value;
+  location      = udm_sbi_helper::get_auth_event_location(supi, auth_event_id);
 
   Logger::udm_ueau().info("Send 201 Created response to AUSF");
   confirm_response = auth_event_json;
@@ -1366,7 +1363,7 @@ void udm_app::notify_event_occurrence(
       callback_uri.c_str());
 
   oai::http::request http_request =
-      http_client_inst->prepare_json_request(callback_uri, body);
+      http_client_inst->prepare_json_request(callback_uri, body.dump());
 
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::POST, http_request);
@@ -1440,7 +1437,6 @@ std::string udm_app::namf_event_type_for(
 
 //------------------------------------------------------------------------------
 std::string udm_app::get_serving_amf_instance_id(const std::string& ue_id) {
-  // Net-new UDR read path: UDM only PUTs the AMF registration today.
   std::string remote_uri =
       udm_sbi_helper::get_udr_amf_3gpp_registration_uri(ue_id);
   oai::http::request req = http_client_inst->prepare_json_request(remote_uri);

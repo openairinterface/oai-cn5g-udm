@@ -17,6 +17,7 @@
 #include "CreateEESubscriptionApiImpl.h"
 #include "logger.hpp"
 #include "udm.h"
+#include "udm_sbi_helper.hpp"
 
 namespace oai {
 namespace udm {
@@ -27,7 +28,9 @@ using namespace oai::_3gpp::model;
 CreateEESubscriptionApiImpl::CreateEESubscriptionApiImpl(
     const std::shared_ptr<Pistache::Rest::Router>& rtr, udm_app* udm_app_inst,
     std::string address)
-    : CreateEESubscriptionApi(rtr) {}
+    : CreateEESubscriptionApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void CreateEESubscriptionApiImpl::create_ee_subscription(
     const std::string& ueIdentity, const EeSubscription& eeSubscription,
@@ -49,18 +52,18 @@ void CreateEESubscriptionApiImpl::create_ee_subscription(
   if (code == Pistache::Http::Code::Created) {
     response.headers().add<Pistache::Http::Header::ContentType>(
         Pistache::Http::Mime::MediaType("application/json"));
-    /*
-                if (sub_id != -1) {
-                  response.headers().add<Pistache::Http::Header::Location>(
-                      m_address + base + udm_cfg.sbi_api_version + "/nudm-ee/" +
-                      std::to_string(sub_id));  // Location header
-                }
-      */
+    if (sub_id != INVALID_EVSUB_ID) {
+      // {apiRoot}/nudm-ee/{apiVersion}/{ueIdentity}/ee-subscriptions/{id}
+      response.headers().add<Pistache::Http::Header::Location>(
+          udm_sbi_helper::get_ee_subscription_location(
+              ueIdentity, std::to_string(sub_id)));
+    }
     to_json(json_data, createdSub);
 
-  } else {  // NOT Found, Forbidden
+  } else {  // NOT Found, Forbidden, Bad Request
     response.headers().add<Pistache::Http::Header::ContentType>(
         Pistache::Http::Mime::MediaType("application/problem+json"));
+    to_json(json_data, problemDetails);
   }
 
   Logger::udm_ee().info("Send response to NF");
