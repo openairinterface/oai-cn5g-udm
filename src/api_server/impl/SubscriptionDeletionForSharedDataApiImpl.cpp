@@ -24,7 +24,9 @@ SubscriptionDeletionForSharedDataApiImpl::
     SubscriptionDeletionForSharedDataApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
         std::string address)
-    : SubscriptionDeletionForSharedDataApi(rtr) {}
+    : SubscriptionDeletionForSharedDataApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void SubscriptionDeletionForSharedDataApiImpl::unsubscribe_for_shared_data(
     const std::string& subscriptionId,

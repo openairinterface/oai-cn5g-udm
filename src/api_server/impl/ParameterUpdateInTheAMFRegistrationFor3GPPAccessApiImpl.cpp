@@ -27,7 +27,9 @@ ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiImpl::
     ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
         std::string address)
-    : ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi(rtr) {}
+    : ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiImpl::
     update3_gpp_registration(

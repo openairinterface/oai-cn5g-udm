@@ -25,7 +25,9 @@ TriggerAMFFor3GPPAccessDeregistrationApiImpl::
     TriggerAMFFor3GPPAccessDeregistrationApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
         std::string address)
-    : TriggerAMFFor3GPPAccessDeregistrationApi(rtr) {}
+    : TriggerAMFFor3GPPAccessDeregistrationApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void TriggerAMFFor3GPPAccessDeregistrationApiImpl::dereg_amf(
     const std::string& ueId, const AmfDeregInfo& amfDeregInfo,

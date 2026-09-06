@@ -26,7 +26,9 @@ using namespace oai::udm::app;
 RetrievalOfSharedDataApiImpl::RetrievalOfSharedDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : RetrievalOfSharedDataApi(rtr) {}
+    : RetrievalOfSharedDataApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void RetrievalOfSharedDataApiImpl::get_shared_data(
     const std::optional<std::vector<std::string>>& sharedDataIds,
