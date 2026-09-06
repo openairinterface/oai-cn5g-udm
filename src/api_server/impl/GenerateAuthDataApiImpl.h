@@ -53,7 +53,7 @@ class GenerateAuthDataApiImpl : public oai::udm::api::GenerateAuthDataApi {
       Pistache::Http::ResponseWriter& response);
 
  private:
-  udm_app* m_udm_app;
+  udm_app* const m_udm_app;
   std::string m_address;
 };
 

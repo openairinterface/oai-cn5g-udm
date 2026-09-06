@@ -25,7 +25,9 @@ using namespace oai::_3gpp::model;
 TraceConfigurationDataRetrievalApiImpl::TraceConfigurationDataRetrievalApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : TraceConfigurationDataRetrievalApi(rtr) {}
+    : TraceConfigurationDataRetrievalApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void TraceConfigurationDataRetrievalApiImpl::get_trace_config_data(
     const std::string& supi,

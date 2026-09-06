@@ -26,7 +26,7 @@ using namespace oai::udm::app;
 SMFDeregistrationApiImpl::SMFDeregistrationApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : SMFDeregistrationApi(rtr) {}
+    : SMFDeregistrationApi(rtr), m_udm_app(udm_app_inst), m_address(address) {}
 
 void SMFDeregistrationApiImpl::smf_deregistration(
     const std::string& ueId, const int32_t& pduSessionId,

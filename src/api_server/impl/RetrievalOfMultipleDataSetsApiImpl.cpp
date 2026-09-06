@@ -26,7 +26,9 @@ using namespace oai::udm::app;
 RetrievalOfMultipleDataSetsApiImpl::RetrievalOfMultipleDataSetsApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : RetrievalOfMultipleDataSetsApi(rtr) {}
+    : RetrievalOfMultipleDataSetsApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void RetrievalOfMultipleDataSetsApiImpl::get_data_sets(
     const std::string& supi,

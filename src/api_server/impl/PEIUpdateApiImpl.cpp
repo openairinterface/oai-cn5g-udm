@@ -25,7 +25,7 @@ using namespace oai::_3gpp::model;
 PEIUpdateApiImpl::PEIUpdateApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : PEIUpdateApi(rtr) {}
+    : PEIUpdateApi(rtr), m_udm_app(udm_app_inst), m_address(address) {}
 
 void PEIUpdateApiImpl::pei_update(
     const std::string& ueId, const PeiUpdateInfo& peiUpdateInfo,

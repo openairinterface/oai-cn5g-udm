@@ -26,7 +26,9 @@ using namespace oai::udm::app;
 RetrieveSMFRegistrationApiImpl::RetrieveSMFRegistrationApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : RetrieveSMFRegistrationApi(rtr) {}
+    : RetrieveSMFRegistrationApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void RetrieveSMFRegistrationApiImpl::retrieve_smf_registration(
     const std::string& ueId, const int32_t& pduSessionId,

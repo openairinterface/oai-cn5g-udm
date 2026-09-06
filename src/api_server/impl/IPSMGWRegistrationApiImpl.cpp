@@ -26,7 +26,7 @@ using namespace oai::udm::app;
 IPSMGWRegistrationApiImpl::IPSMGWRegistrationApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : IPSMGWRegistrationApi(rtr) {}
+    : IPSMGWRegistrationApi(rtr), m_udm_app(udm_app_inst), m_address(address) {}
 
 void IPSMGWRegistrationApiImpl::ip_sm_gw_registration(
     const std::string& ueId, const IpSmGwRegistration& ipSmGwRegistration,

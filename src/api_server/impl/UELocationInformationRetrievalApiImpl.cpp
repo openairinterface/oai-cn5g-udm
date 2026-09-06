@@ -28,7 +28,9 @@ using namespace oai::udm::app;
 UELocationInformationRetrievalApiImpl::UELocationInformationRetrievalApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : UELocationInformationRetrievalApi(rtr) {}
+    : UELocationInformationRetrievalApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void UELocationInformationRetrievalApiImpl::get_location_info(
     const std::string& ueId,

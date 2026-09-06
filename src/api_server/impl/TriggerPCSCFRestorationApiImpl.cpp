@@ -24,7 +24,9 @@ using namespace oai::_3gpp::model;
 TriggerPCSCFRestorationApiImpl::TriggerPCSCFRestorationApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : TriggerPCSCFRestorationApi(rtr) {}
+    : TriggerPCSCFRestorationApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void TriggerPCSCFRestorationApiImpl::trigger_pcscf_restoration(
     const TriggerRequest& triggerRequest,

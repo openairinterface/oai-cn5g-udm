@@ -26,7 +26,9 @@ AMF3GppAccessRegistrationInfoRetrievalApiImpl::
     AMF3GppAccessRegistrationInfoRetrievalApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
         std::string address)
-    : AMF3GppAccessRegistrationInfoRetrievalApi(rtr) {}
+    : AMF3GppAccessRegistrationInfoRetrievalApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void AMF3GppAccessRegistrationInfoRetrievalApiImpl::get3_gpp_registration(
     const std::string& ueId,

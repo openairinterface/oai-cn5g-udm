@@ -27,7 +27,7 @@ using namespace oai::_3gpp::model;
 GenerateAuthDataApiImpl::GenerateAuthDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : GenerateAuthDataApi(rtr) {}
+    : GenerateAuthDataApi(rtr), m_udm_app(udm_app_inst), m_address(address) {}
 
 void GenerateAuthDataApiImpl::generate_auth_data(
     const std::string& supiOrSuci,

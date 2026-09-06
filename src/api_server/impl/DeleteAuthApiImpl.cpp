@@ -27,7 +27,7 @@ namespace api {
 DeleteAuthApiImpl::DeleteAuthApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : DeleteAuthApi(rtr) {}
+    : DeleteAuthApi(rtr), m_udm_app(udm_app_inst), m_address(address) {}
 
 void DeleteAuthApiImpl::delete_auth(
     const std::string& supi, const std::string& authEventId,
