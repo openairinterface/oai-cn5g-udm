@@ -108,10 +108,6 @@ void udm_http2_server::start() {
                     supi, response, plmnId);
               }
             }
-            // NOTE: AMF registration for 3GPP access (amf-3gpp-access) is
-            // handled under the Nudm_UECM (ContextManagementServiceBase) route
-            // block below, not here — it was previously misrouted under the SDM
-            // base.
             // Session Management Subscription Data Retrieval
             if (split_q[split_q.size() - 1].compare(NUDM_SM_DATA) == 0) {
               if (request.method().compare("GET") == 0 && len == 0) {
@@ -272,7 +268,7 @@ void udm_http2_server::start() {
       });
 
   // Context Management (Nudm_UECM)
-  /*
+
   server.handle(
       udm_sbi_helper::ContextManagementServiceBase + "/",
       [&](const request& request, const response& response) {
@@ -303,7 +299,7 @@ void udm_http2_server::start() {
           }
         });
       });
-*/
+
   running_server = true;
   if (server.listen_and_serve(ec, m_address, std::to_string(m_port))) {
     Logger::udm_server().debug("HTTP Server error: %s", ec.message());
