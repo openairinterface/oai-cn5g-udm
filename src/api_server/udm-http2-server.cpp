@@ -268,7 +268,6 @@ void udm_http2_server::start() {
       });
 
   // Context Management (Nudm_UECM)
-
   server.handle(
       udm_sbi_helper::ContextManagementServiceBase + "/",
       [&](const request& request, const response& response) {
@@ -288,8 +287,15 @@ void udm_http2_server::start() {
 
                 this->amf_registration_for_3gpp_access_handler(
                     ue_id, amf_3gpp_access_registration, response);
+                return;
               }
             }
+            // No appropriate endpoints found
+            response.write_head(
+                oai::common::sbi::http_status_code::BAD_REQUEST);
+            response.end();
+            return;
+
           } catch (std::exception& e) {
             Logger::udm_server().warn("Invalid request (error: %s)!", e.what());
             response.write_head(
