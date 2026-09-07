@@ -641,7 +641,6 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     const oai::_3gpp::model::Amf3GppAccessRegistration&
         amf_3gpp_access_registration,
     nlohmann::json& response_data, uint32_t& code) {
-  // TODO: to be completed
   std::string remote_uri              = {};
   nlohmann::json problem_details_json = {};
   ProblemDetails problem_details      = {};
@@ -655,8 +654,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
 
   // if this UE has active EE subscriptions, GET the current registration
   // BEFORE the PUT so we can diff old-vs-new (PEI change / serving-PLMN
-  // change). Gated on an active subscription to avoid an extra UDR round-trip
-  // otherwise.
+  // change).
   bool ue_has_subs = false;
   {
     std::shared_lock lock(m_mutex_udm_event_subscriptions);
@@ -682,6 +680,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     }
   }
 
+  // Update AMF registration in UDR
   oai::http::request http_request = http_client_inst->prepare_json_request(
       remote_uri, amf_registration_json.dump());
   auto http_response = http_client_inst->send_http_request(
@@ -690,7 +689,6 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   try {
     Logger::udm_uecm().debug("HTTP Response: " + http_response.body);
     response_data = nlohmann::json::parse(http_response.body.c_str());
-
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_uecm().info("Could not get JSON content from UDR response");
     std::string problem_description = "User " + ue_id + " not found";
@@ -707,7 +705,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   code          = http_response.status_code;
 
   // Emit UDM-local event reports for active EE subscriptions on this UE.
-  // Adds true change-detection via the GET-before-PUT diff:
+  // Adds true change-detection:
   //  - CHANGE_OF_SUPI_PEI_ASSOCIATION: only on an actual PEI change.
   //  - ROAMING_STATUS: on serving-PLMN transition (or one-shot at the first
   //    registration when there is no before-image).
@@ -728,13 +726,13 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     std::string old_plmn = has_old ? plmn_of(old_registration) : std::string{};
     std::string new_plmn = plmn_of(amf_registration_json);
 
-    std::set<EventType_anyOf::eEventType_anyOf> detected;
+    std::set<EventType_anyOf::eEventType_anyOf> detected_events;
     if (has_old && !new_pei.empty() && old_pei != new_pei)
-      detected.insert(
+      detected_events.insert(
           EventType_anyOf::eEventType_anyOf::CHANGE_OF_SUPI_PEI_ASSOCIATION);
     if (!has_old || old_plmn != new_plmn)
-      detected.insert(EventType_anyOf::eEventType_anyOf::ROAMING_STATUS);
-    detected.insert(EventType_anyOf::eEventType_anyOf::CN_TYPE_CHANGE);
+      detected_events.insert(EventType_anyOf::eEventType_anyOf::ROAMING_STATUS);
+    detected_events.insert(EventType_anyOf::eEventType_anyOf::CN_TYPE_CHANGE);
 
     std::vector<std::shared_ptr<CreatedEeSubscription>> subs;
     {
@@ -763,7 +761,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
       std::vector<MonitoringReport> reports;
       for (const auto& kv : es.getMonitoringConfigurations()) {
         auto ev = kv.second.getEventType().getEnumValue();
-        if (detected.count(ev) == 0) continue;
+        if (detected_events.count(ev) == 0) continue;
         MonitoringReport report;
         try {
           report.setReferenceId(std::stoi(kv.first));
@@ -777,9 +775,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     }
 
     // AMF reselection: if the serving AMF instance changed, re-subscribe the
-    // UE's AMF-relay EE subscriptions on the (new) AMF. Relies on remote
-    // idempotency/dedup (the "no ongoing subscriptions" indication is not
-    // used).
+    // UE's AMF-relay EE subscriptions on the (new) AMF.
     std::string old_amf =
         has_old ? old_registration.value("amfInstanceId", std::string{}) :
                   std::string{};
