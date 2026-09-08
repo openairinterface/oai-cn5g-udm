@@ -26,6 +26,7 @@ typedef uint32_t evsub_id_t;
 #define UNASSIGNED_EVSUB_ID ((evsub_id_t) 0x00000000)
 
 #define NUDM_SDM_SUB "/sdm-subscriptions"
+#define NUDM_EE_SUBSCRIPTIONS "ee-subscriptions"
 #define NUDM_SMF_SELECT "smf-select-data"
 #define NUDM_NSSAI "nssai"
 #define NUDM_SM_DATA "sm-data"

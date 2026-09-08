@@ -26,7 +26,7 @@ using namespace oai::udm::app;
 GroupIdentifiersApiImpl::GroupIdentifiersApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : GroupIdentifiersApi(rtr) {}
+    : GroupIdentifiersApi(rtr), m_udm_app(udm_app_inst), m_address(address) {}
 
 void GroupIdentifiersApiImpl::get_group_identifiers(
     const Pistache::Optional<std::string>& extGroupId,

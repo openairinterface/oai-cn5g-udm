@@ -36,26 +36,28 @@ SessionManagementSubscriptionDataRetrievalApiImpl::
     SessionManagementSubscriptionDataRetrievalApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
         std::string address)
-    : SessionManagementSubscriptionDataRetrievalApi(rtr) {}
+    : SessionManagementSubscriptionDataRetrievalApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void SessionManagementSubscriptionDataRetrievalApiImpl::get_sm_data(
     const std::string& supi, const Pistache::Optional<Snssai>& singleNssai,
     const Pistache::Optional<std::string>& dnn,
     const Pistache::Optional<PlmnId>& plmnId,
     Pistache::Http::ResponseWriter& response) {
-  Snssai snssai = {};
+  std::optional<Snssai> snssai = std::nullopt;
   if (!singleNssai.isEmpty()) {
-    snssai = singleNssai.get();
+    snssai = std::make_optional<Snssai>(singleNssai.get());
   }
 
-  std::string dnn_str = {};
+  std::optional<std::string> dnn_str = std::nullopt;
   if (!dnn.isEmpty()) {
-    dnn_str = dnn.get();
+    dnn_str = std::make_optional<std::string>(dnn.get());
   }
 
-  PlmnId plmn_id = {};
+  std::optional<PlmnId> plmn_id = std::nullopt;
   if (!plmnId.isEmpty()) {
-    plmn_id = plmnId.get();
+    plmn_id = std::make_optional<PlmnId>(plmnId.get());
   }
 
   nlohmann::json response_data = {};

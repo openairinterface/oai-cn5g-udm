@@ -13,7 +13,11 @@
 #include <boost/date_time/posix_time/time_formatters.hpp>
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
+#include <algorithm>
 #include <chrono>
+#include <ctime>
+#include <regex>
+#include <set>
 
 #include "3gpp_29.500.h"
 #include "3gpp_29.503.h"
@@ -28,6 +32,7 @@
 #include "logger.hpp"
 #include "output_wrapper.hpp"
 #include "sha256.hpp"
+#include "MonitoringReport.h"
 #include "udm.h"
 #include "udm_config.hpp"
 #include "udm_nrf.hpp"
@@ -48,7 +53,12 @@ extern std::shared_ptr<oai::http::http_client> http_client_inst;
 
 //------------------------------------------------------------------------------
 udm_app::udm_app(const std::string& config_file, udm_event& ev)
-    : event_sub(ev) {}
+    : event_sub(ev), m_mutex_hplmn(), m_mutex_udm_event_subscriptions() {
+  udm_event_subscriptions        = {};
+  udm_event_subscriptions_per_ue = {};
+  hplmn                          = {};
+  m_udm_instance_id = to_string(boost::uuids::random_generator()());
+}
 
 //------------------------------------------------------------------------------
 udm_app::~udm_app() {
@@ -109,6 +119,7 @@ void udm_app::handle_generate_auth_data_request(
         authenticationInfoRequest,
     nlohmann::json& auth_info_response, uint32_t& code) {
   Logger::udm_ueau().info("Handle Generate Auth Data Request");
+
   uint8_t rand[16] = {0};
   uint8_t opc[16]  = {0};
   uint8_t key[16]  = {0};
@@ -180,6 +191,26 @@ void udm_app::handle_generate_auth_data_request(
     }
     Logger::udm_ueau().debug("SUPI %s ", supi);
   }
+
+  // Validate SNN
+  oai::_3gpp::model::PlmnId plmn_id = {};
+  if (!validate_snn(snn, plmn_id)) {
+    Logger::udm_ueau().info("SNN is not valid");
+    code = oai::common::sbi::http_status_code::NOT_ACCEPTABLE;
+    std::string problem_description =
+        "SNN is not valid for this UE (SUPI " + supi + ")";
+    set_problem_details(
+        code, udm_protocol_application_error::CONTEXT_NOT_FOUND,
+        problem_description, auth_info_response);
+    Logger::udm_ueau().warn(problem_description);
+    return;
+  }
+  Logger::udm_ueau().debug(
+      "SUPI %s, SNN %s, PLMN Id (MCC %s, MNC %s)", supi, snn, plmn_id.getMcc(),
+      plmn_id.getMnc());
+
+  // Store PLMN info to be used later
+  store_plmn_id(supi, plmn_id);
 
   // Get authentication related info
   remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
@@ -484,11 +515,8 @@ void udm_app::handle_confirm_auth(
   // hash_value.substr(0,hash_value.length()/2));
   Logger::udm_ueau().debug("authEventId=" + hash_value);
 
-  auth_event_id = hash_value;  // Represents the authEvent Id per UE per serving
-                               // network assigned by the UDM during
-                               // ResultConfirmation service operation.
-  location = udm_sbi_helper::get_udm_ueau_base() + "/" + supi +
-             "/auth-events/" + auth_event_id;
+  auth_event_id = hash_value;
+  location      = udm_sbi_helper::get_auth_event_location(supi, auth_event_id);
 
   Logger::udm_ueau().info("Send 201 Created response to AUSF");
   confirm_response = auth_event_json;
@@ -613,7 +641,6 @@ void udm_app::handle_amf_registration_for_3gpp_access(
     const oai::_3gpp::model::Amf3GppAccessRegistration&
         amf_3gpp_access_registration,
     nlohmann::json& response_data, uint32_t& code) {
-  // TODO: to be completed
   std::string remote_uri              = {};
   nlohmann::json problem_details_json = {};
   ProblemDetails problem_details      = {};
@@ -625,6 +652,35 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   nlohmann::json amf_registration_json;
   to_json(amf_registration_json, amf_3gpp_access_registration);
 
+  // if this UE has active EE subscriptions, GET the current registration
+  // BEFORE the PUT so we can diff old-vs-new (PEI change / serving-PLMN
+  // change).
+  bool ue_has_subs = false;
+  {
+    std::shared_lock lock(m_mutex_udm_event_subscriptions);
+    auto it = udm_event_subscriptions_per_ue.find(ue_id);
+    ue_has_subs =
+        (it != udm_event_subscriptions_per_ue.end() && !it->second.empty());
+  }
+
+  nlohmann::json old_registration = {};
+  bool has_old                    = false;
+  if (ue_has_subs) {
+    oai::http::request get_req =
+        http_client_inst->prepare_json_request(remote_uri);
+    auto get_resp = http_client_inst->send_http_request(
+        oai::common::sbi::method_e::GET, get_req);
+    if (get_resp.status_code == oai::common::sbi::http_status_code::OK) {
+      try {
+        old_registration = nlohmann::json::parse(get_resp.body);
+        has_old = old_registration.is_object() && !old_registration.empty();
+      } catch (nlohmann::json::exception&) {
+        has_old = false;
+      }
+    }
+  }
+
+  // Update AMF registration in UDR
   oai::http::request http_request = http_client_inst->prepare_json_request(
       remote_uri, amf_registration_json.dump());
   auto http_response = http_client_inst->send_http_request(
@@ -633,7 +689,6 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   try {
     Logger::udm_uecm().debug("HTTP Response: " + http_response.body);
     response_data = nlohmann::json::parse(http_response.body.c_str());
-
   } catch (nlohmann::json::exception& e) {  // error handling
     Logger::udm_uecm().info("Could not get JSON content from UDR response");
     std::string problem_description = "User " + ue_id + " not found";
@@ -648,28 +703,143 @@ void udm_app::handle_amf_registration_for_3gpp_access(
 
   response_data = amf_registration_json;
   code          = http_response.status_code;
+
+  // Emit UDM-local event reports for active EE subscriptions on this UE.
+  // Adds true change-detection:
+  //  - CHANGE_OF_SUPI_PEI_ASSOCIATION: only on an actual PEI change.
+  //  - ROAMING_STATUS: on serving-PLMN transition (or one-shot at the first
+  //    registration when there is no before-image).
+  //  - CN_TYPE_CHANGE: one-shot at registration.
+  if (code == oai::common::sbi::http_status_code::CREATED ||
+      code == oai::common::sbi::http_status_code::OK ||
+      code == oai::common::sbi::http_status_code::NO_CONTENT) {
+    auto plmn_of = [](const nlohmann::json& reg) -> std::string {
+      if (reg.contains("guami") && reg["guami"].contains("plmnId")) {
+        const auto& p = reg["guami"]["plmnId"];
+        return p.value("mcc", std::string{}) + p.value("mnc", std::string{});
+      }
+      return std::string{};
+    };
+    std::string old_pei =
+        has_old ? old_registration.value("pei", std::string{}) : std::string{};
+    std::string new_pei  = amf_registration_json.value("pei", std::string{});
+    std::string old_plmn = has_old ? plmn_of(old_registration) : std::string{};
+    std::string new_plmn = plmn_of(amf_registration_json);
+
+    std::set<EventType_anyOf::eEventType_anyOf> detected_events;
+    if (has_old && !new_pei.empty() && old_pei != new_pei)
+      detected_events.insert(
+          EventType_anyOf::eEventType_anyOf::CHANGE_OF_SUPI_PEI_ASSOCIATION);
+    if (!has_old || old_plmn != new_plmn)
+      detected_events.insert(EventType_anyOf::eEventType_anyOf::ROAMING_STATUS);
+    detected_events.insert(EventType_anyOf::eEventType_anyOf::CN_TYPE_CHANGE);
+
+    std::vector<std::shared_ptr<CreatedEeSubscription>> subs;
+    {
+      std::shared_lock lock(m_mutex_udm_event_subscriptions);
+      auto it = udm_event_subscriptions_per_ue.find(ue_id);
+      if (it != udm_event_subscriptions_per_ue.end()) {
+        for (auto sid : it->second) {
+          auto s = udm_event_subscriptions.find(sid);
+          if (s != udm_event_subscriptions.end() && s->second)
+            subs.push_back(s->second);
+        }
+      }
+    }
+
+    // RFC3339 (UTC) timestamp
+    std::time_t now = std::time(nullptr);
+    char ts_buf[32] = {};
+    std::strftime(
+        ts_buf, sizeof(ts_buf), "%Y-%m-%dT%H:%M:%SZ", std::gmtime(&now));
+    std::string timestamp(ts_buf);
+
+    for (const auto& ces : subs) {
+      EeSubscription es    = ces->getEeSubscription();
+      std::string callback = es.getCallbackReference();
+      if (callback.empty()) continue;
+      std::vector<MonitoringReport> reports;
+      for (const auto& kv : es.getMonitoringConfigurations()) {
+        auto ev = kv.second.getEventType().getEnumValue();
+        if (detected_events.count(ev) == 0) continue;
+        MonitoringReport report;
+        try {
+          report.setReferenceId(std::stoi(kv.first));
+        } catch (std::exception&) {
+        }
+        report.setEventType(kv.second.getEventType());
+        report.setTimeStamp(timestamp);
+        reports.push_back(report);
+      }
+      if (!reports.empty()) notify_event_occurrence(callback, reports);
+    }
+
+    // AMF reselection: if the serving AMF instance changed, re-subscribe the
+    // UE's AMF-relay EE subscriptions on the (new) AMF.
+    std::string old_amf =
+        has_old ? old_registration.value("amfInstanceId", std::string{}) :
+                  std::string{};
+    std::string new_amf =
+        amf_registration_json.value("amfInstanceId", std::string{});
+    if (has_old && !new_amf.empty() && old_amf != new_amf) {
+      std::vector<evsub_id_t> ids;
+      {
+        std::shared_lock lock(m_mutex_udm_event_subscriptions);
+        auto it = udm_event_subscriptions_per_ue.find(ue_id);
+        if (it != udm_event_subscriptions_per_ue.end()) ids = it->second;
+      }
+      Logger::udm_ee().info(
+          "AMF reselection for %s (%s -> %s): re-subscribing %zu EE sub(s)",
+          ue_id.c_str(), old_amf.c_str(), new_amf.c_str(), ids.size());
+      std::string ue_cpy = ue_id;
+      for (auto sid : ids) {
+        relay_subscribe_to_amf(sid, ue_cpy);
+      }
+    }
+  }
   return;
 }
 
 //------------------------------------------------------------------------------
 void udm_app::handle_session_management_subscription_data_retrieval(
     const std::string& supi, nlohmann::json& response_data, uint32_t& code,
-    Snssai snssai, std::string dnn, PlmnId plmn_id) {
+    const std::optional<oai::_3gpp::model::Snssai>& snssai,
+    const std::optional<std::string>& dnn,
+    const std::optional<oai::_3gpp::model::PlmnId>& plmn_id_opt) {
+  // TODO: If PLMN Id is not available, use the HPLMN instead
+  std::optional<oai::_3gpp::model::PlmnId> plmn_id = plmn_id_opt;
+  if (!plmn_id_opt.has_value()) {
+    get_hplmn_id(supi, plmn_id);
+  }
+
+  // If couldn't get PLMN Id, then reply with USER_NOT_FOUND
+  if (!plmn_id.has_value()) {
+    Logger::udm_sdm().info("Could not get JSON content from UDR response");
+    code = oai::common::sbi::http_status_code::NOT_FOUND;
+    std::string problem_description = "User " + supi + " not found";
+    set_problem_details(
+        code, udm_protocol_application_error::USER_NOT_FOUND,
+        problem_description, response_data);
+    Logger::udm_ueau().warn(problem_description);
+    return;
+  }
+
   // UDR's URL
   std::string remote_uri =
       udm_sbi_helper::get_udr_session_management_subscription_data_uri(
-          supi, plmn_id);
+          supi, plmn_id.value());
   std::string query_str = {};
   std::string body      = {};
 
-  if (snssai.getSst() > 0) {
-    query_str += "?single-nssai={\"sst\":" + std::to_string(snssai.getSst()) +
-                 ",\"sd\":\"" + snssai.getSd() + "\"}";
-    if (!dnn.empty()) {
-      query_str += "&dnn=" + dnn;
+  if (snssai.has_value() and snssai.value().getSst() > 0) {
+    query_str +=
+        "?single-nssai={\"sst\":" + std::to_string(snssai.value().getSst()) +
+        ",\"sd\":\"" + snssai.value().getSd() + "\"}";
+    if (dnn.has_value()) {
+      query_str += "&dnn=" + dnn.value();
     }
-  } else if (!dnn.empty()) {
-    query_str += "?dnn=" + dnn;
+  } else if (dnn.has_value()) {
+    query_str += "?dnn=" + dnn.value();
   }
 
   // URI with Optional SNSSAI/DNN
@@ -837,8 +1007,22 @@ void udm_app::handle_subscription_creation(
 evsub_id_t udm_app::handle_create_ee_subscription(
     const std::string& ueIdentity,
     const oai::_3gpp::model::EeSubscription& eeSubscription,
-    oai::_3gpp::model::CreatedEeSubscription& createdSub, uint32_t& code) {
+    oai::_3gpp::model::CreatedEeSubscription& createdSub,
+    oai::_3gpp::model::ProblemDetails& problemDetails, uint32_t& code) {
   Logger::udm_ee().info("Handle Create EE Subscription");
+
+  // Validate mandatory IE: callbackReference must be present
+  if (eeSubscription.getCallbackReference().empty()) {
+    Logger::udm_ee().warn("EeSubscription is missing callbackReference");
+    problemDetails.setStatus(oai::common::sbi::http_status_code::BAD_REQUEST);
+    problemDetails.setCause(
+        oai::common::sbi::protocol_application_error_to_string(
+            oai::common::sbi::protocol_application_error::
+                MANDATORY_IE_INCORRECT));
+    problemDetails.setDetail("Missing mandatory IE: callbackReference");
+    code = oai::common::sbi::http_status_code::BAD_REQUEST;
+    return INVALID_EVSUB_ID;
+  }
 
   // Generate a subscription ID Id and store the corresponding information in a
   // map (subscription id, info)
@@ -862,7 +1046,27 @@ evsub_id_t udm_app::handle_create_ee_subscription(
   // TODO: MonitoringReport
 
   add_event_subscription(evsub_id, ueIdentity, ces);
-  code = oai::common::sbi::http_status_code::CREATED;
+  // Populate the response body with the created subscription (previously the
+  // out-param was never filled, so the 201 body was serialized empty).
+  createdSub = *ces;
+  code       = oai::common::sbi::http_status_code::CREATED;
+
+  // If any requested event is AMF-detected, relay the subscription to the
+  // serving AMF on the worker pool (never blocks this handler / the server
+  // I/O thread). SMF-relay and SMS-GMSC events are accepted+stored only.
+  bool needs_amf_relay = false;
+  for (const auto& kv : es.getMonitoringConfigurations()) {
+    if (classify_event_detector(kv.second.getEventType().getEnumValue()) ==
+        ee_event_detector_t::AMF_RELAY) {
+      needs_amf_relay = true;
+      break;
+    }
+  }
+  if (needs_amf_relay && !ueIdentity.empty()) {
+    evsub_id_t sid     = evsub_id;
+    std::string ue_cpy = ueIdentity;
+    relay_subscribe_to_amf(sid, ue_cpy);
+  }
 
   return evsub_id;
 }
@@ -874,10 +1078,22 @@ void udm_app::handle_delete_ee_subscription(
   Logger::udm_ee().info("Handle Delete EE Subscription");
 
   if (!delete_event_subscription(subscriptionId, ueIdentity)) {
-    // Set ProblemDetails
-    // Code
+    // Set ProblemDetails (SUBSCRIPTION_NOT_FOUND is in the 29.500 base enum,
+    // not the 29.503 application-error enum, so populate the model directly).
+    problemDetails.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
+    problemDetails.setCause("SUBSCRIPTION_NOT_FOUND");
+    problemDetails.setDetail(
+        "EE subscription " + subscriptionId + " not found");
     code = oai::common::sbi::http_status_code::NOT_FOUND;
+    return;
   }
+
+  // Relay the unsubscribe to the remote AMF subscription, if one was created.
+  try {
+    relay_unsubscribe(std::stoul(subscriptionId));
+  } catch (std::exception&) {
+  }
+
   code = oai::common::sbi::http_status_code::NO_CONTENT;
   return;
 }
@@ -888,17 +1104,38 @@ void udm_app::handle_update_ee_subscription(
     const std::vector<PatchItem>& patchItem, ProblemDetails& problemDetails,
     uint32_t& code) {
   Logger::udm_ee().info("Handle Update EE Subscription");
-  // TODO:
-  bool op_success = false;
+
+  // Verify the subscription exists (404 otherwise)
+  {
+    uint32_t sub_id = 0;
+    try {
+      sub_id = std::stoul(subscriptionId);
+    } catch (std::exception& e) {
+      sub_id = 0;
+    }
+    std::shared_lock lock(m_mutex_udm_event_subscriptions);
+    if (sub_id == 0 || udm_event_subscriptions.count(sub_id) == 0) {
+      Logger::udm_ee().warn(
+          "EE subscription %s not found", subscriptionId.c_str());
+      problemDetails.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
+      problemDetails.setCause("SUBSCRIPTION_NOT_FOUND");
+      problemDetails.setDetail(
+          "EE subscription " + subscriptionId + " not found");
+      code = oai::common::sbi::http_status_code::NOT_FOUND;
+      return;
+    }
+  }
 
   for (auto p : patchItem) {
-    auto op = p.getOp().getEnumValue();
+    auto op         = p.getOp().getEnumValue();
+    bool op_success = true;
     // Verify Path
     if ((p.getPath().substr(0, 1).compare("/") != 0) or
         (p.getPath().length() < 2)) {
       Logger::udm_ee().warn(
           "Bad value for operation path: %s ", p.getPath().c_str());
       code = oai::common::sbi::http_status_code::BAD_REQUEST;
+      problemDetails.setStatus(oai::common::sbi::http_status_code::BAD_REQUEST);
       problemDetails.setCause(
           oai::common::sbi::protocol_application_error_to_string(
               oai::common::sbi::protocol_application_error::
@@ -910,27 +1147,17 @@ void udm_app::handle_update_ee_subscription(
 
     switch (op) {
       case PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE: {
-        if (replace_ee_subscription_item(path, p.getValue())) {
-          code = oai::common::sbi::http_status_code::OK;
-        } else {
-          op_success = false;
-        }
+        op_success =
+            replace_ee_subscription_item(subscriptionId, path, p.getValue());
       } break;
 
       case PatchOperation_anyOf::ePatchOperation_anyOf::ADD: {
-        if (add_ee_subscription_item(path, p.getValue())) {
-          code = oai::common::sbi::http_status_code::OK;
-        } else {
-          op_success = false;
-        }
+        op_success =
+            add_ee_subscription_item(subscriptionId, path, p.getValue());
       } break;
 
       case PatchOperation_anyOf::ePatchOperation_anyOf::REMOVE: {
-        if (remove_ee_subscription_item(path)) {
-          code = oai::common::sbi::http_status_code::OK;
-        } else {
-          op_success = false;
-        }
+        op_success = remove_ee_subscription_item(subscriptionId, path);
       } break;
 
       default: {
@@ -941,13 +1168,18 @@ void udm_app::handle_update_ee_subscription(
 
     if (!op_success) {
       code = oai::common::sbi::http_status_code::BAD_REQUEST;
+      problemDetails.setStatus(oai::common::sbi::http_status_code::BAD_REQUEST);
       problemDetails.setCause(
           oai::common::sbi::protocol_application_error_to_string(
               oai::common::sbi::protocol_application_error::
-                  INVALID_QUERY_PARAM));  // TODO:
-    } else {
+                  INVALID_QUERY_PARAM));
+      problemDetails.setDetail("Unsupported patch operation/path: " + path);
+      return;
     }
   }
+
+  // All patch items applied successfully.
+  code = oai::common::sbi::http_status_code::NO_CONTENT;
 }
 
 //------------------------------------------------------------------------------
@@ -985,16 +1217,22 @@ bool udm_app::delete_event_subscription(
     return false;
   }
 
+  // Success is determined by whether the subscription id existed.
   if (udm_event_subscriptions.count(sub_id)) {
     udm_event_subscriptions.erase(sub_id);
   } else {
     result = false;
   }
 
+  // Remove only the matching subscription id from the per-UE vector (NOT the
+  // whole vector); drop the UE key only once its vector becomes empty.
   if (udm_event_subscriptions_per_ue.count(ue_id) > 0) {
-    udm_event_subscriptions_per_ue.erase(ue_id);
-  } else {
-    result = false;
+    std::vector<evsub_id_t>& ev_subs = udm_event_subscriptions_per_ue.at(ue_id);
+    ev_subs.erase(
+        std::remove(ev_subs.begin(), ev_subs.end(), sub_id), ev_subs.end());
+    if (ev_subs.empty()) {
+      udm_event_subscriptions_per_ue.erase(ue_id);
+    }
   }
 
   return result;
@@ -1002,28 +1240,399 @@ bool udm_app::delete_event_subscription(
 
 //------------------------------------------------------------------------------
 bool udm_app::replace_ee_subscription_item(
-    const std::string& path, const std::string& value) {
+    const std::string& subscriptionId, const std::string& path,
+    const std::string& value) {
   Logger::udm_ee().debug(
-      "Replace member %s with new value %s", path.c_str(), value.c_str());
-  // TODO:
+      "Replace member %s with new value %s (subscription %s)", path.c_str(),
+      value.c_str(), subscriptionId.c_str());
 
+  uint32_t sub_id = 0;
+  try {
+    sub_id = std::stoul(subscriptionId);
+  } catch (std::exception& e) {
+    return false;
+  }
+
+  std::unique_lock lock(m_mutex_udm_event_subscriptions);
+  if (udm_event_subscriptions.count(sub_id) == 0) return false;
+  std::shared_ptr<CreatedEeSubscription>& ces = udm_event_subscriptions[sub_id];
+  if (!ces) return false;
+
+  EeSubscription es = ces->getEeSubscription();
+  if (path.compare("callbackReference") == 0) {
+    es.setCallbackReference(value);
+  } else if (path.compare("notifyCorrelationId") == 0) {
+    es.setNotifyCorrelationId(value);
+  } else if (path.compare("secondCallbackRef") == 0) {
+    es.setSecondCallbackRef(value);
+  } else {
+    // Unsupported path for MVP
+    return false;
+  }
+  ces->setEeSubscription(es);
   return true;
 }
 
 //------------------------------------------------------------------------------
 bool udm_app::add_ee_subscription_item(
-    const std::string& path, const std::string& value) {
+    const std::string& subscriptionId, const std::string& path,
+    const std::string& value) {
   Logger::udm_ee().debug(
-      "Add member %s with value %s", path.c_str(), value.c_str());
-  // TODO:
+      "Add member %s with value %s (subscription %s)", path.c_str(),
+      value.c_str(), subscriptionId.c_str());
+
+  uint32_t sub_id = 0;
+  try {
+    sub_id = std::stoul(subscriptionId);
+  } catch (std::exception& e) {
+    return false;
+  }
+
+  std::unique_lock lock(m_mutex_udm_event_subscriptions);
+  if (udm_event_subscriptions.count(sub_id) == 0) return false;
+  std::shared_ptr<CreatedEeSubscription>& ces = udm_event_subscriptions[sub_id];
+  if (!ces) return false;
+
+  EeSubscription es = ces->getEeSubscription();
+  if (path.compare("includeGpsiList") == 0) {
+    std::vector<std::string> list = es.getIncludeGpsiList();
+    list.push_back(value);
+    es.setIncludeGpsiList(list);
+  } else if (path.compare("excludeGpsiList") == 0) {
+    std::vector<std::string> list = es.getExcludeGpsiList();
+    list.push_back(value);
+    es.setExcludeGpsiList(list);
+  } else {
+    return false;
+  }
+  ces->setEeSubscription(es);
   return true;
 }
 
 //------------------------------------------------------------------------------
-bool udm_app::remove_ee_subscription_item(const std::string& path) {
-  Logger::udm_ee().debug("Remove member %s", path.c_str());
-  // TODO:
+bool udm_app::remove_ee_subscription_item(
+    const std::string& subscriptionId, const std::string& path) {
+  Logger::udm_ee().debug(
+      "Remove member %s (subscription %s)", path.c_str(),
+      subscriptionId.c_str());
+
+  uint32_t sub_id = 0;
+  try {
+    sub_id = std::stoul(subscriptionId);
+  } catch (std::exception& e) {
+    return false;
+  }
+
+  std::unique_lock lock(m_mutex_udm_event_subscriptions);
+  if (udm_event_subscriptions.count(sub_id) == 0) return false;
+  std::shared_ptr<CreatedEeSubscription>& ces = udm_event_subscriptions[sub_id];
+  if (!ces) return false;
+
+  EeSubscription es = ces->getEeSubscription();
+  if (path.compare("includeGpsiList") == 0) {
+    es.unsetIncludeGpsiList();
+  } else if (path.compare("excludeGpsiList") == 0) {
+    es.unsetExcludeGpsiList();
+  } else {
+    return false;
+  }
+  ces->setEeSubscription(es);
   return true;
+}
+
+//------------------------------------------------------------------------------
+void udm_app::notify_event_occurrence(
+    const std::string& callback_uri,
+    const std::vector<oai::_3gpp::model::MonitoringReport>& reports) {
+  if (callback_uri.empty() || reports.empty()) return;
+
+  // Event Occurrence notification body is an array(MonitoringReport).
+  nlohmann::json body = nlohmann::json::array();
+  for (const auto& r : reports) {
+    nlohmann::json j = {};
+    to_json(j, r);
+    body.push_back(j);
+  }
+
+  Logger::udm_ee().info(
+      "Notify event occurrence (%zu report(s)) to %s", reports.size(),
+      callback_uri.c_str());
+
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(callback_uri, body.dump());
+
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::POST, http_request);
+
+  if (http_response.status_code !=
+      oai::common::sbi::http_status_code::NO_CONTENT) {
+    Logger::udm_ee().warn(
+        "Event notification to %s returned HTTP %d", callback_uri.c_str(),
+        http_response.status_code);
+  }
+}
+
+//------------------------------------------------------------------------------
+ee_event_detector_t udm_app::classify_event_detector(
+    EventType_anyOf::eEventType_anyOf ev) const {
+  using E = EventType_anyOf::eEventType_anyOf;
+  switch (ev) {
+    case E::UE_REACHABILITY_FOR_SMS:
+    case E::CHANGE_OF_SUPI_PEI_ASSOCIATION:
+    case E::ROAMING_STATUS:
+    case E::CN_TYPE_CHANGE:
+      return ee_event_detector_t::UDM_LOCAL;
+    case E::AVAILABILITY_AFTER_DDN_FAILURE:
+    case E::DL_DATA_DELIVERY_STATUS:
+    case E::PDN_CONNECTIVITY_STATUS:
+    case E::PDU_SES_REL:
+    case E::PDU_SES_EST:
+      return ee_event_detector_t::SMF_RELAY;  // deferred (accept + store)
+    case E::UE_MEMORY_AVAILABLE_FOR_SMS:
+      return ee_event_detector_t::SMS_GMSC;  // out of scope (accept + store)
+    case E::INVALID_VALUE_OPENAPI_GENERATED:
+      return ee_event_detector_t::UNKNOWN;
+    default:
+      // LOSS_OF_CONNECTIVITY, UE_REACHABILITY_FOR_DATA, LOCATION_REPORTING,
+      // COMMUNICATION_FAILURE, UE_CONNECTION_MANAGEMENT_STATE,
+      // ACCESS_TYPE_REPORT, REGISTRATION_STATE_REPORT,
+      // CONNECTIVITY_STATE_REPORT, TYPE_ALLOCATION_CODE_REPORT,
+      // FREQUENT_MOBILITY_REGISTRATION_REPORT
+      return ee_event_detector_t::AMF_RELAY;
+  }
+}
+
+//------------------------------------------------------------------------------
+std::string udm_app::namf_event_type_for(
+    EventType_anyOf::eEventType_anyOf ev) const {
+  using E = EventType_anyOf::eEventType_anyOf;
+  switch (ev) {
+    case E::LOSS_OF_CONNECTIVITY:
+      return "LOSS_OF_CONNECTIVITY";
+    case E::UE_REACHABILITY_FOR_DATA:
+      return "REACHABILITY_REPORT";
+    case E::LOCATION_REPORTING:
+      return "LOCATION_REPORT";
+    case E::COMMUNICATION_FAILURE:
+      return "COMMUNICATION_FAILURE_REPORT";
+    case E::UE_CONNECTION_MANAGEMENT_STATE:
+    case E::CONNECTIVITY_STATE_REPORT:
+      return "CONNECTIVITY_STATE_REPORT";
+    case E::ACCESS_TYPE_REPORT:
+      return "ACCESS_TYPE_REPORT";
+    case E::REGISTRATION_STATE_REPORT:
+      return "REGISTRATION_STATE_REPORT";
+    case E::TYPE_ALLOCATION_CODE_REPORT:
+      return "TYPE_ALLOCATION_CODE_REPORT";
+    case E::FREQUENT_MOBILITY_REGISTRATION_REPORT:
+      return "FREQUENT_MOBILITY_REGISTRATION_REPORT";
+    default:
+      return std::string{};
+  }
+}
+
+//------------------------------------------------------------------------------
+std::string udm_app::get_serving_amf_instance_id(const std::string& ue_id) {
+  std::string remote_uri =
+      udm_sbi_helper::get_udr_amf_3gpp_registration_uri(ue_id);
+  oai::http::request req = http_client_inst->prepare_json_request(remote_uri);
+  auto resp =
+      http_client_inst->send_http_request(oai::common::sbi::method_e::GET, req);
+  if (resp.status_code != oai::common::sbi::http_status_code::OK) {
+    Logger::udm_ee().warn(
+        "Could not read AMF registration for %s from UDR (HTTP %d)",
+        ue_id.c_str(), resp.status_code);
+    return std::string{};
+  }
+  try {
+    nlohmann::json reg = nlohmann::json::parse(resp.body);
+    return reg.value("amfInstanceId", std::string{});
+  } catch (nlohmann::json::exception&) {
+    return std::string{};
+  }
+}
+
+//------------------------------------------------------------------------------
+void udm_app::relay_subscribe_to_amf(
+    const evsub_id_t& sub_id, const std::string& ue_id) {
+  // Collect the AMF-relay event types + consumer callback info for this sub.
+  std::string callback;
+  std::string notify_correlation_id;
+  std::vector<std::string> amf_event_types;
+  {
+    std::shared_lock lock(m_mutex_udm_event_subscriptions);
+    auto it = udm_event_subscriptions.find(sub_id);
+    if (it == udm_event_subscriptions.end() || !it->second) return;
+    EeSubscription es     = it->second->getEeSubscription();
+    callback              = es.getCallbackReference();
+    notify_correlation_id = es.getNotifyCorrelationId();
+    for (const auto& kv : es.getMonitoringConfigurations()) {
+      auto ev = kv.second.getEventType().getEnumValue();
+      if (classify_event_detector(ev) == ee_event_detector_t::AMF_RELAY) {
+        std::string t = namf_event_type_for(ev);
+        if (!t.empty()) amf_event_types.push_back(t);
+      }
+    }
+  }
+  if (amf_event_types.empty() || callback.empty()) return;
+
+  // Resolve the serving AMF (instance id from UDR; endpoint from NRF).
+  std::string amf_instance_id = get_serving_amf_instance_id(ue_id);
+  std::string amf_endpoint;
+  if (!udm_nrf_inst ||
+      !udm_nrf_inst->discover_nf("AMF", "namf-evts", amf_endpoint)) {
+    Logger::udm_ee().warn(
+        "AMF relay for sub %u: could not discover serving AMF", sub_id);
+    return;
+  }
+
+  // Build the AmfCreateEventSubscription body as raw JSON (on-the-wire correct;
+  // avoids the typed-model build closure). Inject the consumer callback +
+  // correlation id so the AMF notifies the consumer directly.
+  nlohmann::json sub = {};
+  sub["eventList"]   = nlohmann::json::array();
+  for (const auto& t : amf_event_types) {
+    nlohmann::json e = {};
+    e["type"]        = t;
+    sub["eventList"].push_back(e);
+  }
+  sub["eventNotifyUri"] = callback;
+  if (!notify_correlation_id.empty())
+    sub["notifyCorrelationId"] = notify_correlation_id;
+  sub["nfId"]          = m_udm_instance_id;
+  nlohmann::json body  = {};
+  body["subscription"] = sub;
+
+  std::string amf_subscriptions_uri =
+      amf_endpoint + oai::common::sbi::sbi_helper::AmfEvtsBase + "v1" +
+      oai::common::sbi::sbi_helper::AmfEvtsPathSubscriptions;
+
+  Logger::udm_ee().info(
+      "AMF relay for sub %u -> %s", sub_id, amf_subscriptions_uri.c_str());
+
+  oai::http::request http_request = http_client_inst->prepare_json_request(
+      amf_subscriptions_uri, body.dump());
+  auto resp = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::POST, http_request);
+
+  if (resp.status_code != oai::common::sbi::http_status_code::CREATED) {
+    Logger::udm_ee().warn(
+        "AMF relay subscribe for sub %u failed (HTTP %d)", sub_id,
+        resp.status_code);
+    return;
+  }
+  std::string remote_uri;
+  auto loc = resp.headers.find("location");
+  if (loc != resp.headers.end()) remote_uri = loc->second;
+
+  relay_correlation_t corr     = {};
+  corr.remote_nf_type          = "AMF";
+  corr.remote_subscription_uri = remote_uri;
+  corr.amf_instance_id         = amf_instance_id;
+  {
+    std::unique_lock lock(m_mutex_udm_event_subscriptions);
+    udm_event_relay_correlation[sub_id] = corr;
+  }
+  Logger::udm_ee().info(
+      "AMF relay for sub %u stored (remote %s)", sub_id, remote_uri.c_str());
+}
+
+//------------------------------------------------------------------------------
+void udm_app::relay_unsubscribe(const evsub_id_t& sub_id) {
+  std::string remote_uri;
+  {
+    std::unique_lock lock(m_mutex_udm_event_subscriptions);
+    auto it = udm_event_relay_correlation.find(sub_id);
+    if (it == udm_event_relay_correlation.end()) return;
+    remote_uri = it->second.remote_subscription_uri;
+    udm_event_relay_correlation.erase(it);
+  }
+
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(remote_uri);
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::DELETE, http_request);
+
+  if (http_response.status_code !=
+      oai::common::sbi::http_status_code::NO_CONTENT) {
+    Logger::udm_ee().warn(
+        "AMF relay unsubscribe to %s returned HTTP %d", remote_uri.c_str(),
+        http_response.status_code);
+  }
+}
+
+//------------------------------------------------------------------------------
+void udm_app::send_revocation(
+    const evsub_id_t& sub_id,
+    const oai::_3gpp::model::EeMonitoringRevoked& revoked) {
+  std::string second_callback;
+  {
+    std::shared_lock lock(m_mutex_udm_event_subscriptions);
+    auto it = udm_event_subscriptions.find(sub_id);
+    if (it == udm_event_subscriptions.end() || !it->second) return;
+    second_callback = it->second->getEeSubscription().getSecondCallbackRef();
+  }
+  if (second_callback.empty()) {
+    Logger::udm_ee().warn(
+        "Revocation for sub %u: no secondCallbackRef set", sub_id);
+    return;
+  }
+
+  nlohmann::json body = {};
+  to_json(body, revoked);
+  Logger::udm_ee().info(
+      "Send monitoring revocation for sub %u -> %s", sub_id,
+      second_callback.c_str());
+
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(second_callback, body.dump());
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::POST, http_request);
+
+  if (http_response.status_code !=
+      oai::common::sbi::http_status_code::NO_CONTENT) {
+    Logger::udm_ee().warn(
+        "Revocation to %s returned HTTP %d", second_callback.c_str(),
+        http_response.status_code);
+  }
+}
+
+//------------------------------------------------------------------------------
+void udm_app::send_data_restoration(
+    const oai::_3gpp::model::DataRestorationNotification& notification) {
+  // Fan out to every subscription that registered a dataRestorationCallbackUri.
+  std::vector<std::string> uris;
+  {
+    std::shared_lock lock(m_mutex_udm_event_subscriptions);
+    for (const auto& kv : udm_event_subscriptions) {
+      if (!kv.second) continue;
+      std::string uri =
+          kv.second->getEeSubscription().getDataRestorationCallbackUri();
+      if (!uri.empty()) uris.push_back(uri);
+    }
+  }
+  if (uris.empty()) return;
+
+  nlohmann::json body = {};
+  to_json(body, notification);
+  const std::string payload = body.dump();
+
+  for (const auto& uri : uris) {
+    Logger::udm_ee().info(
+        "Send data restoration notification -> %s", uri.c_str());
+
+    oai::http::request http_request =
+        http_client_inst->prepare_json_request(uri, payload);
+    auto http_response = http_client_inst->send_http_request(
+        oai::common::sbi::method_e::POST, http_request);
+
+    if (http_response.status_code !=
+        oai::common::sbi::http_status_code::NO_CONTENT) {
+      Logger::udm_ee().warn(
+          "Data restoration to %s returned HTTP %d", uri.c_str(),
+          http_response.status_code);
+    }
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -1062,4 +1671,59 @@ void udm_app::set_problem_details(
   p.setCause(udm_protocol_application_error_to_string(cause));
   p.setDetail(detail);
   to_json(problem_details, p);
+}
+
+//------------------------------------------------------------------------------
+void udm_app::get_hplmn_id(
+    const std::string& supi,
+    std::optional<oai::_3gpp::model::PlmnId>& plmn_id) {
+  std::shared_lock lh(m_mutex_hplmn);
+
+  if (hplmn.count(supi) > 0) {
+    plmn_id = std::make_optional<oai::_3gpp::model::PlmnId>(hplmn.at(supi));
+  }
+  lh.unlock();
+  return;
+}
+
+//------------------------------------------------------------------------------
+void udm_app::store_plmn_id(
+    const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id) {
+  std::unique_lock lh(m_mutex_hplmn);
+  hplmn[supi] = plmn_id;
+  lh.unlock();
+  return;
+}
+
+//------------------------------------------------------------------------------
+bool udm_app::validate_snn(
+    const std::string& snn, oai::_3gpp::model::PlmnId& plmn_id) {
+  // example of SNN: 5G:mnc095.mcc208.3gppnetwork.org
+  std::string regex_str = "^5G:mnc[0-9]{3}[.]mcc[0-9]{3}[.]3gppnetwork[.]org$";
+  try {
+    std::regex re(regex_str);
+    if (!std::regex_match(snn, re)) {
+      Logger::udm_app().debug(
+          "SNN (%s) does not follow the regex specification (%s)", snn,
+          regex_str);
+      return false;
+    }
+  } catch (const std::regex_error& e) {
+    Logger::udm_app().warn("regex_error caught %s", e.what());
+    return false;
+  }
+
+  std::vector<std::string> split_str;
+  boost::split(split_str, snn, boost::is_any_of("."));
+  if (split_str.size() != 4) return false;
+  if (split_str[0].size() == 9)
+    plmn_id.setMnc(split_str[0].substr(6, 3));
+  else
+    return false;
+  if (split_str[1].size() == 6)
+    plmn_id.setMcc(split_str[1].substr(3, 3));
+  else
+    return false;
+
+  return true;
 }
