@@ -27,10 +27,10 @@ UECMRegistrationInfoRetrievalApiImpl::UECMRegistrationInfoRetrievalApiImpl(
     : UECMRegistrationInfoRetrievalApi(rtr) {}
 
 // void UECMRegistrationInfoRetrievalApiImpl::get_registrations(const
-// std::string &ueId, const Pistache::Optional<Set<RegistrationDataSetName>>
-// &registrationDatasetNames, const Pistache::Optional<std::string>
-// &supportedFeatures, const Pistache::Optional<Snssai> &singleNssai, const
-// Pistache::Optional<std::string> &dnn, Pistache::Http::ResponseWriter
+// std::string &ueId, const std::optional<Set<RegistrationDataSetName>>
+// &registrationDatasetNames, const std::optional<std::string>
+// &supportedFeatures, const std::optional<Snssai> &singleNssai, const
+// std::optional<std::string> &dnn, Pistache::Http::ResponseWriter
 // &response) {
 //    response.send(Pistache::Http::Code::Ok, "This API has not been implemented
 //    yet!\n");

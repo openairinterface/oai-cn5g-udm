@@ -30,7 +30,7 @@ SMFDeregistrationApiImpl::SMFDeregistrationApiImpl(
 
 void SMFDeregistrationApiImpl::smf_deregistration(
     const std::string& ueId, const int32_t& pduSessionId,
-    const Pistache::Optional<std::string>& smfSetId,
+    const std::optional<std::string>& smfSetId,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,

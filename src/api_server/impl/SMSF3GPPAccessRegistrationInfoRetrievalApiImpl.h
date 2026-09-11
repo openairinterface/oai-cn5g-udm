@@ -26,7 +26,7 @@
 #include <SMSF3GPPAccessRegistrationInfoRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "SmsfRegistration.h"
@@ -49,7 +49,7 @@ class SMSF3GPPAccessRegistrationInfoRetrievalApiImpl
 
   void get3_gpp_smsf_registration(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

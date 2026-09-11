@@ -26,7 +26,7 @@
 #include <UECMRegistrationInfoRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "RegistrationDataSetName.h"
@@ -50,10 +50,10 @@ class UECMRegistrationInfoRetrievalApiImpl
   ~UECMRegistrationInfoRetrievalApiImpl() {}
 
   // void get_registrations(const std::string &ueId, const
-  // Pistache::Optional<Set<RegistrationDataSetName>> &registrationDatasetNames,
-  // const Pistache::Optional<std::string> &supportedFeatures, const
-  // Pistache::Optional<Snssai> &singleNssai, const
-  // Pistache::Optional<std::string> &dnn, Pistache::Http::ResponseWriter
+  // std::optional<Set<RegistrationDataSetName>> &registrationDatasetNames,
+  // const std::optional<std::string> &supportedFeatures, const
+  // std::optional<Snssai> &singleNssai, const
+  // std::optional<std::string> &dnn, Pistache::Http::ResponseWriter
   // &response);
 };
 

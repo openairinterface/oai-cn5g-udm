@@ -67,21 +67,21 @@ void SMFSelectionSubscriptionDataRetrievalApi::get_smf_sel_data_handler(
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (supportedFeaturesQuery.has_value()) {
     std::string value;
-    if (fromStringValue(supportedFeaturesQuery.get(), value)) {
-      supportedFeatures = Pistache::Some(value);
+    if (fromStringValue(supportedFeaturesQuery.value(), value)) {
+      supportedFeatures = std::make_optional(value);
     }
   }
   auto plmnIdQuery = request.query().get("plmn-id");
-  Pistache::Optional<PlmnId> plmnId;
-  if (!plmnIdQuery.isEmpty()) {
+  std::optional<PlmnId> plmnId;
+  if (plmnIdQuery.has_value()) {
     PlmnId value;
-    std::string valueplmnIdQuery = plmnIdQuery.get();
+    std::string valueplmnIdQuery = plmnIdQuery.value();
     std::string valuechange = oai::utils::conv::url_decode(valueplmnIdQuery);
     nlohmann::json::parse(valuechange).get_to(value);
-    plmnId = Pistache::Some(value);
+    plmnId = std::make_optional(value);
   }
   // Getting the header params
   auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");

@@ -26,7 +26,7 @@
 #include <ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "Amf3GppAccessRegistrationModification.h"
@@ -52,7 +52,7 @@ class ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiImpl
       const std::string& ueId,
       const Amf3GppAccessRegistrationModification&
           amf3GppAccessRegistrationModification,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 
  private:

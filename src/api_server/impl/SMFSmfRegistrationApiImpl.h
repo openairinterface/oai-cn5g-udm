@@ -26,7 +26,7 @@
 #include <SMFSmfRegistrationApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "SmfRegistration.h"
@@ -49,9 +49,9 @@ class SMFSmfRegistrationApiImpl : public oai::udm::api::SMFSmfRegistrationApi {
 
   void get_smf_registration(
       const std::string& ueId,
-      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
-      const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<oai::_3gpp::model::Snssai>& singleNssai,
+      const std::optional<std::string>& dnn,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void registration(
       const std::string& ueId, const int32_t& pduSessionId,

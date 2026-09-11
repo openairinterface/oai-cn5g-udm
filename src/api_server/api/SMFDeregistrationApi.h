@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -62,7 +62,7 @@ class SMFDeregistrationApi {
   /// <param name="smfSetId"> (optional, default to &quot;&quot;)</param>
   virtual void smf_deregistration(
       const std::string& ueId, const int32_t& pduSessionId,
-      const Pistache::Optional<std::string>& smfSetId,
+      const std::optional<std::string>& smfSetId,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

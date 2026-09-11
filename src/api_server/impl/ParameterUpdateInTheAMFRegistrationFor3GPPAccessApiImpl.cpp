@@ -34,7 +34,7 @@ void ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiImpl::
         const std::string& ueId,
         const Amf3GppAccessRegistrationModification&
             amf3GppAccessRegistrationModification,
-        const Pistache::Optional<std::string>& supportedFeatures,
+        const std::optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,

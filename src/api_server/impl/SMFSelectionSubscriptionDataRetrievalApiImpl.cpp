@@ -37,19 +37,19 @@ SMFSelectionSubscriptionDataRetrievalApiImpl::
 
 void SMFSelectionSubscriptionDataRetrievalApiImpl::get_smf_sel_data(
     const std::string& supi,
-    const Pistache::Optional<std::string>& supportedFeatures,
-    const Pistache::Optional<PlmnId>& plmnId,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    const std::optional<std::string>& supportedFeatures,
+    const std::optional<PlmnId>& plmnId,
+    const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
   std::string supported_features_str = {};
-  if (!supportedFeatures.isEmpty()) {
-    supported_features_str = supportedFeatures.get();
+  if (supportedFeatures.has_value()) {
+    supported_features_str = supportedFeatures.value();
   }
 
   PlmnId plmn_id = {};
-  if (!plmnId.isEmpty()) {
-    plmn_id = plmnId.get();
+  if (plmnId.has_value()) {
+    plmn_id = plmnId.value();
   }
 
   nlohmann::json response_data = {};

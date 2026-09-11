@@ -29,7 +29,7 @@ SMSFDeregistrationForNon3GPPAccessApiImpl::
     : SMSFDeregistrationForNon3GPPAccessApi(rtr) {}
 
 void SMSFDeregistrationForNon3GPPAccessApiImpl::non3_gpp_smsf_deregistration(
-    const std::string& ueId, const Pistache::Optional<std::string>& smsfSetId,
+    const std::string& ueId, const std::optional<std::string>& smsfSetId,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,
