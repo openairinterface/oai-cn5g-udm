@@ -28,7 +28,7 @@ namespace oai::udm::app {
 class udm_app {
  public:
   explicit udm_app(const std::string& config_file, udm_event& ev);
-  udm_app(udm_app const&) = delete;
+  udm_app(udm_app const&)        = delete;
   void operator=(udm_app const&) = delete;
   virtual ~udm_app();
 
