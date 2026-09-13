@@ -127,12 +127,12 @@ void udm_profile::add_snssai(const snssai_t& s) {
 }
 
 //------------------------------------------------------------------------------
-void udm_profile::set_fqdn(const std::string& fqdN) {
+void udm_profile::set_nf_fqdn(const std::string& fqdN) {
   fqdn = fqdN;
 }
 
 //------------------------------------------------------------------------------
-std::string udm_profile::get_fqdn() const {
+std::string udm_profile::get_nf_fqdn() const {
   return fqdn;
 }
 
