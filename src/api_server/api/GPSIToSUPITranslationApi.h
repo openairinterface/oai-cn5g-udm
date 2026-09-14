@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -71,9 +71,9 @@ class GPSIToSUPITranslationApi {
   /// &quot;&quot;)</param>
   virtual void get_supi(
       const std::string& gpsi,
-      const Pistache::Optional<std::string>& supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<std::string>& supportedFeatures,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

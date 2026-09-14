@@ -26,7 +26,7 @@
 #include <SMFDeregistrationApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "udm_app.hpp"
@@ -46,7 +46,7 @@ class SMFDeregistrationApiImpl : public oai::udm::api::SMFDeregistrationApi {
 
   void smf_deregistration(
       const std::string& ueId, const int32_t& pduSessionId,
-      const Pistache::Optional<std::string>& smfSetId,
+      const std::optional<std::string>& smfSetId,
       Pistache::Http::ResponseWriter& response);
 
  private:

@@ -26,7 +26,7 @@
 #include <GPSIToSUPITranslationApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "IdTranslationResult.h"
@@ -49,9 +49,9 @@ class GPSIToSUPITranslationApiImpl
 
   void get_supi(
       const std::string& gpsi,
-      const Pistache::Optional<std::string>& supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<std::string>& supportedFeatures,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
 
  private:

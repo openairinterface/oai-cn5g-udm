@@ -16,8 +16,8 @@ namespace oai::udm::app {
 class task_manager;
 class udm_event {
  public:
-  udm_event(){};
-  udm_event(udm_event const&) = delete;
+  udm_event() {};
+  udm_event(udm_event const&)      = delete;
   void operator=(udm_event const&) = delete;
 
   static udm_event& get_instance() {

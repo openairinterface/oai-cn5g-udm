@@ -26,7 +26,7 @@
 #include <UEContextInSMFDataRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "UeContextInSmfData.h"
@@ -49,7 +49,7 @@ class UEContextInSMFDataRetrievalApiImpl
 
   void get_ue_ctx_in_smf_data(
       const std::string& supi,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 
  private:

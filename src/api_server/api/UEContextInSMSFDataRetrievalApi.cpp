@@ -65,11 +65,11 @@ void UEContextInSMSFDataRetrievalApi::get_ue_ctx_in_smsf_data_handler(
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (supportedFeaturesQuery.has_value()) {
     std::string value;
-    if (fromStringValue(supportedFeaturesQuery.get(), value)) {
-      supportedFeatures = Pistache::Some(value);
+    if (fromStringValue(supportedFeaturesQuery.value(), value)) {
+      supportedFeatures = std::make_optional(value);
     }
   }
 

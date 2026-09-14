@@ -29,7 +29,7 @@ UEContextInSMFDataRetrievalApiImpl::UEContextInSMFDataRetrievalApiImpl(
 
 void UEContextInSMFDataRetrievalApiImpl::get_ue_ctx_in_smf_data(
     const std::string& supi,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,

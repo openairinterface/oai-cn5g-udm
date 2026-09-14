@@ -26,7 +26,7 @@
 #include <AMFRegistrationFor3GPPAccessApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "Amf3GppAccessRegistration.h"
