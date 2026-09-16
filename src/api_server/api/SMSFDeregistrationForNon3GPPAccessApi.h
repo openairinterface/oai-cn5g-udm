@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -61,7 +61,7 @@ class SMSFDeregistrationForNon3GPPAccessApi {
   /// <param name="ueId">Identifier of the UE</param>
   /// <param name="smsfSetId"> (optional, default to &quot;&quot;)</param>
   virtual void non3_gpp_smsf_deregistration(
-      const std::string& ueId, const Pistache::Optional<std::string>& smsfSetId,
+      const std::string& ueId, const std::optional<std::string>& smsfSetId,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

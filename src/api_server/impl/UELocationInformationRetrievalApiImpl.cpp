@@ -32,7 +32,7 @@ UELocationInformationRetrievalApiImpl::UELocationInformationRetrievalApiImpl(
 
 void UELocationInformationRetrievalApiImpl::get_location_info(
     const std::string& ueId,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,

@@ -29,10 +29,10 @@ RetrievalOfSharedDataApiImpl::RetrievalOfSharedDataApiImpl(
     : RetrievalOfSharedDataApi(rtr) {}
 
 void RetrievalOfSharedDataApiImpl::get_shared_data(
-    const Pistache::Optional<std::vector<std::string>>& sharedDataIds,
-    const Pistache::Optional<std::string>& supportedFeatures,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    const std::optional<std::vector<std::string>>& sharedDataIds,
+    const std::optional<std::string>& supportedFeatures,
+    const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,

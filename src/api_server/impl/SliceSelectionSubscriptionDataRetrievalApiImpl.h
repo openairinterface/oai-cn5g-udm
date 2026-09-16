@@ -26,7 +26,7 @@
 #include <SliceSelectionSubscriptionDataRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "Nssai.h"
@@ -49,10 +49,10 @@ class SliceSelectionSubscriptionDataRetrievalApiImpl
 
   void get_nssai(
       const std::string& supi,
-      const Pistache::Optional<std::string>& supportedFeatures,
-      const Pistache::Optional<oai::_3gpp::model::PlmnId>& plmnId,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<std::string>& supportedFeatures,
+      const std::optional<oai::_3gpp::model::PlmnId>& plmnId,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
 
  private:

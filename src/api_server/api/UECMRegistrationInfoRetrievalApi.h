@@ -24,13 +24,13 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "ProblemDetails.h"
 #include "RegistrationDataSetName.h"
 #include "RegistrationDataSets.h"
-//#include "Set.h"
+// #include "Set.h"
 #include <string>
 
 #include "Snssai.h"
@@ -70,10 +70,10 @@ class UECMRegistrationInfoRetrievalApi {
   /// Snssai())</param> <param name="dnn"> (optional, default to
   /// &quot;&quot;)</param>
   // virtual void get_registrations(const std::string &ueId, const
-  // Pistache::Optional<Set<RegistrationDataSetName>> &registrationDatasetNames,
-  // const Pistache::Optional<std::string> &supportedFeatures, const
-  // Pistache::Optional<Snssai> &singleNssai, const
-  // Pistache::Optional<std::string> &dnn, Pistache::Http::ResponseWriter
+  // std::optional<Set<RegistrationDataSetName>> &registrationDatasetNames,
+  // const std::optional<std::string> &supportedFeatures, const
+  // std::optional<Snssai> &singleNssai, const
+  // std::optional<std::string> &dnn, Pistache::Http::ResponseWriter
   // &response) = 0;
 };
 

@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -76,17 +76,17 @@ class SessionManagementSubscriptionDataRetrievalApi {
   /// conditional requests, as described in RFC 7232, 3.3 (optional, default to
   /// &quot;&quot;)</param>
   // virtual void get_sm_data(const std::string &supi, const
-  // Pistache::Optional<std::string> &supportedFeatures, const
-  // Pistache::Optional<Snssai> &singleNssai, const
-  // Pistache::Optional<std::string> &dnn, const Pistache::Optional<PlmnId>
-  // &plmnId, const Pistache::Optional<Pistache::Http::Header::Raw>
-  // &ifNoneMatch, const Pistache::Optional<Pistache::Http::Header::Raw>
+  // std::optional<std::string> &supportedFeatures, const
+  // std::optional<Snssai> &singleNssai, const
+  // std::optional<std::string> &dnn, const std::optional<PlmnId>
+  // &plmnId, const std::optional<Pistache::Http::Header::Raw>
+  // &ifNoneMatch, const std::optional<Pistache::Http::Header::Raw>
   // &ifModifiedSince, Pistache::Http::ResponseWriter &response) = 0;
   virtual void get_sm_data(
       const std::string& supi,
-      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
-      const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<oai::_3gpp::model::PlmnId>& plmnId,
+      const std::optional<oai::_3gpp::model::Snssai>& singleNssai,
+      const std::optional<std::string>& dnn,
+      const std::optional<oai::_3gpp::model::PlmnId>& plmnId,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

@@ -29,11 +29,11 @@ GroupIdentifiersApiImpl::GroupIdentifiersApiImpl(
     : GroupIdentifiersApi(rtr) {}
 
 void GroupIdentifiersApiImpl::get_group_identifiers(
-    const Pistache::Optional<std::string>& extGroupId,
-    const Pistache::Optional<std::string>& intGroupId,
-    const Pistache::Optional<std::string>& supportedFeatures,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    const std::optional<std::string>& extGroupId,
+    const std::optional<std::string>& intGroupId,
+    const std::optional<std::string>& supportedFeatures,
+    const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,

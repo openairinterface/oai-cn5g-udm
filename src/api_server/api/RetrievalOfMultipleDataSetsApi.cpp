@@ -64,28 +64,28 @@ void RetrievalOfMultipleDataSetsApi::get_data_sets_handler(
 
   // Getting the query params
   auto datasetNamesQuery = request.query().get("dataset-names");
-  Pistache::Optional<std::vector<std::string>> datasetNames;
-  if (!datasetNamesQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> datasetNames;
+  if (datasetNamesQuery.has_value()) {
     std::vector<std::string> value;
-    if (fromStringValue(datasetNamesQuery.get(), value)) {
-      datasetNames = Pistache::Some(value);
+    if (fromStringValue(datasetNamesQuery.value(), value)) {
+      datasetNames = std::make_optional(value);
     }
   }
   auto plmnIdQuery = request.query().get("plmn-id");
-  Pistache::Optional<PlmnId> plmnId;
-  /*    if(!plmnIdQuery.isEmpty()){
+  std::optional<PlmnId> plmnId;
+  /*    if(!plmnIdQuery.has_value()){
           PlmnId value;
-          if(fromStringValue(plmnIdQuery.get(), value)){
-              plmnId = Pistache::Some(value);
+          if(fromStringValue(plmnIdQuery.value(), value)){
+              plmnId = std::make_optional(value);
           }
       }
   */
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (supportedFeaturesQuery.has_value()) {
     std::string value;
-    if (fromStringValue(supportedFeaturesQuery.get(), value)) {
-      supportedFeatures = Pistache::Some(value);
+    if (fromStringValue(supportedFeaturesQuery.value(), value)) {
+      supportedFeatures = std::make_optional(value);
     }
   }
 

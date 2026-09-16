@@ -26,7 +26,7 @@
 #include <AMF3GppAccessRegistrationInfoRetrievalApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "Amf3GppAccessRegistration.h"
@@ -47,7 +47,7 @@ class AMF3GppAccessRegistrationInfoRetrievalApiImpl
 
   void get3_gpp_registration(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 
  private:

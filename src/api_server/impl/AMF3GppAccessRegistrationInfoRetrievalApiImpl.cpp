@@ -30,7 +30,7 @@ AMF3GppAccessRegistrationInfoRetrievalApiImpl::
 
 void AMF3GppAccessRegistrationInfoRetrievalApiImpl::get3_gpp_registration(
     const std::string& ueId,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,

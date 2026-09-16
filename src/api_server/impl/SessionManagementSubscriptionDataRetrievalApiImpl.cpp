@@ -39,23 +39,22 @@ SessionManagementSubscriptionDataRetrievalApiImpl::
     : SessionManagementSubscriptionDataRetrievalApi(rtr) {}
 
 void SessionManagementSubscriptionDataRetrievalApiImpl::get_sm_data(
-    const std::string& supi, const Pistache::Optional<Snssai>& singleNssai,
-    const Pistache::Optional<std::string>& dnn,
-    const Pistache::Optional<PlmnId>& plmnId,
+    const std::string& supi, const std::optional<Snssai>& singleNssai,
+    const std::optional<std::string>& dnn, const std::optional<PlmnId>& plmnId,
     Pistache::Http::ResponseWriter& response) {
   Snssai snssai = {};
-  if (!singleNssai.isEmpty()) {
-    snssai = singleNssai.get();
+  if (singleNssai.has_value()) {
+    snssai = singleNssai.value();
   }
 
   std::string dnn_str = {};
-  if (!dnn.isEmpty()) {
-    dnn_str = dnn.get();
+  if (dnn.has_value()) {
+    dnn_str = dnn.value();
   }
 
   PlmnId plmn_id = {};
-  if (!plmnId.isEmpty()) {
-    plmn_id = plmnId.get();
+  if (plmnId.has_value()) {
+    plmn_id = plmnId.value();
   }
 
   nlohmann::json response_data = {};

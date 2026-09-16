@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -72,11 +72,11 @@ class GroupIdentifiersApi {
   /// conditional requests, as described in RFC 7232, 3.3 (optional, default to
   /// &quot;&quot;)</param>
   virtual void get_group_identifiers(
-      const Pistache::Optional<std::string>& extGroupId,
-      const Pistache::Optional<std::string>& intGroupId,
-      const Pistache::Optional<std::string>& supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<std::string>& extGroupId,
+      const std::optional<std::string>& intGroupId,
+      const std::optional<std::string>& supportedFeatures,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

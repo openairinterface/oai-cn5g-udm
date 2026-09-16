@@ -31,10 +31,10 @@ SMSManagementSubscriptionDataRetrievalApiImpl::
 
 void SMSManagementSubscriptionDataRetrievalApiImpl::get_sms_mngt_data(
     const std::string& supi,
-    const Pistache::Optional<std::string>& supportedFeatures,
-    const Pistache::Optional<PlmnId>& plmnId,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    const std::optional<std::string>& supportedFeatures,
+    const std::optional<PlmnId>& plmnId,
+    const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok,
