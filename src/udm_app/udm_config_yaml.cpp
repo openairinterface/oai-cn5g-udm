@@ -265,6 +265,9 @@ void udm_config_yaml::to_udm_config(oai::udm::config::udm_config& cfg) {
         get_nf(oai::config::UDR_CONFIG_NAME)->get_sbi().get_api_version();
     cfg.udr_addr.uri_root = get_nf(oai::config::UDR_CONFIG_NAME)->get_url();
   }
+  if (get_nf(oai::config::UDM_CONFIG_NAME)) {
+    cfg.udm_name = get_nf(oai::config::UDM_CONFIG_NAME)->get_host();
+  }
 
   for (const auto& profile : udm_local->get_subscriber_profile_list()) {
     subscriber_profile_t sp;
