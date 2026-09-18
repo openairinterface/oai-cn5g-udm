@@ -226,8 +226,9 @@ void udm_http2_server::start() {
           try {
             std::vector<std::string> split_q;
             boost::split(split_q, request.uri().path, boost::is_any_of("/"));
-            // .../{ueIdentity}/ee-subscriptions               (collection)
-            // .../{ueIdentity}/ee-subscriptions/{subscriptionId} (document)
+            // Expected paths:
+            //  .../{ueIdentity}/ee-subscriptions
+            //  .../{ueIdentity}/ee-subscriptions/{subscriptionId}
             if (split_q.size() >= 2 && split_q[split_q.size() - 1].compare(
                                            NUDM_EE_SUBSCRIPTIONS) == 0) {
               // Subscribe
@@ -276,7 +277,7 @@ void udm_http2_server::start() {
           try {
             std::vector<std::string> split_q;
             boost::split(split_q, request.uri().path, boost::is_any_of("/"));
-            // .../{ueId}/registrations/amf-3gpp-access
+            // Expected path: .../{ueId}/registrations/amf-3gpp-access
             if (split_q.size() >= 3 && split_q[split_q.size() - 1].compare(
                                            NUDM_UECM_XGPP_ACCESS) == 0) {
               if (request.method().compare("PUT") == 0 && len > 0) {

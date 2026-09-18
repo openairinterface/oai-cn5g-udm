@@ -29,21 +29,23 @@
 
 namespace oai::udm::app {
 
-// Which NF detects a given Nudm_EE EventType.
+// Which NF is able to detect a given Nudm_EE event type: either the UDM
+// itself, or a remote NF the subscription has to be relayed to.
 enum class ee_event_detector_t {
   UDM_LOCAL,
   AMF_RELAY,
-  SMF_RELAY,  // deferred in MVP (accept + store, no relay)
-  SMS_GMSC,   // out of scope (accept + store, no relay)
+  SMF_RELAY,  // not relayed yet, the subscription is only accepted and stored
+  SMS_GMSC,   // not supported, the subscription is only accepted and stored
   UNKNOWN
 };
 
-// Correlation between a local Nudm_EE subscription and the subscription it
-// created on a remote AMF (for unsubscribe / modify / AMF-reselection).
+// Links a local Nudm_EE subscription to the subscription that the UDM created
+// on a remote AMF for it, so that an unsubscribe, an update or a change of
+// serving AMF can be applied to the remote subscription as well.
 typedef struct relay_correlation_s {
   std::string remote_nf_type;           // "AMF"
   std::string remote_subscription_uri;  // Location returned by the remote NF
-  std::string amf_instance_id;          // serving AMF at subscribe time
+  std::string amf_instance_id;          // serving AMF at subscription time
 } relay_correlation_t;
 
 class udm_app {
@@ -295,10 +297,11 @@ class udm_app {
    * @return void
    */
   /*
-   * Notify an Event Occurrence to a consumer by POSTing an array of
-   * MonitoringReport to its callback URI (non-blocking, on the SBI worker pool)
+   * Notify a consumer that an event occurred, by posting the corresponding
+   * Monitoring Reports to its callback URI
    * @param [const std::string&] callback_uri: consumer's callbackReference
-   * @param [const std::vector<oai::_3gpp::model::MonitoringReport>&] reports
+   * @param [const std::vector<oai::_3gpp::model::MonitoringReport>&] reports:
+   * reports to be sent
    * @return void
    */
   void notify_event_occurrence(
@@ -306,13 +309,15 @@ class udm_app {
       const std::vector<oai::_3gpp::model::MonitoringReport>& reports);
 
   /*
-   * Send a Monitoring Revocation (EeMonitoringRevoked) to the secondary
-   * callback of an EE subscription (e.g. on AF/MTC authorization revocation or
-   * group exclusion). Non-blocking. Trigger wiring is out of MVP scope; this is
-   * the sender (callable from a trigger/test).
-   * @param [const evsub_id_t&] sub_id: subscription whose secondCallbackRef to
-   * notify
-   * @param [const oai::_3gpp::model::EeMonitoringRevoked&] revoked: body
+   * Send a Monitoring Revocation (EeMonitoringRevoked) to tell the subscriber
+   * that the monitoring is revoked, e.g. because the AF is no longer authorized
+   * or the UE left the group. The notification is sent to the secondary
+   * callback of the subscription. Note that the events that should trigger a
+   * revocation are not detected yet, this is only the sender.
+   * @param [const evsub_id_t&] sub_id: subscription whose secondCallbackRef
+   * should be notified
+   * @param [const oai::_3gpp::model::EeMonitoringRevoked&] revoked: revocation
+   * info to be sent
    * @return void
    */
   void send_revocation(
@@ -320,10 +325,13 @@ class udm_app {
       const oai::_3gpp::model::EeMonitoringRevoked& revoked);
 
   /*
-   * Send a Data Restoration notification to every EE subscription that
-   * registered a dataRestorationCallbackUri (e.g. on UDR data loss). Follows
-   * 307/308 redirects. The real inbound UDR-loss trigger is out of MVP scope.
-   * @param [const oai::_3gpp::model::DataRestorationNotification&] notification
+   * Send a Data Restoration notification to tell the subscribers that
+   * subscription data has been restored, e.g. after a data loss in the UDR. The
+   * notification is sent to every EE subscription that provided a
+   * dataRestorationCallbackUri. Note that the UDR data loss itself is not
+   * detected yet, this is only the sender.
+   * @param [const oai::_3gpp::model::DataRestorationNotification&]
+   * notification: restoration info to be sent
    * @return void
    */
   void send_data_restoration(
@@ -390,34 +398,46 @@ class udm_app {
       const std::string& supi, const oai::_3gpp::model::PlmnId& plmn_id);
 
   /*
-   * Classify which NF detects a given Nudm_EE event type.
+   * Find out which NF is able to detect a given Nudm_EE event type
+   * @param [EventType_anyOf::eEventType_anyOf] ev: Nudm_EE event type
+   * @return the NF in charge of the detection
    */
   ee_event_detector_t classify_event_detector(
       oai::_3gpp::model::EventType_anyOf::eEventType_anyOf ev) const;
 
   /*
-   * Map a Nudm_EE (AMF-relay) event type to its Namf_EventExposure event-type
-   * string; returns empty if not AMF-relay.
+   * Get the Namf_EventExposure event type matching a Nudm_EE event type
+   * @param [EventType_anyOf::eEventType_anyOf] ev: Nudm_EE event type
+   * @return the Namf_EventExposure event type, empty if the event is not
+   * detected by the AMF
    */
   std::string namf_event_type_for(
       oai::_3gpp::model::EventType_anyOf::eEventType_anyOf ev) const;
 
   /*
-   * GET the serving AMF instance id for a UE from UDR (net-new read path; UDM
-   * only PUTs the registration today). Returns empty on failure.
+   * Get the instance ID of the AMF currently serving a UE, by reading the AMF
+   * registration back from the UDR
+   * @param [const std::string&] ue_id: UE's identity (e.g., SUPI)
+   * @return the AMF instance ID, empty if it could not be retrieved
    */
   std::string get_serving_amf_instance_id(const std::string& ue_id);
 
   /*
-   * Relay an EE subscription to the serving AMF (Namf_EventExposure), injecting
-   * the consumer's callback + correlation id so the AMF notifies the consumer
-   * directly. Runs on the SBI worker pool. Stores the correlation on success.
+   * Relay an EE subscription to the serving AMF (Namf_EventExposure). The
+   * consumer's callback and correlation ID are forwarded to the AMF, so that
+   * the AMF notifies the consumer directly. On success, the created remote
+   * subscription is stored to be able to update or delete it later on.
+   * @param [const evsub_id_t&] sub_id: local subscription's ID
+   * @param [const std::string&] ue_id: UE's identity (e.g., SUPI)
+   * @return void
    */
   void relay_subscribe_to_amf(
       const evsub_id_t& sub_id, const std::string& ue_id);
 
   /*
-   * Relay an unsubscribe (DELETE) to the remote AMF subscription, if any.
+   * Delete the subscription created on the remote AMF, if there is one
+   * @param [const evsub_id_t&] sub_id: local subscription's ID
+   * @return void
    */
   void relay_unsubscribe(const evsub_id_t& sub_id);
 
@@ -427,7 +447,8 @@ class udm_app {
       evsub_id_t, std::shared_ptr<oai::_3gpp::model::CreatedEeSubscription>>
       udm_event_subscriptions;
   std::map<std::string, std::vector<evsub_id_t>> udm_event_subscriptions_per_ue;
-  // evsub_id -> remote AMF subscription correlation (guarded by the same mutex)
+  // Subscription ID -> subscription created on the remote AMF for it (guarded
+  // by the mutex above)
   std::map<evsub_id_t, relay_correlation_t> udm_event_relay_correlation;
   mutable std::shared_mutex m_mutex_udm_event_subscriptions;
   std::map<std::string, oai::_3gpp::model::PlmnId> hplmn;
@@ -438,8 +459,8 @@ class udm_app {
   bs2::connection loss_of_connectivity_connection;
   bs2::connection ue_reachability_for_data_connection;
 
-  // UDM NF instance id used as nfId in relayed subscriptions (ideally the same
-  // UUID registered with NRF; generated locally for now).
+  // UDM instance ID, used as nfId when relaying a subscription to another NF.
+  // TODO: reuse the UUID registered to the NRF instead of generating a new one
   std::string m_udm_instance_id;
 };
 }  // namespace oai::udm::app

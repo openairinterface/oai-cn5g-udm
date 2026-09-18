@@ -53,13 +53,13 @@ void udm_nrf::generate_udm_profile() {
   // udm_nf_profile.set_fqdn(udm_cfg.fqdn);
   udm_nf_profile.add_nf_ipv4_addresses(udm_cfg.sbi.addr4);  // N4's Addr
 
-  // Advertise the Nudm_EE (Event Exposure) service so consumers can discover it
-  // via NRF (the profile carried no nfServices before).
+  // Add the Event Exposure service to the profile, so that consumers can
+  // discover it via the NRF
   nf_service_t ee_service        = {};
   ee_service.service_instance_id = "nudm-ee-1";
   ee_service.service_name        = "nudm-ee";
   ee_service.api_version_in_uri  = udm_cfg.sbi.api_version.value_or("v1");
-  ee_service.api_full_version    = "1.2.3";  // TS 29.503 Rel-17 Nudm_EE
+  ee_service.api_full_version    = "1.2.3";  // Nudm_EE, TS 29.503 Rel-17
   ee_service.scheme              = "http";
   ee_service.nf_service_status   = "REGISTERED";
   ee_service.ipv4_address        = inet_ntoa(udm_cfg.sbi.addr4);
@@ -277,7 +277,7 @@ bool udm_nrf::discover_nf(
     }
   }
 
-  // Build the NRF SearchNFInstances URI and add discovery query parameters.
+  // Ask the NRF for the NF instances of the requested type
   std::string uri = {};
   oai::common::sbi::sbi_helper::get_nrf_disc_search_nf_instances_uri(
       udm_cfg.nrf_addr, uri);
@@ -301,8 +301,8 @@ bool udm_nrf::discover_nf(
   }
 
   for (const auto& nf_instance : search_result["nfInstances"]) {
-    // Prefer the matching service's ipEndPoints; fall back to instance-level
-    // ipv4Addresses if the desired service is not present.
+    // Use the endpoints of the requested service if the NF advertises it,
+    // otherwise fall back to the address of the NF instance itself
     if (nf_instance.contains("nfServices") &&
         nf_instance["nfServices"].is_array()) {
       for (const auto& svc : nf_instance["nfServices"]) {
@@ -322,7 +322,7 @@ bool udm_nrf::discover_nf(
         }
       }
     }
-    // Fallback: instance-level ipv4Addresses
+    // The requested service was not found, use the NF's own address
     if (nf_instance.contains("ipv4Addresses") &&
         nf_instance["ipv4Addresses"].is_array() &&
         !nf_instance["ipv4Addresses"].empty()) {

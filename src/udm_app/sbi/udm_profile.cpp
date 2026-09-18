@@ -289,8 +289,8 @@ void udm_profile::to_json(nlohmann::json& data) const {
     data["udmInfo"]["internalGroupIdentifiersRanges"].push_back(tmp);
   }
 
-  // nfServices (TS 29.510) - advertise the UDM SBI services (e.g. nudm-ee) so
-  // consumers can discover them via NRF.
+  // Services provided by the UDM (see nfServices, TS 29.510), so that
+  // consumers can discover them via the NRF
   if (!nf_services.empty()) {
     data["nfServices"] = nlohmann::json::array();
     for (const auto& svc : nf_services) {

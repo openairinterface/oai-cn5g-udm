@@ -83,12 +83,13 @@ class udm_nrf {
   void deregister_to_nrf();
 
   /*
-   * Discover an NF endpoint via NRF, selecting the NFService whose serviceName
-   * matches @service_name (e.g. "namf-evts", "nsmf-event-exposure").
-   * @param [const std::string&] target_nf_type: e.g. "AMF", "SMF"
-   * @param [const std::string&] service_name: target service name
-   * @param [std::string&] endpoint: resolved "scheme://ipv4:port" on success
-   * @return true on success, false otherwise
+   * Get the address of an NF providing a given service, by querying the NRF
+   * @param [const std::string&] target_nf_type: type of the NF (e.g., "AMF")
+   * @param [const std::string&] service_name: name of the service the NF must
+   * provide (e.g., "namf-evts")
+   * @param [std::string&] endpoint: the NF's address, in the form
+   * "scheme://ipv4:port"
+   * @return true if an NF has been found, otherwise false
    */
   bool discover_nf(
       const std::string& target_nf_type, const std::string& service_name,
@@ -101,7 +102,8 @@ class udm_nrf {
   udm_profile udm_nf_profile;   // UDM profile
   std::string udm_instance_id;  // UDM instance id
 
-  // Discovery cache keyed by "<nf_type>:<service_name>"
+  // Addresses already discovered, stored as "<nf_type>:<service_name>" ->
+  // address, to avoid querying the NRF again for the same service
   std::map<std::string, std::string> m_discovery_cache;
   std::mutex m_discovery_mutex;
 };
