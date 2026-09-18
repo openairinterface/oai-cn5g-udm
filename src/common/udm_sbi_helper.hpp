@@ -48,6 +48,11 @@ class udm_sbi_helper : public sbi_helper {
   static std::string get_udr_authentication_status_uri(const std::string& supi);
   static std::string get_udr_amf_3gpp_registration_uri(const std::string& supi);
   static std::string get_udm_ueau_base();
+  static std::string get_udm_ee_base();
+  static std::string get_ee_subscription_location(
+      const std::string& ue_identity, const std::string& subscription_id);
+  static std::string get_auth_event_location(
+      const std::string& supi, const std::string& auth_event_id);
 };
 
 }  // namespace oai::udm::api

@@ -25,7 +25,9 @@ using namespace oai::_3gpp::model;
 UEContextInSMSFDataRetrievalApiImpl::UEContextInSMSFDataRetrievalApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : UEContextInSMSFDataRetrievalApi(rtr) {}
+    : UEContextInSMSFDataRetrievalApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void UEContextInSMSFDataRetrievalApiImpl::get_ue_ctx_in_smsf_data(
     const std::string& supi,

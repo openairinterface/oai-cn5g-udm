@@ -37,7 +37,7 @@ using namespace oai::udm::config;
 SMFSmfRegistrationApiImpl::SMFSmfRegistrationApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : SMFSmfRegistrationApi(rtr) {}
+    : SMFSmfRegistrationApi(rtr), m_udm_app(udm_app_inst), m_address(address) {}
 
 void SMFSmfRegistrationApiImpl::get_smf_registration(
     const std::string& ueId, const std::optional<Snssai>& singleNssai,

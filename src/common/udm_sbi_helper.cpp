@@ -10,8 +10,10 @@
 
 #include "ProblemDetails.h"
 #include "logger.hpp"
+#include "udm.h"
 
 namespace oai::udm::api {
+
 //------------------------------------------------------------------------------
 void udm_sbi_helper::set_problem_details(
     nlohmann::json& json_data, const std::string& detail) {
@@ -111,6 +113,29 @@ std::string udm_sbi_helper::get_udm_ueau_base() {
   return udm_cfg.sbi.get_ipv4_root() +
          oai::udm::api::udm_sbi_helper::UeAuthenticationServiceBase;
 }
+
+//------------------------------------------------------------------------------
+std::string udm_sbi_helper::get_udm_ee_base() {
+  return udm_cfg.sbi.get_ipv4_root() +
+         oai::udm::api::udm_sbi_helper::EventExposureServiceBase;
+}
+
+//------------------------------------------------------------------------------
+std::string udm_sbi_helper::get_ee_subscription_location(
+    const std::string& ue_identity, const std::string& subscription_id) {
+  return "http://" + udm_cfg.sbi.get_ipv4_root() +
+         oai::udm::api::udm_sbi_helper::EventExposureServiceBase + "/" +
+         ue_identity + "/" + NUDM_EE_SUBSCRIPTIONS + "/" + subscription_id;
+}
+
+//------------------------------------------------------------------------------
+std::string udm_sbi_helper::get_auth_event_location(
+    const std::string& supi, const std::string& auth_event_id) {
+  return "http://" + udm_cfg.sbi.get_ipv4_root() +
+         oai::udm::api::udm_sbi_helper::UeAuthenticationServiceBase + "/" +
+         supi + "/" + NUDM_UE_AU_EVENTS + "/" + auth_event_id;
+}
+
 //------------------------------------------------------------------------------
 std::string udm_sbi_helper::get_udr_uri_base() {
   return udm_cfg.udr_addr.uri_root + udm_sbi_helper::UdrDataRepositoryBase +

@@ -288,7 +288,37 @@ void udm_profile::to_json(nlohmann::json& data) const {
     tmp["pattern"]     = int_grp_id.int_grpid_range.pattern;
     data["udmInfo"]["internalGroupIdentifiersRanges"].push_back(tmp);
   }
+
+  // Services provided by the UDM (see nfServices, TS 29.510), so that
+  // consumers can discover them via the NRF
+  if (!nf_services.empty()) {
+    data["nfServices"] = nlohmann::json::array();
+    for (const auto& svc : nf_services) {
+      nlohmann::json s       = {};
+      s["serviceInstanceId"] = svc.service_instance_id;
+      s["serviceName"]       = svc.service_name;
+      s["versions"]          = nlohmann::json::array();
+      nlohmann::json ver     = {};
+      ver["apiVersionInUri"] = svc.api_version_in_uri;
+      ver["apiFullVersion"]  = svc.api_full_version;
+      s["versions"].push_back(ver);
+      s["scheme"]          = svc.scheme;
+      s["nfServiceStatus"] = svc.nf_service_status;
+      s["ipEndPoints"]     = nlohmann::json::array();
+      nlohmann::json ep    = {};
+      ep["ipv4Address"]    = svc.ipv4_address;
+      ep["port"]           = svc.port;
+      s["ipEndPoints"].push_back(ep);
+      data["nfServices"].push_back(s);
+    }
+  }
+
   Logger::udm_app().debug("udm profile to JSON:\n %s", data.dump().c_str());
+}
+
+//------------------------------------------------------------------------------
+void udm_profile::add_nf_service(const nf_service_t& s) {
+  nf_services.push_back(s);
 }
 
 //------------------------------------------------------------------------------

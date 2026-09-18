@@ -26,7 +26,9 @@ SubscriptionCreationForSharedDataApiImpl::
     SubscriptionCreationForSharedDataApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
         std::string address)
-    : SubscriptionCreationForSharedDataApi(rtr) {}
+    : SubscriptionCreationForSharedDataApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void SubscriptionCreationForSharedDataApiImpl::subscribe_to_shared_data(
     const SdmSubscription& sdmSubscription,

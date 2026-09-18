@@ -49,8 +49,9 @@ class udm_http2_server {
 
   void session_management_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
-      oai::_3gpp::model::Snssai snssai = {}, std::string dnn = {},
-      oai::_3gpp::model::PlmnId PlmnId = {});
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn,
+      const std::optional<oai::_3gpp::model::PlmnId>& plmn_id);
 
   void slice_selection_subscription_data_retrieval_handler(
       const std::string& supi, const response& response,
@@ -65,6 +66,20 @@ class udm_http2_server {
   void subscription_creation_handler(
       const std::string& supi,
       const oai::_3gpp::model::SdmSubscription& sdmSubscription,
+      const response& response);
+
+  void create_ee_subscription_handler(
+      const std::string& ueIdentity,
+      const oai::_3gpp::model::EeSubscription& eeSubscription,
+      const response& response);
+
+  void delete_ee_subscription_handler(
+      const std::string& ueIdentity, const std::string& subscriptionId,
+      const response& response);
+
+  void update_ee_subscription_handler(
+      const std::string& ueIdentity, const std::string& subscriptionId,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const response& response);
 
   void stop();
