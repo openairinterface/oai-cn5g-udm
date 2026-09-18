@@ -20,8 +20,8 @@ using namespace oai::common::sbi;
 
 namespace oai::udm::app {
 
-// A single advertised NF service (subset of NFService, TS 29.510) used to
-// populate the NFProfile.nfServices array sent to the NRF.
+// A service provided by the UDM, as advertised to the NRF in the nfServices
+// list of the NF profile (see NFService, TS 29.510)
 typedef struct nf_service_s {
   std::string service_instance_id;
   std::string service_name;        // e.g. "nudm-ee"
@@ -284,8 +284,8 @@ class udm_profile : public std::enable_shared_from_this<udm_profile> {
   void set_udm_info(const udm_info_t& s);
 
   /*
-   * Add an advertised NF service (e.g. nudm-ee) to the profile
-   * @param [const nf_service_t&] s: NF service to advertise
+   * Add a service provided by the UDM (e.g., nudm-ee) to the profile
+   * @param [const nf_service_t&] s: service to be advertised
    * @return void
    */
   void add_nf_service(const nf_service_t& s);

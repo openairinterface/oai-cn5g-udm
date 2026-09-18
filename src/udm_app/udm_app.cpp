@@ -652,9 +652,9 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   nlohmann::json amf_registration_json;
   to_json(amf_registration_json, amf_3gpp_access_registration);
 
-  // if this UE has active EE subscriptions, GET the current registration
-  // BEFORE the PUT so we can diff old-vs-new (PEI change / serving-PLMN
-  // change).
+  // If this UE has active EE subscriptions, read the current registration
+  // before updating it, to be able to compare the old and the new values
+  // (e.g., to see whether the PEI or the serving PLMN has changed)
   bool ue_has_subs = false;
   {
     std::shared_lock lock(m_mutex_udm_event_subscriptions);
@@ -704,12 +704,12 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   response_data = amf_registration_json;
   code          = http_response.status_code;
 
-  // Emit UDM-local event reports for active EE subscriptions on this UE.
-  // Adds true change-detection:
-  //  - CHANGE_OF_SUPI_PEI_ASSOCIATION: only on an actual PEI change.
-  //  - ROAMING_STATUS: on serving-PLMN transition (or one-shot at the first
-  //    registration when there is no before-image).
-  //  - CN_TYPE_CHANGE: one-shot at registration.
+  // Notify the events detected by the UDM itself to the active EE
+  // subscriptions of this UE:
+  //  - CHANGE_OF_SUPI_PEI_ASSOCIATION: only if the PEI has changed
+  //  - ROAMING_STATUS: if the serving PLMN has changed, or at the very first
+  //    registration since there is nothing to compare with
+  //  - CN_TYPE_CHANGE: at each registration
   if (code == oai::common::sbi::http_status_code::CREATED ||
       code == oai::common::sbi::http_status_code::OK ||
       code == oai::common::sbi::http_status_code::NO_CONTENT) {
@@ -747,7 +747,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
       }
     }
 
-    // RFC3339 (UTC) timestamp
+    // Timestamp of the reports, in RFC3339 (UTC) format
     std::time_t now = std::time(nullptr);
     char ts_buf[32] = {};
     std::strftime(
@@ -774,8 +774,8 @@ void udm_app::handle_amf_registration_for_3gpp_access(
       if (!reports.empty()) notify_event_occurrence(callback, reports);
     }
 
-    // AMF reselection: if the serving AMF instance changed, re-subscribe the
-    // UE's AMF-relay EE subscriptions on the (new) AMF.
+    // If the UE is now served by another AMF, the subscriptions relayed to
+    // the previous AMF have to be created again on the new one
     std::string old_amf =
         has_old ? old_registration.value("amfInstanceId", std::string{}) :
                   std::string{};
@@ -1046,14 +1046,13 @@ evsub_id_t udm_app::handle_create_ee_subscription(
   // TODO: MonitoringReport
 
   add_event_subscription(evsub_id, ueIdentity, ces);
-  // Populate the response body with the created subscription (previously the
-  // out-param was never filled, so the 201 body was serialized empty).
+  // Return the created subscription in the response body
   createdSub = *ces;
   code       = oai::common::sbi::http_status_code::CREATED;
 
-  // If any requested event is AMF-detected, relay the subscription to the
-  // serving AMF on the worker pool (never blocks this handler / the server
-  // I/O thread). SMF-relay and SMS-GMSC events are accepted+stored only.
+  // If at least one of the requested events is detected by the AMF, relay the
+  // subscription to the AMF serving this UE. Events detected by the SMF or the
+  // SMS-GMSC are only accepted and stored, they are not relayed yet.
   bool needs_amf_relay = false;
   for (const auto& kv : es.getMonitoringConfigurations()) {
     if (classify_event_detector(kv.second.getEventType().getEnumValue()) ==
@@ -1078,8 +1077,9 @@ void udm_app::handle_delete_ee_subscription(
   Logger::udm_ee().info("Handle Delete EE Subscription");
 
   if (!delete_event_subscription(subscriptionId, ueIdentity)) {
-    // Set ProblemDetails (SUBSCRIPTION_NOT_FOUND is in the 29.500 base enum,
-    // not the 29.503 application-error enum, so populate the model directly).
+    // Set ProblemDetails. SUBSCRIPTION_NOT_FOUND belongs to the common causes
+    // defined in TS 29.500, not to the UDM-specific ones defined in TS 29.503,
+    // so the model is filled in directly here
     problemDetails.setStatus(oai::common::sbi::http_status_code::NOT_FOUND);
     problemDetails.setCause("SUBSCRIPTION_NOT_FOUND");
     problemDetails.setDetail(
@@ -1088,7 +1088,7 @@ void udm_app::handle_delete_ee_subscription(
     return;
   }
 
-  // Relay the unsubscribe to the remote AMF subscription, if one was created.
+  // Delete the corresponding subscription on the AMF, if there is one
   try {
     relay_unsubscribe(std::stoul(subscriptionId));
   } catch (std::exception&) {
@@ -1105,7 +1105,7 @@ void udm_app::handle_update_ee_subscription(
     uint32_t& code) {
   Logger::udm_ee().info("Handle Update EE Subscription");
 
-  // Verify the subscription exists (404 otherwise)
+  // Make sure that the subscription does exist
   {
     uint32_t sub_id = 0;
     try {
@@ -1178,7 +1178,7 @@ void udm_app::handle_update_ee_subscription(
     }
   }
 
-  // All patch items applied successfully.
+  // All the requested modifications have been applied
   code = oai::common::sbi::http_status_code::NO_CONTENT;
 }
 
@@ -1217,15 +1217,15 @@ bool udm_app::delete_event_subscription(
     return false;
   }
 
-  // Success is determined by whether the subscription id existed.
+  // The removal is successful only if the subscription did exist
   if (udm_event_subscriptions.count(sub_id)) {
     udm_event_subscriptions.erase(sub_id);
   } else {
     result = false;
   }
 
-  // Remove only the matching subscription id from the per-UE vector (NOT the
-  // whole vector); drop the UE key only once its vector becomes empty.
+  // Remove this subscription from the list of subscriptions of the UE, and
+  // forget the UE once it has no subscription left
   if (udm_event_subscriptions_per_ue.count(ue_id) > 0) {
     std::vector<evsub_id_t>& ev_subs = udm_event_subscriptions_per_ue.at(ue_id);
     ev_subs.erase(
@@ -1266,7 +1266,7 @@ bool udm_app::replace_ee_subscription_item(
   } else if (path.compare("secondCallbackRef") == 0) {
     es.setSecondCallbackRef(value);
   } else {
-    // Unsupported path for MVP
+    // Any other member cannot be replaced
     return false;
   }
   ces->setEeSubscription(es);
@@ -1346,7 +1346,8 @@ void udm_app::notify_event_occurrence(
     const std::vector<oai::_3gpp::model::MonitoringReport>& reports) {
   if (callback_uri.empty() || reports.empty()) return;
 
-  // Event Occurrence notification body is an array(MonitoringReport).
+  // The body of an Event Occurrence notification is a list of
+  // Monitoring Reports
   nlohmann::json body = nlohmann::json::array();
   for (const auto& r : reports) {
     nlohmann::json j = {};
@@ -1387,12 +1388,13 @@ ee_event_detector_t udm_app::classify_event_detector(
     case E::PDN_CONNECTIVITY_STATUS:
     case E::PDU_SES_REL:
     case E::PDU_SES_EST:
-      return ee_event_detector_t::SMF_RELAY;  // deferred (accept + store)
+      return ee_event_detector_t::SMF_RELAY;
     case E::UE_MEMORY_AVAILABLE_FOR_SMS:
-      return ee_event_detector_t::SMS_GMSC;  // out of scope (accept + store)
+      return ee_event_detector_t::SMS_GMSC;
     case E::INVALID_VALUE_OPENAPI_GENERATED:
       return ee_event_detector_t::UNKNOWN;
     default:
+      // All the remaining events are detected by the AMF:
       // LOSS_OF_CONNECTIVITY, UE_REACHABILITY_FOR_DATA, LOCATION_REPORTING,
       // COMMUNICATION_FAILURE, UE_CONNECTION_MANAGEMENT_STATE,
       // ACCESS_TYPE_REPORT, REGISTRATION_STATE_REPORT,
@@ -1455,7 +1457,8 @@ std::string udm_app::get_serving_amf_instance_id(const std::string& ue_id) {
 //------------------------------------------------------------------------------
 void udm_app::relay_subscribe_to_amf(
     const evsub_id_t& sub_id, const std::string& ue_id) {
-  // Collect the AMF-relay event types + consumer callback info for this sub.
+  // Get the events detected by the AMF and the consumer's callback info from
+  // this subscription
   std::string callback;
   std::string notify_correlation_id;
   std::vector<std::string> amf_event_types;
@@ -1476,7 +1479,8 @@ void udm_app::relay_subscribe_to_amf(
   }
   if (amf_event_types.empty() || callback.empty()) return;
 
-  // Resolve the serving AMF (instance id from UDR; endpoint from NRF).
+  // Find the AMF serving this UE: its instance ID comes from the UDR, its
+  // address from the NRF
   std::string amf_instance_id = get_serving_amf_instance_id(ue_id);
   std::string amf_endpoint;
   if (!udm_nrf_inst ||
@@ -1486,9 +1490,9 @@ void udm_app::relay_subscribe_to_amf(
     return;
   }
 
-  // Build the AmfCreateEventSubscription body as raw JSON (on-the-wire correct;
-  // avoids the typed-model build closure). Inject the consumer callback +
-  // correlation id so the AMF notifies the consumer directly.
+  // Build the body of the AmfCreateEventSubscription request. The consumer's
+  // callback and correlation ID are forwarded as they are, so that the AMF
+  // sends the notifications directly to the consumer
   nlohmann::json sub = {};
   sub["eventList"]   = nlohmann::json::array();
   for (const auto& t : amf_event_types) {
@@ -1600,7 +1604,7 @@ void udm_app::send_revocation(
 //------------------------------------------------------------------------------
 void udm_app::send_data_restoration(
     const oai::_3gpp::model::DataRestorationNotification& notification) {
-  // Fan out to every subscription that registered a dataRestorationCallbackUri.
+  // Notify every subscription that provided a dataRestorationCallbackUri
   std::vector<std::string> uris;
   {
     std::shared_lock lock(m_mutex_udm_event_subscriptions);
