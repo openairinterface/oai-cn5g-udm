@@ -44,13 +44,12 @@ void udm_nrf::generate_udm_profile() {
   // TODO: remove hardcoded values
   udm_nf_profile.set_nf_instance_id(udm_instance_id);
   udm_nf_profile.set_nf_instance_name("OAI-UDM");
-  udm_nf_profile.set_fqdn("oai-udm");
+  udm_nf_profile.set_nf_fqdn(udm_cfg.udm_name);
   udm_nf_profile.set_nf_type("UDM");
   udm_nf_profile.set_nf_status("REGISTERED");
   udm_nf_profile.set_nf_heartBeat_timer(50);
   udm_nf_profile.set_nf_priority(1);
   udm_nf_profile.set_nf_capacity(100);
-  // udm_nf_profile.set_fqdn(udm_cfg.fqdn);
   udm_nf_profile.add_nf_ipv4_addresses(udm_cfg.sbi.addr4);  // N4's Addr
 
   // UDM info (Hardcoded for now)
