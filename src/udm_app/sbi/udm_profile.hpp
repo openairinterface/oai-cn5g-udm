@@ -20,6 +20,19 @@ using namespace oai::common::sbi;
 
 namespace oai::udm::app {
 
+// A service provided by the UDM, as advertised to the NRF in the nfServices
+// list of the NF profile (see NFService, TS 29.510)
+typedef struct nf_service_s {
+  std::string service_instance_id;
+  std::string service_name;        // e.g. "nudm-ee"
+  std::string api_version_in_uri;  // e.g. "v1"
+  std::string api_full_version;    // e.g. "1.2.3"
+  std::string scheme;              // "http" / "https"
+  std::string nf_service_status;   // e.g. "REGISTERED"
+  std::string ipv4_address;
+  uint16_t port;
+} nf_service_t;
+
 class udm_profile : public std::enable_shared_from_this<udm_profile> {
  public:
   udm_profile()
@@ -59,6 +72,7 @@ class udm_profile : public std::enable_shared_from_this<udm_profile> {
     nf_instance_name = s.nf_instance_name;
     nf_status        = s.nf_status;
     udm_info         = s.udm_info;
+    nf_services      = s.nf_services;
     return *this;
   }
   // udm_profile(udm_profile &b) = delete;
@@ -270,6 +284,13 @@ class udm_profile : public std::enable_shared_from_this<udm_profile> {
   void set_udm_info(const udm_info_t& s);
 
   /*
+   * Add a service provided by the UDM (e.g., nudm-ee) to the profile
+   * @param [const nf_service_t&] s: service to be advertised
+   * @return void
+   */
+  void add_nf_service(const nf_service_t& s);
+
+  /*
    * Get NF instance udm info
    * @param [udm_info_t &] s: store instance's udm info
    * @return void:
@@ -317,6 +338,7 @@ class udm_profile : public std::enable_shared_from_this<udm_profile> {
   uint16_t priority;
   uint16_t capacity;
   udm_info_t udm_info;
+  std::vector<nf_service_t> nf_services;
 };
 
 }  // namespace oai::udm::app

@@ -27,7 +27,9 @@ using namespace oai::_3gpp::model;
 UpdateEESubscriptionApiImpl::UpdateEESubscriptionApiImpl(
     const std::shared_ptr<Pistache::Rest::Router>& rtr, udm_app* udm_app_inst,
     std::string address)
-    : UpdateEESubscriptionApi(rtr) {}
+    : UpdateEESubscriptionApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void UpdateEESubscriptionApiImpl::update_ee_subscription(
     const std::string& ueIdentity, const std::string& subscriptionId,

@@ -31,7 +31,9 @@ using namespace oai::_3gpp::model;
 AMFRegistrationFor3GPPAccessApiImpl::AMFRegistrationFor3GPPAccessApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : AMFRegistrationFor3GPPAccessApi(rtr) {}
+    : AMFRegistrationFor3GPPAccessApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void AMFRegistrationFor3GPPAccessApiImpl::xg_3gpp_registration(
     const std::string& ueId,

@@ -30,7 +30,9 @@
 #include "AMFRegistrationFor3GPPAccessApiImpl.h"
 #include "AccessAndMobilitySubscriptionDataRetrievalApiImpl.h"
 #include "ConfirmAuthApiImpl.h"
+#include "CreateEESubscriptionApiImpl.h"
 #include "DeleteAuthApiImpl.h"
+#include "DeleteEESubscriptionApiImpl.h"
 #include "GPSIToSUPITranslationApiImpl.h"
 #include "GenerateAuthDataApiImpl.h"
 #include "GroupIdentifiersApiImpl.h"
@@ -52,6 +54,7 @@
 #include "TraceConfigurationDataRetrievalApiImpl.h"
 #include "UEContextInSMFDataRetrievalApiImpl.h"
 #include "UEContextInSMSFDataRetrievalApiImpl.h"
+#include "UpdateEESubscriptionApiImpl.h"
 #include "udm_app.hpp"
 
 using namespace oai::udm::app;
@@ -136,6 +139,15 @@ class UDMApiServer {
         std::make_shared<DeleteAuthApiImpl>(m_router, udm_app_inst, m_address);
     m_generateAuthDataApiImpl = std::make_shared<GenerateAuthDataApiImpl>(
         m_router, udm_app_inst, m_address);
+    m_createEESubscriptionApiImpl =
+        std::make_shared<CreateEESubscriptionApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_deleteEESubscriptionApiImpl =
+        std::make_shared<DeleteEESubscriptionApiImpl>(
+            m_router, udm_app_inst, m_address);
+    m_updateEESubscriptionApiImpl =
+        std::make_shared<UpdateEESubscriptionApiImpl>(
+            m_router, udm_app_inst, m_address);
   }
   void init(size_t thr = 1);
   void start();
@@ -186,6 +198,9 @@ class UDMApiServer {
   std::shared_ptr<SMFSmfRegistrationApiImpl> m_sMFSmfRegistrationApiImpl;
   std::shared_ptr<AMFRegistrationFor3GPPAccessApiImpl>
       m_aMFRegistrationFor3GPPAccessApiImpl;
+  std::shared_ptr<CreateEESubscriptionApiImpl> m_createEESubscriptionApiImpl;
+  std::shared_ptr<DeleteEESubscriptionApiImpl> m_deleteEESubscriptionApiImpl;
+  std::shared_ptr<UpdateEESubscriptionApiImpl> m_updateEESubscriptionApiImpl;
 
   std::string m_address;
 };

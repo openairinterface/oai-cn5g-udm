@@ -23,7 +23,9 @@ namespace api {
 SubscriptionDeletionApiImpl::SubscriptionDeletionApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
     std::string address)
-    : SubscriptionDeletionApi(rtr) {}
+    : SubscriptionDeletionApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void SubscriptionDeletionApiImpl::unsubscribe(
     const std::string& supi, const std::string& subscriptionId,

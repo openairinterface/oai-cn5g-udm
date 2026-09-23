@@ -52,6 +52,19 @@ void udm_nrf::generate_udm_profile() {
   udm_nf_profile.set_nf_capacity(100);
   udm_nf_profile.add_nf_ipv4_addresses(udm_cfg.sbi.addr4);  // N4's Addr
 
+  // Add the Event Exposure service to the profile, so that consumers can
+  // discover it via the NRF
+  nf_service_t ee_service        = {};
+  ee_service.service_instance_id = "nudm-ee-1";
+  ee_service.service_name        = "nudm-ee";
+  ee_service.api_version_in_uri  = udm_cfg.sbi.api_version.value_or("v1");
+  ee_service.api_full_version    = "1.2.3";  // Nudm_EE, TS 29.503 Rel-17
+  ee_service.scheme              = "http";
+  ee_service.nf_service_status   = "REGISTERED";
+  ee_service.ipv4_address        = inet_ntoa(udm_cfg.sbi.addr4);
+  ee_service.port                = udm_cfg.sbi.port;
+  udm_nf_profile.add_nf_service(ee_service);
+
   // UDM info (Hardcoded for now)
   // ToDo: If none of these parameters are provided, the UDM can serve any
   // external group and any SUPI or GPSI managed by the PLMN of the UDM
@@ -247,4 +260,87 @@ void udm_nrf::stop_nrf_registration_retry() {
     Logger::udm_nrf().debug("Stop NRF registration retry task");
     retry_nrf_registration_task_connection.disconnect();
   }
+}
+
+//------------------------------------------------------------------------------
+bool udm_nrf::discover_nf(
+    const std::string& target_nf_type, const std::string& service_name,
+    std::string& endpoint) {
+  const std::string cache_key = target_nf_type + ":" + service_name;
+  {
+    std::unique_lock<std::mutex> lock(m_discovery_mutex);
+    auto it = m_discovery_cache.find(cache_key);
+    if (it != m_discovery_cache.end()) {
+      endpoint = it->second;
+      return true;
+    }
+  }
+
+  // Ask the NRF for the NF instances of the requested type
+  std::string uri = {};
+  oai::common::sbi::sbi_helper::get_nrf_disc_search_nf_instances_uri(
+      udm_cfg.nrf_addr, uri);
+  uri += "?target-nf-type=" + target_nf_type + "&requester-nf-type=UDM";
+
+  oai::http::request req = http_client_inst->prepare_json_request(uri);
+  oai::http::response resp =
+      http_client_inst->send_http_request(method_e::GET, req);
+  if (resp.status_code != oai::common::sbi::http_status_code::OK) {
+    Logger::udm_nrf().warn(
+        "NRF discovery for %s failed (HTTP %d)", target_nf_type.c_str(),
+        resp.status_code);
+    return false;
+  }
+
+  nlohmann::json search_result = resp.get_json();
+  if (!search_result.contains("nfInstances") ||
+      !search_result["nfInstances"].is_array()) {
+    Logger::udm_nrf().warn("NRF discovery: no nfInstances in SearchResult");
+    return false;
+  }
+
+  for (const auto& nf_instance : search_result["nfInstances"]) {
+    // Use the endpoints of the requested service if the NF advertises it,
+    // otherwise fall back to the address of the NF instance itself
+    if (nf_instance.contains("nfServices") &&
+        nf_instance["nfServices"].is_array()) {
+      for (const auto& svc : nf_instance["nfServices"]) {
+        if (svc.value("serviceName", std::string{}) != service_name) continue;
+        std::string svc_scheme = svc.value("scheme", std::string{"http"});
+        if (svc.contains("ipEndPoints") && svc["ipEndPoints"].is_array() &&
+            !svc["ipEndPoints"].empty()) {
+          const auto& ep = svc["ipEndPoints"][0];
+          std::string ip = ep.value("ipv4Address", std::string{});
+          int port       = ep.value("port", 80);
+          if (!ip.empty()) {
+            endpoint = svc_scheme + "://" + ip + ":" + std::to_string(port);
+            std::unique_lock<std::mutex> lock(m_discovery_mutex);
+            m_discovery_cache[cache_key] = endpoint;
+            return true;
+          }
+        }
+      }
+    }
+    // The requested service was not found, use the NF's own address
+    if (nf_instance.contains("ipv4Addresses") &&
+        nf_instance["ipv4Addresses"].is_array() &&
+        !nf_instance["ipv4Addresses"].empty()) {
+      std::string ip = nf_instance["ipv4Addresses"][0].get<std::string>();
+      if (!ip.empty()) {
+        endpoint = "http://" + ip;
+        Logger::udm_nrf().warn(
+            "NRF discovery: service %s not found for %s, using instance "
+            "address %s",
+            service_name.c_str(), target_nf_type.c_str(), endpoint.c_str());
+        std::unique_lock<std::mutex> lock(m_discovery_mutex);
+        m_discovery_cache[cache_key] = endpoint;
+        return true;
+      }
+    }
+  }
+
+  Logger::udm_nrf().warn(
+      "NRF discovery: no usable endpoint for %s/%s", target_nf_type.c_str(),
+      service_name.c_str());
+  return false;
 }

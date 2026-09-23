@@ -82,12 +82,30 @@ class udm_nrf {
    */
   void deregister_to_nrf();
 
+  /*
+   * Get the address of an NF providing a given service, by querying the NRF
+   * @param [const std::string&] target_nf_type: type of the NF (e.g., "AMF")
+   * @param [const std::string&] service_name: name of the service the NF must
+   * provide (e.g., "namf-evts")
+   * @param [std::string&] endpoint: the NF's address, in the form
+   * "scheme://ipv4:port"
+   * @return true if an NF has been found, otherwise false
+   */
+  bool discover_nf(
+      const std::string& target_nf_type, const std::string& service_name,
+      std::string& endpoint);
+
  private:
   udm_event& m_event_sub;
   bs2::connection task_connection;
   bs2::connection retry_nrf_registration_task_connection;
   udm_profile udm_nf_profile;   // UDM profile
   std::string udm_instance_id;  // UDM instance id
+
+  // Addresses already discovered, stored as "<nf_type>:<service_name>" ->
+  // address, to avoid querying the NRF again for the same service
+  std::map<std::string, std::string> m_discovery_cache;
+  std::mutex m_discovery_mutex;
 };
 }  // namespace oai::udm::app
 #endif /* FILE_UDM_NRF_SEEN */

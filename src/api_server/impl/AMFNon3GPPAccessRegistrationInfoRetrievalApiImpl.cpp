@@ -26,7 +26,9 @@ AMFNon3GPPAccessRegistrationInfoRetrievalApiImpl::
     AMFNon3GPPAccessRegistrationInfoRetrievalApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
         std::string address)
-    : AMFNon3GPPAccessRegistrationInfoRetrievalApi(rtr) {}
+    : AMFNon3GPPAccessRegistrationInfoRetrievalApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void AMFNon3GPPAccessRegistrationInfoRetrievalApiImpl::
     get_non3_gpp_registration(

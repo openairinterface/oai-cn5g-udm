@@ -33,7 +33,9 @@ SliceSelectionSubscriptionDataRetrievalApiImpl::
     SliceSelectionSubscriptionDataRetrievalApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udm_app* udm_app_inst,
         std::string address)
-    : SliceSelectionSubscriptionDataRetrievalApi(rtr) {}
+    : SliceSelectionSubscriptionDataRetrievalApi(rtr),
+      m_udm_app(udm_app_inst),
+      m_address(address) {}
 
 void SliceSelectionSubscriptionDataRetrievalApiImpl::get_nssai(
     const std::string& supi,
