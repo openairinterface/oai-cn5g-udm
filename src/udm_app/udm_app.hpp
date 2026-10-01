@@ -464,6 +464,5 @@ class udm_app {
   std::string m_udm_instance_id;
 };
 }  // namespace oai::udm::app
-#include "udm_config.hpp"
 
 #endif /* FILE_UDM_APP_HPP_SEEN */
