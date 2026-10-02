@@ -262,7 +262,7 @@ void Authentication_5gaka::derive_kseaf(
     std::string serving_network, uint8_t kausf[32], uint8_t kseaf[32]) {
   Logger::udm_ueau().debug("Derive_kseaf ...");
   Logger::udm_ueau().debug("SNN: %s", serving_network.c_str());
-  OCTET_STRING_t netName;
+  OCTET_STRING_t netName = {};
   OCTET_STRING_fromBuf(
       &netName, serving_network.c_str(), serving_network.length());
   uint8_t S[100];
@@ -287,7 +287,7 @@ void Authentication_5gaka::derive_kausf(
     uint8_t ak[6], uint8_t kausf[32]) {
   Logger::udm_ueau().debug("derive_kausf ...");
 
-  OCTET_STRING_t netName;
+  OCTET_STRING_t netName = {};
   OCTET_STRING_fromBuf(
       &netName, serving_network.c_str(), serving_network.length());
 
@@ -321,7 +321,7 @@ void Authentication_5gaka::derive_kamf(
   Logger::udm_ueau().debug("derive_kamf ...");
   std::string ueSupi = imsi;  // OK
 
-  OCTET_STRING_t supi;
+  OCTET_STRING_t supi = {};
   OCTET_STRING_fromBuf(&supi, ueSupi.c_str(), ueSupi.length());
   int supiLen = supi.size;
   uint8_t S[100];
@@ -552,7 +552,7 @@ uint8_t* Authentication_5gaka::sqn_ms_derive(
 void Authentication_5gaka::annex_a_4_33501(
     uint8_t ck[16], uint8_t ik[16], uint8_t* input, uint8_t rand[16],
     std::string serving_network, uint8_t* output) {
-  OCTET_STRING_t netName;
+  OCTET_STRING_t netName = {};
   OCTET_STRING_fromBuf(
       &netName, serving_network.c_str(), serving_network.length());
   uint8_t S[100];
