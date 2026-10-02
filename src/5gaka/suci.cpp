@@ -10,17 +10,12 @@
 #include <cryptopp/eccrypto.h>
 #include <cryptopp/filters.h>
 #include <cryptopp/hex.h>
+#include <cryptopp/hmac.h>
 #include <cryptopp/oids.h>
 #include <cryptopp/osrng.h>
 #include <cryptopp/pubkey.h>
+#include <cryptopp/sha.h>
 #include <cryptopp/xed25519.h>
-
-#include <openssl/core_names.h>
-#include <openssl/evp.h>
-#include <openssl/hmac.h>
-#include <openssl/kdf.h>
-#include <openssl/obj_mac.h>
-#include <openssl/params.h>
 
 #include <iostream>
 using std::cout;
@@ -360,31 +355,18 @@ bool Authentication_5gaka::suciSidfProfileA(
   // procedure to generate keying data K of length enckeylen + icblen +
   // mackeylen octets from Z and [SharedInfo 1 ]. If the key derivation
   // function outputs “invalid”, output “invalid” and stop.
-  EVP_KDF* kdf;
-  EVP_KDF_CTX* kctx;
   unsigned char
       out_kdf[kProfileAEncKeyLength + kIcbLength + kProfileAMacKeyLengh];
-  OSSL_PARAM params[4], *p = params;
 
-  kdf  = EVP_KDF_fetch(NULL, "X963KDF", NULL);
-  kctx = EVP_KDF_CTX_new(kdf);
-  EVP_KDF_free(kdf);
-
-  char sha256_comp_warn[] = {SN_sha256};
-  *p++                    = OSSL_PARAM_construct_utf8_string(
-      OSSL_KDF_PARAM_DIGEST, (char*) sha256_comp_warn, strlen(SN_sha256));
-  *p++ = OSSL_PARAM_construct_octet_string(
-      OSSL_KDF_PARAM_SECRET, reinterpret_cast<unsigned char*>(shared.data()),
-      static_cast<size_t>(shared.size()));
-  *p++ = OSSL_PARAM_construct_octet_string(
-      OSSL_KDF_PARAM_INFO, ephemeralPublicKeyChar.data(),
-      static_cast<size_t>(ephemeralPublicKeyChar.size()));
-  *p = OSSL_PARAM_construct_end();
-  if (EVP_KDF_derive(kctx, out_kdf, sizeof(out_kdf), params) <= 0) {
-    error = "EVP_KDF_derive";
+  try {
+    // ANSI X9.63 KDF (SEC 1) is equivalent to P1363 KDF2.
+    CryptoPP::P1363_KDF2<CryptoPP::SHA256>::DeriveKey(
+        out_kdf, sizeof(out_kdf), shared.data(), shared.size(),
+        ephemeralPublicKeyChar.data(), ephemeralPublicKeyChar.size());
+  } catch (const CryptoPP::Exception& e) {
+    error = std::string("ANSI X9.63 KDF: ") + e.what();
     return false;
   }
-  EVP_KDF_CTX_free(kctx);
   //--------------------------------------------------------------------
   // 7. Parse the leftmost enckeylen octets of K as an encryption key EK,
   // the middle icblen octets of K as an ICB, and the rightmost mackeylen

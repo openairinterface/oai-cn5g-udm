@@ -20,11 +20,13 @@
 #include <unistd.h>  // get_pid(), pause()
 
 #include <iostream>
+#include <memory>
 #include <thread>
 #include <chrono>
 
 #include "http_client.hpp"
 #include "logger.hpp"
+#include "nf_service.hpp"
 #include "options.hpp"
 #include "pid_file.hpp"
 #include "pistache/endpoint.h"
@@ -35,6 +37,7 @@
 #include "udm_app.hpp"
 #include "udm_config.hpp"
 #include "udm_config_yaml.hpp"
+#include "task_manager.hpp"
 
 using namespace oai::udm::app;
 using namespace oai::udm::config;
@@ -42,14 +45,14 @@ using namespace oai::config;
 using namespace oai::utils;
 
 udm_config udm_cfg;
-udm_app* udm_app_inst              = nullptr;
-UDMApiServer* api_server           = nullptr;
-udm_http2_server* udm_api_server_2 = nullptr;
-task_manager* tm_inst              = nullptr;
+std::unique_ptr<udm_app> udm_app_inst              = nullptr;
+std::unique_ptr<UDMApiServer> api_server           = nullptr;
+std::unique_ptr<udm_http2_server> udm_api_server_2 = nullptr;
+std::unique_ptr<oai::sba::task_manager> tm_inst    = nullptr;
 
-std::shared_ptr<oai::http::http_client> http_client_inst = nullptr;
-std::unique_ptr<udm_config_yaml> udm_cfg_yaml;
-std::unique_ptr<oai::config::lttng_configuration> lttng_config_yaml;
+std::shared_ptr<oai::sba::sbi_http_client> http_client_inst         = nullptr;
+std::unique_ptr<udm_config_yaml> udm_cfg_yaml                       = nullptr;
+std::unique_ptr<oai::config::lttng_configuration> lttng_config_yaml = nullptr;
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
   auto shutdown_start = std::chrono::system_clock::now();
@@ -76,25 +79,21 @@ void my_app_signal_handler(int s) {
   Logger::system().debug("Freeing Allocated memory...");
   // Delete instances
   if (api_server) {
-    delete api_server;
-    api_server = nullptr;
+    api_server.reset();
   }
 
   if (udm_api_server_2) {
-    delete udm_api_server_2;
-    udm_api_server_2 = nullptr;
+    udm_api_server_2.reset();
   }
   Logger::system().debug("Stopped HTTP servers");
 
   if (tm_inst) {
-    delete tm_inst;
-    tm_inst = nullptr;
+    tm_inst.reset();
   }
   Logger::system().debug("Stopped the UDM Task Manager.");
 
   if (udm_app_inst) {
-    delete udm_app_inst;
-    udm_app_inst = nullptr;
+    udm_app_inst.reset();
   }
 
   Logger::system().debug("UDM APP memory done");
@@ -162,12 +161,12 @@ int main(int argc, char** argv) {
 
   // HTTP Client
   uint8_t http_version = udm_cfg.use_http2 ? 2 : 1;
-  http_client_inst     = oai::http::http_client::create_instance(
+  http_client_inst     = oai::sba::sbi_http_client::create_instance(
       Logger::udm_client(), udm_cfg.http_request_timeout, udm_cfg.sbi.if_name,
       http_version);
 
   // UDM application layer
-  udm_app_inst = new udm_app(Options::getlibconfigConfig(), ev);
+  udm_app_inst = std::make_unique<udm_app>(Options::getlibconfigConfig(), ev);
   if (!udm_app_inst->start()) {
     udm_app_inst->stop();
     Logger::system().error("Could not start UDM APP, exiting.");
@@ -175,8 +174,10 @@ int main(int argc, char** argv) {
   }
 
   // Task Manager
-  tm_inst = new task_manager(ev);
-  std::thread task_manager_thread(&task_manager::run, tm_inst);
+  auto task_event =
+      std::shared_ptr<oai::sba::nf_event>(&ev, [](oai::sba::nf_event*) {});
+  tm_inst = std::make_unique<oai::sba::task_manager>(task_event);
+  std::thread task_manager_thread(&oai::sba::task_manager::run, tm_inst.get());
 
   // PID file
   std::string pid_file_name =
@@ -196,16 +197,17 @@ int main(int argc, char** argv) {
     Pistache::Address addr(
         std::string(inet_ntoa(*((struct in_addr*) &udm_cfg.sbi.addr4))),
         Pistache::Port(udm_cfg.sbi.port));
-    api_server = new UDMApiServer(addr, udm_app_inst);
+    api_server = std::make_unique<UDMApiServer>(addr, udm_app_inst.get());
     api_server->init(2);
-    std::thread udm_manager(&UDMApiServer::start, api_server);
+    std::thread udm_manager(&UDMApiServer::start, api_server.get());
     udm_manager.join();
   } else {
     // UDM NGHTTP API server (HTTP2)
-    udm_api_server_2 = new udm_http2_server(
+    udm_api_server_2 = std::make_unique<udm_http2_server>(
         oai::utils::conv::toString(udm_cfg.sbi.addr4), udm_cfg.sbi.port,
-        udm_app_inst);
-    std::thread udm_http2_manager(&udm_http2_server::start, udm_api_server_2);
+        udm_app_inst.get());
+    std::thread udm_http2_manager(
+        &udm_http2_server::start, udm_api_server_2.get());
     udm_http2_manager.join();
   }
 

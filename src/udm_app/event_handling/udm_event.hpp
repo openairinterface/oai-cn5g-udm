@@ -8,13 +8,41 @@
 #include <boost/signals2.hpp>
 namespace bs2 = boost::signals2;
 
-#include "task_manager.hpp"
+#include "nf_event.hpp"
 #include "udm.h"
-#include "udm_event_sig.hpp"
 
 namespace oai::udm::app {
-class task_manager;
-class udm_event {
+
+typedef bs2::signal_type<
+    void(uint64_t), bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
+    task_sig_t;
+
+// Signal for Loss of Connectivity
+// SUPI, Connectivity status, HTTP version
+typedef bs2::signal_type<
+    void(std::string, uint8_t, uint8_t),
+    bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
+    loss_of_connectivity_sig_t;
+
+// Signal for UE Reachability for Data
+// SUPI, Reachability status, HTTP version
+typedef bs2::signal_type<
+    void(std::string, uint8_t, uint8_t),
+    bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
+    ue_reachability_for_data_sig_t;
+
+// UE_REACHABILITY_FOR_SMS
+// LOCATION_REPORTING
+// CHANGE_OF_SUPI_PEI_ASSOCIATION
+// ROAMING_STATUS
+// COMMUNICATION_FAILURE
+// AVAILABILITY_AFTER_DNN_FAILURE
+// CN_TYPE_CHANGE
+
+}  // namespace oai::udm::app
+
+namespace oai::udm::app {
+class udm_event : public oai::sba::nf_event {
  public:
   udm_event() {};
   udm_event(udm_event const&)      = delete;
@@ -27,8 +55,7 @@ class udm_event {
 
   // class register/handle event
   friend class udm_app;
-  friend class udm_nrf;
-  friend class task_manager;
+  friend class udm_client;
 
   //------------------------------------------------------------------------------
   /*
@@ -39,7 +66,10 @@ class udm_event {
    * @return void
    */
   bs2::connection subscribe_task_nf_heartbeat(
-      const task_sig_t::slot_type& sig, uint64_t period, uint64_t start = 0);
+      const oai::sba::task_sig_t::slot_type& sig, uint64_t period,
+      uint64_t start = 0) override;
+
+  void notify_task_tick(uint64_t tick) override;
   //------------------------------------------------------------------------------
   /*
    * Subscribe to UE Loss of Connectivity Status signal

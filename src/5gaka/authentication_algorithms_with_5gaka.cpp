@@ -6,21 +6,20 @@
 
 #include <arpa/inet.h>
 #include <errno.h>
-#include <gmp.h>
 #include <nettle/hmac.h>
-#include <pthread.h>
+#include <openssl/rand.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <iostream>
+#include <limits>
+#include <stdexcept>
 
 #include "OCTET_STRING.h"
 #include "logger.hpp"
 #include "output_wrapper.hpp"
 #include "sha256.hpp"
-
-random_state_t random_state;
 
 //------------------------------------------------------------------------------
 void Authentication_5gaka::f1(
@@ -263,7 +262,7 @@ void Authentication_5gaka::derive_kseaf(
     std::string serving_network, uint8_t kausf[32], uint8_t kseaf[32]) {
   Logger::udm_ueau().debug("Derive_kseaf ...");
   Logger::udm_ueau().debug("SNN: %s", serving_network.c_str());
-  OCTET_STRING_t netName;
+  OCTET_STRING_t netName = {};
   OCTET_STRING_fromBuf(
       &netName, serving_network.c_str(), serving_network.length());
   uint8_t S[100];
@@ -288,7 +287,7 @@ void Authentication_5gaka::derive_kausf(
     uint8_t ak[6], uint8_t kausf[32]) {
   Logger::udm_ueau().debug("derive_kausf ...");
 
-  OCTET_STRING_t netName;
+  OCTET_STRING_t netName = {};
   OCTET_STRING_fromBuf(
       &netName, serving_network.c_str(), serving_network.length());
 
@@ -322,7 +321,7 @@ void Authentication_5gaka::derive_kamf(
   Logger::udm_ueau().debug("derive_kamf ...");
   std::string ueSupi = imsi;  // OK
 
-  OCTET_STRING_t supi;
+  OCTET_STRING_t supi = {};
   OCTET_STRING_fromBuf(&supi, ueSupi.c_str(), ueSupi.length());
   int supiLen = supi.size;
   uint8_t S[100];
@@ -553,7 +552,7 @@ uint8_t* Authentication_5gaka::sqn_ms_derive(
 void Authentication_5gaka::annex_a_4_33501(
     uint8_t ck[16], uint8_t ik[16], uint8_t* input, uint8_t rand[16],
     std::string serving_network, uint8_t* output) {
-  OCTET_STRING_t netName;
+  OCTET_STRING_t netName = {};
   OCTET_STRING_fromBuf(
       &netName, serving_network.c_str(), serving_network.length());
   uint8_t S[100];
@@ -599,15 +598,13 @@ void Authentication_5gaka::annex_a_4_33501(
 
 //------------------------------------------------------------------------------
 void Authentication_5gaka::generate_random(uint8_t* random_p, ssize_t length) {
-  gmp_randinit_default(random_state.state);
-  gmp_randseed_ui(random_state.state, time(NULL));
-  random_t random_nb;
-  mpz_init(random_nb);
-  mpz_init_set_ui(random_nb, 0);
-  pthread_mutex_lock(&random_state.lock);
-  mpz_urandomb(random_nb, random_state.state, 8 * length);
-  pthread_mutex_unlock(&random_state.lock);
-  mpz_export(random_p, NULL, 1, length, 0, 0, random_nb);
+  if (random_p == nullptr || length <= 0 ||
+      length > std::numeric_limits<int>::max()) {
+    throw std::invalid_argument("Invalid random output buffer");
+  }
 
-  return;
+  // RAND_bytes based on OpenSSL
+  if (RAND_bytes(random_p, static_cast<int>(length)) != 1) {
+    throw std::runtime_error("Could not generate authentication RAND");
+  }
 }

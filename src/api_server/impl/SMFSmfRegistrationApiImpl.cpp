@@ -18,12 +18,13 @@
 
 #include "http_client.hpp"
 #include "logger.hpp"
+#include "nf_service.hpp"
 #include "udm.h"
 #include "udm_config.hpp"
 #include "udm_sbi_helper.hpp"
 
 extern oai::udm::config::udm_config udm_cfg;
-extern std::shared_ptr<oai::http::http_client> http_client_inst;
+extern std::shared_ptr<oai::sba::sbi_http_client> http_client_inst;
 
 namespace oai {
 namespace udm {
@@ -76,8 +77,9 @@ void SMFSmfRegistrationApiImpl::registration(
   to_json(smf_registration_json, smfRegistration);
   uint32_t http_code = 0;
 
-  oai::http::request http_request = http_client_inst->prepare_json_request(
-      remote_uri, smf_registration_json.dump());
+  oai::sba::sbi_http_request http_request =
+      http_client_inst->prepare_json_request(
+          remote_uri, smf_registration_json.dump());
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::PUT, http_request);
 
