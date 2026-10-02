@@ -6,21 +6,20 @@
 
 #include <arpa/inet.h>
 #include <errno.h>
-#include <gmp.h>
 #include <nettle/hmac.h>
-#include <pthread.h>
+#include <openssl/rand.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <iostream>
+#include <limits>
+#include <stdexcept>
 
 #include "OCTET_STRING.h"
 #include "logger.hpp"
 #include "output_wrapper.hpp"
 #include "sha256.hpp"
-
-random_state_t random_state;
 
 //------------------------------------------------------------------------------
 void Authentication_5gaka::f1(
@@ -599,15 +598,13 @@ void Authentication_5gaka::annex_a_4_33501(
 
 //------------------------------------------------------------------------------
 void Authentication_5gaka::generate_random(uint8_t* random_p, ssize_t length) {
-  gmp_randinit_default(random_state.state);
-  gmp_randseed_ui(random_state.state, time(NULL));
-  random_t random_nb;
-  mpz_init(random_nb);
-  mpz_init_set_ui(random_nb, 0);
-  pthread_mutex_lock(&random_state.lock);
-  mpz_urandomb(random_nb, random_state.state, 8 * length);
-  pthread_mutex_unlock(&random_state.lock);
-  mpz_export(random_p, NULL, 1, length, 0, 0, random_nb);
+  if (random_p == nullptr || length <= 0 ||
+      length > std::numeric_limits<int>::max()) {
+    throw std::invalid_argument("Invalid random output buffer");
+  }
 
-  return;
+  // RAND_bytes based on OpenSSL
+  if (RAND_bytes(random_p, static_cast<int>(length)) != 1) {
+    throw std::runtime_error("Could not generate authentication RAND");
+  }
 }

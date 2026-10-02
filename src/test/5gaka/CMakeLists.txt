@@ -8,7 +8,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 
 ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../common ${CMAKE_CURRENT_BINARY_DIR}/common)
-ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../common/utils ${CMAKE_CURRENT_BINARY_DIR}/utils)
 ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../5gaka ${CMAKE_CURRENT_BINARY_DIR}/5gaka)
 
 
@@ -42,11 +41,11 @@ IF(STATIC_LINKING)
     SET(ASAN)
 ENDIF(STATIC_LINKING)   
 
-target_link_libraries(unit_test ${CONFIG} 
- -Wl,--start-group 5GAKA 3GPP_COMMON_TYPES CN_UTILS -lnettle 
+target_link_libraries(unit_test ${CONFIG}
+ -Wl,--start-group 5GAKA 3GPP_COMMON_TYPES -lnettle
  ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lboost_system 
  -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lcryptopp
-  -lgmp -Wl,--end-group
+  -lgmp -lyaml-cpp -Wl,--end-group
    gtest pthread m rt boost_system curl)
 
 add_test(udm_unit_test  unit_test)
