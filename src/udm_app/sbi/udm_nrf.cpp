@@ -52,18 +52,25 @@ void udm_nrf::generate_udm_profile() {
   udm_nf_profile.set_nf_capacity(100);
   udm_nf_profile.add_nf_ipv4_addresses(udm_cfg.sbi.addr4);  // N4's Addr
 
-  // Add the Event Exposure service to the profile, so that consumers can
-  // discover it via the NRF
-  nf_service_t ee_service        = {};
-  ee_service.service_instance_id = "nudm-ee-1";
-  ee_service.service_name        = "nudm-ee";
-  ee_service.api_version_in_uri  = udm_cfg.sbi.api_version.value_or("v1");
-  ee_service.api_full_version    = "1.2.3";  // Nudm_EE, TS 29.503 Rel-17
-  ee_service.scheme              = "http";
-  ee_service.nf_service_status   = "REGISTERED";
-  ee_service.ipv4_address        = inet_ntoa(udm_cfg.sbi.addr4);
-  ee_service.port                = udm_cfg.sbi.port;
-  udm_nf_profile.add_nf_service(ee_service);
+  // Advertise every UDM service (Nudm_SDM, Nudm_UECM, Nudm_UEAU, Nudm_EE;
+  // 3GPP TS 29.503 clause 5) in the NF profile (nfServices, 3GPP TS 29.510
+  // clause 6.1.6.2.2). NF discovery by service name (service-names query
+  // parameter, 3GPP TS 29.510 clause 6.2.3.2.3.1) matches these entries, e.g.
+  // an AMF discovering the home UDM of a roaming UE (3GPP TS 23.502 clause
+  // 4.2.2.2.2).
+  for (const auto& service_name :
+       {"nudm-sdm", "nudm-uecm", "nudm-ueau", "nudm-ee"}) {
+    nf_service_t service        = {};
+    service.service_instance_id = std::string(service_name) + "-1";
+    service.service_name        = service_name;
+    service.api_version_in_uri  = udm_cfg.sbi.api_version.value_or("v1");
+    service.api_full_version    = "1.2.3";  // 3GPP TS 29.503 Rel-17
+    service.scheme              = "http";
+    service.nf_service_status   = "REGISTERED";
+    service.ipv4_address        = inet_ntoa(udm_cfg.sbi.addr4);
+    service.port                = udm_cfg.sbi.port;
+    udm_nf_profile.add_nf_service(service);
+  }
 
   // UDM info (Hardcoded for now)
   // ToDo: If none of these parameters are provided, the UDM can serve any
