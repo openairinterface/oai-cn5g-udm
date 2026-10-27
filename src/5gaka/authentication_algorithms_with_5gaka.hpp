@@ -5,8 +5,6 @@
 #ifndef SRC_5GAKA_AUTHENTICATION_ALGORITHMS_WITH_5GAKA_HPP_
 #define SRC_5GAKA_AUTHENTICATION_ALGORITHMS_WITH_5GAKA_HPP_
 
-#include <gmp.h>
-#include <pthread.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -26,9 +24,6 @@
 #define AUTN_LENGTH_OCTETS (16)
 #define KASME_LENGTH_OCTETS (32)
 #define MAC_S_LENGTH (8)
-
-typedef mpz_t random_t;
-typedef mpz_t sqn_t;
 
 typedef struct {
   uint8_t rand[16];
@@ -55,11 +50,6 @@ typedef struct {
   uint8_t autn[16];
   uint8_t kseaf[32];
 } _5G_AV_t;
-
-typedef struct random_state_s {
-  pthread_mutex_t lock;
-  gmp_randstate_t state;
-} random_state_t;
 
 #define _NEA0_ 0b0000
 #define _128_NEA1_ 0b0001

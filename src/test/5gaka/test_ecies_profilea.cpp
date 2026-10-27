@@ -94,11 +94,17 @@ TEST(TestSuiteEciesProfileA, suciSidf) {
     std::string suci = eciesTestCasesECIESProfileA[i].suci;
     std::transform(suci.begin(), suci.end(), suci.begin(), ::tolower);
 
-    /*  bool success_suci = Authentication_5gaka::suciSidf(
-          home_network_private_key, home_network_public_key, suci,
-          routing_indicator, supi, error);
-  */
-    bool success_suci = true;
+    subscriber_profile_t subscriber_profile;
+    subscriber_profile.protection_scheme = static_cast<uint8_t>(
+        std::stoi(eciesTestCasesECIESProfileA[i].protection_scheme_id));
+    subscriber_profile.home_network_public_key  = home_network_public_key;
+    subscriber_profile.home_network_private_key = home_network_private_key;
+    subscriber_profile.home_network_public_key_id =
+        eciesTestCasesECIESProfileA[i].hn_public_key_id;
+
+    bool success_suci = Authentication_5gaka::suciSidf(
+        {subscriber_profile}, suci, routing_indicator, supi, error);
+    EXPECT_EQ("", error);
     EXPECT_TRUE(success_suci);
     EXPECT_EQ(
         eciesTestCasesECIESProfileA[i].routing_indicator, routing_indicator);

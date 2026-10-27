@@ -21,7 +21,6 @@ namespace oai {
 namespace udm {
 namespace api {
 
-using namespace oai::udm::config;
 using namespace oai::_3gpp::model;
 
 GenerateAuthDataApiImpl::GenerateAuthDataApiImpl(
