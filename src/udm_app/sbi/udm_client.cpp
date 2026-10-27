@@ -12,7 +12,7 @@ using namespace oai::udm::app;
 using namespace oai::udm::config;
 
 extern udm_config udm_cfg;
-extern std::shared_ptr<oai::sba::sbi_http_client> http_client_inst;
+extern std::shared_ptr<oai::sba::http_client> http_client_inst;
 
 namespace {
 std::shared_ptr<oai::sba::nf_event> borrowed_event(udm_event& event) {
@@ -82,7 +82,7 @@ uint64_t udm_client::nrf_registration_retry_seconds() const {
 }
 
 void udm_client::on_registration_outcome(
-    bool success, const oai::sba::sbi_http_response& resp) {
+    bool success, const oai::sba::response& resp) {
   if (success) {
     Logger::udm_nrf().info(
         "NF registration procedure successful (status %d)", resp.status_code);

@@ -50,7 +50,7 @@ std::unique_ptr<UDMApiServer> api_server           = nullptr;
 std::unique_ptr<udm_http2_server> udm_api_server_2 = nullptr;
 std::unique_ptr<oai::sba::task_manager> tm_inst    = nullptr;
 
-std::shared_ptr<oai::sba::sbi_http_client> http_client_inst         = nullptr;
+std::shared_ptr<oai::sba::http_client> http_client_inst             = nullptr;
 std::unique_ptr<udm_config_yaml> udm_cfg_yaml                       = nullptr;
 std::unique_ptr<oai::config::lttng_configuration> lttng_config_yaml = nullptr;
 //------------------------------------------------------------------------------
@@ -161,7 +161,7 @@ int main(int argc, char** argv) {
 
   // HTTP Client
   uint8_t http_version = udm_cfg.use_http2 ? 2 : 1;
-  http_client_inst     = oai::sba::sbi_http_client::create_instance(
+  http_client_inst     = oai::sba::http_client::create_instance(
       Logger::udm_client(), udm_cfg.http_request_timeout, udm_cfg.sbi.if_name,
       http_version);
 

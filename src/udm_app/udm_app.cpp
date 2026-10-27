@@ -49,7 +49,7 @@ using namespace oai::udm::api;
 
 extern udm_config udm_cfg;
 std::unique_ptr<udm_client> udm_client_inst = nullptr;
-extern std::shared_ptr<oai::sba::sbi_http_client> http_client_inst;
+extern std::shared_ptr<oai::sba::http_client> http_client_inst;
 
 //------------------------------------------------------------------------------
 udm_app::udm_app(const std::string& config_file, udm_event& ev)
@@ -215,7 +215,7 @@ void udm_app::handle_generate_auth_data_request(
   remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
   Logger::udm_ueau().debug("Remote URI: " + remote_uri);
 
-  oai::sba::sbi_http_request http_request =
+  oai::sba::request http_request =
       http_client_inst->prepare_json_request(remote_uri);
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::GET, http_request);
@@ -338,7 +338,7 @@ void udm_app::handle_generate_auth_data_request(
       Logger::udm_ueau().info(
           "Update UDR with PATCH message, body:  %s", msg_body.c_str());
 
-      oai::sba::sbi_http_request http_request =
+      oai::sba::request http_request =
           http_client_inst->prepare_json_request(remote_uri, msg_body);
       auto http_response = http_client_inst->send_http_request(
           oai::common::sbi::method_e::PATCH, http_request);
@@ -465,7 +465,7 @@ void udm_app::handle_confirm_auth(
   remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
   Logger::udm_ueau().debug("Remote URI: " + remote_uri);
 
-  oai::sba::sbi_http_request http_request =
+  oai::sba::request http_request =
       http_client_inst->prepare_json_request(remote_uri, msg_body);
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::GET, http_request);
@@ -537,7 +537,7 @@ void udm_app::handle_delete_auth(
   remote_uri = udm_sbi_helper::get_udr_authentication_subscription_uri(supi);
   Logger::udm_ueau().debug("Remote URI:" + remote_uri);
 
-  oai::sba::sbi_http_request http_request =
+  oai::sba::request http_request =
       http_client_inst->prepare_json_request(remote_uri, msg_body);
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::GET, http_request);
@@ -580,7 +580,7 @@ void udm_app::handle_delete_auth(
     nlohmann::json auth_event_json;
     to_json(auth_event_json, authEvent);
 
-    oai::sba::sbi_http_request http_request =
+    oai::sba::request http_request =
         http_client_inst->prepare_json_request(remote_uri, msg_body);
     auto http_response = http_client_inst->send_http_request(
         oai::common::sbi::method_e::DELETE, http_request);
@@ -613,7 +613,7 @@ void udm_app::handle_access_mobility_subscription_data_retrieval(
   Logger::udm_sdm().debug("Remote URI: " + remote_uri);
 
   // Get response from UDR
-  oai::sba::sbi_http_request http_request =
+  oai::sba::request http_request =
       http_client_inst->prepare_json_request(remote_uri, body);
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::GET, http_request);
@@ -665,7 +665,7 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   nlohmann::json old_registration = {};
   bool has_old                    = false;
   if (ue_has_subs) {
-    oai::sba::sbi_http_request get_req =
+    oai::sba::request get_req =
         http_client_inst->prepare_json_request(remote_uri);
     auto get_resp = http_client_inst->send_http_request(
         oai::common::sbi::method_e::GET, get_req);
@@ -680,9 +680,8 @@ void udm_app::handle_amf_registration_for_3gpp_access(
   }
 
   // Update AMF registration in UDR
-  oai::sba::sbi_http_request http_request =
-      http_client_inst->prepare_json_request(
-          remote_uri, amf_registration_json.dump());
+  oai::sba::request http_request = http_client_inst->prepare_json_request(
+      remote_uri, amf_registration_json.dump());
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::PUT, http_request);
 
@@ -847,7 +846,7 @@ void udm_app::handle_session_management_subscription_data_retrieval(
 
   Logger::udm_sdm().debug("Remote URI: " + remote_uri);
 
-  oai::sba::sbi_http_request http_request =
+  oai::sba::request http_request =
       http_client_inst->prepare_json_request(remote_uri, body);
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::GET, http_request);
@@ -886,7 +885,7 @@ void udm_app::handle_slice_selection_subscription_data_retrieval(
   std::string body = {};
   Logger::udm_sdm().debug("Remote URI: %s", udr_uri.c_str());
   // Send the request and get the response from UDR
-  oai::sba::sbi_http_request http_request =
+  oai::sba::request http_request =
       http_client_inst->prepare_json_request(udr_uri, body);
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::GET, http_request);
@@ -933,7 +932,7 @@ void udm_app::handle_smf_selection_subscription_data_retrieval(
   Logger::udm_sdm().debug("Remote URI: " + remote_uri);
 
   // Get info from UDR
-  oai::sba::sbi_http_request http_request =
+  oai::sba::request http_request =
       http_client_inst->prepare_json_request(remote_uri, body);
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::GET, http_request);
@@ -978,9 +977,8 @@ void udm_app::handle_subscription_creation(
   nlohmann::json sdm_subscription_json;
   to_json(sdm_subscription_json, sdmSubscription);
 
-  oai::sba::sbi_http_request http_request =
-      http_client_inst->prepare_json_request(
-          remote_uri, sdm_subscription_json.dump());
+  oai::sba::request http_request = http_client_inst->prepare_json_request(
+      remote_uri, sdm_subscription_json.dump());
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::POST, http_request);
 
@@ -1360,7 +1358,7 @@ void udm_app::notify_event_occurrence(
       "Notify event occurrence (%zu report(s)) to %s", reports.size(),
       callback_uri.c_str());
 
-  oai::sba::sbi_http_request http_request =
+  oai::sba::request http_request =
       http_client_inst->prepare_json_request(callback_uri, body.dump());
 
   auto http_response = http_client_inst->send_http_request(
@@ -1438,8 +1436,7 @@ std::string udm_app::namf_event_type_for(
 std::string udm_app::get_serving_amf_instance_id(const std::string& ue_id) {
   std::string remote_uri =
       udm_sbi_helper::get_udr_amf_3gpp_registration_uri(ue_id);
-  oai::sba::sbi_http_request req =
-      http_client_inst->prepare_json_request(remote_uri);
+  oai::sba::request req = http_client_inst->prepare_json_request(remote_uri);
   auto resp =
       http_client_inst->send_http_request(oai::common::sbi::method_e::GET, req);
   if (resp.status_code != oai::common::sbi::http_status_code::OK) {
@@ -1516,9 +1513,8 @@ void udm_app::relay_subscribe_to_amf(
   Logger::udm_ee().info(
       "AMF relay for sub %u -> %s", sub_id, amf_subscriptions_uri.c_str());
 
-  oai::sba::sbi_http_request http_request =
-      http_client_inst->prepare_json_request(
-          amf_subscriptions_uri, body.dump());
+  oai::sba::request http_request = http_client_inst->prepare_json_request(
+      amf_subscriptions_uri, body.dump());
   auto resp = http_client_inst->send_http_request(
       oai::common::sbi::method_e::POST, http_request);
 
@@ -1555,7 +1551,7 @@ void udm_app::relay_unsubscribe(const evsub_id_t& sub_id) {
     udm_event_relay_correlation.erase(it);
   }
 
-  oai::sba::sbi_http_request http_request =
+  oai::sba::request http_request =
       http_client_inst->prepare_json_request(remote_uri);
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::DELETE, http_request);
@@ -1591,7 +1587,7 @@ void udm_app::send_revocation(
       "Send monitoring revocation for sub %u -> %s", sub_id,
       second_callback.c_str());
 
-  oai::sba::sbi_http_request http_request =
+  oai::sba::request http_request =
       http_client_inst->prepare_json_request(second_callback, body.dump());
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::POST, http_request);
@@ -1628,7 +1624,7 @@ void udm_app::send_data_restoration(
     Logger::udm_ee().info(
         "Send data restoration notification -> %s", uri.c_str());
 
-    oai::sba::sbi_http_request http_request =
+    oai::sba::request http_request =
         http_client_inst->prepare_json_request(uri, payload);
     auto http_response = http_client_inst->send_http_request(
         oai::common::sbi::method_e::POST, http_request);

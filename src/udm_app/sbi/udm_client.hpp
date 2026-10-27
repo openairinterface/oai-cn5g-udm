@@ -29,7 +29,7 @@ class udm_client : public oai::sba::nf_service {
   bool nrf_registration_enabled() const override;
   uint64_t nrf_registration_retry_seconds() const override;
   void on_registration_outcome(
-      bool success, const oai::sba::sbi_http_response& resp) override;
+      bool success, const oai::sba::response& resp) override;
 
  private:
   udm_profile udm_nf_profile;
