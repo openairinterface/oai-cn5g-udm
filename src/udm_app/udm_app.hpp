@@ -379,6 +379,16 @@ class udm_app {
   bool validate_snn(const std::string& snn, oai::_3gpp::model::PlmnId& plmn_id);
 
   /*
+   * Validate the format of the resynchronization information
+   * @param [const std::string&] rand_hex: RAND from resynchronizationInfo
+   * @param [const std::string&] auts_hex: AUTS from resynchronizationInfo
+   * @return true if RAND is 16 bytes and AUTS is 14 bytes, both encoded as
+   * hexadecimal strings, otherwise return false
+   */
+  bool is_valid_resynchronization_info(
+      const std::string& rand_hex, const std::string& auts_hex);
+
+  /*
    * Get the UE's Home PLMN
    * @param [const std::string& ] supi: UE's SUPI
    * @param [std::optional<oai::_3gpp::model::PlmnId>&] plmn_id: PLMN Id

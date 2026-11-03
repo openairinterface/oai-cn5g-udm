@@ -292,6 +292,18 @@ void udm_app::handle_generate_auth_data_request(
     std::string r_rand_s = resynchronization_info.getRand();
     std::string r_auts_s = resynchronization_info.getAuts();
 
+    if (!is_valid_resynchronization_info(r_rand_s, r_auts_s)) {
+      code = oai::common::sbi::http_status_code::BAD_REQUEST;
+      std::string problem_description =
+          "Invalid resynchronizationInfo (rand must be 32 hex characters, "
+          "auts must be 28 hex characters)";
+      set_problem_details(
+          code, protocol_application_error::OPTIONAL_IE_INCORRECT,
+          problem_description, auth_info_response);
+      Logger::udm_ueau().warn(problem_description);
+      return;
+    }
+
     Logger::udm_ueau().info("[resync] r_rand = " + r_rand_s);
     Logger::udm_ueau().info("[resync] r_auts = " + r_auts_s);
 
@@ -1730,4 +1742,13 @@ bool udm_app::validate_snn(
     return false;
 
   return true;
+}
+
+//------------------------------------------------------------------------------
+bool udm_app::is_valid_resynchronization_info(
+    const std::string& rand_hex, const std::string& auts_hex) {
+  static const std::string hex_digits = "0123456789abcdefABCDEF";
+  return rand_hex.size() == 32 && auts_hex.size() == 28 &&
+         rand_hex.find_first_not_of(hex_digits) == std::string::npos &&
+         auts_hex.find_first_not_of(hex_digits) == std::string::npos;
 }
